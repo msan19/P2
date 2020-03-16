@@ -2,9 +2,9 @@
 
 
 ## Data systemet skal indeholde
-- graf over lageret
-- ordre
-- palleløfternes position
+- Graf over lageret
+- Ordre
+- Palleløfternes position
 
 ## Objekter
 
@@ -43,7 +43,7 @@
         -  En tuple angiver at en palleløfter befinder sig på en given knude på et givent tidspunkt.
     - #### Kanter  
       - En kant er et knudepar
-        - (knude1, knude2)
+        - `(knude1, knude2)`
       - En liste af tupler der ser således ud:
         - `[(palleløfter_ID, tid), ...]`
           - `tid` betegner det tidspunkt hvor palleløfteren med det givne `palleløfter_ID` befinder sig midt på kanten (midtpunkt: halv længde). 
