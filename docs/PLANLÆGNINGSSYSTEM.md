@@ -107,7 +107,6 @@
 ```javascript
 
 data = {
-      // something
       listOfOrders = new Array[];
       listOfRouteSets = new RouteSet[]; 
       bestRouteSet = new RouteSet; 
@@ -168,12 +167,5 @@ Krav:
 
 **Output:**
 - En mængde af gode ruter
-
-
-..
-..
-..
-
-
 
 
