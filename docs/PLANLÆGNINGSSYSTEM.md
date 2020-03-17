@@ -64,6 +64,12 @@
   - #### Position
   - #### Kø af ruter
 
+- ### RouteSet
+  - #### En liste af ruter
+    - Disse ruter er en mulig konfiguration af alle ordre, der ikke er har fået tildelt en endelig rute. 
+  - #### En liste af prioriterede ordre
+    - Prioritet = rækkefølge
+      - Dette bestemmet rækkefølge af udførelse
 
 ---
 
@@ -91,3 +97,83 @@
     - Hvor på grafen
       - Placering på kant
   - Palleløfterens status
+
+
+--- 
+
+## Klasse til ruteplanlægning
+
+##### "Pseudoklasse":
+```javascript
+
+data = {
+      // something
+      listOfOrders = new Array[];
+      listOfRouteSets = new RouteSet[]; 
+      bestRouteSet = new RouteSet; 
+}
+
+Module {
+    function addOrder(order){
+      // something
+      this.listOfOrders.push(order);
+    }
+
+    function getRoute(order){
+      route = this.bestRouteSet.get(order);
+      addRouteToGraph(route); // locks route in graph
+      this.listOfOrders.remove(order);
+      return route;
+    }
+
+    // calculateRoutes is called inside a loop
+    function calculateRoutes(listOfOrders, listOfRouteSets){
+      // something
+      // makes use of this.listOfOrders
+      return listOfRouteSets
+    }
+
+    function findBestRouteSet(listOfRouteSets){
+      return listOfRouteSets.best()
+    }
+
+    function getStartTime(order){
+      // something
+      return this.bestRouteSet.get(order).getStartTime();
+    }
+
+    function addRouteToGraph(route){
+      // something
+    }
+
+    function update(data){
+      data.listOfRouteSets = calculateRoutes(
+          data.listOfOrders, data.listOFRouteSets);
+      data.bestRouteSet = findBestRouteSet( 
+          data.listOfRouteSets);
+    }
+}
+
+```
+
+### `calculateRoute`-algoritmen
+
+Krav: 
+- Algoritmen nuværende rutedata for bestemte ruter skal kunne "låses"
+- På et vilkårligt tidspunkt kan algoritmen, ved forespørgsel, "spytte" en bestemt rute ud.
+- Du kan ikke få en rute, når algoritmen kører.
+
+**Input:**
+- Liste af ordre
+
+**Output:**
+- En mængde af gode ruter
+
+
+..
+..
+..
+
+
+
+
