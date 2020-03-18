@@ -58,7 +58,7 @@
   - #### State
     - 3 mulige tilstande:
       - Holder stille
-      - Har en ordre
+      - Udfører en ordre
       - Færdiggjort ordre
       - Lad op
   - #### Position
