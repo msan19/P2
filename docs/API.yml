@@ -1,0 +1,221 @@
+swagger: "2.0"
+info:
+  description: "Multi-Agent Pathfinding for Autonome Palleløftere på Transitlagre"
+  version: "1.0.0"
+  title: "Planlægningssystem"
+  #termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "dat2c1-18@student.aau.dk"
+  #license:
+  #  name: "Apache 2.0"
+  #  url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+#host: "https://github.com/msan19/P2"
+#basePath: "/v2"
+
+
+schemes:
+- "https"
+- "http"
+paths:
+  /warehouse:
+    get:
+      summary: "Get warehouse graph"
+      description: ""
+      operationId: "GetWarehouse"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            items:
+              $ref: "#/definitions/Graph"
+        500:
+          description: "Warehouse info not yet received"
+    post:
+      summary: "Update system's graph for warehouse"
+      description: ""
+      operationId: "PostWarehouse"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "graph"
+        description: "Graph object for warehouse"
+        required: true
+        schema:
+          $ref: "#/definitions/Graph"
+      responses:
+        200:
+          description: "Success"
+        400:
+          description: "Invalid graph"
+  #/orders:
+    #GetAll
+    #AddOrder
+  #/orders/{id}
+
+  /forklift/{guid}/initiate:
+    get:
+      summary: "Forklift connects to server"
+      description: ""
+      operationId: "InitiateForklift"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "guid"
+        type: "string"
+        description: "ID unique for physical forklift"
+        required: true
+      responses:
+        200:
+          description: "Success"
+        400:
+          description: "Invalid graph"
+          
+  /forklift:
+    post:
+      summary: "Forklift posts status to server"
+      description: ""
+      operationId: "PostForklift"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "graph"
+        description: "Graph object for warehouse"
+        required: true
+        schema:
+          $ref: "#/definitions/Graph"
+      responses:
+        200:
+          description: "Success"
+        400:
+          description: "Invalid graph"
+
+    
+definitions:
+  Vector2:
+    type: "object"
+    required:
+      - "x"
+      - "y"
+    properties:
+      x:
+        type: "number"
+        format: "decimal"
+        example: 10
+      y:
+        type: "number"
+        format: "decimal"
+        example: 14.5
+
+  Node:
+    type: "object"
+    required:
+      - "id"
+      - "position"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+        example: 0
+      label:
+        type: "string"
+        example: "Delivery"
+      position:
+        type: "object"
+        $ref: "#/definitions/Vector2"
+        
+  Graph:
+    type: "object"
+    required:
+    - "nodes"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      nodes:
+        type: "array"
+        items:
+          $ref: "#/definitions/Node"
+
+  PalletInfo:
+    type: "object"
+    required:
+      - "id"
+    properties:
+      id:
+        type: "string"
+        format: "guid"
+        description: "Unique identifier for pallet"
+
+#  Order:
+  ForkliftInfo:
+    type: "object"
+    required:
+      - "guid"
+    properties:
+      guid:
+        type: "string"
+        #format: "guid"
+        description: "ID unique to the physical forklift"
+        example: "{e00af90a-6645-4be4-9153-bb1d6e44bbba}"
+      batteryStatus:
+        type: "integer"
+        description: "Remaining battery capacity in percentage"
+        example: 78
+      position:
+        type: "object"
+        $ref: "#/definitions/Vector2"
+        description: "Physical location of forklift within warehouse"
+        ###TODO: Should this be a node?
+          ### If so, then how about when the forklift is moving between nodes?
+      state:
+        type: "string"
+        description: ""
+        enum:
+          - "idle"
+          - "hasOrder"
+          - "charging"
+      hasPallet:
+        type: "boolean"
+
+  ForkliftInstruction:
+    type: "object"
+    required:
+      - "type"
+    properties:
+      type:
+        type: "string"
+        enum:
+          - "move"
+          - "wait"
+          - "unloadPallet"
+          - "loadPallet"
+          - "charge"
+      node:
+        $ref: "#/definitions/Node"
+
+  Route:
+    type: "object"
+    required:
+      - "id"
+      - "instructions"
+    properties:
+      id:
+        type: "string"
+
+      instructions:
+        type: "array"
+        items:
+          $ref: "#/definitions/ForkliftInstruction"
+
+
+    
+    
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "https://github.com/msan19/P2"
