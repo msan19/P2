@@ -1,5 +1,5 @@
 # Planlægningssystem
-
+- Planlægsningssystemet håndterer netop et lager.
 
 ## Data systemet skal indeholde
 - Graf over lageret
@@ -37,16 +37,15 @@
   - ### Graf
     - #### Knuder 
       - 2D koordinat
-      - ID / navn
+      - ID / navn                                                                                           
       - En liste af tupler der ser således ud:
-        -  `[(palleløfter_ID, tid), ...]`
+        -  `[(palleløfter_ID, tid, knude_ID), ...]`
         -  En tuple angiver at en palleløfter befinder sig på en given knude på et givent tidspunkt.
+        -  `knude_ID` betegner den næste knuder som palleløfteren besøger.
+           -  Hvis palleløfteren står stille, så er `knude_ID` lig med den nuværende knude.  
     - #### Kanter  
       - En kant er et knudepar
         - `(knude1, knude2)`
-      - En liste af tupler der ser således ud:
-        - `[(palleløfter_ID, tid), ...]`
-          - `tid` betegner det tidspunkt hvor palleløfteren med det givne `palleløfter_ID` befinder sig midt på kanten (midtpunkt: halv længde). 
       - Har en længde
   
     - #### Adjencency list?
@@ -56,11 +55,11 @@
   - #### Løftekapacitet
   - #### Dimensioner
   - #### State
-    - 3 mulige tilstande:
-      - Holder stille
-      - Udfører en ordre
-      - Færdiggjort ordre
-      - Lad op
+    - Har ikke ordre (ledig)
+    - Har ordre (ikke ledig)
+      - Har palle
+      - Uden palle
+    - Lader op 
   - #### Position
   - #### Kø af ruter
 
@@ -70,34 +69,6 @@
   - #### En liste af prioriterede ordre
     - Prioritet = rækkefølge
       - Dette bestemmet rækkefølge af udførelse
-
----
-
-## Informationsflow mellem systemerne
-
-### Palleløfter-systemet
-##### `-->` planlægning
-- Bekræftigelse af rutemodtagelse
-- Ny information
-  - Enten `Bekræftigelse af ruteudførelse` eller `fejlmeddelelse/ikke udført`. 
-
-##### `<--` planlægning
-- Sende en rute
-
-### Webinterface
-##### `-->` planlægning
-- Sende forespørgsel om alt information 
-- Tilføjelse af ordre
-
-##### `<--` planlægning
-- Graf over lageret
-- Palleløfterinformation
-  - Palleløfternes planlagte ruter
-  - Palleløfternes position i reel tid
-    - Hvor på grafen
-      - Placering på kant
-  - Palleløfterens status
-
 
 --- 
 
