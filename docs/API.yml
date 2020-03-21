@@ -116,28 +116,19 @@ paths:
             $ref: "#/definitions/Route"
         400:
           description: "Order not found"
-
-  /forklift/{guid}/initiate:
-    post:
-      summary: "Forklift connects to server"
+  /forklifts:
+    get:
+      summary: "Returns all known forklifts"
       description: ""
-      operationId: "InitiateForklift"
-      consumes:
+      operationId: "GetForklifts"
+      produces:
       - "application/json"
-      parameters:
-      - in: "path"
-        name: "guid"
-        type: "string"
-        format: "URI-encoded"
-        description: "URI-encoded ID unique for physical forklift"
-        required: true
       responses:
         200:
-          description: "Success"
-        400:
-          description: "Invalid graph"
-          
-  /forklift:
+          description: "successful operation"
+          schema:
+            items:
+              $ref: "#/definitions/ForkliftInfo"
     post:
       summary: "Forklift posts status to server"
       description: ""
@@ -155,7 +146,56 @@ paths:
         200:
           description: "Success"
         400:
-          description: "Invalid graph"
+          description: "Invalid forklift"
+  /forklifts/{guid}:
+    get:
+      summary: "Get details for a single forklift"
+      description: ""
+      operationId: "GetForklift"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "guid"
+        type: "string"
+        format: "URI-encoded"
+        description: "URI-encoded identifier for the forklift"
+        required: true
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ForkliftInfo"
+        400:
+          description: "Forklift not found"
+          
+  /forklifts/{guid}/initiate:
+    post:
+      summary: "Forklift connects to server"
+      description: ""
+      operationId: "InitiateForklift"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "guid"
+        type: "string"
+        format: "URI-encoded"
+        description: "URI-encoded ID unique for physical forklift"
+        required: true
+      - in: "body"
+        name: "forklift"
+        description: "Forklift details"
+        required: true
+        schema:
+          $ref: "#/definitions/ForkliftInfo"
+      responses:
+        200:
+          description: "Success"
+        400:
+          description: "Invalid forklift"
+        401:
+          description: "Forklift already initiated"
 
     
 definitions:
