@@ -69,7 +69,7 @@ paths:
   #/orders/{id}
 
   /forklift/{guid}/initiate:
-    get:
+    post:
       summary: "Forklift connects to server"
       description: ""
       operationId: "InitiateForklift"
