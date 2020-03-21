@@ -63,10 +63,59 @@ paths:
             items:
               $ref: "#/definitions/Route"
 
-  #/orders:
-    #GetAll
-    #AddOrder
-  #/orders/{id}
+  /orders:
+    get:
+      summary: "Returns all queued orders"
+      description: ""
+      operationId: "GetOrders"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            items:
+              $ref: "#/definitions/Route"
+    put:
+      summary: "Add an order to the system"
+      description: ""
+      operationId: "AddOrder"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "order"
+        description: "An order to be queued"
+        required: true
+        schema:
+          $ref: "#/definitions/Order"
+      responses:
+        200:
+          description: "Success"
+        400:
+          description: "Invalid order"
+
+  /orders/{guid}:
+    get:
+      summary: "Get details for a single order"
+      description: ""
+      operationId: "GetOrder"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "guid"
+        type: "string"
+        format: "URI-encoded"
+        description: "URI-encoded identifier for the order"
+        required: true
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Route"
+        400:
+          description: "Order not found"
 
   /forklift/{guid}/initiate:
     post:
@@ -188,7 +237,6 @@ definitions:
         type: "number"
         description: "Pallet mass in kilogram"
 
-#  Order:
   ForkliftInfo:
     type: "object"
     required:
@@ -249,6 +297,25 @@ definitions:
         items:
           $ref: "#/definitions/ForkliftInstruction"
 
+  Order:
+    type: "object"
+    required:
+      - "orderType"
+    properties:
+      orderType:
+        type: "string"
+        enum:
+          - "movePallet"
+          - "moveForklift"
+          - "charge"
+      forkliftId:
+        type: "string"
+      palletId:
+        type: "string"
+      startNode:
+        $ref: "#/definitions/Node"
+      endNode:
+        $ref: "#/definitions/Node"
 
     
     
