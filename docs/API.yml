@@ -79,7 +79,8 @@ paths:
       - in: "path"
         name: "guid"
         type: "string"
-        description: "ID unique for physical forklift"
+        format: "URI-encoded"
+        description: "URI-encoded ID unique for physical forklift"
         required: true
       responses:
         200:
