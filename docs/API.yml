@@ -126,6 +126,21 @@ definitions:
       position:
         type: "object"
         $ref: "#/definitions/Vector2"
+  Vertice:
+    type: "object"
+    required:
+      - "nodeId_1"
+      - "nodeId_2"
+    properties:
+      nodeId_1: 
+        type: "string"
+        example: "0"
+      nodeId_2: 
+        type: "string"
+        example: "1"
+      label:
+        type: "string"
+        example: "Optional Label"
         
   Graph:
     type: "object"
@@ -139,6 +154,10 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/Node"
+      Vertices:
+        type: "array"
+        items:
+          $ref: "#/definitions/Vertice"
 
   PalletInfo:
     type: "object"
