@@ -49,6 +49,20 @@ paths:
           description: "Success"
         400:
           description: "Invalid graph"
+  /routes:
+    get:
+      summary: "Returns all locked routes"
+      description: ""
+      operationId: "GetRoutes"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            items:
+              $ref: "#/definitions/Route"
+
   #/orders:
     #GetAll
     #AddOrder
