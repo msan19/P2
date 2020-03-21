@@ -167,7 +167,10 @@ definitions:
       id:
         type: "string"
         format: "guid"
-        description: "Unique identifier for pallet"
+        description: "Unique identifier for the pallet"
+      mass:
+        type: "number"
+        description: "Pallet mass in kilogram"
 
 #  Order:
   ForkliftInfo:
