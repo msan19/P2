@@ -182,6 +182,7 @@ definitions:
         type: "string"
         format: "guid"
         description: "Unique identifier for the pallet"
+        example: "{1751227a-e9b9-4d37-912f-cdbea5e6fe90}"
       mass:
         type: "number"
         description: "Pallet mass in kilogram"
