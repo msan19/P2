@@ -28,8 +28,7 @@ paths:
         200:
           description: "successful operation"
           schema:
-            items:
-              $ref: "#/definitions/Graph"
+            $ref: "#/definitions/Graph"
         500:
           description: "Warehouse info not yet received"
     post:
