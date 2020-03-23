@@ -261,6 +261,14 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/Vertice"
+  Warehouse:
+    type: "object"
+    properties:
+      graph:
+        $ref: "#/definitions/Graph"
+      forkliftMovementSpeed:
+        type: "number"
+        format: "Meters per second"
 
   PalletInfo:
     type: "object"
