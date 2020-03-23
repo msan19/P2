@@ -273,6 +273,7 @@ definitions:
       forkliftMovementSpeed:
         type: "number"
         format: "Meters per second"
+        example: "3.4"
 
   PalletInfo:
     type: "object"
