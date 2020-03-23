@@ -130,24 +130,6 @@ paths:
           schema:
             items:
               $ref: "#/definitions/ForkliftInfo"
-    post:
-      summary: "Forklift posts status to server"
-      description: ""
-      operationId: "PostForklift"
-      consumes:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "graph"
-        description: "Graph object for warehouse"
-        required: true
-        schema:
-          $ref: "#/definitions/Graph"
-      responses:
-        200:
-          description: "Success"
-        400:
-          description: "Invalid forklift"
   /forklifts/{guid}:
     get:
       summary: "Get details for a single forklift"
@@ -169,7 +151,31 @@ paths:
             $ref: "#/definitions/ForkliftInfo"
         400:
           description: "Forklift not found"
-          
+    put:
+      summary: "Forklift posts status to server"
+      description: ""
+      operationId: "PostForklift"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "guid"
+        type: "string"
+        format: "URI-encoded"
+        description: "URI-encoded identifier for the forklift"
+        required: true
+      - in: "body"
+        name: "forklift"
+        description: "ForkliftInfo object for warehouse"
+        required: true
+        schema:
+          $ref: "#/definitions/ForkliftInfo"
+      responses:
+        200:
+          description: "Success"
+        400:
+          description: "Invalid forklift"
+
   /forklifts/{guid}/initiate:
     post:
       summary: "Forklift connects to server"
