@@ -8,6 +8,7 @@
 Uge 11-12:    Planlægning af programmering
 
 Uge - 13      Planlægning af programmering
+
   Mandag: Swagger API Dokumentation
 
   Tirsdag: Klassediagrammer (UML)
