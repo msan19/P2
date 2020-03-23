@@ -1,0 +1,175 @@
+swagger: "2.0"
+info:
+  description: "Methods that must be implemented in forklifts"
+  version: "1.0.0"
+  title: "Forklift"
+  #termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "dat2c1-18@student.aau.dk"
+  #license:
+  #  name: "Apache 2.0"
+  #  url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+#host: "https://github.com/msan19/P2"
+#basePath: "/v2"
+
+
+schemes:
+- "http"
+paths:
+  /routes:
+    get:
+      summary: "Returns all locked routes"
+      description: ""
+      operationId: "GetRoutes"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            items:
+              $ref: "#/definitions/Route"
+    post:
+      summary: "Enqueue routes"
+      description: ""
+      operationId: "AddRoute"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "route"
+        required: true
+        schema:
+          items:
+            $ref: "#/definitions/Route"
+      responses:
+        200:
+          description: "Success"
+        400:
+          description: "Invalid route"
+
+  /info:
+    get:
+      summary: "Get details about the forklift"
+      description: ""
+      operationId: "GetForklift"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ForkliftInfo"
+
+definitions:
+  Vector2:
+    type: "object"
+    required:
+      - "x"
+      - "y"
+    properties:
+      x:
+        type: "number"
+        format: "decimal"
+        example: 10
+      y:
+        type: "number"
+        format: "decimal"
+        example: 14.5
+  Date:
+    type: "number"
+    format: "Miliseconds since 1970-01-01 00:00:00 UTC"
+    example: "1584965558174"
+
+  Node:
+    type: "object"
+    required:
+      - "id"
+      - "position"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+        example: 0
+      label:
+        type: "string"
+        example: "Delivery"
+      position:
+        type: "object"
+        $ref: "#/definitions/Vector2"
+
+  ForkliftInfo:
+    type: "object"
+    required:
+      - "guid"
+    properties:
+      guid:
+        type: "string"
+        #format: "guid"
+        description: "ID unique to the physical forklift"
+        example: "{e00af90a-6645-4be4-9153-bb1d6e44bbba}"
+      batteryStatus:
+        type: "integer"
+        description: "Remaining battery capacity in percentage"
+        example: 78
+      position:
+        type: "object"
+        $ref: "#/definitions/Vector2"
+        description: "Physical location of forklift within warehouse"
+      state:
+        type: "string"
+        description: ""
+        enum:
+          - "idle"
+          - "hasOrder"
+          - "charging"
+      palletId:
+        type: "string"
+        description: "The ID of the pallet currently on the fork"
+
+  ForkliftInstruction:
+    type: "object"
+    required:
+      - "type"
+      - "node"
+      - "startTime"
+      - "duration"
+    properties:
+      type:
+        type: "string"
+        enum:
+          - "move"
+          - "unloadPallet"
+          - "loadPallet"
+          - "charge"
+      node:
+        $ref: "#/definitions/Node"
+      palletId:
+        type: "string"
+      
+      #TODO: Fix description
+      startTime:
+        description: "Time for when the execution of the instruction begins"
+        $ref: "#/definitions/Date"
+      duration:
+        type: "number"
+        description: "Estimated duration of the instruction in miliseconds"
+
+  Route:
+    type: "object"
+    required:
+      - "id"
+      - "instructions"
+    properties:
+      id:
+        type: "string"
+
+      instructions:
+        type: "array"
+        items:
+          $ref: "#/definitions/ForkliftInstruction"
+
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "https://github.com/msan19/P2"
