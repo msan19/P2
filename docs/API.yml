@@ -229,7 +229,7 @@ definitions:
       position:
         type: "object"
         $ref: "#/definitions/Vector2"
-  Vertice:
+  Edge:
     type: "object"
     required:
       - "nodeId_1"
@@ -250,17 +250,15 @@ definitions:
     required:
     - "nodes"
     properties:
-      id:
-        type: "integer"
-        format: "int64"
       nodes:
         type: "array"
         items:
           $ref: "#/definitions/Node"
-      Vertices:
+      Edges:
         type: "array"
         items:
-          $ref: "#/definitions/Vertice"
+          $ref: "#/definitions/Edge"
+
   Warehouse:
     type: "object"
     properties:
