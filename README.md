@@ -5,7 +5,19 @@
 
 ## Tidsplan
 ```
-Uge 11-13:    Planlægning af programmering
+Uge 11-12:    Planlægning af programmering
+
+Uge - 13      Planlægning af programmering
+
+  Mandag: Swagger API Dokumentation
+
+  Tirsdag: Klassediagrammer (UML)
+
+  Onsdag: Opstart af server
+
+  Torsdag: Viderearbejde på server
+
+  Fredag: Test environment
 
 Uge 14-17:    Programmering
 
