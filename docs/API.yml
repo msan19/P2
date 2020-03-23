@@ -341,6 +341,13 @@ definitions:
     properties:
       id:
         type: "string"
+      status:
+        type: "string"
+        enum:
+          - "queued"
+          - "inProgress"
+          - "completed"
+          - "failed"
 
       instructions:
         type: "array"
