@@ -76,8 +76,7 @@ paths:
           description: "successful operation"
           schema:
             items:
-              $ref: "#/definitions/Route"
-    put:
+              $ref: "#/definitions/Order"
       summary: "Add an order to the system"
       description: ""
       operationId: "AddOrder"
