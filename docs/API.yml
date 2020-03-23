@@ -214,6 +214,10 @@ definitions:
         type: "number"
         format: "decimal"
         example: 14.5
+  Date:
+    type: "number"
+    format: "Miliseconds since 1970-01-01 00:00:00 UTC"
+    example: "1584965558174"
 
   Node:
     type: "object"
