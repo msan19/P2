@@ -239,7 +239,6 @@ definitions:
         type: "string"
         example: "Delivery"
       position:
-        type: "object"
         $ref: "#/definitions/Vector2"
   Edge:
     type: "object"
@@ -307,9 +306,9 @@ definitions:
         description: "Remaining battery capacity in percentage"
         example: 78
       position:
-        type: "object"
         $ref: "#/definitions/Vector2"
         description: "Physical location of forklift within warehouse"
+        #Unfortunate limitation of OpenAPI prevents
         ###TODO: Should this be a node?
           ### If so, then how about when the forklift is moving between nodes?
       state:
