@@ -323,7 +323,8 @@ definitions:
         type: "string"
         description: "The ID of the pallet currently on the fork"
 
-  ForkliftInstruction:
+  Instruction:
+    description: "Instruction for a forklift, used in routes"
     type: "object"
     required:
       - "type"
