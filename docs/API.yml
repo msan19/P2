@@ -328,7 +328,7 @@ definitions:
     type: "object"
     required:
       - "type"
-      - "node"
+      - "nodeId"
       - "startTime"
     properties:
       type:
@@ -340,8 +340,10 @@ definitions:
           - "charge"
           - "wait"
           - "sendFeedback"
-      node:
-        $ref: "#/definitions/Node"
+      nodeId:
+        type: "string"
+        format: "{guid}"
+        example: "{bfa72706-befb-41d7-9ffb-2ede77607eea}"
       palletId:
         type: "string"
       startTime:
@@ -385,10 +387,14 @@ definitions:
         type: "string"
       palletId:
         type: "string"
-      startNode:
-        $ref: "#/definitions/Node"
-      endNode:
-        $ref: "#/definitions/Node"
+      startNodeId:
+        type: "string"
+        format: "{guid}"
+        example: "{bfa72706-befb-41d7-9ffb-2ede77607eea}"
+      endNodeId:
+        type: "string"
+        format: "{guid}"
+        example: "{bfa72706-befb-41d7-9ffb-2ede77607eea}"
 
     
     
