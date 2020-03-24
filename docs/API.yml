@@ -330,7 +330,6 @@ definitions:
       - "type"
       - "node"
       - "startTime"
-      - "duration"
     properties:
       type:
         type: "string"
@@ -339,6 +338,8 @@ definitions:
           - "unloadPallet"
           - "loadPallet"
           - "charge"
+          - "wait"
+          - "sendFeedback"
       node:
         $ref: "#/definitions/Node"
       palletId:
@@ -347,9 +348,6 @@ definitions:
         #Description doesn't work, as $ref replaces everything at the same level of itself
         description: "Time for when the execution of the instruction begins"
         $ref: "#/definitions/Date"
-      duration:
-        type: "number"
-        description: "Estimated duration of the instruction-execution in miliseconds"
 
   Route:
     type: "object"
@@ -370,7 +368,7 @@ definitions:
       instructions:
         type: "array"
         items:
-          $ref: "#/definitions/ForkliftInstruction"
+          $ref: "#/definitions/Instruction"
 
   Order:
     type: "object"
