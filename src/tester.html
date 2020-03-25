@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        
+
+        function sendPostForklift(id) {
+            fetch(`/forklifts/${id}/initiate`, {method: "POST", data: "hello"})
+            .then((response) => {
+                console.log("ok");
+            });
+        }
+
+        function sendPostWarehouse() {
+            fetch(`/warehouse`, {method: "POST", data: "hello"})
+            .then((response) => {
+                console.log("ok");
+            });
+        }
+
+        function sendPostOrders() {
+            fetch(`/orders`, {method: "POST", data: "hello"})
+            .then((response) => {
+                console.log("ok");
+            });
+        }
+
+        function sendPutForklift(id) {
+            fetch(`/forklifts/${id}`, {method: "PUT", data: "hello"})
+            .then((response) => {
+                console.log("ok");
+            });
+        }
+
+        //sendPostForklift("yugawfshgfaw");
+        //sendPutForklift("yugawfshgfaw");
+
+        //sendPostWarehouse();
+        sendPostOrders();
+
+
+    </script>
+</body>
+</html>
