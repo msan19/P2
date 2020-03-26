@@ -1,5 +1,15 @@
 const http = require("http");
-const handler = require("./handler");
+function newGuid() {return ""};
+
+//import Forklift = require("./classes/Forklift.ts");
+import {Forklift} from "./classes/Forklift"
+import {DataContainer} from "./classes/DataContainer"
+
+ 
+
+let data = new DataContainer();
+
+const handler = require("./handler")(data);
 const fs = require("fs");
 
 const hostname = '127.0.0.1';
