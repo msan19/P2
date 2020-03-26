@@ -1,6 +1,8 @@
 const http = require("http");
 function newGuid() {return ""};
 
+let i = 0;
+
 //import Forklift = require("./classes/Forklift.ts");
 import {Forklift} from "./classes/Forklift"
 import {DataContainer} from "./classes/DataContainer"
@@ -41,6 +43,19 @@ let server = http.createServer((request, response) => {
     }
 });
 
+function update() {
+    let running:boolean = true;
+
+
+    console.log(`i: ${i++}`);
+    // Actual code
+
+    if (running) {
+        setImmediate(update);
+    }
+}
+
+update();
 
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
