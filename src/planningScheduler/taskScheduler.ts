@@ -39,6 +39,8 @@ let server = http.createServer((request, response) => {
             handler.ordersHandler(request, response);
             break;
         default:
+            response.writeHead(404);
+            response.end();
             // Error handling
     }
 });
