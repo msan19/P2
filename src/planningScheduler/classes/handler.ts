@@ -1,20 +1,19 @@
 import {Forklift} from "./forklift"
 import {DataContainer} from "./dataContainer"
-import {ServerResponse} from "http";
+import {IncomingMessage, ServerResponse} from "http"
 
-
-function hasId(element) {
+function hasId(element):boolean {
     return typeof(element) === "string";
 }
 
 export class Handler {
     data:DataContainer;
-    constructor(data) {
+    constructor(data:DataContainer) {
         this.data = data;
     }
 
-    forklifts(request, response) {
-        const id = hasId(request.parsedUrl[2]) ? request.parsedUrl[2] : null;
+    forklifts(request:IncomingMessage, response:ServerResponse, parsedUrl:string[]) {
+        const id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
 
         if (request.method === "GET") {
             this.data.forklifts.push(new Forklift())
@@ -31,8 +30,8 @@ export class Handler {
             console.log(`METHOD = ${request.method} (PUT), id = ${id} (nnull)`);
             response.writeHead(200,"okay");
             response.end();
-        } else if (request.method === "POST" && id !== null && request.parsedUrl[3] === "initiate") {
-            console.log(`METHOD = ${request.method} (POST), id = ${id} (nnull), initiate = ${request.parsedUrl[3]} (nnull)`);
+        } else if (request.method === "POST" && id !== null && parsedUrl[3] === "initiate") {
+            console.log(`METHOD = ${request.method} (POST), id = ${id} (nnull), initiate = ${parsedUrl[3]} (nnull)`);
             response.writeHead(200,"okay");
             response.end();
         } else {
@@ -42,7 +41,7 @@ export class Handler {
         }
     }
 
-    routes(request, response:ServerResponse) {
+    routes(request:IncomingMessage, response:ServerResponse, parsedUrl:string[]) {
         if (request.method === "GET") {
 
             response.writeHead(200,"okay");
@@ -57,7 +56,7 @@ export class Handler {
         }
     }
 
-    warehouse(request, response) {
+    warehouse(request:IncomingMessage, response:ServerResponse, parsedUrl:string[]) {
         if (request.method === "GET") {
             console.log(`METHOD = ${request.method} (GET)`);
             response.writeHead(200,"okay");
@@ -73,8 +72,8 @@ export class Handler {
         }
     }
 
-    orders(request, response) {
-        const id = hasId(request.parsedUrl[2]) ? request.parsedUrl[2] : null;
+    orders(request:IncomingMessage, response:ServerResponse, parsedUrl:string[]) {
+        const id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
     
         if (request.method === "GET") {
             if (id !== null) {
