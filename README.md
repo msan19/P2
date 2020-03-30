@@ -4,7 +4,7 @@
 ![](model.png)
 
 ## Use-case diagram
-![](Use case diagram.png)
+![](Use_case_diagram.png)
 
 ## Tidsplan
 ```
