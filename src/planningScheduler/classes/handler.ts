@@ -1,8 +1,8 @@
-import {Forklift} from "./classes/Forklift"
-import {DataContainer} from "./classes/DataContainer"
-import { ServerResponse } from "http";
+import {Forklift} from "./forklift"
+import {DataContainer} from "./dataContainer"
+import {ServerResponse} from "http";
 
-module.exports = function(data:DataContainer) {
+export function handler(data:DataContainer) {
 
     function hasId(element) {
         return typeof(element) === "string";

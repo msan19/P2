@@ -1,8 +1,6 @@
-import {Forklift} from "./Forklift"
+import {Forklift} from "./forklift"
 
 export class DataContainer {
-    dfghfgsh
-
     forklifts:Forklift[] = [];
 
     orders = [];
