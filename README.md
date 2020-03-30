@@ -4,7 +4,7 @@
 ![](model.png)
 
 ## Use-case diagram
-![](Use case diagram.png)
+![](Use_case_diagram.png)
 
 ## Tidsplan
 ```
@@ -23,6 +23,28 @@ Uge - 13      Planlægning af programmering
   Fredag: Test environment
 
 Uge 14-17:    Programmering
+
+    Uge 14:
+    - Sæt kommunikation op i programmet (kommunikation og storage classes)
+    - Opsæt testmiljø
+
+      Mandag: 
+        - hængeparti fra fredag: omskriv funktion til klasse
+        - Use-case diagram
+        - Storage classes
+        - ...
+
+      Tirsdag: 
+        - Unit Testing. Opsæt testmiljø
+        - Send materiale til Rasmus
+
+      Onsdag: 
+
+      Torsdag: 
+        - Opsæt klienter til kommunikation
+
+      Fredag: 
+        - 
 
 Uge 18:       Bufferperiode
 
