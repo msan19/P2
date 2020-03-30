@@ -1,17 +1,17 @@
 import http = require("http");
 import fs = require("fs");
-/* Handler til klasse
-import handler = require("./handler");
-const handler = handler;
-*/
+import {Handler} from "./handler";
+
 export class WebServer {
     server
     port
     hostname
+    handler:Handler;
     constructor(data, port, hostname) {
         this.port = port;
         this.hostname = hostname;
         this.server = http.createServer(this.serverSetup);
+        this.handler = new Handler(data);
     }
 
     serverSetup(request, response) {
@@ -25,16 +25,16 @@ export class WebServer {
                 response.writeHead(200);
                 response.end(fs.readFileSync("tester.html"));
             case "forklifts":
-                handler.forkliftsHandler(request, response);
+                this.handler.forklifts(request, response);
                 break;
             case "routes":
-                handler.routesHandler(request, response);
+                this.handler.routes(request, response);
                 break;
             case "warehouse":
-                handler.warehouseHandler(request, response);
+                this.handler.warehouse(request, response);
                 break;
             case "orders":
-                handler.ordersHandler(request, response);
+                this.handler.orders(request, response);
                 break;
             default:
                 response.writeHead(404);

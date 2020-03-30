@@ -2,17 +2,22 @@ import {Forklift} from "./forklift"
 import {DataContainer} from "./dataContainer"
 import {ServerResponse} from "http";
 
-export function handler(data:DataContainer) {
 
-    function hasId(element) {
-        return typeof(element) === "string";
+function hasId(element) {
+    return typeof(element) === "string";
+}
+
+export class Handler {
+    data:DataContainer;
+    constructor(data) {
+        this.data = data;
     }
-    
-    function forkliftsHandler(request, response) {
+
+    forklifts(request, response) {
         const id = hasId(request.parsedUrl[2]) ? request.parsedUrl[2] : null;
 
         if (request.method === "GET") {
-            data.forklifts.push(new Forklift())
+            this.data.forklifts.push(new Forklift())
             if (id !== null) {
                 console.log(`METHOD = ${request.method} (GET), id = ${id} (nnull)`);
                 response.writeHead(200,"okay");
@@ -35,14 +40,13 @@ export function handler(data:DataContainer) {
             response.writeHead(500,"error");
             response.end();
         }
-    
     }
-    
-    function routesHandler(request, response:ServerResponse) {
+
+    routes(request, response:ServerResponse) {
         if (request.method === "GET") {
 
             response.writeHead(200,"okay");
-            response.write(JSON.stringify(data.routes));
+            response.write(JSON.stringify(this.data.routes));
             response.end();
             
             console.log(`METHOD = ${request.method} (GET)`);
@@ -52,8 +56,8 @@ export function handler(data:DataContainer) {
             response.end();
         }
     }
-    
-    function warehouseHandler(request, response) {
+
+    warehouse(request, response) {
         if (request.method === "GET") {
             console.log(`METHOD = ${request.method} (GET)`);
             response.writeHead(200,"okay");
@@ -68,8 +72,8 @@ export function handler(data:DataContainer) {
             response.end();
         }
     }
-    
-    function ordersHandler(request, response) {
+
+    orders(request, response) {
         const id = hasId(request.parsedUrl[2]) ? request.parsedUrl[2] : null;
     
         if (request.method === "GET") {
@@ -91,13 +95,6 @@ export function handler(data:DataContainer) {
             response.writeHead(500,"error");
             response.end();
         }
-    
-    }
-
-    return {
-        forkliftsHandler: forkliftsHandler,
-        routesHandler: routesHandler,
-        warehouseHandler: warehouseHandler,
-        ordersHandler: ordersHandler
     }
 }
+
