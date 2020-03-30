@@ -3,6 +3,9 @@
 ## Model
 ![](model.png)
 
+## Use-case diagram
+![](Use case diagram.png)
+
 ## Tidsplan
 ```
 Uge 11-12:    Planlægning af programmering
