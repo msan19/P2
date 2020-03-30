@@ -243,13 +243,13 @@ definitions:
   Edge:
     type: "object"
     required:
-      - "nodeId_1"
-      - "nodeId_2"
+      - "vertexId_1"
+      - "vertexId_2"
     properties:
-      nodeId_1: 
+      vertexId_1: 
         type: "string"
         example: "{bfa72706-befb-41d7-9ffb-2ede77607eea}"
-      nodeId_2: 
+      vertexId_2: 
         type: "string"
         example: "{0a54192e-9117-40cc-8f97-0265fd590131}"
       label:
@@ -259,13 +259,13 @@ definitions:
   Graph:
     type: "object"
     required:
-    - "nodes"
+    - "vertices"
     properties:
-      nodes:
+      vertices:
         type: "array"
         items:
-          $ref: "#/definitions/Node"
-      Edges:
+          $ref: "#/definitions/Vertex"
+      edges:
         type: "array"
         items:
           $ref: "#/definitions/Edge"
@@ -327,7 +327,7 @@ definitions:
     type: "object"
     required:
       - "type"
-      - "nodeId"
+      - "vertexId"
       - "startTime"
     properties:
       type:
@@ -339,7 +339,7 @@ definitions:
           - "charge"
           - "wait"
           - "sendFeedback"
-      nodeId:
+      vertexId:
         type: "string"
         format: "{guid}"
         example: "{bfa72706-befb-41d7-9ffb-2ede77607eea}"
@@ -386,11 +386,11 @@ definitions:
         type: "string"
       palletId:
         type: "string"
-      startNodeId:
+      startVertexId:
         type: "string"
         format: "{guid}"
         example: "{bfa72706-befb-41d7-9ffb-2ede77607eea}"
-      endNodeId:
+      endVertexId:
         type: "string"
         format: "{guid}"
         example: "{bfa72706-befb-41d7-9ffb-2ede77607eea}"
