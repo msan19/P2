@@ -1,3 +1,3 @@
-export const helloTest(){
+export function helloTest() {
     return true;
 }
