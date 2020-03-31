@@ -1,3 +1,3 @@
 export function helloTest() {
-    return true;
+    return "elephant";
 }
