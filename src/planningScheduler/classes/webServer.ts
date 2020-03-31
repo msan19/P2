@@ -20,7 +20,7 @@ export class WebServer {
             switch (parsedUrl[1]) {
                 case "":
                     response.writeHead(200);
-                    response.end(fs.readFileSync("tester.html"));
+                    response.end();
                 case "forklifts":
                     this.handler.forklifts(request, response, parsedUrl);
                     break;
