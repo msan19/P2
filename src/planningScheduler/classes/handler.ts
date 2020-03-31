@@ -3,7 +3,7 @@ import {DataContainer} from "./dataContainer"
 import {IncomingMessage, ServerResponse} from "http"
 
 function hasId(element):boolean {
-    return typeof(element) === "string";
+    return typeof(element) === "string" && element.length > 0;
 }
 
 export class Handler {

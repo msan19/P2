@@ -11,7 +11,6 @@ export class WebServer {
     constructor(data:DataContainer, port:number, hostname:string) {
         this.port = port;
         this.hostname = hostname;
-        this.server = http.createServer(this.serverSetup);
         this.handler = new Handler(data);
     }
 
