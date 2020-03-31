@@ -1,0 +1,29 @@
+{
+  "name": "p2",
+  "version": "1.0.0",
+  "description": "![](model.png)",
+  "main": "./src/planningScheduler/main.ts",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "chai": "^4.2.0",
+    "node": "^13.11.0"
+  },
+  "devDependencies": {
+    "mocha": "^7.1.1"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msan19/P2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/msan19/P2/issues"
+  },
+  "homepage": "https://github.com/msan19/P2#readme"
+}
