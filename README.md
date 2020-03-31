@@ -39,6 +39,8 @@ Uge 14-17:    Programmering
         - Send materiale til Rasmus
 
       Onsdag: 
+      - Test
+      - Kode
 
       Torsdag: 
         - Opsæt klienter til kommunikation
