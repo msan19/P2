@@ -1,5 +1,5 @@
 
-class Graph {
+export class Graph {
   vertices: { [key: string]: Vertex };
   constructor(vertices: { [key: string]: Vertex }) {
     this.vertices = vertices || {};
@@ -26,7 +26,7 @@ class Graph {
   }
 }
 
-class Vertex {
+export class Vertex {
     id: string;
     position: Vector2;
     label: string;
