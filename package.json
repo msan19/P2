@@ -18,6 +18,7 @@
     "ts-node": "^8.8.1"
   },
   "scripts": {
+    "install": "npm i typescript ts-node mocha chai @types/chai @types/mocha --save-dev",
     "test": "mocha",
     "tests": "mocha --require ts-node/register test/**/*.ts"
   },
