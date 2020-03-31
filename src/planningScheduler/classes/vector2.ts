@@ -18,7 +18,7 @@ class Vector2 {
         return new Vector2(this.x * scale, this.y * scale);
     }
 
-    getLength() {
+    getLength(): number {
         return (this.x ** 2 + this.y ** 2) ** 0.5;
     }
 

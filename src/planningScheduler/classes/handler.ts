@@ -12,7 +12,7 @@ export class Handler {
         this.data = data;
     }
 
-    forklifts(request:IncomingMessage, response:ServerResponse, parsedUrl:string[]) {
+    forklifts(request:IncomingMessage, response:ServerResponse, parsedUrl:string[]): void {
         const id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
 
         if (request.method === "GET") {
@@ -41,7 +41,7 @@ export class Handler {
         }
     }
 
-    routes(request:IncomingMessage, response:ServerResponse, parsedUrl:string[]) {
+    routes(request:IncomingMessage, response:ServerResponse, parsedUrl:string[]): void {
         if (request.method === "GET") {
 
             response.writeHead(200,"okay");
@@ -56,7 +56,7 @@ export class Handler {
         }
     }
 
-    warehouse(request:IncomingMessage, response:ServerResponse, parsedUrl:string[]) {
+    warehouse(request:IncomingMessage, response:ServerResponse, parsedUrl:string[]): void {
         if (request.method === "GET") {
             console.log(`METHOD = ${request.method} (GET)`);
             response.writeHead(200,"okay");
@@ -72,7 +72,7 @@ export class Handler {
         }
     }
 
-    orders(request:IncomingMessage, response:ServerResponse, parsedUrl:string[]) {
+    orders(request:IncomingMessage, response:ServerResponse, parsedUrl:string[]): void {
         const id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
     
         if (request.method === "GET") {

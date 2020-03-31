@@ -15,7 +15,7 @@ export class WebServer {
         this.handler = new Handler(data);
     }
 
-    serverSetup(request:http.IncomingMessage, response:http.ServerResponse) {
+    serverSetup(request:http.IncomingMessage, response:http.ServerResponse): void {
         request.method = request.method.toUpperCase();
         let parsedUrl = request.url.split("/");
         console.log(`${request.method}`);
@@ -43,7 +43,7 @@ export class WebServer {
         }
     }
 
-    run():void {
+    run(): void {
         this.server.listen(this.port, this.hostname, () => {
             console.log(`Server running at http://${this.hostname}:${this.port}/`);
         });

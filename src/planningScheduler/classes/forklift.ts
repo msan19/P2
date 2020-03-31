@@ -3,12 +3,9 @@ function newGuid() {
 }
 
 export class Forklift {
-    id:string = newGuid();
-
+    id: string;
+    
     constructor() {
+        this.id = newGuid();
     }  
-}
-
-export default {
-    Forklift: Forklift
 }

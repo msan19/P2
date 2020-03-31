@@ -1,3 +1,5 @@
+import {Vertex} from "./graph";
+
 enum RouteStatus {
     queued = 1,
     inProgress,
