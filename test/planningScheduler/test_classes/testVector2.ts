@@ -12,6 +12,11 @@ function checkVector(vector:Vector2, expX:number, expY:number) {
     });
 }
 
+function checkNumber(actual:number, expected:number) {
+    it(`${expected} should be ${actual}`, function () {
+        expect(actual).to.equal(expected);
+    });
+}
 
 
 function testAdd() {
@@ -73,9 +78,53 @@ function testScale() {
     }
 }
 
+function testLength() {
+    let vectors = [];
+    vectors.push(new Vector2(10, 20));
+    vectors.push(new Vector2(40,  5));
+    vectors.push(new Vector2(43, 57));
+    let expects = [22.36, 40.31, 71.40];
+    let results = [];
+
+    for (let i = 0; i < vectors.length; i++) {
+        results.push(parseFloat(vectors[i].getLength().toFixed(2)));
+    }
+
+
+    for (let i = 0; i < results.length; i++) {
+        checkNumber(results[i], expects[i]);
+    }
+
+}
+
+function testDistanceTo() {
+    let vectors = [];
+    vectors.push(new Vector2(10, 20));
+    vectors.push(new Vector2(40,  5));
+    vectors.push(new Vector2(43, 57));
+    let expects = [33.54, 49.58, 52.09];
+    let results = [];
+
+    /* first: 0 to 1, second: 0 to 2, third: 1 to 2 */
+    for (let i = 0; i < vectors.length; i++) {
+        for (let j = i + 1; j < vectors.length; j++){
+            results.push(parseFloat(vectors[i].getDistanceTo(vectors[j]).toFixed(2)));
+        }
+    }
+
+    for (let i = 0; i < results.length; i++) {
+        checkNumber(results[i], expects[i]);
+    }
+}
+
 // Test of vector add
-describe("Vector add test", testAdd);
+describe("Vector 'add' test", testAdd);
 // Test of vector subtract
-describe("Vector subtract test", testSubtract);
+describe("Vector 'subtract' test", testSubtract);
 // Test of vector scale
-describe("Vector scale test", testScale);
+describe("Vector 'scale' test", testScale);
+// Test of vector length
+describe("Vector 'lenght' test", testLength);
+// Test of vector getDistanceTo
+describe("Vector 'distance to' test", testDistanceTo);
+
