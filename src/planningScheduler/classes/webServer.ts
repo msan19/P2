@@ -18,26 +18,15 @@ export class WebServer {
             let parsedUrl = request.url.split("/");
             console.log(`${request.method}`);
             // control sequence
-            switch (parsedUrl[1]) {
-                case "":
-                    response.writeHead(200);
-                    response.end(fs.readFileSync("tester.html"));
-                case "forklifts":
-                    this.handler.forklifts(request, response, parsedUrl);
-                    break;
-                case "routes":
-                    this.handler.routes(request, response, parsedUrl);
-                    break;
-                case "warehouse":
-                    this.handler.warehouse(request, response, parsedUrl);
-                    break;
-                case "orders":
-                    this.handler.orders(request, response, parsedUrl);
-                    break;
-                default:
-                    response.writeHead(404);
-                    response.end();
-                // Error handling
+
+            ///TODO: Prevent abuse such as calling "/constructor"
+            let handler = this.handler[parsedUrl[1]];
+            if (typeof (handler) === "function") {
+                handler(request, response, parsedUrl);
+            } else {
+                response.writeHead(404);
+                response.end();
+            }
             }
         });
     }
