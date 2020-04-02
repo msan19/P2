@@ -56,19 +56,29 @@ export class Handler {
         warehouse: {
             // /warehouse
             GET: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
-                response.writeHead(200, "okay");
-                response.end();
+                let warehouse = this.data.warehouse;
+                if (warehouse != null) {
+                    response.writeHead(200);
+                    response.write(JSON.stringify(warehouse));
+                    response.end();
+                } else {
+                    response.writeHead(500, "Warehouse not yet recieved");
+                    response.end();
+                }
             },
             // /warehouse
             POST: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
-                response.writeHead(200, "okay");
-                response.end();
+                getJson(request)
+                    .then(() => {
+                        response.writeHead(200, "okay");
+                        response.end();
+                    });
             }
         },
         routes: {
             // /routes
             GET: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
-                response.writeHead(200, "okay");
+                response.writeHead(200);
                 response.write(JSON.stringify(this.data.routes));
                 response.end();
             }
@@ -100,10 +110,15 @@ export class Handler {
             GET: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
                 let id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
                 if (id === null) {
-                    response.writeHead(200, "okay");
+                    response.writeHead(200);
+                    response.write(JSON.stringify(this.data.forklifts));
                     response.end();
                 }
                 else {
+                    //let forklift = this.data.forklifts.find(parsedUrl[2]);
+                    response.writeHead(200);
+                    response.write(JSON.stringify(this.data.routes));
+                    response.end();
                     // return specific
                     sendNotImplemented(request, response);
                 }
