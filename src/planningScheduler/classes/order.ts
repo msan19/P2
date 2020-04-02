@@ -20,7 +20,7 @@ export class Order {
     this.startVertexId = startVertexId;
     this.endVertexId = endVertexId;
 
-    Order.types.moveForklift
+    
   }
 
 }
