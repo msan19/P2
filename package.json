@@ -24,7 +24,8 @@
         "install": "npm i typescript ts-node mocha chai @types/chai @types/mocha --save-dev",
         "test": "mocha --require ts-node/register",
         "tests": "mocha --require ts-node/register test/**/*.ts",
-        "test-vector": "mocha --require ts-node/register test/**/testVector2.ts"
+        "test-vector": "mocha --require ts-node/register test/**/testVector2.ts",
+        "test-data": "mocha --require ts-node/register test/**/testDataContainer.ts"
     },
     "repository": {
         "type": "git",
