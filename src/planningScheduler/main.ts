@@ -1,5 +1,5 @@
 import { DataContainer } from "./classes/dataContainer";
-import { WebServer } from "./classes/webServer";
+import { WebServer, WebServerPlanningScheduler } from "../shared/webServer";
 
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -10,7 +10,7 @@ class Main {
 
     constructor(port: number, hostname: string) {
         this.data = new DataContainer();
-        this.server = new WebServer(this.data, port, hostname);
+        this.server = new WebServerPlanningScheduler(this.data, hostname, port);
         this.server.run();
         this.update();
     }
