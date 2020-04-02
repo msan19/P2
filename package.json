@@ -26,7 +26,8 @@
         "test": "mocha --require ts-node/register",
         "tests": "mocha --require ts-node/register test/**/*.ts",
         "test-vector": "mocha --require ts-node/register test/**/testVector2.ts",
-        "test-data": "mocha --require ts-node/register test/**/testDataContainer.ts"
+        "test-data": "mocha --require ts-node/register test/**/testDataContainer.ts",
+        "test-graph": "mocha --require ts-node/register test/**/testGraph.ts"
     },
     "repository": {
         "type": "git",

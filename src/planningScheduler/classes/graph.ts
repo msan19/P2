@@ -17,9 +17,10 @@ export class Graph {
     getEdges(): { vertexId_1: string, vertexId_2: string; }[] {
         let output = [];
         for (let vertexId_1 in this.vertices) {
-            for (let vertexId_2 in this.vertices[vertexId_1].adjacentVertexIds) {
+            for (let key in this.vertices[vertexId_1].adjacentVertexIds) {
+                let vertexId_2 = this.vertices[vertexId_1].adjacentVertexIds[key];
                 if (vertexId_1 < vertexId_2) {
-                    output.push({ vertexId_1, vertexId_2 });
+                    output.push({ "vertexId_1": vertexId_1, "vertexId_2": vertexId_2 });
                 }
             }
         }
@@ -28,26 +29,27 @@ export class Graph {
 }
 
 export class Vertex {
-  id: string;
-  position: Vector2;
-  label: string;
+    id: string;
+    position: Vector2;
+    label: string;
 
-  adjacentVertexIds: string[];
+    adjacentVertexIds: string[];
 
-  ScheduleItems?: ScheduleItem[];
+    scheduleItems?: ScheduleItem[];
 
-  constructor(id: string, position: Vector2, label?: string) {
-    this.id = id;
-    this.position = position;
-    this.label = label || "";
-  }
+    constructor(id: string, position: Vector2, label?: string) {
+        this.id = id;
+        this.position = position;
+        this.label = label || "";
+        this.adjacentVertexIds = [];
+    }
 
-  getDistanceDirect(vertex: Vertex): number {
-    return this.position.getDistanceTo(vertex.position);
-  }
+    getDistanceDirect(vertex: Vertex): number {
+        return this.position.getDistanceTo(vertex.position);
+    }
 }
 
-class ScheduleItem {
+export class ScheduleItem {
     forkliftId: string;
     time: number;
     nextVertexId: string;
