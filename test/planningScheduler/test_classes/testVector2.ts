@@ -1,4 +1,4 @@
-import { Vector2 } from "./../../../src/planningScheduler/classes/vector2"
+import { Vector2 } from "./../../../src/planningScheduler/classes/vector2";
 import { expect } from 'chai';
 import 'mocha';
 
@@ -61,10 +61,17 @@ function testScale() {
     vectors.push(new Vector2(10, 20));
     vectors.push(new Vector2(40, 5));
     vectors.push(new Vector2(43, 57));
+<<<<<<< HEAD
+    let expects = [[70, 140], [-40, -80], [32.0, 64.0],
+    [280, 35], [-160, -20], [128.0, 16.0],
+    [301, 399], [-172, -228], [137.6, 182.4]
+    ];
+=======
     let expects = [ [70, 140], [-40, -80], [32.0, 64.0],
                     [280, 35], [-160, -20], [128.0, 16.0],
                     [301, 399], [-172, -228], [137.6, 182.4]
                   ];
+>>>>>>> 6f1a9f1cc96b2ecc0190a1b3eed9c91b8d4bc1c2
     let results = [];
 
     for (let i = 0; i < vectors.length; i++) {
