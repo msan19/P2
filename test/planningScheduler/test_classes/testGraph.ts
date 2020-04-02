@@ -194,10 +194,12 @@ function testGraph() {
             }
         });
 
-        // Edges only one-way
+        // Edges only one-way (alphabetically correct)
         describe(``, () => {
 
         });
+
+        // Edges only one-way (alphabetically incorrect)
     });
 }
 

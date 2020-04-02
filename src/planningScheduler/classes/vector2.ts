@@ -29,4 +29,8 @@ export class Vector2 {
     toString(): string {
         return `[${this.x},${this.y}]`;
     }
+
+    static parse(vec2: any): Vector2 | null {
+        return null;
+    }
 }

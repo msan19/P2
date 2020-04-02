@@ -26,6 +26,17 @@ export class Graph {
         }
         return output;
     }
+
+    static parse(graph: Object): Graph | null {
+
+        // Check for both-way edges
+
+        // Check for whether vertices exists
+
+        // All vertices are vertex
+
+        return null;
+    }
 }
 
 export class Vertex {
@@ -46,6 +57,15 @@ export class Vertex {
 
     getDistanceDirect(vertex: Vertex): number {
         return this.position.getDistanceTo(vertex.position);
+    }
+
+
+    static parse(vertex: any): Vertex | null {
+        if (typeof (vertex) !== "object") return null;
+        if (typeof (vertex.id) !== "string") return null;
+        if (typeof (vertex.position) !== "object" || Vector2.parse(vertex.position) === null) return null;
+
+        return new Vertex(vertex.id, vertex.position);
     }
 }
 
