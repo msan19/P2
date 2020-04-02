@@ -7,28 +7,27 @@
         "doc": "docs"
     },
     "dependencies": {
-        "@types/node": "^13.9.8",
-        "@types/ws": "^7.2.3",
-        "net": "^1.0.2",
-        "node": "^13.11.0",
-        "ws": "^7.2.3"
+        "net": "^1.0.2"
     },
     "devDependencies": {
         "@types/chai": "^4.2.11",
         "@types/mocha": "^7.0.2",
+        "@types/node": "^13.9.8",
         "@types/ws": "^7.2.3",
         "chai": "^4.2.0",
         "mocha": "^7.1.1",
+        "node": "^13.12.0",
         "ts-node": "^8.8.1",
         "typescript": "^3.8.3",
         "ws": "^7.2.3"
     },
     "scripts": {
-        "install": "npm i typescript ts-node mocha chai @types/chai @types/mocha ws @types/ws --save-dev",
+        "install": "npm i node typescript ts-node mocha chai @types/node @types/chai @types/mocha ws @types/ws --save-dev",
         "test": "mocha --require ts-node/register",
         "tests": "mocha --require ts-node/register test/**/*.ts",
         "test-vector": "mocha --require ts-node/register test/**/testVector2.ts",
-        "test-data": "mocha --require ts-node/register test/**/testDataContainer.ts"
+        "test-data": "mocha --require ts-node/register test/**/testDataContainer.ts",
+        "test-graph": "mocha --require ts-node/register test/**/testGraph.ts"
     },
     "repository": {
         "type": "git",

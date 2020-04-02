@@ -6,14 +6,14 @@ import 'mocha';
 
 
 function checkVector(vector: Vector2, expX: number, expY: number) {
-    it('x and y are as expected', function () {
+    it('x and y are as expected', () => {
         expect(vector.x).to.equal(expX);
         expect(vector.y).to.equal(expY);
     });
 }
 
 function checkNumber(actual: number, expected: number) {
-    it(`${expected} should be ${actual}`, function () {
+    it(`${expected} should be ${actual}`, () => {
         expect(actual).to.equal(expected);
     });
 }
