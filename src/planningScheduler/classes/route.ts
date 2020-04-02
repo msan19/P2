@@ -1,4 +1,4 @@
-import {Vertex} from "./graph";
+import { Vertex } from "./graph";
 
 enum RouteStatus {
     queued = 1,
@@ -21,7 +21,7 @@ export class Instruction {
     vertexId: string;
     palletId: string;
     startTime: number;
-    
+
     constructor(type: InstructionType, vertexId: string, palletId: string, startTime: number) {
         this.type = type;
         this.vertexId = vertexId;
@@ -48,8 +48,8 @@ export class RouteSet {
     routes: Route[];
     priorities: string[];
     graphVertices: Vertex[];
-    
-    constructor(routes: Route[], priorities: string[], graphVertices: Vertex[]){
+
+    constructor(routes: Route[], priorities: string[], graphVertices: Vertex[]) {
         this.routes = routes;
         this.priorities = priorities;
         this.graphVertices = graphVertices;

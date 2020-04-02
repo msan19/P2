@@ -28,23 +28,23 @@ export class Graph {
 }
 
 export class Vertex {
-    id: string;
-    position: Vector2;
-    label: string;
+  id: string;
+  position: Vector2;
+  label: string;
 
-    adjacentVertexIds: string[];
+  adjacentVertexIds: string[];
 
-    ScheduleItems?: ScheduleItem[];
+  ScheduleItems?: ScheduleItem[];
 
-    constructor(id: string, position: Vector2, label?: string) {
-        this.id = id;
-        this.position = position;
-        this.label = label || "";
-    }
+  constructor(id: string, position: Vector2, label?: string) {
+    this.id = id;
+    this.position = position;
+    this.label = label || "";
+  }
 
-    getDistanceDirect(vertex: Vertex): number {
-        return this.position.getDistanceTo(vertex.position);
-    }
+  getDistanceDirect(vertex: Vertex): number {
+    return this.position.getDistanceTo(vertex.position);
+  }
 }
 
 class ScheduleItem {
