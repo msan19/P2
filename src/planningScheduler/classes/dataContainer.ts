@@ -1,7 +1,7 @@
-import {Forklift} from "./forklift";
-import {Warehouse} from "./warehouse";
-import {Order} from "./order";
-import {Route} from "./route";
+import { Forklift } from "./forklift";
+import { Warehouse } from "./warehouse";
+import { Order } from "./order";
+import { Route } from "./route";
 
 export class DataContainer {
 
@@ -9,7 +9,7 @@ export class DataContainer {
     orders: Order[];
     routes: Route[];
     warehouse: Warehouse;
-    
+
     constructor() {
         this.forklifts = [];
         this.orders = [];

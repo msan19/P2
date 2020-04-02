@@ -39,7 +39,7 @@ export class WebServer {
 
 
         this.server.on("upgrade", (request: http.IncomingMessage, socket: net.Socket, head: Buffer) => {
-            console.log("web-socket from: " + request.url)
+            console.log("web-socket from: " + request.url);
 
             if (true /* isForklift */) {
                 let id = "sfgsdafgdfs";
