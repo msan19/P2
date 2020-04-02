@@ -78,16 +78,14 @@ export class WebServerClient extends WebServer { // RENAME!!!
     webSocket: WebSocket.Server;
 
 
-    constructor(data: DataContainer, hostname: string, port: number) {
+    constructor(hostname: string, port: number) {
         super(hostname, port);
-        this.handler = new Handler(data);
+        this.handler = new WebClientHandler();
 
         this.createServer();
-        this.upgrade();
-
     }
 
-    createServer() {
+    createServer() { // TO DO: rewrite
         this.server = http.createServer((request: http.IncomingMessage, response: http.ServerResponse): void => {
             request.method = request.method.toUpperCase();
             let parsedUrl = request.url.split("/");
