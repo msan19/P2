@@ -1,10 +1,32 @@
-import { Forklift } from "./forklift"
-import { DataContainer } from "./dataContainer"
-import { IncomingMessage, ServerResponse } from "http"
+import { Forklift } from "./forklift";
+import { DataContainer } from "./dataContainer";
+import { IncomingMessage, ServerResponse } from "http";
+
+
+function getData(request: IncomingMessage): Promise<string> {
+    let socket = request.connection;
+
+    return new Promise((resolve: (value?: any) => void, reject: (value?: any) => void) => {
+        let body = "";
+        socket.on("close", () => reject("Connection Closed"));
+        socket.on("data", (data: Buffer) => {
+            body += data;
+        });
+        socket.on("end", () => resolve(body));
+    });
+}
+
 
 function hasId(element): boolean {
     return typeof (element) === "string" && element.length > 0;
 }
+
+
+interface IMethod {
+
+}
+interface IController { [key: string]: IMethod; };
+
 
 export class Handler {
     data: DataContainer;
@@ -12,8 +34,31 @@ export class Handler {
         this.data = data;
     }
 
+    // Controllers: { [key: string]: IController; } = {
+    //     forklifts: {
+    //         GET: function (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void {
+    //             const id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
+    //             if (id !== null) {
+    //                 console.log(`METHOD = ${request.method} (GET), id = ${id} (nnull)`);
+    //                 response.writeHead(200, "okay");
+    //                 response.end();
+    //             } else {
+    //                 console.log(`METHOD = ${request.method} (GET), id = ${id} (null)`);
+    //                 response.writeHead(500, "error");
+    //                 response.end();
+    //             }
+    //         },
+    //         PUT: {
+
+    //         }
+    //     }
+    // };
+
+
     forklifts(request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void {
         const id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
+
+
 
         if (request.method === "GET") {
             if (id !== null) {
@@ -62,6 +107,7 @@ export class Handler {
             response.end();
         } else if (request.method === "POST") {
             console.log(`METHOD = ${request.method} (POST)`);
+            //request.connection.on()
             response.writeHead(200, "okay");
             response.end();
         } else {

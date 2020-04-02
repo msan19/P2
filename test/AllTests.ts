@@ -1,5 +1,5 @@
 
 
-function runAllTests(){
-    
+function runAllTests() {
+
 }
