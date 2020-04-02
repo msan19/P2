@@ -16,7 +16,6 @@ export class Handler {
         const id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
 
         if (request.method === "GET") {
-            this.data.forklifts.push(new Forklift())
             if (id !== null) {
                 console.log(`METHOD = ${request.method} (GET), id = ${id} (nnull)`);
                 response.writeHead(200,"okay");

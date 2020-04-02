@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "@types/node": "^13.9.8",
-    "node": "^13.11.0"
+    "@types/ws": "^7.2.3",
+    "node": "^13.11.0",
+    "ws": "^7.2.3"
   },
   "devDependencies": {
     "@types/chai": "^4.2.11",

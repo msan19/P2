@@ -1,11 +1,13 @@
-function newGuid() {
-    return "";
-}
+import { Route } from "./route";
 
 export class Forklift {
     id: string;
-    
-    constructor() {
-        this.id = newGuid();
-    }  
+
+    constructor(id: string) {
+        this.id = id;
+    }
+
+    send(route: Route): void {
+
+    }
 }
