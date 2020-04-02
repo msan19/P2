@@ -1,5 +1,5 @@
-import {DataContainer} from "./classes/dataContainer";  
-import {Route, RouteSet} from "./classes/route";
+import { DataContainer } from "./classes/dataContainer";
+import { Route, RouteSet } from "./classes/route";
 import { Order } from "./classes/order";
 
 
@@ -7,14 +7,14 @@ export class RouteScheduler {
     data: DataContainer;
     routeSets: RouteSet[];
     bestRouteSet: RouteSet;
-    
+
     constructor(data: DataContainer) {
         this.data = data;
         this.routeSets = [];
         this.bestRouteSet = null;
     }
 
-    getRoute(orderId:string): Route {
+    getRoute(orderId: string): Route {
         // TO DO
         return null;
     }

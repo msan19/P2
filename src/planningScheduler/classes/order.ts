@@ -12,15 +12,13 @@ export class Order {
   palletId: string;
   startVertexId: string;
   endVertexId: string;
-  
+
   constructor(type: OrderTypes, forkliftId: string, palletId: string, startVertexId: string, endVertexId: string) {
     this.type = type;
     this.forkliftId = forkliftId;
     this.palletId = palletId;
     this.startVertexId = startVertexId;
     this.endVertexId = endVertexId;
-
-    
   }
 
 }
