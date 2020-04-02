@@ -124,7 +124,7 @@ describe("Vector 'subtract' test", testSubtract);
 // Test of vector scale
 describe("Vector 'scale' test", testScale);
 // Test of vector length
-describe("Vector 'lenght' test", testLength);
+describe("Vector 'length' test", testLength);
 // Test of vector getDistanceTo
 describe("Vector 'distance to' test", testDistanceTo);
 
