@@ -24,15 +24,20 @@ export class WebServer {
         this.server = http.createServer((request: http.IncomingMessage, response: http.ServerResponse): void => {
             request.method = request.method.toUpperCase();
             let parsedUrl = request.url.split("/");
-            console.log(`${request.method}`);
+            console.log(`${request.method}, METHOD = ${request.method}`);
             // control sequence
 
             ///TODO: Prevent abuse such as calling "/constructor"
-            let handler = this.handler[parsedUrl[1]];
-            if (typeof (handler) === "function") {
-                handler(request, response, parsedUrl);
+            let controller = this.handler.controllers[parsedUrl[1]];
+            if (controller) {
+                if (typeof (controller[request.method]) === "function") {
+                    controller[request.method](request, response, parsedUrl);
+                } else {
+                    response.writeHead(404, `Method: '${request.url}' invalid for Url: '${request.url}'`);
+                    response.end();
+                }
             } else {
-                response.writeHead(404);
+                response.writeHead(404, `Url: '${request.url}' not found`);
                 response.end();
             }
         });
