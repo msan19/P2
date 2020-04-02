@@ -19,8 +19,6 @@ export class Order {
     this.palletId = palletId;
     this.startVertexId = startVertexId;
     this.endVertexId = endVertexId;
-
-    Order.types.moveForklift
   }
 
 }
