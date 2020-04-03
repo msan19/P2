@@ -1,4 +1,5 @@
 import { Vector2 } from "./vector2";
+import { type } from "os";
 
 export class Graph {
     vertices: { [key: string]: Vertex; };
@@ -27,9 +28,30 @@ export class Graph {
         return output;
     }
 
-    static parse(graph: Object): Graph | null {
+    static parse(graph: any): Graph | null {
+        // Check necessary fields
+        if (typeof (graph) !== "object") return null;
+        if (typeof (graph.vertices) !== "object") return null;
 
         // Check for both-way edges
+        let tempVertices: { [key: string]: Vertex; } = {};
+        let keys: string[] = Object.keys(graph.vertices);
+        let length: number = keys.length;
+        for (let i = 0; i < length; i++) {
+            let currVertex: Vertex = graph.vertices[keys[i]];
+            let tempVertex: Vertex = Vertex.parse(currVertex);
+
+            if (tempVertex !== null) {
+                tempVertex.adjacentVertexIds = [];
+                for (let j = 0; j < currVertex.adjacentVertexIds.length; j++) {
+
+                    if (graph.vertices[currVertex.adjacentVertexIds[j]].contains(currVertex.id)) {
+                        tempVertex.adjacentVertexIds.push(currVertex.adjacentVertexIds[j]);
+                    }
+                }
+                tempVertices[tempVertex.id] = tempVertex;
+            }
+        }
 
         // Check for whether vertices exists
 
