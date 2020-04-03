@@ -2,12 +2,6 @@ import { Graph, Vertex } from "../planningScheduler/classes/graph";
 import { Vector2 } from "../planningScheduler/classes/vector2";
 import * as fs from "fs";
 
-let g = createGraph();
-console.log(g);
-let prettyG = JSON.stringify(g, null, 4);
-console.log(prettyG);
-fs.writeFileSync("./graf.json", prettyG);
-
 function createGraph() {
     let vertices = createVertices(10, 10);
     let graph = new Graph(vertices);
@@ -38,3 +32,9 @@ function createVertices(xSize: number, ySize: number): { [key: string]: Vertex; 
     }
     return vertices;
 }
+
+let g = createGraph();
+console.log(g);
+let prettyG = JSON.stringify(g, null, 4);
+console.log(prettyG);
+fs.writeFileSync("./src/blackBox/graph.json", prettyG);

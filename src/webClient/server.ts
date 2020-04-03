@@ -3,7 +3,6 @@
 import { WebServer } from "../shared/webServer";
 import { WebClientHandler } from "./webClientHandler";
 import * as http from "http";
-import * as fs from "fs";
 
 export class WebServerClient extends WebServer { // RENAME!!! 
     handler: WebClientHandler;
