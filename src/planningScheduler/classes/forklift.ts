@@ -10,4 +10,10 @@ export class Forklift {
     send(route: Route): void {
 
     }
+    static parse(obj: any): Forklift | null {
+        return null;
+    }
+    putData(obj: any): void {
+
+    }
 }

@@ -20,5 +20,9 @@ export class DataContainer {
     addOrder(order: Order): void {
         this.orders.push(order);
     }
+    ///TODO: Add to diagrams
+    addForklift(forklift: Forklift): void {
+        this.forklifts[forklift.id] = forklift;
+    }
 
 }
