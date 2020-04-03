@@ -1,4 +1,5 @@
 import { IncomingMessage, ServerResponse, Server } from "http";
+import * as fs from "fs";
 
 
 function getEntireString(request: IncomingMessage): Promise<string> {
