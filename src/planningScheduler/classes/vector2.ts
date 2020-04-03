@@ -31,6 +31,10 @@ export class Vector2 {
     }
 
     static parse(vec2: any): Vector2 | null {
-        return null;
+        if (typeof (vec2) !== "object") return null;
+        if (typeof (vec2.x) !== "number") return null;
+        if (typeof (vec2.y) !== "number") return null;
+
+        return new Vector2(vec2.x, vec2.y);
     }
 }

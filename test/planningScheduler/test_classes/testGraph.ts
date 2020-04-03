@@ -90,6 +90,38 @@ function testVertex() {
         });
     });
 
+    describe(`Test of Vertex.parse`, () => {
+        describe(`Test with object with all valid fields and more`, () => {
+            let vertex: any = { "id": "N23", "position": new Vector2(20, 20), "label": "This node", "meat": "beef" };
+            let expected: Vertex = new Vertex("N23", new Vector2(20, 20), "This node");
+            let result: any = Vertex.parse(vertex);
+
+            it(`${Object.keys(result)[0]} should be ${expected.id}`, () => {
+                expect(result.id).to.equal(expected.id);
+            });
+
+            checkVector(result.position, expected.position.x, expected.position.y);
+
+            it(`${Object.keys(result)[2]} should be ${expected.label}`, () => {
+                expect(result.label).to.equal(expected.label);
+            });
+
+            it(`${Object.keys(vertex)[3]} should be ${undefined}`, () => {
+                expect(result.meat).to.equal(undefined);
+            });
+
+        });
+
+        describe(`Test with insufficient object`, () => {
+            let vertex: any = { "position": new Vector2(20, 20), "label": "This node", "meat": "beef" };
+            let expected: null = null;
+            let result: Vertex | null = Vertex.parse(vertex);
+
+            it(`Should be ${expected}`, () => {
+                expect(result).to.equal(expected);
+            });
+        });
+    });
 }
 
 function testGraph() {
