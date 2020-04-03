@@ -29,8 +29,12 @@ function getEntireString(request: IncomingMessage): Promise<string> {
 function getJson(request: IncomingMessage): Promise<object> {
     return getEntireString(request)
         .then((str: string) => {
-            return new Promise((resolve: (value: object) => void) => {
-                resolve(JSON.parse(str));
+            return new Promise((resolve: (value: object) => void, reject: () => void) => {
+                try {
+                    resolve(JSON.parse(str));
+                } catch {
+                    reject();
+                }
             });
         });
 }
