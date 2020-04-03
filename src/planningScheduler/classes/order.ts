@@ -21,4 +21,7 @@ export class Order {
         this.endVertexId = endVertexId;
     }
 
+    static parse(obj: any): Order | null {
+        return null;
+    }
 }

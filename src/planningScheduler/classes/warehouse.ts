@@ -9,4 +9,8 @@ export class Warehouse {
         this.graph = graph;
         this.forkliftSpeed = forkliftSpeed;
     }
+
+    static parse(obj: any): Warehouse | null {
+        return null;
+    }
 }
