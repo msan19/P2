@@ -51,7 +51,7 @@ export class Vertex {
     constructor(id: string, position: Vector2, label?: string) {
         this.id = id;
         this.position = position;
-        this.label = label || "";
+        this.label = label || null;
         this.adjacentVertexIds = [];
     }
 
@@ -61,11 +61,48 @@ export class Vertex {
 
 
     static parse(vertex: any): Vertex | null {
+        // Check for necessary field types
         if (typeof (vertex) !== "object") return null;
         if (typeof (vertex.id) !== "string") return null;
-        if (typeof (vertex.position) !== "object" || Vector2.parse(vertex.position) === null) return null;
+        if (typeof (vertex.position) !== "object") return null;
 
-        return new Vertex(vertex.id, vertex.position);
+        // Check for a valid position
+        let tempVector: Vector2 | null = Vector2.parse(vertex.position);
+        if (tempVector === null) return null;
+
+        // Check for label
+        let tempLabel: string = null;
+        if (typeof (vertex.label) === "string" && vertex.label.length > 0) {
+            tempLabel = vertex.label;
+        }
+
+        // Check adjacency list
+        let tempAdjacency: string[] = [];
+        if (typeof (vertex.adjacentVertexIds) === "object") {
+            for (let i = 0; i < vertex.adjacentVertexIds.length; i++) {
+                if (typeof (vertex.adjacentVertexIds[i]) && vertex.adjacentVertexIds[i].length > 0) {
+                    tempAdjacency.push(vertex.adjacentVertexIds[i]);
+                }
+            }
+        }
+
+        // Check schedule items
+        let tempSchedule: ScheduleItem[] = [];
+        if (typeof (vertex.scheduleItems) === "object") {
+            for (let i = 0; i < vertex.scheduleItems.length; i++) {
+                let tempItem: ScheduleItem = ScheduleItem.parse(vertex.scheduleItems[i]);
+                if (tempItem !== null) {
+                    tempSchedule.push(tempItem);
+                }
+            }
+        }
+
+        // Create the now valid vertex and add adjacency and schedule items
+        let tempVertex: Vertex = new Vertex(vertex.id, tempVector, tempLabel);
+        tempVertex.adjacentVertexIds = tempAdjacency;
+        tempVertex.scheduleItems = tempSchedule;
+
+        return tempVertex;
     }
 }
 
@@ -78,5 +115,15 @@ export class ScheduleItem {
         this.forkliftId = forkliftId;
         this.time = time;
         this.nextVertexId = nextVertexId;
+    }
+
+    static parse(item: any): ScheduleItem | null {
+        // Check all necessary fields
+        if (typeof (item) !== "object") return null;
+        if (typeof (item.forkliftId) !== "string" || item.nextVertexId.length < 1) return null;
+        if (typeof (item.time) !== "number") return null;
+        if (typeof (item.nextVertexId) !== "string" || item.nextVertexId.length < 1) return null;
+
+        return new ScheduleItem(item.forkliftId, item.time, item.nextVertexId);
     }
 }
