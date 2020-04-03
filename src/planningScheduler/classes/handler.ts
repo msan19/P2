@@ -96,6 +96,9 @@ export class Handler {
                                 returnStatus(response, 400, "Invalid Warehouse");
                             }
                         }
+                    })
+                    .catch(() => {
+                        returnStatus(response, 402, "Invalid JSON");
                     });
             }
         },
@@ -133,6 +136,8 @@ export class Handler {
                         } else {
                             returnStatus(response, 400, "Invalid Order");
                         }
+                    }).catch(() => {
+                        returnStatus(response, 402, "Invalid JSON");
                     });
             }
         },
@@ -161,6 +166,8 @@ export class Handler {
                         .then((obj) => {
                             this.data.forklifts[id].putData(obj);
                             returnStatus(response, 200, "Success");
+                        }).catch(() => {
+                            returnStatus(response, 402, "Invalid JSON");
                         });
                 }
                 else {
@@ -188,6 +195,8 @@ export class Handler {
                                 returnStatus(response, 401, "Forklift already initiated");
                             }
                         }
+                    }).catch(() => {
+                        returnStatus(response, 402, "Invalid JSON");
                     });
             }
         }
