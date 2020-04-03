@@ -5,20 +5,42 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Planning Scheduler",
             "type": "node",
             "request": "launch",
-            "name": "Launch Planning Scheduler",
-            "program": "${workspaceFolder}/src/planningScheduler/main.ts",
-            "preLaunchTask": "tsc: build - tsconfig.json",
-            "outFiles": [
-                "${workspaceFolder}/out/**/*.js"
-            ]
+            "args": [
+                "${workspaceFolder}/src/planningScheduler/run.ts"
+            ],
+            "runtimeArgs": [
+                "--nolazy",
+                "-r",
+                "ts-node/register"
+            ],
+            "sourceMaps": true,
+            "cwd": "${workspaceFolder}",
+            "protocol": "inspector",
+        },
+        {
+            "name": "Web Client",
+            "type": "node",
+            "request": "launch",
+            "args": [
+                "${workspaceFolder}/src/webClient/run.ts"
+            ],
+            "runtimeArgs": [
+                "--nolazy",
+                "-r",
+                "ts-node/register"
+            ],
+            "sourceMaps": true,
+            "cwd": "${workspaceFolder}",
+            "protocol": "inspector",
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch webClient",
-            "program": "${workspaceFolder}/src/webClient/server.ts",
+            "name": "Transpile",
+            "program": "",
             "preLaunchTask": "tsc: build - tsconfig.json",
             "outFiles": [
                 "${workspaceFolder}/out/**/*.js"
@@ -55,6 +77,15 @@
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Launch entire project",
+            "configurations": [
+                "Planning Scheduler",
+                "Web Client"
+            ]
         }
     ]
 }

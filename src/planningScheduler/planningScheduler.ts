@@ -1,13 +1,7 @@
 import { DataContainer } from "./classes/dataContainer";
 import { WebServerPlanningScheduler } from "./classes/WebServerPlanningScheduler";
-import { Graph, Vertex } from "./classes/graph";
-import { Vector2 } from "./classes/vector2";
-import * as fs from "fs";
 
-const hostname = '127.0.0.1';
-const port = 3000;
-
-class Main {
+export class PlanningScheduler {
     server: WebServerPlanningScheduler;
     data: DataContainer;
 
@@ -25,6 +19,3 @@ class Main {
         });
     }
 }
-
-
-let main = new Main(port, hostname);
