@@ -178,26 +178,25 @@ export class Handler {
             POST: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
                 let id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
                 if (id !== null && parsedUrl[3] === "initiate") {
-                    response.writeHead(200, "okay");
-                    response.end();
-                }
-
-                getJson(request)
-                    .then((obj) => {
-                        let forklift = Forklift.parse(obj);
-                        if (forklift !== null) {
-                            this.data.addForklift(forklift);
-                            returnStatus(response, 200, "Success");
-                        } else {
-                            if (this.data.forklifts[forklift.id] === null) {
-                                returnStatus(response, 400, "Invalid forklift");
+                    getJson(request)
+                        .then((obj) => {
+                            let forklift = Forklift.parse(obj);
+                            if (forklift !== null) {
+                                this.data.addForklift(forklift);
+                                returnStatus(response, 200, "Success");
                             } else {
-                                returnStatus(response, 401, "Forklift already initiated");
+                                if (this.data.forklifts[forklift.id] === null) {
+                                    returnStatus(response, 400, "Invalid forklift");
+                                } else {
+                                    returnStatus(response, 401, "Forklift already initiated");
+                                }
                             }
-                        }
-                    }).catch(() => {
-                        returnStatus(response, 402, "Invalid JSON");
-                    });
+                        }).catch(() => {
+                            returnStatus(response, 402, "Invalid JSON");
+                        });
+                } else {
+                    returnNotFound(request, response);
+                }
             }
         }
     };
