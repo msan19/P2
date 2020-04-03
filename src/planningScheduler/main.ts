@@ -1,14 +1,14 @@
 import { DataContainer } from "./classes/dataContainer";
-import { WebServer, WebServerPlanningScheduler } from "../shared/webServer";
+import { WebServerPlanningScheduler } from "./classes/WebServerPlanningScheduler";
 import { Graph, Vertex } from "./classes/graph";
 import { Vector2 } from "./classes/vector2";
-import { fs } from "fs";
+import * as fs from "fs";
 
 const hostname = '127.0.0.1';
 const port = 3000;
 
 class Main {
-    server: WebServer;
+    server: WebServerPlanningScheduler;
     data: DataContainer;
 
     constructor(port: number, hostname: string) {
@@ -33,7 +33,7 @@ let g = createGraph();
 console.log(g);
 let prettyG = JSON.stringify(g, null, 4);
 console.log(prettyG);
-
+//fs.writeFile("./graf.json");
 
 function createGraph() {
     let vertices = createVertices(10, 10);
