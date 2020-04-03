@@ -1,21 +1,22 @@
-// TO DO 
-
-import { WebServer } from "../shared/webServer";
-import { WebClientHandler } from "./webClientHandler";
+import { WebServer } from "../../shared/webServer";
+import { Handler } from "./handler";
+import { DataContainer } from "./dataContainer";
 import * as http from "http";
-import * as fs from "fs";
 
-export class WebServerClient extends WebServer { // RENAME!!! 
-    handler: WebClientHandler;
+export class WebServerPlanningScheduler extends WebServer {
+    handler: Handler;
+    data: DataContainer;
 
-    constructor(hostname: string, port: number) {
+    constructor(data: DataContainer, hostname: string, port: number) {
         super(hostname, port);
-        this.handler = new WebClientHandler();
+        this.handler = new Handler(data);
+        this.data = data;
 
         this.createServer();
+
     }
 
-    createServer() { // TO DO: rewrite
+    createServer() {
         this.server = http.createServer((request: http.IncomingMessage, response: http.ServerResponse): void => {
             request.method = request.method.toUpperCase();
             let parsedUrl = request.url.split("/");
@@ -38,9 +39,3 @@ export class WebServerClient extends WebServer { // RENAME!!!
         });
     }
 }
-
-let host = "127.0.0.1";
-let port = 8080;
-
-let server = new WebServerClient(host, port);
-console.log(server);
