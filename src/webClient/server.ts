@@ -3,7 +3,6 @@
 import { WebServer } from "../shared/webServer";
 import { WebClientHandler } from "./webClientHandler";
 import * as http from "http";
-import * as fs from "fs";
 
 export class WebServerClient extends WebServer { // RENAME!!! 
     handler: WebClientHandler;
@@ -38,9 +37,3 @@ export class WebServerClient extends WebServer { // RENAME!!!
         });
     }
 }
-
-let host = "127.0.0.1";
-let port = 8080;
-
-let server = new WebServerClient(host, port);
-console.log(server);
