@@ -15,6 +15,11 @@ export class Forklift {
         return this._socket;
     }
 
+    constructor(id: string, socket: WebSocket) {
+        this.id = id;
+        this.socket = socket;
+    }
+
     hasSocket() {
         return typeof (this._socket) === "object" && this._socket !== null;
     }
@@ -22,19 +27,22 @@ export class Forklift {
         return this.hasSocket();
     }
 
-    constructor(id: string, socket: WebSocket) {
-        this.id = id;
-        this.socket = socket;
+    private sendStr(str: string): void {
+        this._socket.send(str);
     }
 
-
-    send(route: Route): void {
-
-
+    private sendObj(obj: any): void {
+        this.sendStr(JSON.stringify(obj));
     }
+
+    sendRoute(route: Route): void {
+        this.sendObj(route);
+    }
+
     static parse(obj: any): Forklift | null {
         return null;
     }
+
     putData(obj: any): void {
 
     }
