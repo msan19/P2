@@ -75,7 +75,7 @@ export class Handler {
                         }
                     })
                     .catch(() => {
-                        returnStatus(response, 402, "Invalid JSON");
+                        returnStatus(response, 400, "Invalid JSON");
                     });
             }
         },
