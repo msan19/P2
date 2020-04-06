@@ -28,7 +28,7 @@ export class WebServer {
     }
 
     run(): void {
-        this.server.listen(this.port, this.hostname, () => {
+        this.server.listen(this.port, () => {
             console.log(`Server running at http://${this.hostname}:${this.port}/`);
         });
     }
