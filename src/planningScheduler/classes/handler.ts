@@ -20,6 +20,9 @@ function returnStatus(response: ServerResponse, status: number, message: string)
     response.write(message);
     response.end();
 }
+function returnSuccess(response: ServerResponse) {
+    returnStatus(response, 200, "Success");
+}
 function returnNotFound(request: IncomingMessage, response: ServerResponse) {
     returnStatus(response, 404, `Url: '${request.url}' not found`);
 }
@@ -68,7 +71,7 @@ export class Handler {
                         let warehouse = Warehouse.parse(obj);
                         if (warehouse !== null) {
                             this.data.warehouse = warehouse;
-                            returnStatus(response, 200, "Success");
+                            returnSuccess(response);
                         } else {
                             if (Graph.parse(obj["graph"]) === null) {
                                 returnStatus(response, 401, "Invalid Graph");
@@ -112,7 +115,7 @@ export class Handler {
                         let order = Order.parse(obj, this.data);
                         if (order !== null) {
                             this.data.addOrder(order);
-                            returnStatus(response, 200, "Success");
+                            returnSuccess(response);
                         } else {
                             returnStatus(response, 400, "Invalid Order");
                         }
@@ -145,7 +148,7 @@ export class Handler {
                     getJson(request)
                         .then((obj) => {
                             this.data.forklifts[id].putData(obj);
-                            returnStatus(response, 200, "Success");
+                            returnSuccess(response);
                         }).catch(() => {
                             returnInvalidJSON(request, response);
                         });
@@ -163,7 +166,7 @@ export class Handler {
                             let forklift = Forklift.parse(obj);
                             if (forklift !== null) {
                                 this.data.addForklift(forklift);
-                                returnStatus(response, 200, "Success");
+                                returnSuccess(response);
                             } else {
                                 if (this.data.forklifts[forklift.id] === null) {
                                     returnStatus(response, 400, "Invalid forklift");
