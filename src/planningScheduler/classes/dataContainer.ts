@@ -6,19 +6,21 @@ import { Route } from "./route";
 export class DataContainer {
 
     forklifts: Forklift[];
-    orders: Order[];
+    orders: { [key: string]: Order; };
     routes: Route[];
     warehouse: Warehouse;
 
     constructor() {
         this.forklifts = [];
-        this.orders = [];
+        this.orders = {};
         this.routes = [];
         this.warehouse = null;
     }
 
-    addOrder(order: Order): void {
-        this.orders.push(order);
+    addOrder(order: Order): boolean {
+        if (Object.keys(this.orders).includes(order.orderId)) return false;
+        this.orders[order.orderId] = order;
+        return true;
     }
     ///TODO: Add to diagrams
     addForklift(forklift: Forklift): void {
