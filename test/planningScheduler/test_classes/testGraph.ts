@@ -21,6 +21,15 @@ function checkEdge(edge, expected) {
     });
 }
 
+function checkArray(result: string[], expected: string[]) {
+    let length: number = Math.max(result.length, expected.length);
+    for (let i = 0; i < length; i++) {
+        it(`${result[i]} should be ${expected[i]}`, () => {
+            expect(result[i]).to.equal(expected[i]);
+        });
+    }
+}
+
 function testScheduleItem() {
     // forkliftId: string, time: number, nextVertexId: string
     describe(`Test of one random ScheduleItem`, () => {
@@ -232,6 +241,85 @@ function testGraph() {
         });
 
         // Edges only one-way (alphabetically incorrect)
+
+        // Check Graph.parse
+        describe(`Test of Graph.parse (all valid)`, () => {
+            let graph = new Graph({
+                "N23": new Vertex("N23", new Vector2(10, 10)),
+                "N27": new Vertex("N27", new Vector2(20, 20)),
+                "N29": new Vertex("N29", new Vector2(30, 30))
+            });
+            graph.vertices["N23"].adjacentVertexIds.push("N27");
+            graph.vertices["N27"].adjacentVertexIds.push("N23");
+
+            graph.vertices["N23"].adjacentVertexIds.push("N29");
+            graph.vertices["N29"].adjacentVertexIds.push("N23");
+
+            graph.vertices["N29"].adjacentVertexIds.push("N27");
+            graph.vertices["N27"].adjacentVertexIds.push("N29");
+
+            let result: Graph | null = Graph.parse(graph);
+            let keys: string[] = Object.keys(result.vertices);
+            let length: number = keys.length;
+            for (let i = 0; i < length; i++) {
+                it(`${keys[i]} should be Vertex`, () => {
+                    let currVertex = Vertex.parse(result.vertices[keys[i]]);
+                    expect(typeof (currVertex)).to.equal("object");
+                });
+            }
+        });
+
+        describe(`Test of Graph.parse (missing both-way edges)`, () => {
+            let graph = new Graph({
+                "N23": new Vertex("N23", new Vector2(10, 10)),
+                "N27": new Vertex("N27", new Vector2(20, 20)),
+                "N29": new Vertex("N29", new Vector2(30, 30))
+            });
+            graph.vertices["N23"].adjacentVertexIds.push("N27");
+            graph.vertices["N23"].adjacentVertexIds.push("N29");
+            graph.vertices["N29"].adjacentVertexIds.push("N27");
+
+            let result: Graph | null = Graph.parse(graph);
+
+            it(`N23 adjacent should be empty`, () => {
+                expect(result.vertices["N23"].adjacentVertexIds.length).to.equal(0);
+            });
+
+            it(`N27 adjacent should be empty`, () => {
+                expect(result.vertices["N27"].adjacentVertexIds.length).to.equal(0);
+            });
+
+            it(`N29 adjacent should be empty`, () => {
+                expect(result.vertices["N29"].adjacentVertexIds.length).to.equal(0);
+            });
+        });
+
+        describe(`Test of Graph.parse (faulty vertex)`, () => {
+            let graph: Graph = new Graph({
+                "N23": new Vertex("N23", new Vector2(10, 10)),
+                "N27": new Vertex("N27", new Vector2(20, 20)),
+                "N29": new Vertex("N29", new Vector2(30, 30)),
+                "N31": new Vertex("N29", new Vector2(40, 40))
+            });
+            let expected: string[] = ["N23", "N27", "N29"];
+
+            graph.vertices["N31"].id = null;
+
+            let result: Graph | null = Graph.parse(graph);
+
+            let keys: string[] = Object.keys(result.vertices);
+
+            it(`Should only contain 3 elements`, () => {
+                expect(keys.length).to.equal(3);
+            });
+
+            checkArray(keys, expected);
+
+            it(`N31 should be undefined`, () => {
+                expect(result.vertices["N31"]).to.equal(undefined);
+            });
+        });
+
     });
 }
 

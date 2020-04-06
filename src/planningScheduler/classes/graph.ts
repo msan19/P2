@@ -33,10 +33,20 @@ export class Graph {
         if (typeof (graph) !== "object") return null;
         if (typeof (graph.vertices) !== "object") return null;
 
-        // Check for both-way edges
-        let tempVertices: { [key: string]: Vertex; } = {};
+        // All vertices are vertex
         let keys: string[] = Object.keys(graph.vertices);
         let length: number = keys.length;
+        for (let i = 0; i < length; i++) {
+            let tempVertex: Vertex | null = Vertex.parse(graph.vertices[keys[i]]);
+            if (tempVertex === null) {
+                delete graph.vertices[keys[i]];
+            }
+        }
+
+        // Check for both-way edges
+        let tempVertices: { [key: string]: Vertex; } = {};
+        keys = Object.keys(graph.vertices);
+        length = keys.length;
         for (let i = 0; i < length; i++) {
             let currVertex: Vertex = graph.vertices[keys[i]];
             let tempVertex: Vertex = Vertex.parse(currVertex);
@@ -44,8 +54,7 @@ export class Graph {
             if (tempVertex !== null) {
                 tempVertex.adjacentVertexIds = [];
                 for (let j = 0; j < currVertex.adjacentVertexIds.length; j++) {
-
-                    if (graph.vertices[currVertex.adjacentVertexIds[j]].contains(currVertex.id)) {
+                    if (graph.vertices[currVertex.adjacentVertexIds[j]].adjacentVertexIds.includes(currVertex.id)) {
                         tempVertex.adjacentVertexIds.push(currVertex.adjacentVertexIds[j]);
                     }
                 }
@@ -53,11 +62,7 @@ export class Graph {
             }
         }
 
-        // Check for whether vertices exists
-
-        // All vertices are vertex
-
-        return null;
+        return new Graph(tempVertices);
     }
 }
 
