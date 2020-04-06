@@ -26,6 +26,24 @@ function checkArray(result: string[], expected: string[]) {
     }
 }
 
+function testWarehouse() {
+    let graph: Graph = new Graph({
+        "N23": new Vertex("N23", new Vector2(10, 10)),
+        "N27": new Vertex("N27", new Vector2(20, 20)),
+        "N29": new Vertex("N29", new Vector2(30, 30))
+    });
+    let warehouse: Warehouse = new Warehouse(graph, 20);
+    let expectedArray: string[] = ["N23", "N27", "N29"];
+    let expectedSpeed: number = 20;
+
+    it(`ForkliftSpeed should be ${expectedSpeed}`, () => {
+        expect(warehouse.forkliftSpeed).to.equal(expectedSpeed);
+    });
+
+    checkArray(Object.keys(warehouse.graph.vertices), expectedArray);
+
+}
+
 function testParse() {
     let graph = new Graph({
         "N23": new Vertex("N23", new Vector2(10, 10)),
@@ -72,8 +90,6 @@ function testParse() {
 
         checkWarehouse(result, expected);
     });
-
-
 }
 
 describe(`Test of Warehouse Parse`, testParse);

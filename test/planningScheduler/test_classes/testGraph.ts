@@ -185,7 +185,7 @@ function testGraph() {
 
     describe(`Test of Graph method "getEdges"`, () => {
         // No edges
-        describe(``, () => {
+        describe(`No edges`, () => {
             let graph = new Graph({
                 "N23": new Vertex("N23", new Vector2(10, 10)),
                 "N27": new Vertex("N27", new Vector2(20, 20)),
@@ -205,7 +205,7 @@ function testGraph() {
         });
 
         // Edges on both nodes
-        describe(``, () => {
+        describe(`Edges on both nodes`, () => {
             let graph = new Graph({
                 "N23": new Vertex("N23", new Vector2(10, 10)),
                 "N27": new Vertex("N27", new Vector2(20, 20)),
@@ -236,11 +236,58 @@ function testGraph() {
         });
 
         // Edges only one-way (alphabetically correct)
-        describe(``, () => {
+        describe(`Edges only one-way (alphabetically correct)`, () => {
+            let graph = new Graph({
+                "N23": new Vertex("N23", new Vector2(10, 10)),
+                "N27": new Vertex("N27", new Vector2(20, 20)),
+                "N29": new Vertex("N29", new Vector2(30, 30))
+            });
+            graph.vertices["N23"].adjacentVertexIds.push("N27");
 
+            graph.vertices["N23"].adjacentVertexIds.push("N29");
+
+            graph.vertices["N27"].adjacentVertexIds.push("N29");
+
+            let edges = graph.getEdges();
+            let expected = [];
+            expected.push({ "id_1": "N23", "id_2": "N27" });
+            expected.push({ "id_1": "N23", "id_2": "N29" });
+            expected.push({ "id_1": "N27", "id_2": "N29" });
+
+            it(`Length is the same (${edges.length} = ${expected.length})`, () => {
+                expect(edges.length).to.equal(expected.length);
+            });
+
+            for (let i = 0; i < edges.length; i++) {
+                checkEdge(edges[i], expected[i]);
+            }
         });
 
         // Edges only one-way (alphabetically incorrect)
+        describe(`Edges only one-way (alphabetically incorrect)`, () => {
+            let graph = new Graph({
+                "N23": new Vertex("N23", new Vector2(10, 10)),
+                "N27": new Vertex("N27", new Vector2(20, 20)),
+                "N29": new Vertex("N29", new Vector2(30, 30))
+            });
+
+            graph.vertices["N27"].adjacentVertexIds.push("N23");
+
+            graph.vertices["N29"].adjacentVertexIds.push("N23");
+
+            graph.vertices["N29"].adjacentVertexIds.push("N27");
+
+            let edges = graph.getEdges();
+            let expected = [];
+
+            it(`Length is the same (${edges.length} = ${expected.length})`, () => {
+                expect(edges.length).to.equal(expected.length);
+            });
+
+            for (let i = 0; i < edges.length; i++) {
+                checkEdge(edges[i], expected[i]);
+            }
+        });
 
         // Check Graph.parse
         describe(`Test of Graph.parse (all valid)`, () => {
