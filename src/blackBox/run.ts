@@ -3,8 +3,6 @@ import * as fs from "fs";
 import * as http from "http";
 import { Warehouse } from "../planningScheduler/classes/warehouse";
 
-const URL = "http://localhost:3000/";
-
 let warehouse = new Warehouse(createGraph(), 20);
 let graph = JSON.stringify(warehouse, null, 4);
 console.log(graph);
@@ -12,7 +10,7 @@ fs.writeFileSync("./src/blackBox/graph.json", graph);
 console.log("Graph is written to file");
 
 const options = {
-    hostname: "85.191.253.29",  //'localhost',
+    hostname: "localhost",
     port: 3000,
     path: "/warehouse",
     method: "POST",
