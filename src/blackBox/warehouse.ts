@@ -3,9 +3,9 @@ import { Vector2 } from "../planningScheduler/classes/vector2";
 
 export function createGraph() {
     let vertices = createVertices(10, 10);
+    // vertices["n2-4"].id = null;   
     let graph = new Graph(vertices);
     let edges = graph.getEdges();
-    console.log("EDGES!!! \n\n", edges);
 
     return graph;
 }
