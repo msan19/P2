@@ -171,7 +171,7 @@ export class Handler {
                                 if (this.data.forklifts[forklift.id] === null) {
                                     returnStatus(response, 400, "Invalid forklift");
                                 } else {
-                                    returnStatus(response, 401, "Forklift already initiated");
+                                    returnStatus(response, 400, "Forklift already initiated");
                                 }
                             }
                         }).catch(() => {
