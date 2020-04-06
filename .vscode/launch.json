@@ -37,6 +37,22 @@
             "protocol": "inspector",
         },
         {
+            "name": "Blackbox",
+            "type": "node",
+            "request": "launch",
+            "args": [
+                "${workspaceFolder}/src/blackBox/run.ts"
+            ],
+            "runtimeArgs": [
+                "--nolazy",
+                "-r",
+                "ts-node/register"
+            ],
+            "sourceMaps": true,
+            "cwd": "${workspaceFolder}",
+            "protocol": "inspector",
+        },
+        {
             "type": "node",
             "request": "launch",
             "name": "Transpile",

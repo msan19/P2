@@ -1,26 +1,18 @@
 import { Forklift } from "./forklift";
 import { DataContainer } from "./dataContainer";
 import { IncomingMessage, ServerResponse, Server } from "http";
-import { Http2SecureServer } from "http2";
 import { Warehouse } from "./warehouse";
-import { reporters } from "mocha";
 import { Graph } from "./graph";
 import { Order } from "./order";
-import { parse } from "querystring";
 
 
 function getEntireString(request: IncomingMessage): Promise<string> {
-    let socket = request.connection;
-
     return new Promise((resolve: (dataString: string) => void, reject: (reason: string) => void) => {
         let body = "";
-        socket.on("close", () => {
-            reject("Connection Closed");
-        });
-        socket.on("data", (data: Buffer) => {
+        request.on("data", (data: Buffer) => {
             body += data;
         });
-        socket.on("end", () => {
+        request.on("end", () => {
             resolve(body);
         });
     });
