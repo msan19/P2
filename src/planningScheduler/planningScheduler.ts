@@ -1,5 +1,5 @@
 import { DataContainer } from "./classes/dataContainer";
-import { WebServerPlanningScheduler } from "./classes/WebServerPlanningScheduler";
+import { WebServerPlanningScheduler } from "./classes/WebServer";
 
 export class PlanningScheduler {
     server: WebServerPlanningScheduler;
