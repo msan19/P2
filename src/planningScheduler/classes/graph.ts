@@ -30,8 +30,8 @@ export class Graph {
 
     static parse(graph: any): Graph | null {
         // Check necessary fields
-        if (typeof (graph) !== "object") return null;
-        if (typeof (graph.vertices) !== "object") return null;
+        if (typeof (graph) !== "object" || graph === null) return null;
+        if (typeof (graph.vertices) !== "object" || graph.vertices === null) return null;
 
         // All vertices are vertex
         let keys: string[] = Object.keys(graph.vertices);
@@ -89,9 +89,9 @@ export class Vertex {
 
     static parse(vertex: any): Vertex | null {
         // Check for necessary field types
-        if (typeof (vertex) !== "object") return null;
+        if (typeof (vertex) !== "object" || vertex === null) return null;
         if (typeof (vertex.id) !== "string") return null;
-        if (typeof (vertex.position) !== "object") return null;
+        if (typeof (vertex.position) !== "object" || vertex.position === null) return null;
 
         // Check for a valid position
         let tempVector: Vector2 | null = Vector2.parse(vertex.position);
@@ -105,7 +105,7 @@ export class Vertex {
 
         // Check adjacency list
         let tempAdjacency: string[] = [];
-        if (typeof (vertex.adjacentVertexIds) === "object") {
+        if (typeof (vertex.adjacentVertexIds) === "object" && vertex.adjacentVertexIds !== null) {
             for (let i = 0; i < vertex.adjacentVertexIds.length; i++) {
                 if (typeof (vertex.adjacentVertexIds[i]) && vertex.adjacentVertexIds[i].length > 0) {
                     tempAdjacency.push(vertex.adjacentVertexIds[i]);
@@ -115,7 +115,7 @@ export class Vertex {
 
         // Check schedule items
         let tempSchedule: ScheduleItem[] = [];
-        if (typeof (vertex.scheduleItems) === "object") {
+        if (typeof (vertex.scheduleItems) === "object" && vertex.scheduleItems !== null) {
             for (let i = 0; i < vertex.scheduleItems.length; i++) {
                 let tempItem: ScheduleItem = ScheduleItem.parse(vertex.scheduleItems[i]);
                 if (tempItem !== null) {
@@ -146,7 +146,7 @@ export class ScheduleItem {
 
     static parse(item: any): ScheduleItem | null {
         // Check all necessary fields
-        if (typeof (item) !== "object") return null;
+        if (typeof (item) !== "object" || item === null) return null;
         if (typeof (item.forkliftId) !== "string" || item.nextVertexId.length < 1) return null;
         if (typeof (item.time) !== "number") return null;
         if (typeof (item.nextVertexId) !== "string" || item.nextVertexId.length < 1) return null;
