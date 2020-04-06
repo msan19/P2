@@ -144,7 +144,7 @@ export class Handler {
                             this.data.forklifts[id].putData(obj);
                             returnStatus(response, 200, "Success");
                         }).catch(() => {
-                            returnStatus(response, 402, "Invalid JSON");
+                            returnStatus(response, 400, "Invalid JSON");
                         });
                 }
                 else {
