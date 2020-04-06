@@ -1,6 +1,7 @@
 import * as WebSocket from "ws";
 import { Route, Instruction } from "./../planningScheduler/classes/route";
 import { Forklift as ForkliftInfo } from "./../planningScheduler/classes/forklift";
+import { JsonTryParse } from "../shared/webUtilities";
 
 enum ForkliftMessageType {
     getInfo = "getInfo",
@@ -37,9 +38,27 @@ export class Forklift {
 
     connect(hostname: string, port: number) {
         this.socket = new WebSocket(`ws://${hostname}:${port}/forklifts/${this.id}/initiate`);
-        this.socket.on("open", this.sendStatus);
+        this.socket.on("open", () => { this.sendStatus(); });
         this.socket.on("message", (data) => {
             /// TODO: Handle incoming messages
+            let obj = JsonTryParse(String(data));
+            if (obj !== null) {
+                switch (obj["type"]) {
+                    case ForkliftMessage.Types.getInfo:
+                        this.sendStatus();
+                        break;
+                    case ForkliftMessage.Types.addRoute:
+                        this.routes.push(obj["body"]);
+                        break;
+                    case ForkliftMessage.Types.getRoutes:
+                        this.sendRoutes();
+                        break;
+                    default:
+                        console.error("Invalid package");
+                        break;
+                }
+            }
+
         });
     }
 
@@ -54,6 +73,9 @@ export class Forklift {
         if (this.currentRoute === null) {
             this.processRoutes();
         }
+    }
+    sendRoutes() {
+        this.socket.send(JSON.stringify(this.routes));
     }
 
     getNextInstruction() {

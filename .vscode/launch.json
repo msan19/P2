@@ -53,6 +53,22 @@
             "protocol": "inspector",
         },
         {
+            "name": "Forklift",
+            "type": "node",
+            "request": "launch",
+            "args": [
+                "${workspaceFolder}/src/forklifts/run.ts"
+            ],
+            "runtimeArgs": [
+                "--nolazy",
+                "-r",
+                "ts-node/register"
+            ],
+            "sourceMaps": true,
+            "cwd": "${workspaceFolder}",
+            "protocol": "inspector",
+        },
+        {
             "type": "node",
             "request": "launch",
             "name": "Transpile",
@@ -100,6 +116,8 @@
             "name": "Launch entire project",
             "configurations": [
                 "Planning Scheduler",
+                "Blackbox",
+                "Forklift",
                 "Web Client"
             ]
         }
