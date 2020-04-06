@@ -83,9 +83,9 @@ export class Forklift {
             this.position = parsedPos;
         }
 
-        if (typeof (obj.state) === "number" && Object.keys(Forklift.).includes(obj.type)) {
+        // if (typeof (obj.state) === "number" && Object.keys(Forklift.).includes(obj.type)) {
 
-        }
+        // }
 
         // Update the forklift
 
