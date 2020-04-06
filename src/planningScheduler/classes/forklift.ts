@@ -11,9 +11,6 @@ export class Forklift {
             console.log(data);
         });
     }
-    get socket() {
-        return this._socket;
-    }
 
     constructor(id: string, socket: WebSocket) {
         this.id = id;
