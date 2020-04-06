@@ -74,7 +74,7 @@ export class Handler {
                             returnSuccess(response);
                         } else {
                             if (Graph.parse(obj["graph"]) === null) {
-                                returnStatus(response, 401, "Invalid Graph");
+                                returnStatus(response, 400, "Invalid Graph");
                             } else {
                                 returnStatus(response, 400, "Invalid Warehouse");
                             }
