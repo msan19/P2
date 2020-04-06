@@ -7,7 +7,7 @@ import { Warehouse } from "./warehouse";
 import { Graph } from "./graph";
 import { Order } from "./order";
 
-import { getJson, returnJson, returnNotFound, returnStatus, passId, returnInvalidJson } from "../../shared/webUtilities";
+import { getJson, returnJson, returnNotFound, returnStatus, passId, returnInvalidJson, returnSuccess } from "../../shared/webUtilities";
 
 
 interface IHttpMethod { (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void; }
@@ -42,10 +42,10 @@ export class Handler {
                         let warehouse = Warehouse.parse(obj);
                         if (warehouse !== null) {
                             this.data.warehouse = warehouse;
-                            returnStatus(response, 200, "Success");
+                            returnSuccess(response);
                         } else {
                             if (Graph.parse(obj["graph"]) === null) {
-                                returnStatus(response, 401, "Invalid Graph");
+                                returnStatus(response, 400, "Invalid Graph");
                             } else {
                                 returnStatus(response, 400, "Invalid Warehouse");
                             }
@@ -86,7 +86,7 @@ export class Handler {
                         let order = Order.parse(obj, this.data);
                         if (order !== null) {
                             this.data.addOrder(order);
-                            returnStatus(response, 200, "Success");
+                            returnSuccess(response);
                         } else {
                             returnStatus(response, 400, "Invalid Order");
                         }
@@ -105,7 +105,7 @@ export class Handler {
                     if (forklift != null) {
                         returnJson(response, this.data.forklifts[id]);
                     } else {
-                        returnStatus(response, 400, "Forklift not found");
+                        returnStatus(response, 404, "Forklift not found");
                     }
                 } else {
                     returnJson(response, this.data.forklifts);
@@ -119,7 +119,7 @@ export class Handler {
                     getJson(request)
                         .then((obj) => {
                             this.data.forklifts[id].putData(obj);
-                            returnStatus(response, 200, "Success");
+                            returnSuccess(response);
                         }).catch(() => {
                             returnInvalidJson(response);
                         });
@@ -137,12 +137,12 @@ export class Handler {
                             let forklift = Forklift.parse(obj);
                             if (forklift !== null) {
                                 this.data.addForklift(forklift);
-                                returnStatus(response, 200, "Success");
+                                returnSuccess(response);
                             } else {
                                 if (this.data.forklifts[forklift.id] === null) {
                                     returnStatus(response, 400, "Invalid forklift");
                                 } else {
-                                    returnStatus(response, 401, "Forklift already initiated");
+                                    returnStatus(response, 400, "Forklift already initiated");
                                 }
                             }
                         }).catch(() => {

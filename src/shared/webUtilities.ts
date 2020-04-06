@@ -49,6 +49,9 @@ export function returnInvalidJson(response: ServerResponse) {
     returnStatus(response, 402, `Invalid JSON`);
 }
 
+export function returnSuccess(response: ServerResponse) {
+    returnStatus(response, 200, "Success");
+}
 
 export function returnJson(response: ServerResponse, obj: any) {
     response.writeHead(200);
