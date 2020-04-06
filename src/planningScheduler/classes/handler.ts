@@ -22,10 +22,14 @@ function getJson(request: IncomingMessage): Promise<object> {
     return getEntireString(request)
         .then((str: string) => {
             return new Promise((resolve: (value: object) => void, reject: () => void) => {
+                let data;
                 try {
-                    resolve(JSON.parse(str));
+                    data = JSON.parse(str);
                 } catch {
                     reject();
+                }
+                if (typeof (data) === "object") {
+                    resolve(data);
                 }
             });
         });
