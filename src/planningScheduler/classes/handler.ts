@@ -7,30 +7,7 @@ import { Warehouse } from "./warehouse";
 import { Graph } from "./graph";
 import { Order } from "./order";
 
-import { getJson } from "../../shared/webUtilities";
-
-
-
-function hasId(element): boolean {
-    return typeof (element) === "string" && element.length > 0;
-}
-
-function returnStatus(response: ServerResponse, status: number, message: string) {
-    response.writeHead(status, message);
-    response.write(message);
-    response.end();
-}
-function returnNotFound(request: IncomingMessage, response: ServerResponse) {
-    returnStatus(response, 404, `Url: '${request.url}' not found`);
-}
-function returnNotImplemented(request: IncomingMessage, response: ServerResponse) {
-    returnStatus(response, 500, `Url: '${request.url}' not implemented`);
-}
-function returnJson(response: ServerResponse, obj: any) {
-    response.writeHead(200);
-    response.write(JSON.stringify(obj));
-    response.end();
-}
+import { getJson, returnJson, returnNotFound, returnStatus, passId, returnInvalidJson, returnSuccess } from "../../shared/webUtilities";
 
 
 interface IHttpMethod { (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void; }
@@ -65,17 +42,17 @@ export class Handler {
                         let warehouse = Warehouse.parse(obj);
                         if (warehouse !== null) {
                             this.data.warehouse = warehouse;
-                            returnStatus(response, 200, "Success");
+                            returnSuccess(response);
                         } else {
                             if (Graph.parse(obj["graph"]) === null) {
-                                returnStatus(response, 401, "Invalid Graph");
+                                returnStatus(response, 400, "Invalid Graph");
                             } else {
                                 returnStatus(response, 400, "Invalid Warehouse");
                             }
                         }
                     })
                     .catch(() => {
-                        returnStatus(response, 402, "Invalid JSON");
+                        returnInvalidJson(response);
                     });
             }
         },
@@ -90,7 +67,7 @@ export class Handler {
             // /orders
             // /orders/id
             GET: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
-                let id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
+                let id = passId(parsedUrl[2]);
                 if (typeof (id) === "string") {
                     let order = this.data.orders[id];
                     if (order != null) {
@@ -109,12 +86,12 @@ export class Handler {
                         let order = Order.parse(obj, this.data);
                         if (order !== null) {
                             this.data.addOrder(order);
-                            returnStatus(response, 200, "Success");
+                            returnSuccess(response);
                         } else {
                             returnStatus(response, 400, "Invalid Order");
                         }
                     }).catch(() => {
-                        returnStatus(response, 402, "Invalid JSON");
+                        returnInvalidJson(response);
                     });
             }
         },
@@ -122,13 +99,13 @@ export class Handler {
             // /forklifts
             // /forklifts/id
             GET: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
-                let id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
+                let id = passId(parsedUrl[2]);
                 if (typeof (id) === "string") {
                     let forklift = this.data.orders[id];
                     if (forklift != null) {
                         returnJson(response, this.data.forklifts[id]);
                     } else {
-                        returnStatus(response, 400, "Forklift not found");
+                        returnStatus(response, 404, "Forklift not found");
                     }
                 } else {
                     returnJson(response, this.data.forklifts);
@@ -136,15 +113,15 @@ export class Handler {
             },
             // /forklifts/{guid}
             PUT: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
-                let id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
+                let id = passId(parsedUrl[2]);
 
                 if (id !== null) {
                     getJson(request)
                         .then((obj) => {
                             this.data.forklifts[id].putData(obj);
-                            returnStatus(response, 200, "Success");
+                            returnSuccess(response);
                         }).catch(() => {
-                            returnStatus(response, 402, "Invalid JSON");
+                            returnInvalidJson(response);
                         });
                 }
                 else {
@@ -153,23 +130,23 @@ export class Handler {
             },
             // /forklifts/{guid}/intiate
             POST: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
-                let id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
+                let id = passId(parsedUrl[2]);
                 if (id !== null && parsedUrl[3] === "initiate") {
                     getJson(request)
                         .then((obj) => {
                             let forklift = Forklift.parse(obj);
                             if (forklift !== null) {
                                 this.data.addForklift(forklift);
-                                returnStatus(response, 200, "Success");
+                                returnSuccess(response);
                             } else {
                                 if (this.data.forklifts[forklift.id] === null) {
                                     returnStatus(response, 400, "Invalid forklift");
                                 } else {
-                                    returnStatus(response, 401, "Forklift already initiated");
+                                    returnStatus(response, 400, "Forklift already initiated");
                                 }
                             }
                         }).catch(() => {
-                            returnStatus(response, 402, "Invalid JSON");
+                            returnInvalidJson(response);
                         });
                 } else {
                     returnNotFound(request, response);
@@ -179,47 +156,8 @@ export class Handler {
     };
     socketControllers: { [key: string]: ISocketController; } = {
         // /forklifts/{guid}/intiate
-        //     forklifts: (socketServer: WebSocket.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void => {
-        //         let id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
-        //         if (id !== null && parsedUrl[3] === "initiate") {
-        //             getJson(request)
-        //                 .then((obj) => {
-        //                     let forklift = Forklift.parse(obj);
-        //                     if (forklift !== null) {
-        //                         socketServer.handleUpgrade(request, socket, head, (ws: WebSocket) => {
-        //                             forklift.socket = ws;
-        //                             this.data.addForklift(forklift);
-        //                             ws.send('HTTP/1.1 101 Web Socket Protocol Handshake\r\n' +
-        //                                 'Upgrade: WebSocket\r\n' +
-        //                                 'Connection: Upgrade\r\n' +
-        //                                 '\r\n');
-        //                         });
-        //                     } else {
-        //                         if (this.data.forklifts[forklift.id] === null) {
-        //                             // 400
-        //                             socket.write("Invalid forklift");
-        //                             socket.destroy();
-        //                         } else {
-        //                             ///TODO: This will cause trouble if forklift reconnects
-        //                             // 401
-        //                             socket.write("Forklift already initiated");
-        //                             socket.destroy();
-        //                         }
-        //                     }
-        //                 }).catch(() => {
-        //                     // 402
-        //                     socket.write("Invalid JSON");
-        //                     socket.destroy();
-        //                 });
-        //         } else {
-        //             // 404
-        //             socket.write("Upgrade-Method not found for url");
-        //             socket.destroy();
-        //         }
-        //     }
-        // },
         forklifts: (socketServer: WebSocket.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void => {
-            let id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
+            let id = passId(parsedUrl[2]) ? parsedUrl[2] : null;
             if (id !== null && parsedUrl[3] === "initiate") {
                 socketServer.handleUpgrade(request, socket, head, (ws: WebSocket) => {
                     let forklift = new Forklift(id, ws);

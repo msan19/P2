@@ -37,10 +37,6 @@ export class Forklift {
         });
     }
 
-    get socket() {
-        return this._socket;
-    }
-
     hasSocket() {
         return typeof (this._socket) === "object" && this._socket !== null;
     }
