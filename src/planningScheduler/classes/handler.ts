@@ -128,7 +128,7 @@ export class Handler {
                     if (forklift != null) {
                         returnJson(response, this.data.forklifts[id]);
                     } else {
-                        returnStatus(response, 400, "Forklift not found");
+                        returnStatus(response, 404, "Forklift not found");
                     }
                 } else {
                     returnJson(response, this.data.forklifts);
