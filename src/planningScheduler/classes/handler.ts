@@ -179,45 +179,6 @@ export class Handler {
     };
     socketControllers: { [key: string]: ISocketController; } = {
         // /forklifts/{guid}/intiate
-        //     forklifts: (socketServer: WebSocket.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void => {
-        //         let id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
-        //         if (id !== null && parsedUrl[3] === "initiate") {
-        //             getJson(request)
-        //                 .then((obj) => {
-        //                     let forklift = Forklift.parse(obj);
-        //                     if (forklift !== null) {
-        //                         socketServer.handleUpgrade(request, socket, head, (ws: WebSocket) => {
-        //                             forklift.socket = ws;
-        //                             this.data.addForklift(forklift);
-        //                             ws.send('HTTP/1.1 101 Web Socket Protocol Handshake\r\n' +
-        //                                 'Upgrade: WebSocket\r\n' +
-        //                                 'Connection: Upgrade\r\n' +
-        //                                 '\r\n');
-        //                         });
-        //                     } else {
-        //                         if (this.data.forklifts[forklift.id] === null) {
-        //                             // 400
-        //                             socket.write("Invalid forklift");
-        //                             socket.destroy();
-        //                         } else {
-        //                             ///TODO: This will cause trouble if forklift reconnects
-        //                             // 401
-        //                             socket.write("Forklift already initiated");
-        //                             socket.destroy();
-        //                         }
-        //                     }
-        //                 }).catch(() => {
-        //                     // 402
-        //                     socket.write("Invalid JSON");
-        //                     socket.destroy();
-        //                 });
-        //         } else {
-        //             // 404
-        //             socket.write("Upgrade-Method not found for url");
-        //             socket.destroy();
-        //         }
-        //     }
-        // },
         forklifts: (socketServer: WebSocket.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void => {
             let id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
             if (id !== null && parsedUrl[3] === "initiate") {
