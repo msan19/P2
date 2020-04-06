@@ -26,6 +26,9 @@ function returnNotFound(request: IncomingMessage, response: ServerResponse) {
 function returnNotImplemented(request: IncomingMessage, response: ServerResponse) {
     returnStatus(response, 500, `Url: '${request.url}' not implemented`);
 }
+function returnInvalidJSON(request: IncomingMessage, response: ServerResponse) {
+    returnStatus(response, 400, `Invalid JSON`);
+}
 function returnJson(response: ServerResponse, obj: any) {
     response.writeHead(200);
     response.write(JSON.stringify(obj));
@@ -75,7 +78,7 @@ export class Handler {
                         }
                     })
                     .catch(() => {
-                        returnStatus(response, 400, "Invalid JSON");
+                        returnInvalidJSON(request, response);
                     });
             }
         },
@@ -114,7 +117,7 @@ export class Handler {
                             returnStatus(response, 400, "Invalid Order");
                         }
                     }).catch(() => {
-                        returnStatus(response, 400, "Invalid JSON");
+                        returnInvalidJSON(request, response);
                     });
             }
         },
@@ -144,7 +147,7 @@ export class Handler {
                             this.data.forklifts[id].putData(obj);
                             returnStatus(response, 200, "Success");
                         }).catch(() => {
-                            returnStatus(response, 400, "Invalid JSON");
+                            returnInvalidJSON(request, response);
                         });
                 }
                 else {
@@ -169,7 +172,7 @@ export class Handler {
                                 }
                             }
                         }).catch(() => {
-                            returnStatus(response, 400, "Invalid JSON");
+                            returnInvalidJSON(request, response);
                         });
                 } else {
                     returnNotFound(request, response);
