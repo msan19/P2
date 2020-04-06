@@ -1,7 +1,7 @@
 import { createGraph } from "./warehouse";
 import * as fs from "fs";
 import * as http from "http";
-import { Warehouse } from "../planningScheduler/classes/warehouse";
+import { Warehouse } from "../shared/warehouse";
 
 let warehouse = new Warehouse(createGraph(), 20);
 let graph = JSON.stringify(warehouse, null, 4);

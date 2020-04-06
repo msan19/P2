@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import 'mocha';
 
-import { Graph, Vertex, ScheduleItem } from "./../../../src/planningScheduler/classes/graph";
-import { Vector2 } from "./../../../src/planningScheduler/classes/vector2";
+import { Graph, Vertex, ScheduleItem } from "../../../src/shared/graph";
+import { Vector2 } from "../../../src/shared/vector2";
 
 function checkVector(vector: Vector2, expX: number, expY: number) {
     it('x and y are as expected', () => {

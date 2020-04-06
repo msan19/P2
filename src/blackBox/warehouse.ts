@@ -1,5 +1,5 @@
-import { Graph, Vertex } from "../planningScheduler/classes/graph";
-import { Vector2 } from "../planningScheduler/classes/vector2";
+import { Graph, Vertex } from "../shared/graph";
+import { Vector2 } from "../shared/vector2";
 
 export function createGraph() {
     let vertices = createVertices(10, 10);

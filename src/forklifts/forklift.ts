@@ -1,5 +1,5 @@
 import * as WebSocket from "ws";
-import { Route, Instruction } from "./../planningScheduler/classes/route";
+import { Route, Instruction } from "../shared/route";
 import { Forklift as ForkliftInfo } from "./../planningScheduler/classes/forklift";
 import { JsonTryParse } from "../shared/webUtilities";
 

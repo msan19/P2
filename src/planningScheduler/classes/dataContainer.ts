@@ -1,7 +1,7 @@
 import { Forklift } from "./forklift";
-import { Warehouse } from "./warehouse";
-import { Order } from "./order";
-import { Route } from "./route";
+import { Warehouse } from "../../shared/warehouse";
+import { Order } from "../../shared/order";
+import { Route } from "../../shared/route";
 
 export class DataContainer {
 

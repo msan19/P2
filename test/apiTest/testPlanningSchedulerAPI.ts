@@ -1,6 +1,5 @@
 import { callApi } from "./apiTest";
-import { Order, OrderTypes } from "../../src/planningScheduler/classes/order";
-import { stringify } from "querystring";
+import { Order } from "../../src/shared/order";
 
 const API_HOSTNAME = "localhost";
 const API_PORT = 3000;
@@ -19,7 +18,7 @@ callApi(API_HOSTNAME, API_PORT, "/orders", "GET", "");
 //callApi(API_HOSTNAME, API_PORT, "/routes", "GET", "");
 
 function sendOrder() {
-    let order = new Order(OrderTypes.movePallet, "F0", "P0", "n0-0", "n4-7");
+    let order = new Order(Order.types.movePallet, "F0", "P0", "n0-0", "n4-7");
     console.log(order);
     callApi(API_HOSTNAME, API_PORT, "/orders", "POST", JSON.stringify(order, null, 4));
 }

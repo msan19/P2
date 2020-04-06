@@ -1,7 +1,6 @@
-import { DataContainer } from "./dataContainer";
-import { type } from "os";
+import { DataContainer } from "../planningScheduler/classes/dataContainer";
 
-export enum OrderTypes {
+enum OrderTypes {
     movePallet = 1,
     moveForklift,
     charge

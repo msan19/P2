@@ -1,7 +1,7 @@
 import { DataContainer } from "./../../../src/planningScheduler/classes/dataContainer";
-import { Warehouse } from "./../../../src/planningScheduler/classes/warehouse";
-import { Order } from "./../../../src/planningScheduler/classes/order";
-import { Route } from "./../../../src/planningScheduler/classes/route";
+import { Warehouse } from "../../../src/shared/warehouse";
+import { Order } from "../../../src/shared/order";
+import { Route } from "../../../src/shared/route";
 import { expect } from 'chai';
 import 'mocha';
 

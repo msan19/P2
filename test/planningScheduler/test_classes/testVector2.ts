@@ -1,4 +1,4 @@
-import { Vector2 } from "./../../../src/planningScheduler/classes/vector2";
+import { Vector2 } from "../../../src/shared/vector2";
 import { expect } from 'chai';
 import 'mocha';
 

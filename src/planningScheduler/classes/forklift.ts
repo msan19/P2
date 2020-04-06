@@ -1,8 +1,7 @@
 import * as WebSocket from "ws";
-import { Route } from "./route";
-import { Vector2 } from "./vector2";
-import { Order } from "./order";
-import { type } from "os";
+import { Route } from "../../shared/route";
+import { Vector2 } from "../../shared/vector2";
+import { Order } from "../../shared/order";
 
 export enum ForkliftStates {
     idle = 1,

@@ -1,11 +1,11 @@
 import { Forklift } from "./forklift";
 import { DataContainer } from "./dataContainer";
-import { IncomingMessage, ServerResponse, Server } from "http";
+import { IncomingMessage, ServerResponse } from "http";
 import * as WebSocket from "ws";
 import { Socket } from "net";
-import { Warehouse } from "./warehouse";
-import { Graph } from "./graph";
-import { Order } from "./order";
+import { Warehouse } from "../../shared/warehouse";
+import { Graph } from "../../shared/graph";
+import { Order } from "../../shared/order";
 
 import { getJson, returnJson, returnNotFound, returnStatus, passId, returnInvalidJson, returnSuccess } from "../../shared/webUtilities";
 

@@ -3,11 +3,11 @@ import 'mocha';
 import * as WebSocket from "ws";
 
 import { DataContainer } from "./../../../src/planningScheduler/classes/dataContainer";
-import { Warehouse } from '../../../src/planningScheduler/classes/warehouse';
-import { Graph, Vertex } from '../../../src/planningScheduler/classes/graph';
-import { Vector2 } from '../../../src/planningScheduler/classes/vector2';
+import { Warehouse } from '../../../src/shared/warehouse';
+import { Graph, Vertex } from '../../../src/shared/graph';
+import { Vector2 } from '../../../src/shared/vector2';
 import { Forklift } from '../../../src/planningScheduler/classes/forklift';
-import { Order, OrderTypes } from '../../../src/planningScheduler/classes/order';
+import { Order, OrderTypes } from '../../../src/shared/order';
 
 function checkOrder(result: Order | null, expected: Order | null) {
     if (expected !== null) {

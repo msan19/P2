@@ -1,6 +1,6 @@
 import { DataContainer } from "./classes/dataContainer";
-import { Route, RouteSet } from "./classes/route";
-import { Order } from "./classes/order";
+import { Route, RouteSet } from "../shared/route";
+import { Order } from "../shared/order";
 
 
 export class RouteScheduler {

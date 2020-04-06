@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import 'mocha';
-import { Warehouse } from '../../../src/planningScheduler/classes/warehouse';
-import { Graph, Vertex } from '../../../src/planningScheduler/classes/graph';
-import { Vector2 } from '../../../src/planningScheduler/classes/vector2';
+import { Warehouse } from '../../../src/shared/warehouse';
+import { Graph, Vertex } from '../../../src/shared/graph';
+import { Vector2 } from '../../../src/shared/vector2';
 
 function checkWarehouse(result: any, expected: Warehouse | null) {
     if (expected !== null) {
