@@ -1,39 +1,15 @@
 import { Forklift } from "./forklift";
 import { DataContainer } from "./dataContainer";
 import { IncomingMessage, ServerResponse, Server } from "http";
+import * as WebSocket from "ws";
+import { Socket } from "net";
 import { Warehouse } from "./warehouse";
 import { Graph } from "./graph";
 import { Order } from "./order";
 
+import { getJson } from "../../shared/webUtilities";
 
-function getEntireString(request: IncomingMessage): Promise<string> {
-    return new Promise((resolve: (dataString: string) => void, reject: (reason: string) => void) => {
-        let body = "";
-        request.on("data", (data: Buffer) => {
-            body += data;
-        });
-        request.on("end", () => {
-            resolve(body);
-        });
-    });
-}
 
-function getJson(request: IncomingMessage): Promise<object> {
-    return getEntireString(request)
-        .then((str: string) => {
-            return new Promise((resolve: (value: object) => void, reject: () => void) => {
-                let data;
-                try {
-                    data = JSON.parse(str);
-                } catch {
-                    reject();
-                }
-                if (typeof (data) === "object") {
-                    resolve(data);
-                }
-            });
-        });
-}
 
 function hasId(element): boolean {
     return typeof (element) === "string" && element.length > 0;
@@ -57,7 +33,12 @@ function returnJson(response: ServerResponse, obj: any) {
 }
 
 
-interface IController { [key: string]: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]) => void; };
+interface IHttpMethod { (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void; }
+interface IController { [key: string]: IHttpMethod; };
+
+//interface IHttpUpgrade { (request: IncomingMessage, webSocket: WebSocket, parsedUrl: string[]): void; }
+//interface IHttpUpgrade { (request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void; }
+interface ISocketController { (socketServer: WebSocket.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void; }
 
 
 export class Handler {
@@ -193,6 +174,64 @@ export class Handler {
                 } else {
                     returnNotFound(request, response);
                 }
+            }
+        }
+    };
+    socketControllers: { [key: string]: ISocketController; } = {
+        // /forklifts/{guid}/intiate
+        //     forklifts: (socketServer: WebSocket.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void => {
+        //         let id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
+        //         if (id !== null && parsedUrl[3] === "initiate") {
+        //             getJson(request)
+        //                 .then((obj) => {
+        //                     let forklift = Forklift.parse(obj);
+        //                     if (forklift !== null) {
+        //                         socketServer.handleUpgrade(request, socket, head, (ws: WebSocket) => {
+        //                             forklift.socket = ws;
+        //                             this.data.addForklift(forklift);
+        //                             ws.send('HTTP/1.1 101 Web Socket Protocol Handshake\r\n' +
+        //                                 'Upgrade: WebSocket\r\n' +
+        //                                 'Connection: Upgrade\r\n' +
+        //                                 '\r\n');
+        //                         });
+        //                     } else {
+        //                         if (this.data.forklifts[forklift.id] === null) {
+        //                             // 400
+        //                             socket.write("Invalid forklift");
+        //                             socket.destroy();
+        //                         } else {
+        //                             ///TODO: This will cause trouble if forklift reconnects
+        //                             // 401
+        //                             socket.write("Forklift already initiated");
+        //                             socket.destroy();
+        //                         }
+        //                     }
+        //                 }).catch(() => {
+        //                     // 402
+        //                     socket.write("Invalid JSON");
+        //                     socket.destroy();
+        //                 });
+        //         } else {
+        //             // 404
+        //             socket.write("Upgrade-Method not found for url");
+        //             socket.destroy();
+        //         }
+        //     }
+        // },
+        forklifts: (socketServer: WebSocket.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void => {
+            let id = hasId(parsedUrl[2]) ? parsedUrl[2] : null;
+            if (id !== null && parsedUrl[3] === "initiate") {
+                socketServer.handleUpgrade(request, socket, head, (ws: WebSocket) => {
+                    let forklift = new Forklift(id, ws);
+                    this.data.addForklift(forklift);
+                    ws.send('HTTP/1.1 101 Web Socket Protocol Handshake\r\n' +
+                        'Upgrade: WebSocket\r\n' +
+                        'Connection: Upgrade\r\n' +
+                        '\r\n');
+                });
+            } else {
+                // 404
+                socket.destroy();
             }
         }
     };

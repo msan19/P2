@@ -1,7 +1,11 @@
 import { WebServer } from "../../shared/webServer";
 import { Handler } from "./handler";
 import { DataContainer } from "./dataContainer";
+import { Forklift } from "./forklift";
 import * as http from "http";
+
+import * as net from "net";
+import * as WebSocket from "ws";
 
 export class WebServerPlanningScheduler extends WebServer {
     handler: Handler;
@@ -13,7 +17,6 @@ export class WebServerPlanningScheduler extends WebServer {
         this.data = data;
 
         this.createServer();
-
     }
 
     createServer() {
@@ -37,5 +40,26 @@ export class WebServerPlanningScheduler extends WebServer {
                 response.end();
             }
         });
+
+        this.server.on("upgrade", (request: http.IncomingMessage, socket: net.Socket, head: Buffer) => {
+            console.log("web-socket from: " + request.url);
+
+            let parsedUrl = request.url.split("/");
+            let socketController = this.handler.socketControllers[parsedUrl[1]];
+            if (socketController) {
+                if (typeof (socketController) === "function") {
+
+                    socketController(this.webSocket, request, socket, head, parsedUrl);
+                } else {
+                    //response.writeHead(404, `Method: '${request.url}' invalid for Url: '${request.url}'`);
+                    //response.end();
+                }
+            } else {
+                //response.writeHead(404, `Url: '${request.url}' not found`);
+                //response.end();
+            }
+
+        });
+
     }
 }
