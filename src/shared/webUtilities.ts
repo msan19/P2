@@ -12,19 +12,23 @@ export function getEntireString(incomingMessage: IncomingMessage): Promise<strin
     });
 }
 
+export function JsonTryParse(str: string): object | null {
+    let obj;
+    try {
+        obj = JSON.parse(str);
+    } catch {
+        return null;
+    }
+    return obj;
+}
+
 export function getJson(incomingMessage: IncomingMessage): Promise<object> {
     return this.getEntireString(incomingMessage)
         .then((str: string) => {
             return new Promise((resolve: (value: object) => void, reject: () => void) => {
-                let data;
-                try {
-                    data = JSON.parse(str);
-                } catch {
-                    reject();
-                }
-                if (typeof (data) === "object") {
-                    resolve(data);
-                }
+                let data = JsonTryParse(str);
+                if (data !== null) resolve(data);
+                else reject();
             });
         });
 }
