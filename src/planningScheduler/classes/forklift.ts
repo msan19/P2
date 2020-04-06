@@ -19,7 +19,7 @@ export class Forklift {
     state: ForkliftStates;
     palletId: string;
     routes: Route[];
-    orders: Order[];
+    orders: { [key: string]: Order; };
     private _socket: WebSocket;
 
     constructor(id: string, socket: WebSocket) {
@@ -83,12 +83,22 @@ export class Forklift {
             this.position = parsedPos;
         }
 
-        if (typeof (obj.state) === "number" && Object.keys(Forklift.).includes(obj.type)) {
-
+        if (typeof (obj.state) === "number" && Object.keys(Forklift.states).includes(obj.type)) {
+            this.state = obj.state;
         }
 
-        // Update the forklift
+        if (typeof (obj.palletId) === "string" && obj.palletId.length > 0) {
+            this.palletId = obj.palletId;
+        }
 
-        return "hello";
+        if (typeof (obj.orders) === "object" && obj.orders !== null) {
+            this.orders = obj.orders;
+        }
+
+        if (typeof (obj.routes) === "object" && obj.routes !== null) {
+            this.routes = obj.routes;
+        }
+
+        return "succes";
     }
 }
