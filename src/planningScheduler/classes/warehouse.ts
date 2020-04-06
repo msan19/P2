@@ -11,6 +11,11 @@ export class Warehouse {
     }
 
     static parse(obj: any): Warehouse | null {
-        return null;
+        let parsedGraph: Graph = Graph.parse(obj.graph);
+        if (parsedGraph === null) return null;
+
+        if (typeof (obj.forkliftSpeed) !== "number") return null;
+
+        return new Warehouse(parsedGraph, obj.forkliftSpeed);
     }
 }

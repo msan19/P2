@@ -125,7 +125,7 @@ export class Handler {
             POST: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
                 getJson(request)
                     .then((obj) => {
-                        let order = Order.parse(obj);
+                        let order = Order.parse(obj, this.data);
                         if (order !== null) {
                             this.data.addOrder(order);
                             returnStatus(response, 200, "Success");
