@@ -25,7 +25,7 @@ export class Order {
 
     static parse(obj: any, data: DataContainer): Order | null {
         // Check for types of necessary fields
-        if (typeof (obj.type) !== "object") return null;
+        if (typeof (obj.type) !== "object" || obj.type === null) return null;
         if (typeof (obj.forkliftId) !== "string") return null;
         if (typeof (obj.palletId) !== "string") return null;
         if (typeof (obj.startVertexId) !== "string") return null;
