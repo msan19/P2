@@ -34,9 +34,9 @@ export class Route {
     routeId: string;
     orderId: string;
     status: RouteStatus;
-    instructions: Instruction;
+    instructions: Instruction[];
 
-    constructor(routeId: string, orderId: string, status: RouteStatus, instructions: Instruction) {
+    constructor(routeId: string, orderId: string, status: RouteStatus, instructions: Instruction[]) {
         this.routeId = routeId;
         this.orderId = orderId;
         this.status = status;

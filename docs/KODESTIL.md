@@ -188,3 +188,5 @@ function getJson(request: IncomingMessage): Promise<object> {
         });
 }
 ```
+
+## Symbolske konstanter i all caps
