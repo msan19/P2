@@ -5,35 +5,9 @@ import { Warehouse } from "./warehouse";
 import { Graph } from "./graph";
 import { Order } from "./order";
 
+import { getJson } from "../../shared/webUtilities";
 
-function getEntireString(request: IncomingMessage): Promise<string> {
-    return new Promise((resolve: (dataString: string) => void, reject: (reason: string) => void) => {
-        let body = "";
-        request.on("data", (data: Buffer) => {
-            body += data;
-        });
-        request.on("end", () => {
-            resolve(body);
-        });
-    });
-}
 
-function getJson(request: IncomingMessage): Promise<object> {
-    return getEntireString(request)
-        .then((str: string) => {
-            return new Promise((resolve: (value: object) => void, reject: () => void) => {
-                let data;
-                try {
-                    data = JSON.parse(str);
-                } catch {
-                    reject();
-                }
-                if (typeof (data) === "object") {
-                    resolve(data);
-                }
-            });
-        });
-}
 
 function hasId(element): boolean {
     return typeof (element) === "string" && element.length > 0;
