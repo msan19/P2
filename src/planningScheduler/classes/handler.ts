@@ -114,7 +114,7 @@ export class Handler {
                             returnStatus(response, 400, "Invalid Order");
                         }
                     }).catch(() => {
-                        returnStatus(response, 402, "Invalid JSON");
+                        returnStatus(response, 400, "Invalid JSON");
                     });
             }
         },
