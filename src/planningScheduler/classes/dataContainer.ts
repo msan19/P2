@@ -18,8 +18,8 @@ export class DataContainer {
     }
 
     addOrder(order: Order): boolean {
-        if (Object.keys(this.orders).includes(order.orderId)) return false;
-        this.orders[order.orderId] = order;
+        if (Object.keys(this.orders).includes(order.id)) return false;
+        this.orders[order.id] = order;
         return true;
     }
     ///TODO: Add to diagrams

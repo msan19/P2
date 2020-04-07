@@ -8,7 +8,7 @@ enum OrderTypes {
 
 export class Order {
     static types = OrderTypes;
-    orderId: string;
+    id: string;
     type: OrderTypes;
     forkliftId: string;
     palletId: string;
@@ -16,7 +16,7 @@ export class Order {
     endVertexId: string;
 
     constructor(orderId: string, type: OrderTypes, forkliftId: string, palletId: string, startVertexId: string, endVertexId: string) {
-        this.orderId = orderId;
+        this.id = orderId;
         this.type = type;
         this.forkliftId = forkliftId;
         this.palletId = palletId;
