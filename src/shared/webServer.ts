@@ -22,7 +22,7 @@ export class WebServer {
             let parsedUrl = request.url.split("/");
             console.log(`${request.url}, METHOD = ${request.method}`);
 
-            let controller = controllers[parsedUrl[1]];
+            let controller = controllers[parsedUrl[1]].toLowerCase();
             if (controller) {
                 if (typeof (controller[request.method]) === "function") {
                     controller[request.method](request, response, parsedUrl);
