@@ -20,22 +20,24 @@ const options = {
     }
 };
 
-let req = http.request(options, (res) => {
-    console.log(`STATUS: ${res.statusCode}`);
-    res.setEncoding('utf8');
-    res.on('data', (chunk) => {
-        console.log(`BODY: ${chunk}`);
+setTimeout(() => {
+    let req = http.request(options, (res) => {
+        console.log(`STATUS: ${res.statusCode}`);
+        res.setEncoding('utf8');
+        res.on('data', (chunk) => {
+            console.log(`BODY: ${chunk}`);
+        });
+        res.on('end', () => {
+            console.log('No more data in response.');
+        });
     });
-    res.on('end', () => {
-        console.log('No more data in response.');
+
+    req.on('error', (e) => {
+        console.error(`problem with request: ${e.message}`);
     });
-});
 
-req.on('error', (e) => {
-    console.error(`problem with request: ${e.message}`);
-});
+    req.write(graph);
+    req.end();
 
-req.write(graph);
-req.end();
-
-console.log("Graph should be sent");
+    console.log("Graph sent");
+}, 2000);
