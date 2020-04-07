@@ -90,8 +90,31 @@ export class Forklift extends ForkliftInfo {
     processRoutes() {
         let nextInstruction = this.getNextInstruction();
         if (nextInstruction !== null) {
-            setTimeout(this.processRoutes, this.estimateInstructionDuration(nextInstruction));
+            this.processInstruction(nextInstruction)
+                .then(this.processRoutes);
         }
+    }
+
+    processInstruction(instruction: Instruction): Promise<void> {
+        return new Promise((resolve: () => void) => {
+
+            switch (instruction.type) {
+                case Instruction.types.charge:
+                    break;
+                case Instruction.types.loadPallet:
+                    break;
+                case Instruction.types.move:
+                    break;
+                case Instruction.types.sendFeedback:
+                    break;
+                case Instruction.types.unloadPallet:
+                    break;
+                case Instruction.types.wait:
+                    break;
+            }
+
+            setTimeout(() => { resolve(); }, this.estimateInstructionDuration(instruction));
+        });
     }
 
     estimateInstructionDuration(instruction: Instruction) {
