@@ -20,13 +20,13 @@
 ## if/else kæder
 
 ```Typescript
-if (denneLinjeErMereEnd100Tegn) {
+if (thisLine.characterCount > 100) {
     // something
 }
 ```
 
 ```Typescript
-if (denneLinjeErMindreEnd100Tegn) // something
+if (thisLine.characterCount <= 100) // something
 ```
 
 ```Typescript
