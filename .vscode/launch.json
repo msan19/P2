@@ -81,7 +81,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Mocha All",
+            "name": "Mocha PlanningScheduler",
             "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
             "args": [
                 "--timeout",
@@ -89,7 +89,7 @@
                 "--colors",
                 "--require",
                 "ts-node/register",
-                "${workspaceFolder}/test/**/*.ts"
+                "${workspaceFolder}/test/planningScheduler/**/*.ts"
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
