@@ -17,6 +17,7 @@ enum InstructionType {
 }
 
 export class Instruction {
+    static types = InstructionType;
     type: InstructionType;
     vertexId: string;
     palletId: string;
