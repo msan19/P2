@@ -19,7 +19,17 @@
 
 ## if/else kæder
 
-```javascript
+```Typescript
+if (thisLine.characterCount > 100) {
+    // something
+}
+```
+
+```Typescript
+if (thisLine.characterCount <= 100) // something
+```
+
+```Typescript
 if (logicalExpression) {
     // something
 } else if (logicalExpression) {
