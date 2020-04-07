@@ -7,7 +7,7 @@ import { Warehouse } from '../../../src/shared/warehouse';
 import { Graph, Vertex } from '../../../src/shared/graph';
 import { Vector2 } from '../../../src/shared/vector2';
 import { Forklift } from '../../../src/planningScheduler/classes/forklift';
-import { Order, OrderTypes } from '../../../src/shared/order';
+import { Order } from '../../../src/shared/order';
 
 function checkOrder(result: Order | null, expected: Order | null) {
     if (expected !== null) {
@@ -40,7 +40,7 @@ function testParse() {
     data.forklifts = forklifts;
 
     describe(`Test of valid order`, () => {
-        let order = new Order("O4", OrderTypes.moveForklift, "F2", "P4", "N23", "N29");
+        let order = new Order("O4", Order.types.moveForklift, "F2", "P4", "N23", "N29");
         let result = Order.parse(order, data);
         let expected = order;
 
@@ -49,7 +49,7 @@ function testParse() {
     });
 
     describe(`Test of invalid order vertex id`, () => {
-        let order = new Order("O4", OrderTypes.moveForklift, "F2", "P4", "N24", "N29");
+        let order = new Order("O4", Order.types.moveForklift, "F2", "P4", "N24", "N29");
         let result = Order.parse(order, data);
         let expected = null;
 
@@ -65,7 +65,7 @@ function testParse() {
     });
 
     describe(`Test of valid order type`, () => {
-        let order = new Order("O4", OrderTypes.charge, "F2", "P4", "N23", "N29");
+        let order = new Order("O4", Order.types.charge, "F2", "P4", "N23", "N29");
         order.type = null;
         let result = Order.parse(order, data);
         let expected = null;

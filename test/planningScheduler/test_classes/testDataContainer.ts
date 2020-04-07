@@ -38,37 +38,42 @@ function testAddOrder() {
     // Adding an order
     describe(`When an order is added`, () => {
         let data = new DataContainer();
-        data.addOrder(new Order(Order.types.moveForklift, "awd", "pallet1", "start1", "slut1"));
+        let orderId = "sfgojikdfjoi";
+        data.addOrder(new Order("sfgojikdfjoi", Order.types.moveForklift, "awd", "pallet1", "start1", "slut1"));
 
-        it(`Order number 1's ${Object.keys(Order)[0]} should be ${Order.types.moveForklift}`, () => {
-            expect(data.orders[0].type).to.equal(Order.types.moveForklift);
+        it(`Order number 1's ${Object.keys(data.orders[orderId])[0]} should be sfgojikdfjoi`, () => {
+            expect(data.orders[orderId].id).to.equal("sfgojikdfjoi");
         });
 
-        it(`Order number 1's ${Object.keys(data.orders[0])[1]} should be "awd"`, () => {
-            expect(data.orders[0].forkliftId).to.equal("awd");
+        it(`Order number 1's ${Object.keys(data.orders[orderId])[1]} should be ${Order.types.moveForklift}`, () => {
+            expect(data.orders[orderId].type).to.equal(Order.types.moveForklift);
         });
 
-        it(`Order number 1's ${Object.keys(data.orders[0])[2]} should be "pallet1"`, () => {
-            expect(data.orders[0].palletId).to.equal("pallet1");
+        it(`Order number 1's ${Object.keys(data.orders[orderId])[2]} should be "awd"`, () => {
+            expect(data.orders[orderId].forkliftId).to.equal("awd");
         });
 
-        it(`Order number 1's ${Object.keys(data.orders[0])[3]} should be "start1"`, () => {
-            expect(data.orders[0].startVertexId).to.equal("start1");
+        it(`Order number 1's ${Object.keys(data.orders[orderId])[3]} should be "pallet1"`, () => {
+            expect(data.orders[orderId].palletId).to.equal("pallet1");
         });
 
-        it(`Order number 1's ${Object.keys(data.orders[0])[4]} should be "slut1"`, () => {
-            expect(data.orders[0].endVertexId).to.equal("slut1");
+        it(`Order number 1's ${Object.keys(data.orders[orderId])[4]} should be "start1"`, () => {
+            expect(data.orders[orderId].startVertexId).to.equal("start1");
+        });
+
+        it(`Order number 1's ${Object.keys(data.orders[orderId])[5]} should be "slut1"`, () => {
+            expect(data.orders[orderId].endVertexId).to.equal("slut1");
         });
     });
 
     // Adding multiple orders
     describe(`When multiple orders are added`, () => {
         let data = new DataContainer();
-        data.addOrder(new Order(Order.types.moveForklift, "TF2", "P17", "N17", "N21"));
-        data.addOrder(new Order(Order.types.movePallet, "TF2", "P17", "N21", "N23"));
-        data.addOrder(new Order(Order.types.charge, "TF2", "", "N23", "C1"));
-        data.addOrder(new Order(Order.types.charge, "TF25", "", "", "C3"));
-        data.addOrder(new Order(Order.types.moveForklift, "TF25", "P4", "C3", "N21"));
+        data.addOrder(new Order("O0", Order.types.moveForklift, "TF2", "P17", "N17", "N21"));
+        data.addOrder(new Order("O1", Order.types.movePallet, "TF2", "P17", "N21", "N23"));
+        data.addOrder(new Order("O2", Order.types.charge, "TF2", "", "N23", "C1"));
+        data.addOrder(new Order("O3", Order.types.charge, "TF25", "", "", "C3"));
+        data.addOrder(new Order("O4", Order.types.moveForklift, "TF25", "P4", "C3", "N21"));
 
         // first order (Order.types.moveForklift, "TF2", "P17", "N17", "N21")
         describe(`The first order`, () => {
