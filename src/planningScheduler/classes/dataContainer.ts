@@ -5,15 +5,15 @@ import { Route } from "../../shared/route";
 
 export class DataContainer {
 
-    forklifts: Forklift[];
+    forklifts: { [key: string]: Forklift; };
     orders: { [key: string]: Order; };
-    routes: Route[];
+    routes: { [key: string]: Route; };
     warehouse: Warehouse;
 
     constructor() {
-        this.forklifts = [];
+        this.forklifts = {};
         this.orders = {};
-        this.routes = [];
+        this.routes = {};
         this.warehouse = null;
     }
 
