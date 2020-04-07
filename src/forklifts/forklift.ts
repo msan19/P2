@@ -80,12 +80,19 @@ export class Forklift extends ForkliftInfo {
     }
 
     getNextInstruction() {
-        // while no current route, or current route is empty instructions
-        while (this.currentRoute === null || this.currentRoute && this.currentRoute.instructions.length === 0) {
-            if (this.routes.length === 0) return null;
-            this.currentRoute = this.routes.shift();
+        // Current route has instructions to process
+        if (this.currentRoute && this.currentRoute.instructions.length > 0) {
+            return this.currentRoute.instructions.shift();
         }
-        return this.currentRoute.instructions.shift();
+        // No instructions in current route, try next route
+        else if (this.routes.length > 0) {
+            this.currentRoute = this.routes.shift();
+            return this.getNextInstruction();
+        }
+        // No more routes to try, return null
+        else {
+            return null;
+        }
     }
 
     processRoutes() {
