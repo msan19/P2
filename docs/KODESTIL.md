@@ -19,7 +19,17 @@
 
 ## if/else kæder
 
-```javascript
+```Typescript
+if (denneLinjeErMereEnd100Tegn) {
+    // something
+}
+```
+
+```Typescript
+if (denneLinjeErMindreEnd100Tegn) // something
+```
+
+```Typescript
 if (logicalExpression) {
     // something
 } else if (logicalExpression) {
