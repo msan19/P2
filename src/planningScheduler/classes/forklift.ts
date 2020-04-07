@@ -4,13 +4,14 @@ import { Vector2 } from "../../shared/vector2";
 import { ForkliftInfo } from "../../shared/forkliftInfo";
 
 export class Forklift extends ForkliftInfo {
-
+    routes: Route[];
     private _socket: WebSocket;
 
     constructor(id: string, socket: WebSocket) {
         super();
         this.id = id;
         this.socket = socket;
+        this.routes = [];
         this.state = Forklift.states.initiating;
     }
 
