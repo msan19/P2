@@ -1,35 +1,22 @@
 import * as WebSocket from "ws";
 import { Route } from "../../shared/route";
 import { Vector2 } from "../../shared/vector2";
-import { Order } from "../../shared/order";
+import { ForkliftInfo } from "../../shared/forkliftInfo";
 
-export enum ForkliftStates {
-    idle = 1,
-    hasOrder,
-    charging,
-    initiating
-}
+export class Forklift extends ForkliftInfo {
 
-export class Forklift {
-    static states = ForkliftStates;
-    id: string;
-    batteryStatus: number;
-    position: Vector2;
-    state: ForkliftStates;
-    palletId: string;
-    routes: Route[];
-    orders: { [key: string]: Order; };
     private _socket: WebSocket;
 
     constructor(id: string, socket: WebSocket) {
+        super();
         this.id = id;
         this.socket = socket;
-        this.state = ForkliftStates.initiating;
+        this.state = Forklift.states.initiating;
     }
 
     set socket(socket: WebSocket) {
-
         if (this.hasSocket()) this._socket.close();
+
         this._socket = socket;
         this._socket.on("message", (data: WebSocket.Data) => {
             console.log(data);
@@ -88,10 +75,6 @@ export class Forklift {
 
         if (typeof (obj.palletId) === "string" && obj.palletId.length > 0) {
             this.palletId = obj.palletId;
-        }
-
-        if (typeof (obj.orders) === "object" && obj.orders !== null) {
-            this.orders = obj.orders;
         }
 
         if (typeof (obj.routes) === "object" && obj.routes !== null) {

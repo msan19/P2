@@ -1,6 +1,6 @@
 import * as WebSocket from "ws";
 import { Route, Instruction } from "../shared/route";
-import { Forklift as ForkliftInfo } from "./../planningScheduler/classes/forklift";
+import { ForkliftInfo } from "./../shared/forkliftInfo";
 import { JsonTryParse } from "../shared/webUtilities";
 
 enum ForkliftMessageType {
@@ -22,7 +22,7 @@ export class ForkliftMessage {
 }
 
 
-export class Forklift {
+export class Forklift extends ForkliftInfo {
     id: string;
     socket: WebSocket;
     routes: Route[];
@@ -31,6 +31,7 @@ export class Forklift {
     currentRoute: Route;
 
     constructor(id: string, hostname: string, port: number) {
+        super();
         this.id = id;
 
         this.connect(hostname, port);
