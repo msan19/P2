@@ -8,11 +8,6 @@ enum ForkliftMessageType {
     getRoutes = "getRoutes",
     addRoute = "addRoute"
 }
-enum ForkliftStates {
-    idle = "idle",
-    hasOrder = "hasOrder",
-    charging = "charging"
-}
 
 export class ForkliftMessage {
     static Types = ForkliftMessageType;
@@ -23,12 +18,9 @@ export class ForkliftMessage {
 
 
 export class Forklift extends ForkliftInfo {
-    id: string;
     socket: WebSocket;
-    routes: Route[];
-    state: ForkliftStates;
-    batteryStatus: number;
     currentRoute: Route;
+    routes: Route[];
 
     constructor(id: string, hostname: string, port: number) {
         super();
