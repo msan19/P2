@@ -32,21 +32,30 @@ export class Instruction {
     }
 
     static parse(instruction: any): Instruction | null {
-        if (typeof (instruction.instrutionType) !== "number") return null;
-        if (typeof (instruction.vertexId) !== "string") return null;
-        if (typeof (instruction.palletId) !== "string") return null;
+
+        if (typeof (Instruction.types[instruction.type]) === "undefined") return null;
+
+        if (instruction.type === Instruction.types.loadPallet) {
+            if (typeof (instruction.palletId) !== "string" || instruction.palletId.length === 0) return null;
+        }
+
+        if (typeof (instruction.vertexId) !== "string" || instruction.vertexId.length === 0) return null;
+
         // Implement checking of valid ids?
         if (typeof (instruction.startTime) !== "number") return null;
-        return new Instruction(instruction.instrutionType, instruction.vertexId, instruction.palletId, instruction.startTime);
+        return new Instruction(instruction.type, instruction.vertexId, instruction.palletId, instruction.startTime);
     }
 
-    static parseMultiple(instructions: any[]): Instruction[] | null {
-        instructions.forEach(element => {
-            if (typeof (Instruction.parse(element)) === "object") return null;
-        });
+    static parseMultiple(instructions: any): Instruction[] | null {
+        if (!Array.isArray(instructions)) return null;
+        instructions = <any[]>instructions; // Typescript-specific casting to array
+
         let newInstructionSet: Instruction[] = [];
+
         instructions.forEach(element => {
-            newInstructionSet.push(element);
+            let newInstruction = Instruction.parse(element);
+            if (newInstruction === null) return null;
+            newInstructionSet.push(newInstruction);
         });
 
         return newInstructionSet;
