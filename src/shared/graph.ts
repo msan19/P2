@@ -131,6 +131,18 @@ export class Vertex {
 
         return tempVertex;
     }
+
+    static parseMultiple(vertices: Vertex[]): Vertex[] | null {
+        vertices.forEach(element => {
+            if (typeof (Vertex.parse(element)) === "object") return null;
+        });
+        let newVertices: Vertex[] = [];
+        vertices.forEach(element => {
+            newVertices.push(element);
+        });
+
+        return newVertices;
+    }
 }
 
 export class ScheduleItem {
