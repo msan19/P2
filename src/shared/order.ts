@@ -48,7 +48,7 @@ export class Order {
         if (!present) return null;
 
         // Check for valid type
-        if (!(Object.keys(Order.types).includes(Order.types[obj.type]))) return null;
+        if (typeof (Order.types[obj.type]) === "undefined") return null;
 
         return new Order(obj.id, obj.type, obj.forkliftId, obj.palletId, obj.startVertexId, obj.endVertexId);
     }
