@@ -1,43 +1,23 @@
 import { createGraph } from "./warehouse";
 import * as fs from "fs";
-import * as http from "http";
 import { Warehouse } from "../shared/warehouse";
+import { ApiCaller } from "../shared/apiCaller";
+import { Response } from "node-fetch";
 
 let warehouse = new Warehouse(createGraph(), 20);
 let graph = JSON.stringify(warehouse, null, 4);
-console.log(graph);
-fs.writeFileSync("./src/blackBox/graph.json", graph);
-console.log("Graph is written to file");
+//fs.writeFileSync("./src/blackBox/graph.json", graph);
 
-const options = {
-    hostname: "localhost",
-    port: 3000,
-    path: "/warehouse",
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-        "Content-Length": Buffer.byteLength(graph)
-    }
-};
+let api = new ApiCaller("localhost", 3000);
 
 setTimeout(() => {
-    let req = http.request(options, (res) => {
-        console.log(`STATUS: ${res.statusCode}`);
-        res.setEncoding('utf8');
-        res.on('data', (chunk) => {
-            console.log(`BODY: ${chunk}`);
-        });
-        res.on('end', () => {
-            console.log('No more data in response.');
-        });
+    api.sendWarehouse(warehouse).then((response: Response) => {
+        if (response.status === 200) {
+            console.log("Warehouse set");
+        } else {
+            console.log(`Error(${response.status}): ${response.body}`);
+        }
+    }).catch(() => {
+        console.log("Failed to set warehouse");
     });
-
-    req.on('error', (e) => {
-        console.error(`problem with request: ${e.message}`);
-    });
-
-    req.write(graph);
-    req.end();
-
-    console.log("Graph sent");
 }, 2000);
