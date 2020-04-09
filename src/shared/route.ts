@@ -1,4 +1,4 @@
-import { Vertex } from "./graph";
+import { Vertex, Graph } from "./graph";
 
 enum RouteStatus {
     queued = 1,
@@ -47,11 +47,11 @@ export class Route {
 export class RouteSet {
     routes: Route[];
     priorities: string[];
-    graphVertices: Vertex[];
+    graph: Graph;
 
-    constructor(routes: Route[], priorities: string[], graphVertices: Vertex[]) {
+    constructor(routes: Route[], priorities: string[], graph: Graph) {
         this.routes = routes;
         this.priorities = priorities;
-        this.graphVertices = graphVertices;
+        this.graph = graph;
     }
 }
