@@ -1,18 +1,21 @@
-// TO DO 
-
+import * as ws from "ws";
 import { WebServer } from "../shared/webServer";
+import { WebSocket } from "../shared/webSocket";
 import { WebClientHandler } from "./webClientHandler";
-import * as http from "http";
 
-export class WebServerClient extends WebServer { // RENAME!!! 
+export class WebServerClient extends WebServer {
     handler: WebClientHandler;
+    apiSocket: WebSocket;
 
-    constructor(hostname: string, port: number) {
+    constructor(hostname: string, port: number, apiHostname: string, apiPort: number) {
         super(hostname, port);
-        this.handler = new WebClientHandler();
 
-        this.createServer({}, {});
+        let socket = new ws(`ws://${apiHostname}:${apiPort}/subscribe`);
+        socket.on("open", () => {
+            this.apiSocket = new WebSocket(socket);
+            this.handler = new WebClientHandler(this.apiSocket);
+            this.createServer(this.handler.controllers, this.handler.socketControllers);
+            this.run();
+        });
     }
-
-
 }

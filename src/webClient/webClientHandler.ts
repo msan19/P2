@@ -1,16 +1,39 @@
-import { IncomingMessage, ServerResponse, Server } from "http";
-
-import { getJson, returnJson, returnNotFound, returnStatus, passId, returnInvalidJson } from "../shared/webUtilities";
-
+import { IncomingMessage, ServerResponse } from "http";
+import * as ws from "ws";
+import { Socket } from "net";
+import { WebSocket } from "../shared/webSocket";
 
 
 interface IController { [key: string]: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]) => void; };
+interface ISocketController { (socketServer: ws.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void; }
 
 
 export class WebClientHandler {
+    webSocket: WebSocket;
+    constructor(webSocket: WebSocket) {
+        this.webSocket = webSocket;
+    }
 
     controllers: { [key: string]: IController; } = {
 
+    };
+    socketControllers: { [key: string]: ISocketController; } = {
+        subscribe: (socketServer: ws.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void => {
+
+            socketServer.handleUpgrade(request, socket, head, (ws: ws) => {
+                let webSocket = new WebSocket(ws);
+                webSocket.accept();
+                webSocket["id"] = "web-browser";
+                webSocket.listenToSocket(this.webSocket, WebSocket.packageTypes.forkliftInfo);
+                webSocket.listenToSocket(this.webSocket, WebSocket.packageTypes.forkliftInfos);
+                webSocket.listenToSocket(this.webSocket, WebSocket.packageTypes.route);
+                webSocket.listenToSocket(this.webSocket, WebSocket.packageTypes.routes);
+                webSocket.listenToSocket(this.webSocket, WebSocket.packageTypes.order);
+                webSocket.listenToSocket(this.webSocket, WebSocket.packageTypes.orders);
+                webSocket.listenToSocket(this.webSocket, WebSocket.packageTypes.warehouse);
+            });
+
+        }
     };
 };
 

@@ -1,13 +1,16 @@
 import { Forklift } from "./forklift";
 import { DataContainer } from "./dataContainer";
 import { IncomingMessage, ServerResponse } from "http";
-import * as WebSocket from "ws";
+import * as ws from "ws";
+import { WebSocket } from "../../shared/webSocket";
 import { Socket } from "net";
 import { Warehouse } from "../../shared/warehouse";
 import { Graph } from "../../shared/graph";
 import { Order } from "../../shared/order";
 
 import { getJson, returnJson, returnNotFound, returnStatus, passId, returnInvalidJson, returnSuccess } from "../../shared/webUtilities";
+import { ForkliftInfo } from "../../shared/forkliftInfo";
+import { Route } from "../../shared/route";
 
 
 interface IHttpMethod { (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void; }
@@ -15,7 +18,7 @@ interface IController { [key: string]: IHttpMethod; };
 
 //interface IHttpUpgrade { (request: IncomingMessage, webSocket: WebSocket, parsedUrl: string[]): void; }
 //interface IHttpUpgrade { (request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void; }
-interface ISocketController { (socketServer: WebSocket.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void; }
+interface ISocketController { (socketServer: ws.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void; }
 
 
 export class Handler {
@@ -41,7 +44,7 @@ export class Handler {
                     .then((obj) => {
                         let warehouse = Warehouse.parse(obj);
                         if (warehouse !== null) {
-                            this.data.warehouse = warehouse;
+                            this.data.setWarehouse(warehouse);
                             returnSuccess(response);
                         } else {
                             if (Graph.parse(obj["graph"]) === null) {
@@ -156,21 +159,43 @@ export class Handler {
     };
     socketControllers: { [key: string]: ISocketController; } = {
         // /forklifts/{guid}/intiate
-        forklifts: (socketServer: WebSocket.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void => {
+        forklifts: (socketServer: ws.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void => {
             let id = passId(parsedUrl[2]) ? parsedUrl[2] : null;
             if (id !== null && parsedUrl[3] === "initiate") {
-                socketServer.handleUpgrade(request, socket, head, (ws: WebSocket) => {
-                    let forklift = new Forklift(id, ws);
+                socketServer.handleUpgrade(request, socket, head, (ws: ws) => {
+                    let webSocket = new WebSocket(ws);
+                    let forklift = new Forklift(id, webSocket);
                     this.data.addForklift(forklift);
-                    ws.send('HTTP/1.1 101 Web Socket Protocol Handshake\r\n' +
-                        'Upgrade: WebSocket\r\n' +
-                        'Connection: Upgrade\r\n' +
-                        '\r\n');
+                    webSocket.accept();
                 });
             } else {
                 // 404
                 socket.destroy();
             }
+        },
+        // /subscribe
+        subscribe: (socketServer: ws.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void => {
+            socketServer.handleUpgrade(request, socket, head, (ws: ws) => {
+                let webSocket = new WebSocket(ws);
+                webSocket.accept();
+
+                let setWarehouse = (warehouse: Warehouse) => { webSocket.sendWarehouse(warehouse); };
+                this.data.on(DataContainer.events.setWarehouse, setWarehouse);
+
+                let addForkliftInfo = (forklift: ForkliftInfo) => { webSocket.sendForkliftInfo(forklift); };
+                this.data.on(DataContainer.events.addForklift, addForkliftInfo);
+
+                let lockRoute = (route: Route) => { webSocket.sendRoute(route); };
+                this.data.on(DataContainer.events.lockRoute, lockRoute);
+
+                webSocket.on("close", () => {
+                    this.data.removeListener(DataContainer.events.setWarehouse, setWarehouse);
+                    this.data.removeListener(DataContainer.events.addForklift, addForkliftInfo);
+                    this.data.removeListener(DataContainer.events.lockRoute, lockRoute);;
+                });
+
+
+            });
         }
     };
 };

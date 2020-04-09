@@ -1,4 +1,4 @@
-import * as WebSocket from "ws";
+import { WebSocket } from "../../shared/webSocket";
 import { Route } from "../../shared/route";
 import { Vector2 } from "../../shared/vector2";
 import { ForkliftInfo } from "../../shared/forkliftInfo";
@@ -19,8 +19,8 @@ export class Forklift extends ForkliftInfo {
         if (this.hasSocket()) this._socket.close();
 
         this._socket = socket;
-        this._socket.on("message", (data: WebSocket.Data) => {
-            console.log(data);
+        this._socket.on(WebSocket.packageTypes.forkliftInfo, (forkliftInfo: ForkliftInfo) => {
+            console.log(forkliftInfo);
         });
     }
 
@@ -32,16 +32,9 @@ export class Forklift extends ForkliftInfo {
         return this.hasSocket();
     }
 
-    private sendStr(str: string): void {
-        this._socket.send(str);
-    }
-
-    private sendObj(obj: any): void {
-        this.sendStr(JSON.stringify(obj));
-    }
 
     sendRoute(route: Route): void {
-        this.sendObj(route);
+        this._socket.sendRoute(route);
     }
 
     static parse(obj: any): Forklift | null {
