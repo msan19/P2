@@ -7,13 +7,13 @@ export class WebServerClient extends WebServer {
     handler: WebClientHandler;
     apiSocket: WebSocket;
 
-    constructor(hostname: string, port: number, apiHostname: string, apiPort: number) {
+    constructor(hostname: string, port: number, apiHostname: string, apiPort: number, maxClient: number) {
         super(hostname, port);
 
         let socket = new ws(`ws://${apiHostname}:${apiPort}/subscribe`);
         socket.on("open", () => {
             this.apiSocket = new WebSocket(socket);
-            this.handler = new WebClientHandler(this.apiSocket);
+            this.handler = new WebClientHandler(this.apiSocket, maxClient);
             this.createServer(this.handler.controllers, this.handler.socketControllers);
             this.run();
         });
