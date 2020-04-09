@@ -34,10 +34,9 @@ function testParse() {
         "N31": new Vertex("N29", new Vector2(40, 40))
     }), 20);
     // Need fix with websockets (null seems to work?)
-    let forklifts = [new Forklift("F2", new WebSocket(null)), new Forklift("F5", new WebSocket(null))];
-
+    data.forklifts["F2"] = new Forklift("F2", new WebSocket(null));
+    data.forklifts["F5"] = new Forklift("F5", new WebSocket(null));
     data.warehouse = warehouse;
-    data.forklifts = forklifts;
 
     describe(`Test of valid order`, () => {
         let order = new Order("O4", Order.types.moveForklift, "F2", "P4", "N23", "N29");

@@ -8,11 +8,6 @@ enum ForkliftMessageType {
     getRoutes = "getRoutes",
     addRoute = "addRoute"
 }
-enum ForkliftStates {
-    idle = "idle",
-    hasOrder = "hasOrder",
-    charging = "charging"
-}
 
 export class ForkliftMessage {
     static Types = ForkliftMessageType;
@@ -23,12 +18,9 @@ export class ForkliftMessage {
 
 
 export class Forklift extends ForkliftInfo {
-    id: string;
     socket: WebSocket;
-    routes: Route[];
-    state: ForkliftStates;
-    batteryStatus: number;
     currentRoute: Route;
+    routes: Route[];
 
     constructor(id: string, hostname: string, port: number) {
         super();
@@ -80,19 +72,49 @@ export class Forklift extends ForkliftInfo {
     }
 
     getNextInstruction() {
-        // while no current route, or current route is empty instructions
-        while (this.currentRoute === null || this.currentRoute && this.currentRoute.instructions.length === 0) {
-            if (this.routes.length === 0) return null;
-            this.currentRoute = this.routes.shift();
+        // Current route has instructions to process
+        if (this.currentRoute && this.currentRoute.instructions.length > 0) {
+            return this.currentRoute.instructions.shift();
         }
-        return this.currentRoute.instructions.shift();
+        // No instructions in current route, try next route
+        else if (this.routes.length > 0) {
+            this.currentRoute = this.routes.shift();
+            return this.getNextInstruction();
+        }
+        // No more routes to try, return null
+        else {
+            return null;
+        }
     }
 
     processRoutes() {
         let nextInstruction = this.getNextInstruction();
         if (nextInstruction !== null) {
-            setTimeout(this.processRoutes, this.estimateInstructionDuration(nextInstruction));
+            this.processInstruction(nextInstruction)
+                .then(this.processRoutes);
         }
+    }
+
+    processInstruction(instruction: Instruction): Promise<void> {
+        return new Promise((resolve: () => void) => {
+
+            switch (instruction.type) {
+                case Instruction.types.charge:
+                    break;
+                case Instruction.types.loadPallet:
+                    break;
+                case Instruction.types.move:
+                    break;
+                case Instruction.types.sendFeedback:
+                    break;
+                case Instruction.types.unloadPallet:
+                    break;
+                case Instruction.types.wait:
+                    break;
+            }
+
+            setTimeout(() => { resolve(); }, this.estimateInstructionDuration(instruction));
+        });
     }
 
     estimateInstructionDuration(instruction: Instruction) {

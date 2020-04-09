@@ -15,5 +15,4 @@ export class ForkliftInfo {
     position: Vector2;
     state: ForkliftStates;
     palletId: string;
-    routes: Route[];
 }
