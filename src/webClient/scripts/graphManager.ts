@@ -1,4 +1,4 @@
-const container: string = 'sigma-container';
+const container: string = 'sigmaContainer';
 
 const data = {
     "graph": {
