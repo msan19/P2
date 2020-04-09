@@ -24,10 +24,24 @@ export class RouteScheduler {
         return null;
     }
 
-    findBestRouteSet(routeSets: RouteSet[]): RouteSet {
+    getBestRouteSet(routeSets: RouteSet[]): RouteSet {
         // TO DO
         return null;
     }
+
+    getLastPos(forkliftId: string, routeSet: RouteSet): string {
+        //TODO
+        return null;
+    }
+
+    assignForkliftToOrder(order: Order): string {
+        // TODO 
+        return null;
+    }
+
+    getOptimalRoute(forkliftId: string, routeSets: RouteSet, order: Order): void {
+        // TODO
+    };
 
     getStartTime(orderId: string): number {
         // TO DO 
@@ -36,7 +50,7 @@ export class RouteScheduler {
 
     addRouteToGraph(route: Route): void {
         // TO DO 
-    }
+    };
 
     update(data: DataContainer): void {
         // TO DO 
