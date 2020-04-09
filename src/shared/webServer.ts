@@ -21,7 +21,7 @@ export class WebServer {
         this.server = http.createServer((request: http.IncomingMessage, response: http.ServerResponse): void => {
             request.method = request.method.toUpperCase();
             let parsedUrl = request.url.split("/");
-            console.log(`${request.url}, METHOD = ${request.method}`);
+            console.log(`${request.method}: ${request.url}`);
 
             let controller = controllers[parsedUrl[1].toLowerCase()];
             if (controller) {
