@@ -1,6 +1,7 @@
 import * as http from "http";
 import * as WebSocket from "ws";
 import * as net from "net";
+import { getStaticFile } from "./webUtilities";
 
 export class WebServer {
     server: http.Server;
@@ -31,8 +32,20 @@ export class WebServer {
                     response.end();
                 }
             } else {
-                response.writeHead(404, `Url: '${request.url}' not found`);
-                response.end();
+                let path = request.url;
+                if (path === "" || path === "/") path = "index.html";
+                getStaticFile("src/webClient/public", path)
+                    .then((fileContents) => {
+                        response.writeHead(200, `ok`);
+                        response.write(fileContents);
+                    })
+                    .catch(() => {
+                        response.writeHead(404, `Url: '${request.url}' not found`);
+                        response.write(`Url: '${request.url}' not found`);
+                    })
+                    .finally(() => {
+                        response.end();
+                    });
             }
         });
 

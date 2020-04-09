@@ -1,4 +1,6 @@
 import { IncomingMessage, ServerResponse } from "http";
+import * as path from "path";
+import * as fs from "fs";
 
 export function getEntireString(incomingMessage: IncomingMessage): Promise<string> {
     return new Promise((resolve: (dataString: string) => void, reject: (reason: string) => void) => {
@@ -61,4 +63,27 @@ export function returnJson(response: ServerResponse, obj: any) {
     response.writeHead(200);
     response.write(JSON.stringify(obj));
     response.end();
+}
+
+export function sanitizePath(publicPath: string, requestPath: string): string {
+    return path.normalize(`${publicPath}/${path.normalize(requestPath)}`);
+}
+
+export function getStaticFile(publicPath: string, requestPath: string): Promise<string> {
+    let filePath = sanitizePath(publicPath, requestPath);
+
+
+    return new Promise((resolve: (fileContents: string) => any, reject: () => any) => {
+        fs.exists(filePath, (exists: boolean) => {
+            if (!exists) {
+                // File not found
+                reject();
+            } else if (!fs.statSync(filePath).isFile()) {
+                // Path isn't a file
+                reject();
+            } else {
+                resolve(String(fs.readFileSync(filePath)));
+            }
+        });
+    });
 }
