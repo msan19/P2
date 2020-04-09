@@ -24,7 +24,6 @@ export class WebClientHandler {
             socketServer.handleUpgrade(request, socket, head, (ws: ws) => {
                 let webSocket = new WebSocket(ws);
                 webSocket.accept();
-                webSocket["id"] = "web-browser";
                 webSocket.listenToSocket(this.webSocket, WebSocket.packageTypes.forkliftInfo);
                 webSocket.listenToSocket(this.webSocket, WebSocket.packageTypes.forkliftInfos);
                 webSocket.listenToSocket(this.webSocket, WebSocket.packageTypes.route);
