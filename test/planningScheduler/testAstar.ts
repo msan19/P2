@@ -4,6 +4,17 @@ import 'mocha';
 import { MinPriorityQueue } from '../../src/planningScheduler/classes/minPriorityQueue';
 import { Vertex } from '../../src/shared/graph';
 import { Vector2 } from '../../src/shared/vector2';
+import { createGraph } from '../../src/blackBox/warehouse';
+import { Order } from '../../src/shared/order';
+import { RouteScheduler } from '../../src/planningScheduler/routeScheduler';
+import { DataContainer } from '../../src/planningScheduler/classes/dataContainer';
+import { RouteSet } from '../../src/shared/route';
+
+function checkLength(l1: number, l2: number) {
+    it(`Length l1 (${l1}) should be the same as l2 (${l2})`, () => {
+        expect(l1).to.equal(l2);
+    });
+}
 
 function checkVector(vector: Vector2, expected: Vector2) {
     it('x and y are as expected', () => {
@@ -266,9 +277,30 @@ function testMinPriorityQueue() {
     });
 }
 
+function testAStar() {
+    describe(`Test of A* with Graph from createGraph input`, () => {
+        let graph = createGraph();
+        let routeSet = new RouteSet([], graph);
+        let data = new DataContainer();
+        let routeScheduler = new RouteScheduler(data);
+        let order = new Order("O0", Order.types.moveForklift, "F23", "P23", "N1-2", "N8-9");
+        let expectedRouteLength: number = 14;
+
+        routeScheduler.planOptimalRoute(routeSet, order);
+
+        checkLength(graph.vertices[order.endVertexId].g(order.startVertexId), expectedRouteLength);
+
+
+
+    });
+
+
+
+}
 
 
 
 
 
-describe(`Test of object "MinPriorityQueue"`, testMinPriorityQueue);
+//describe(`Test of object "MinPriorityQueue"`, testMinPriorityQueue);
+describe(`Test of A* algorithm`, testAStar);
