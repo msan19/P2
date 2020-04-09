@@ -12,16 +12,17 @@
     "devDependencies": {
         "@types/chai": "^4.2.11",
         "@types/mocha": "^7.0.2",
-        "@types/node": "^13.11.0",
+        "@types/node": "^13.11.1",
+        "@types/node-fetch": "^2.5.5",
         "@types/ws": "^7.2.3",
         "chai": "^4.2.0",
         "mocha": "^7.1.1",
         "node": "^13.12.0",
-        "ts-node": "^8.8.1",
+        "node-fetch": "^2.6.0",
+        "sigma": "2.0.0-alpha32",
+        "ts-node": "^8.8.2",
         "typescript": "^3.8.3",
-        "ws": "^7.2.3",
-        "@types/node-fetch": "^2.5.5",
-        "node-fetch": "^2.6.0"
+        "ws": "^7.2.3"
     },
     "scripts": {
         "install": "npm i node typescript ts-node mocha chai @types/node @types/chai @types/mocha ws @types/ws --save-dev",
