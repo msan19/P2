@@ -15,15 +15,15 @@ function createVertices(xSize: number, ySize: number): { [key: string]: Vertex; 
 
     for (let x = 0; x < xSize; x++) {
         for (let y = 0; y < ySize; y++) {
-            let id = `n${x}-${y}`;
+            let id = `N${x}-${y}`;
             vertices[id] = new Vertex(id, new Vector2(x, y), id);
             if (y > 0) {
-                let neighborId = `n${x}-${y - 1}`;
+                let neighborId = `N${x}-${y - 1}`;
                 vertices[id].adjacentVertexIds.push(neighborId);
                 vertices[neighborId].adjacentVertexIds.push(id);
             }
             if (x > 0 && (y === 0 || y === ySize - 1)) {
-                let neighborId = `n${x - 1}-${y}`;
+                let neighborId = `N${x - 1}-${y}`;
                 vertices[id].adjacentVertexIds.push(neighborId);
                 vertices[neighborId].adjacentVertexIds.push(id);
             }
