@@ -7,9 +7,7 @@
         "doc": "docs"
     },
     "dependencies": {
-        "@types/node-fetch": "^2.5.5",
-        "net": "^1.0.2",
-        "node-fetch": "^2.6.0"
+        "net": "^1.0.2"
     },
     "devDependencies": {
         "@types/chai": "^4.2.11",
@@ -21,7 +19,9 @@
         "node": "^13.12.0",
         "ts-node": "^8.8.1",
         "typescript": "^3.8.3",
-        "ws": "^7.2.3"
+        "ws": "^7.2.3",
+        "@types/node-fetch": "^2.5.5",
+        "node-fetch": "^2.6.0"
     },
     "scripts": {
         "install": "npm i node typescript ts-node mocha chai @types/node @types/chai @types/mocha ws @types/ws --save-dev",
