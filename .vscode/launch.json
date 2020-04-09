@@ -35,6 +35,10 @@
             "sourceMaps": true,
             "cwd": "${workspaceFolder}",
             "protocol": "inspector",
+            "preLaunchTask": "tsc: watch - src/webClient/scripts/tsconfig.json",
+            "outFiles": [
+                "${workspaceFolder}"
+            ]
         },
         {
             "name": "Blackbox",
