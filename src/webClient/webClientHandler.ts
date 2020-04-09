@@ -10,8 +10,9 @@ interface ISocketController { (socketServer: ws.Server, request: IncomingMessage
 
 export class WebClientHandler {
     webSocket: WebSocket;
-    constructor(webSocket: WebSocket) {
+    constructor(webSocket: WebSocket, maxClients: number) {
         this.webSocket = webSocket;
+        this.webSocket.setMaxListeners(maxClients * Object.keys(WebSocket.packageTypes).length);
     }
 
     controllers: { [key: string]: IController; } = {
