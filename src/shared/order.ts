@@ -6,9 +6,17 @@ enum OrderTypes {
     charge
 }
 
+enum TimeType {
+    start = 1,
+    end
+}
+
 export class Order {
     static types = OrderTypes;
+    static timeTypes = TimeType;
     id: string;
+    timeType: TimeType;
+    time: number;
     type: OrderTypes;
     forkliftId: string;
     palletId: string;

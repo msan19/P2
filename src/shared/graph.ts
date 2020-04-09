@@ -74,6 +74,14 @@ export class Graph {
         return new Graph(newVertices);
     }
 
+    reset(): void {
+        let keys = Object.keys(this.vertices);
+        let length = keys.length;
+        for (let i = 0; i < length; i++) {
+            this.vertices[keys[i]].isVisited = false;
+        }
+    }
+
 }
 
 export class Vertex {
@@ -85,15 +93,22 @@ export class Vertex {
 
     scheduleItems?: ScheduleItem[];
 
+    // A* related
+    previousVertex: Vertex | null;
+    isVisited: boolean;
+
     constructor(id: string, position: Vector2, label?: string) {
         this.id = id;
         this.position = position;
         this.label = label || null;
         this.adjacentVertexIds = [];
+        this.scheduleItems = [];
+        this.previousVertex = null;
+        this.isVisited = false;
     }
 
     getDistanceDirect(vertex: Vertex): number {
-        return this.position.getDistanceTo(vertex.position);
+        return vertex && this.position.getDistanceTo(vertex.position);
     }
 
 
@@ -168,6 +183,21 @@ export class Vertex {
 
         return newVertices;
     }
+
+    // A* related 
+    g(startId: string): number {
+        if (this.id === startId || this.previousVertex === null) {
+            return 0;
+        } else {
+            return this.previousVertex.g(startId) + (this.position.getDistanceTo(this.previousVertex.position));
+        }
+    }
+
+
+
+
+
+
 }
 
 export class ScheduleItem {

@@ -99,12 +99,10 @@ export class Route {
 }
 
 export class RouteSet {
-    routes: Route[];
     priorities: string[];
     graph: Graph;
 
-    constructor(routes: Route[], priorities: string[], graph: Graph) {
-        this.routes = routes;
+    constructor(priorities: string[], graph: Graph) {
         this.priorities = priorities;
         this.graph = graph;
     }
@@ -118,6 +116,6 @@ export class RouteSet {
         }
         if (typeof (Vertex.parseMultiple(routeSet.graphVertices)) !== "object") return null;
 
-        return new RouteSet(routeSet.routes, routeSet.priorities, routeSet.graphVertices);
+        return new RouteSet(routeSet.priorities, routeSet.graphVertices);
     }
 }
