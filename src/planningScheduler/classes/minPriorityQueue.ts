@@ -43,7 +43,7 @@ class MinPriorityQueue {
 
     extractMin(): any {
         if (this.array.length === 0) {
-            console.log("Error!");
+            console.log("Underflow");
             return null;
         }
         let min = this.heapMinimum();
@@ -54,9 +54,11 @@ class MinPriorityQueue {
     }
 
     /// TO DO
-    // decreaseKey(current: any) {
+    decreaseKey(current: any) {
 
-    // }
+
+
+    }
 
     // insert() {
 
