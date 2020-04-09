@@ -6,16 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warehouse Manager</title>
     <link rel="stylesheet" href="css/style.css" type="text/css">
+    <script src="scripts/sigma/sigma.min.js"></script>
+    <script src="scripts/sigma/sigma.export.js"></script>
+    <script src="scripts/ts/graphManager.js"></script>
 </head>
 
 <body>
-    <div id="sigmaContainer"></div>
-    <script src="scripts/sigma/sigma.min.js"></script>
-    <script src="scripts/sigma/sigma.parsers.json.js"></script>
-    <script src="scripts/ts/graphManager.js">
 
+
+    <div id="sigmaContainer"></div>
+
+    <button id="export" onclick="exportGraph();">Export</button>
+
+
+    <script>
+        document.getElementById("export").onclick = exportGraph();
     </script>
-    <script src="scripts/ts/webSocket.js"></script>
+
 </body>
 
 </html>

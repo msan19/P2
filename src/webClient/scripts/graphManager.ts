@@ -1,4 +1,6 @@
 const container: string = 'sigmaContainer';
+var sGraph;
+
 
 enum PackageTypes {
     route = "route",
@@ -13,7 +15,10 @@ enum PackageTypes {
 }
 
 
-
+function exportGraph(): void {
+    console.log('exporting...');
+    let output = sGraph.toSVG({ download: true, filename: 'warehouseGraph.svg', size: 1000 });
+};
 
 
 class tempGraph {
@@ -31,16 +36,16 @@ function parseJSON(data: any): any {
 
 
     updateGraph(iData.graph);
-
 }
 
 function updateGraph(graphO: any): void {
     console.log(graphO);
     // @ts-ignore
-    let s = new sigma({
+    sGraph = new sigma({
         graph: graphO,
         container: container
     });
+
 }
 
 function addEdges(graph: any): JSON {
@@ -92,3 +97,6 @@ webSocket.onmessage = function (event) {
     }
 
 };
+
+
+
