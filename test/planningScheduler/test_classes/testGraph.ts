@@ -368,6 +368,24 @@ function testGraph() {
         });
 
     });
+
+    describe(`Test of Graph method "clone"`, () => {
+        let graph = new Graph({
+            "N23": new Vertex("N23", new Vector2(10, 10)),
+            "N27": new Vertex("N27", new Vector2(20, 20))
+        });
+        let vertex1 = graph.vertices["N23"];
+        let vertex2 = graph.vertices["N27"];
+
+        let result = graph.clone();
+        graph.vertices["N23"].scheduleItems.push(new ScheduleItem("F29", 10923029, "N23"));
+        console.log(result);
+        console.log(graph);
+
+        it(`${result} and ${graph}`, () => {
+            expect(result).to.not.equal(graph);
+        });
+    });
 }
 
 
