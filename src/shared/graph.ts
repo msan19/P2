@@ -1,5 +1,4 @@
 import { Vector2 } from "./vector2";
-import { type } from "os";
 
 export class Graph {
     vertices: { [key: string]: Vertex; };
@@ -64,6 +63,17 @@ export class Graph {
 
         return new Graph(tempVertices);
     }
+
+    clone(): Graph {
+        let newVertices = {};
+
+        for (let key in this.vertices) {
+            newVertices[key] = this.vertices[key].clone();
+        }
+
+        return new Graph(newVertices);
+    }
+
 }
 
 export class Vertex {
@@ -132,6 +142,21 @@ export class Vertex {
         return tempVertex;
     }
 
+    clone(): Vertex {
+        let v = new Vertex(this.id, this.position.clone(), this.label);
+
+        for (let a in this.adjacentVertexIds) {
+            v.adjacentVertexIds.push(a);
+        }
+
+        v.scheduleItems = [];
+        for (let s in this.scheduleItems) {
+            v.scheduleItems.push(this.scheduleItems[s].clone());
+        }
+
+        return v;
+    }
+
     static parseMultiple(vertices: Vertex[]): Vertex[] | null {
         vertices.forEach(element => {
             if (typeof (Vertex.parse(element)) === "object") return null;
@@ -165,4 +190,9 @@ export class ScheduleItem {
 
         return new ScheduleItem(item.forkliftId, item.time, item.nextVertexId);
     }
+
+    clone(): ScheduleItem {
+        return new ScheduleItem(this.forkliftId, this.time, this.nextVertexId);
+    }
+
 }
