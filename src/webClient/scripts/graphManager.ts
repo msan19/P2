@@ -14,7 +14,7 @@ enum PackageTypes {
     other = "other"
 }
 
-
+// https://github.com/jacomyal/sigma.js/tree/master/plugins/sigma.exporters.svg
 function exportGraph(): void {
     console.log('exporting...');
     let output = sGraph.toSVG({ download: true, filename: 'warehouseGraph.svg', size: 1000 });
