@@ -25,6 +25,9 @@ export class Vector2 {
     getDistanceTo(vec2: Vector2): number {
         return this.subtract(vec2).getLength();
     }
+    getNewYorkerDistanceTo(vec2: Vector2): number {
+        return Math.abs(this.x - vec2.x) + Math.abs(this.y - vec2.y);
+    }
 
     toString(): string {
         return `[${this.x},${this.y}]`;
