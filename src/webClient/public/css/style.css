@@ -21,6 +21,7 @@
     left: 10px;
     position: fixed;
     border-collapse: collapse;
+
 }
 
 button {
@@ -34,8 +35,10 @@ button {
 #settings {
     border: 1px solid black;
     padding: 8px;
+    background-color: white;
 }
 
 td {
     padding-right: 4px;
+
 }
