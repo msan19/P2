@@ -2,30 +2,43 @@ import { Vector2 } from "../../../src/shared/vector2";
 import { expect } from 'chai';
 import 'mocha';
 
-
-
-
-function checkVector(vector: Vector2, expX: number, expY: number) {
+/**
+ * Checks whether a vector contains the expected x-y values 
+ * @param vector The vector that is to be checked
+ * @param expX The expected x-value
+ * @param expY The expected y-value
+ * @returns void Mocha handles the appropriate responses
+ */
+function checkVector(vector: Vector2, expX: number, expY: number): void {
     it('x and y are as expected', () => {
         expect(vector.x).to.equal(expX);
         expect(vector.y).to.equal(expY);
     });
 }
 
-function checkNumber(actual: number, expected: number) {
+/**
+ * Checks whether 2 numbers are the same
+ * @param actual The actual number to be tested
+ * @param expected The expected value
+ * @returns void Mocha handles the appropriate responses
+ */
+function checkNumber(actual: number, expected: number): void {
     it(`${expected} should be ${actual}`, () => {
         expect(actual).to.equal(expected);
     });
 }
 
-
-function testAdd() {
-    let vectors = [];
+/**
+ * Test for the method add on object Vector2
+ * @returns void Mocha handles the appropriate responses
+ */
+function testAdd(): void {
+    let vectors: Vector2[] = [];
     vectors.push(new Vector2(10, 20));
     vectors.push(new Vector2(40, 5));
     vectors.push(new Vector2(43, 57));
-    let expects = [[50, 25], [50, 25], [83, 62], [53, 77]];
-    let results = [];
+    let expects: [number, number][] = [[50, 25], [50, 25], [83, 62], [53, 77]];
+    let results: Vector2[] = [];
 
     results.push(vectors[0].add(vectors[1]));
     results.push(vectors[1].add(vectors[0]));
