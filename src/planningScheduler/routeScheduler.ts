@@ -45,6 +45,7 @@ export class RouteScheduler {
     }
 
     // assumes RouteSet.graph is full
+    // implements A*
     planOptimalRoute(routeSet: RouteSet, order: Order): void {
         let endVertex: Vertex = routeSet.graph.vertices[order.endVertexId];
         let startVertex: Vertex = routeSet.graph.vertices[order.startVertexId];
@@ -83,7 +84,7 @@ export class RouteScheduler {
             this.downStacking(endVertex, order, order.time, "");
             // Recursively stacking down
         }
-    };
+    }
 
     upStacking(vertex: Vertex, order: Order, nextVertexId: string): number {
         let fullfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / this.data.warehouse.forkliftSpeed;
@@ -111,7 +112,7 @@ export class RouteScheduler {
 
     addRouteToGraph(route: Route): void {
         // TO DO 
-    };
+    }
 
     update(data: DataContainer): void {
         // TO DO 
