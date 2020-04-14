@@ -58,7 +58,6 @@ function parseJSON(data: JSON): any {
     iData.graph = addEdges(iData.graph);
     iData.graph = changeNodes(iData.graph);
 
-
     updateGraph(iData.graph);
 }
 
@@ -106,6 +105,7 @@ function changeNodes(graph: JSON): JSON {
         graph["vertices"][vertexId]["x"] = graph["vertices"][vertexId]["position"]["x"];
         graph["vertices"][vertexId]["y"] = graph["vertices"][vertexId]["position"]["y"];
         graph["vertices"][vertexId]["color"] = defaultNodeColor;
+        graph["vertices"][vertexId]["label"] = graph["vertices"][vertexId]["id"];
         delete (graph["vertices"][vertexId]["position"]);
         delete (graph["vertices"][vertexId]["adjacentVertexIds"]);
 
