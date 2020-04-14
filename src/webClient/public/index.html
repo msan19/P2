@@ -17,14 +17,20 @@
 
     <div id="topMenu">
         <button id="export" onclick="exportGraph();">Export</button>
-        <!--<button>Settings</button>-->
+        <button onclick="onSettingsButtonClick();">Settings</button>
         <button id="reset" onclick="resetGraph();">Reset</button>
+        <div id="settings">
+            <table>
+                <tr>
+                    <td>Hightlight Color</td>
+                    <td><input id="hightlightColorPicker" type="color" onchange="updateHighlightColor();"></input></td>
+                </tr>
+            </table>
+        </div>
 
     </div>
-
     <script>
-        document.getElementById("export").disabled = true;
-        document.getElementById("reset").disabled = true;
+        resetGraph();
     </script>
 </body>
 

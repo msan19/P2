@@ -1,6 +1,7 @@
 const container: string = 'sigmaContainer';
 const defaultNodeColor = '#5c3935';
 const defaultEdgeColor = '#5c3935';
+const defaultHighlightColor = "#F7362D";
 var sGraph;
 var tempPath: JSON = JSON.parse(JSON.stringify({
     "nodes": [
@@ -45,7 +46,6 @@ enum PackageTypes {
 
 // https://github.com/jacomyal/sigma.js/tree/master/plugins/sigma.exporters.svg
 function exportGraph(): void {
-    console.log('exporting...');
     let output = sGraph.toSVG({ download: true, filename: 'warehouseGraph.svg', size: 1000 });
 
 };
@@ -63,9 +63,8 @@ function parseJSON(data: JSON): any {
 }
 
 function updateGraph(graphO: JSON): void {
-    let newGraph: JSON = hightlightPath(graphO, tempPath);
-    newGraph = lowdark(graphO, tempPath);
-    console.log(newGraph);
+    let newGraph = hightlightPath(graphO, tempPath, null);
+    newGraph = lowdark(newGraph, tempPath);
     resetGraph();
     // @ts-ignore
     sGraph = new sigma({
@@ -79,6 +78,7 @@ function updateGraph(graphO: JSON): void {
             maxNodeSize: 8
         }
     });
+    //hightlightPath(graphO, tempPath, null);
     // @ts-ignore
     document.getElementById("export").disabled = false;
     // @ts-ignore
@@ -120,12 +120,12 @@ function changeNodes(graph: JSON): JSON {
     return graph;
 }
 
-function hightlightPath(graph: JSON, path: JSON): JSON {
+function hightlightPath(graph: JSON, path: JSON, color: string | null): JSON {
     for (let nodeToFind in path["nodes"]) {
         let found = false;
         for (let nodeToCheck in graph["nodes"]) {
             if (path["nodes"][nodeToFind] == graph["nodes"][nodeToCheck]["id"]) {
-                graph["nodes"][nodeToCheck]["color"] = "#F7362D";
+                graph["nodes"][nodeToCheck]["color"] = (typeof (color) == "string") ? color : defaultHighlightColor;
                 found = true;
                 break;
             }
@@ -135,7 +135,7 @@ function hightlightPath(graph: JSON, path: JSON): JSON {
         let found = false;
         for (let edgeToCheck in graph["edges"]) {
             if (path["edges"][edgeToFind] == graph["edges"][edgeToCheck]["id"]) {
-                graph["edges"][edgeToCheck]["color"] = "#F7362D";
+                graph["edges"][edgeToCheck]["color"] = color;
                 found = true;
                 break;
             }
@@ -145,7 +145,6 @@ function hightlightPath(graph: JSON, path: JSON): JSON {
 }
 
 function lowdark(graph: JSON, path: JSON): JSON | null {
-    console.log(path);
     for (let nodeToBeChecked in graph["nodes"]) {
         let found: boolean = false;
         for (let nodeToBeCheckedAgainst in path["nodes"]) {
@@ -180,9 +179,38 @@ function resetGraph() {
     sGraph = null;
     document.getElementById(container).innerHTML = "";
     // @ts-ignore
-    document.getElementById("export").disabled = true;
+    document.getElementById("export").disabled = "disabled";
     // @ts-ignore
-    document.getElementById("reset").disabled = true;
+    document.getElementById("reset").disabled = "disabled";
+    //@ts-ignore
+    document.getElementById("settings").style.visibility = "hidden";
+}
+
+function onSettingsButtonClick() {
+    let settingsMenu: HTMLDivElement = document.querySelector("#settings");
+    if (settingsMenu.style.visibility === "hidden") {
+        settingsMenu.style.visibility = "visible";
+    } else if (settingsMenu.style.visibility == "visible") {
+        settingsMenu.style.visibility = "hidden";
+    }
+}
+
+function getSGraphAsGraph(): JSON {
+    let graph: JSON = JSON.parse("{}");
+    graph["edges"] = sGraph.graph.edges();
+    graph["nodes"] = sGraph.graph.nodes();
+    return graph;
+}
+
+function updateSGraph(graph: JSON, ): void {
+    sGraph;
+}
+
+function updateHighlightColor() {
+    let hightlightColorPicker: HTMLDivElement = document.querySelector("#hightlightColorPicker");
+    //@ts-ignore
+    sGraph.graph = hightlightPath(getSGraphAsGraph(), tempPath, hightlightColorPicker.value);
+    sGraph.refresh();
 }
 
 var webSocket = new WebSocket("ws://localhost:8080/subscribe");
@@ -190,7 +218,6 @@ webSocket.onmessage = function (event) {
     let data = JSON.parse(event["data"]);
     switch (data.type) {
         case PackageTypes.warehouse:
-            console.log(data.body);
             parseJSON(data.body);
             break;
         default:
