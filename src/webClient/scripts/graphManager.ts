@@ -13,8 +13,8 @@ var tempPath: JSON = JSON.parse(JSON.stringify({
         "N0-6",
         "N0-7",
         "N0-8",
-        "N0-9",
-        "N1-9",
+        "N1-0",
+        "N2-0"
     ],
     "edges": [
         "N0-0,N0-1",
@@ -26,7 +26,7 @@ var tempPath: JSON = JSON.parse(JSON.stringify({
         "N0-5,N0-6",
         "N0-6,N0-7",
         "N0-7,N0-8",
-        "N0-8,N0-9"
+        "N1-0,N2-0"
     ]
 }));
 
@@ -64,7 +64,7 @@ function parseJSON(data: JSON): any {
 
 function updateGraph(graphO: JSON): void {
     let newGraph: JSON = hightlightPath(graphO, tempPath);
-    //newGraph = lowdark(graphO, tempPath);
+    newGraph = lowdark(graphO, tempPath);
     console.log(newGraph);
     // @ts-ignore
     sGraph = new sigma({
@@ -119,13 +119,26 @@ function changeNodes(graph: JSON): JSON {
 }
 
 function hightlightPath(graph: JSON, path: JSON): JSON {
-    for (let node in path["nodes"])
-        graph["nodes"][node]["color"] = "#F7362D";
-    for (let edge in path["edges"]) {
-        graph["edges"][edge]["color"] = "#F7362D";
-        graph["edges"][edge]["size"] = 4;
+    for (let nodeToFind in path["nodes"]) {
+        let found = false;
+        for (let nodeToCheck in graph["nodes"]) {
+            if (path["nodes"][nodeToFind] == graph["nodes"][nodeToCheck]["id"]) {
+                graph["nodes"][nodeToCheck]["color"] = "#F7362D";
+                found = true;
+                break;
+            }
+        }
     }
-
+    for (let edgeToFind in path["edges"]) {
+        let found = false;
+        for (let edgeToCheck in graph["edges"]) {
+            if (path["edges"][edgeToFind] == graph["edges"][edgeToCheck]["id"]) {
+                graph["edges"][edgeToCheck]["color"] = "#F7362D";
+                found = true;
+                break;
+            }
+        }
+    }
     return graph;
 }
 
@@ -134,15 +147,27 @@ function lowdark(graph: JSON, path: JSON): JSON | null {
     for (let nodeToBeChecked in graph["nodes"]) {
         let found: boolean = false;
         for (let nodeToBeCheckedAgainst in path["nodes"]) {
+
             if (graph["nodes"][nodeToBeChecked]["id"] == path["nodes"][nodeToBeCheckedAgainst]) {
                 found = true;
                 break;
             }
         }
+        if (found == false)
+            graph["nodes"][nodeToBeChecked]["color"] = "#e5e5e5";
 
-        if (!found)
-            console.log(graph["nodes"][nodeToBeChecked]["id"]);
-        //graph["nodes"][nodeToBeChecked]["color"] = "#e5e5e5";
+    }
+    for (let edgeToBeChecked in graph["edges"]) {
+        let found: boolean = false;
+        for (let edgeToBeCheckedAgainst in path["edges"]) {
+
+            if (graph["edges"][edgeToBeChecked]["id"] == path["edges"][edgeToBeCheckedAgainst]) {
+                found = true;
+                break;
+            }
+        }
+        if (found == false)
+            graph["edges"][edgeToBeChecked]["color"] = "#e5e5e5";
 
     }
     return graph;

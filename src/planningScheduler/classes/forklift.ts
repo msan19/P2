@@ -5,27 +5,30 @@ import { ForkliftInfo } from "../../shared/forkliftInfo";
 
 export class Forklift extends ForkliftInfo {
     routes: Route[];
-    private _socket: WebSocket;
 
     constructor(id: string, socket: WebSocket) {
         super();
         this.id = id;
-        this.socket = socket;
         this.routes = [];
         this.state = Forklift.states.initiating;
     }
 
-    set socket(socket: WebSocket) {
-        if (this.hasSocket()) this._socket.close();
+    private getSocket(): WebSocket {
+        return null;
+    }
 
-        this._socket = socket;
-        this._socket.on(WebSocket.packageTypes.forkliftInfo, (forkliftInfo: ForkliftInfo) => {
+    setSocket(socket: WebSocket) {
+        if (this.hasSocket()) this.getSocket().close();
+
+        this.getSocket = () => { return socket; };
+
+        socket.on(WebSocket.packageTypes.forkliftInfo, (forkliftInfo: ForkliftInfo) => {
             console.log(forkliftInfo);
         });
     }
 
     hasSocket() {
-        return typeof (this._socket) === "object" && this._socket !== null;
+        return typeof (this.getSocket()) === "object" && this.getSocket() !== null;
     }
 
     isValid() {
@@ -34,7 +37,7 @@ export class Forklift extends ForkliftInfo {
 
 
     sendRoute(route: Route): void {
-        this._socket.sendRoute(route);
+        this.getSocket().sendRoute(route);
     }
 
     static parse(obj: any): Forklift | null {
