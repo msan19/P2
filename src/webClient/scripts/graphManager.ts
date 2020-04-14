@@ -66,6 +66,7 @@ function updateGraph(graphO: JSON): void {
     let newGraph: JSON = hightlightPath(graphO, tempPath);
     newGraph = lowdark(graphO, tempPath);
     console.log(newGraph);
+    resetGraph();
     // @ts-ignore
     sGraph = new sigma({
         graph: newGraph,
@@ -80,9 +81,8 @@ function updateGraph(graphO: JSON): void {
     });
     // @ts-ignore
     document.getElementById("export").disabled = false;
-    console.log("updated graph");
-
-
+    // @ts-ignore
+    document.getElementById("reset").disabled = false;
 }
 
 function addEdges(graph: JSON): JSON {
@@ -173,6 +173,16 @@ function lowdark(graph: JSON, path: JSON): JSON | null {
 
     }
     return graph;
+}
+
+function resetGraph() {
+
+    sGraph = null;
+    document.getElementById(container).innerHTML = "";
+    // @ts-ignore
+    document.getElementById("export").disabled = true;
+    // @ts-ignore
+    document.getElementById("reset").disabled = true;
 }
 
 var webSocket = new WebSocket("ws://localhost:8080/subscribe");

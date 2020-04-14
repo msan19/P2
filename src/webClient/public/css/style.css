@@ -4,6 +4,10 @@
     border: 0;
     font-size: 100%;
     font: inherit;
+    font-family: 'Franklin Gothic Medium',
+        'Arial Narrow',
+        Arial,
+        sans-serif;
     vertical-align: baseline;
 }
 
@@ -16,4 +20,12 @@
     top: 10px;
     left: 10px;
     position: fixed;
+}
+
+button {
+    padding: 8px;
+    background-color: white;
+    border: 1px solid black;
+    font-size: large;
+
 }
