@@ -65,7 +65,7 @@ function parseJSON(data: JSON): any {
 function updateGraph(graphO: JSON): void {
     let newGraph = hightlightPath(graphO, tempPath, null);
     newGraph = lowdark(newGraph, tempPath);
-    resetGraph();
+    initializeGraphRelatedUiElements();
     // @ts-ignore
     sGraph = new sigma({
         graph: newGraph,
@@ -175,6 +175,14 @@ function lowdark(graph: JSON, path: JSON): JSON | null {
 }
 
 function resetGraph() {
+    tempPath = JSON.parse("{}");
+    let graph = getSGraphAsGraph();
+    setGraphColorToDefault(graph);
+    sGraph.graph = graph;
+    sGraph.refresh();
+}
+
+function initializeGraphRelatedUiElements() {
 
     sGraph = null;
     document.getElementById(container).innerHTML = "";
@@ -186,6 +194,7 @@ function resetGraph() {
     document.getElementById("settings").style.visibility = "hidden";
 }
 
+
 function onSettingsButtonClick() {
     let settingsMenu: HTMLDivElement = document.querySelector("#settings");
     if (settingsMenu.style.visibility === "hidden") {
@@ -193,6 +202,14 @@ function onSettingsButtonClick() {
     } else if (settingsMenu.style.visibility == "visible") {
         settingsMenu.style.visibility = "hidden";
     }
+}
+
+function setGraphColorToDefault(graph: JSON): JSON {
+    for (let node in graph["nodes"])
+        graph["nodes"][node]["color"] = defaultNodeColor;
+    for (let edge in graph["edges"])
+        graph["edges"][edge]["color"] = defaultEdgeColor;
+    return graph;
 }
 
 function getSGraphAsGraph(): JSON {
