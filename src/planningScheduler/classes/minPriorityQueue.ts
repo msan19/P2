@@ -1,5 +1,10 @@
 
-
+/**
+ * This class is a min-priority queue implementation 
+ * The queue differs from a traditional one in the following way:
+ * - It has a function f
+ * - The values of the objects in the heap (array) are function values 
+ */
 export class MinPriorityQueue {
     array: any[];
     f: (x: any) => number;
@@ -9,29 +14,40 @@ export class MinPriorityQueue {
         this.f = f;
     }
 
+    // returns index of left child
     left(i: number): number {
         return 2 * (i + 1) - 1;
     }
 
+    // returns index of right child
     right(i: number): number {
         return 2 * (i + 1);
     }
 
+    // returns index of parent
     parent(i: number): number {
         if (i === 0) return 0;
         return Math.floor((i - 1) / 2);
     }
 
+    // returns first element in the min-heap
     heapMinimum(): any {
         return this.array[0];
     }
 
+    // swaps the elements with index i and index j
     swapByIndex(i: number, j: number): void {
         let temp: any = this.array[i];
         this.array[i] = this.array[j];
         this.array[j] = temp;
     }
 
+    /**
+     * Maintains the min-heap property: 
+     *     A[Parent(i)] <= A[i]
+     * @assumption left- and right subtree are minheaps
+     * @param i An index in the array
+     */
     minHeapify(i: number): void {
         let l: number = this.left(i);
         let r: number = this.right(i);
@@ -46,6 +62,10 @@ export class MinPriorityQueue {
 
     }
 
+    /**
+     * Returns the first element in the min-heap 
+     * Restores the min-heap property 
+     */
     extractMin(): any {
         if (this.array.length === 0) {
             console.log("Underflow");
@@ -59,6 +79,10 @@ export class MinPriorityQueue {
         return min;
     }
 
+    /**
+     * Inserts a new element into the heap
+     * @param newElement The element that is to be inserted into the min-heap
+     */
     insert(newElement: any): void {
         this.array.push(newElement);
         let index = this.array.length - 1;
