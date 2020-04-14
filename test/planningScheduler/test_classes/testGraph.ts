@@ -4,6 +4,13 @@ import 'mocha';
 import { Graph, Vertex, ScheduleItem } from "../../../src/shared/graph";
 import { Vector2 } from "../../../src/shared/vector2";
 
+/**
+ * Checks whether a vector contains the expected x-y values
+ * @param vector The vector that is to be checked
+ * @param expX The expected x-value
+ * @param expY The expected y-value
+ * @returns void Mocha handles the appropriate responses
+ */
 function checkVector(vector: Vector2, expX: number, expY: number) {
     it('x and y are as expected', () => {
         expect(vector.x).to.equal(expX);
@@ -11,7 +18,13 @@ function checkVector(vector: Vector2, expX: number, expY: number) {
     });
 }
 
-function checkEdge(edge, expected) {
+/**
+ * Checks whether two edges contains same id's
+ * @param edge The edge that is to be checked
+ * @param expected The expected result
+ * @returns void Mocha handles the appropriate responses
+ */
+function checkEdge(edge: { "vertexId_1": string, "vertexId_2": string; }, expected: { "id_1": string, "id_2": string; }): void {
     it(`ID of the first`, () => {
         expect(edge.vertexId_1).to.equal(expected.id_1);
     });
@@ -21,6 +34,12 @@ function checkEdge(edge, expected) {
     });
 }
 
+/**
+ * Checks whether two arrays contains same values
+ * @param result The array that is to be checked
+ * @param expected The array containing the expected values
+ * @returns void Mocha handles the appropriate responses
+ */
 function checkArray(result: string[], expected: string[]) {
     let length: number = Math.max(result.length, expected.length);
     for (let i = 0; i < length; i++) {
@@ -30,10 +49,14 @@ function checkArray(result: string[], expected: string[]) {
     }
 }
 
-function testScheduleItem() {
+/**
+ * Test of the object ScheduleItem
+ * @returns void Mocha handles the appropriate responses
+ */
+function testScheduleItem(): void {
     // forkliftId: string, time: number, nextVertexId: string
     describe(`Test of one random ScheduleItem`, () => {
-        let item = new ScheduleItem("TF25", 12382, "N23");
+        let item: ScheduleItem = new ScheduleItem("TF25", 12382, "N23");
 
         it(`${Object.keys(item)[0]} should be "TF25"`, () => {
             expect(item.forkliftId).to.equal("TF25");
@@ -49,11 +72,15 @@ function testScheduleItem() {
     });
 }
 
-function testVertex() {
+/**
+ * Test of the object Vertex
+ * @returns void Mocha handles the appropriate responses
+ */
+function testVertex(): void {
     // id: string, position: Vector2, label?: string
     describe(`Test of Vertex Object`, () => {
         describe(`Test of Vertex with label`, () => {
-            let vertex = new Vertex("N23", new Vector2(24, 12), "This is a nice node");
+            let vertex: Vertex = new Vertex("N23", new Vector2(24, 12), "This is a nice node");
             it(`${Object.keys(vertex)[0]} should be "N23"`, () => {
                 expect(vertex.id).to.equal("N23");
             });
@@ -68,7 +95,7 @@ function testVertex() {
         });
 
         describe(`Test of Vertex without label`, () => {
-            let vertex = new Vertex("N23", new Vector2(24, 12));
+            let vertex: Vertex = new Vertex("N23", new Vector2(24, 12));
             it(`${Object.keys(vertex)[0]} should be "N23"`, () => {
                 expect(vertex.id).to.equal("N23");
             });
@@ -81,18 +108,18 @@ function testVertex() {
 
     describe(`Test of Vertex method "getDistanceDirect"`, () => {
         describe(`Test of Vertex 1 (x1, y1) and Vertex 2 (x2, y2),\n\t\t where x1 != x2 and y1 != y2`, () => {
-            let vertex1 = new Vertex("N23", new Vector2(10, 14));
-            let vertex2 = new Vertex("N53", new Vector2(20, 24));
-            let expected = parseFloat((((20 - 10) ** 2 + (24 - 14) ** 2) ** 0.5).toFixed(3));
+            let vertex1: Vertex = new Vertex("N23", new Vector2(10, 14));
+            let vertex2: Vertex = new Vertex("N53", new Vector2(20, 24));
+            let expected: number = parseFloat((((20 - 10) ** 2 + (24 - 14) ** 2) ** 0.5).toFixed(3));
             it(`Length should be ${expected}`, () => {
                 expect(parseFloat(vertex1.getDistanceDirect(vertex2).toFixed(3))).to.equal(expected);
             });
         });
 
         describe(`Test of Vertex 1 (x1, y1) and Vertex 2 (x2, y2),\n\t\t where x1 = x2 and y1 = y2`, () => {
-            let vertex1 = new Vertex("N23", new Vector2(10, 14));
-            let vertex2 = new Vertex("N53", new Vector2(10, 14));
-            let expected = parseFloat((((10 - 10) ** 2 + (14 - 14) ** 2) ** 0.5).toFixed(3));
+            let vertex1: Vertex = new Vertex("N23", new Vector2(10, 14));
+            let vertex2: Vertex = new Vertex("N53", new Vector2(10, 14));
+            let expected: number = parseFloat((((10 - 10) ** 2 + (14 - 14) ** 2) ** 0.5).toFixed(3));
             it(`Length should be ${expected}`, () => {
                 expect(parseFloat(vertex1.getDistanceDirect(vertex2).toFixed(3))).to.equal(expected);
             });
@@ -133,10 +160,14 @@ function testVertex() {
     });
 }
 
+/**
+ * Test of the object Graph
+ * @returns void Mocha handles the appropriate responses
+ */
 function testGraph() {
     describe(`Test of Graph object`, () => {
         describe(``, () => {
-            let graph = new Graph({
+            let graph: Graph = new Graph({
                 "N23": new Vertex("N23", new Vector2(10, 10)),
                 "N27": new Vertex("N27", new Vector2(20, 20))
             });
@@ -155,13 +186,13 @@ function testGraph() {
 
     describe(`Test of Graph method "getDistanceDirect"`, () => {
         describe(`Two vertices with different positions`, () => {
-            let graph = new Graph({
+            let graph: Graph = new Graph({
                 "N23": new Vertex("N23", new Vector2(10, 10)),
                 "N27": new Vertex("N27", new Vector2(20, 20))
             });
-            let vertex1 = graph.vertices["N23"];
-            let vertex2 = graph.vertices["N27"];
-            let expected = parseFloat((((20 - 10) ** 2 + (20 - 10) ** 2) ** 0.5).toFixed(3));
+            let vertex1: Vertex = graph.vertices["N23"];
+            let vertex2: Vertex = graph.vertices["N27"];
+            let expected: number = parseFloat((((20 - 10) ** 2 + (20 - 10) ** 2) ** 0.5).toFixed(3));
 
             it(`Length should be ${expected}`, () => {
                 expect(parseFloat(graph.getDistanceDirect(vertex1, vertex2).toFixed(3))).to.equal(expected);
@@ -169,13 +200,13 @@ function testGraph() {
         });
 
         describe(`Two vertices with same position`, () => {
-            let graph = new Graph({
+            let graph: Graph = new Graph({
                 "N23": new Vertex("N23", new Vector2(10, 10)),
                 "N27": new Vertex("N27", new Vector2(10, 10))
             });
-            let vertex1 = graph.vertices["N23"];
-            let vertex2 = graph.vertices["N27"];
-            let expected = parseFloat((((10 - 10) ** 2 + (10 - 10) ** 2) ** 0.5).toFixed(3));
+            let vertex1: Vertex = graph.vertices["N23"];
+            let vertex2: Vertex = graph.vertices["N27"];
+            let expected: number = parseFloat((((10 - 10) ** 2 + (10 - 10) ** 2) ** 0.5).toFixed(3));
 
             it(`Length should be ${expected}`, () => {
                 expect(parseFloat(graph.getDistanceDirect(vertex1, vertex2).toFixed(3))).to.equal(expected);
@@ -186,13 +217,13 @@ function testGraph() {
     describe(`Test of Graph method "getEdges"`, () => {
         // No edges
         describe(`No edges`, () => {
-            let graph = new Graph({
+            let graph: Graph = new Graph({
                 "N23": new Vertex("N23", new Vector2(10, 10)),
                 "N27": new Vertex("N27", new Vector2(20, 20)),
                 "N29": new Vertex("N29", new Vector2(30, 30))
             });
-            let edges = graph.getEdges();
-            let expected = [];
+            let edges: { "vertexId_1": string, "vertexId_2": string; }[] = graph.getEdges();
+            let expected: { "id_1": string, "id_2": string; }[] = [];
             //expected.push({ "Id_1": "", "Id_2": "" });
 
             it(`Length is the same (${edges.length} = ${expected.length})`, () => {
@@ -206,7 +237,7 @@ function testGraph() {
 
         // Edges on both nodes
         describe(`Edges on both nodes`, () => {
-            let graph = new Graph({
+            let graph: Graph = new Graph({
                 "N23": new Vertex("N23", new Vector2(10, 10)),
                 "N27": new Vertex("N27", new Vector2(20, 20)),
                 "N29": new Vertex("N29", new Vector2(30, 30))
@@ -220,8 +251,8 @@ function testGraph() {
             graph.vertices["N29"].adjacentVertexIds.push("N27");
             graph.vertices["N27"].adjacentVertexIds.push("N29");
 
-            let edges = graph.getEdges();
-            let expected = [];
+            let edges: { "vertexId_1": string, "vertexId_2": string; }[] = graph.getEdges();
+            let expected: { "id_1": string, "id_2": string; }[] = [];
             expected.push({ "id_1": "N23", "id_2": "N27" });
             expected.push({ "id_1": "N23", "id_2": "N29" });
             expected.push({ "id_1": "N27", "id_2": "N29" });
@@ -237,7 +268,7 @@ function testGraph() {
 
         // Edges only one-way (alphabetically correct)
         describe(`Edges only one-way (alphabetically correct)`, () => {
-            let graph = new Graph({
+            let graph: Graph = new Graph({
                 "N23": new Vertex("N23", new Vector2(10, 10)),
                 "N27": new Vertex("N27", new Vector2(20, 20)),
                 "N29": new Vertex("N29", new Vector2(30, 30))
@@ -248,8 +279,8 @@ function testGraph() {
 
             graph.vertices["N27"].adjacentVertexIds.push("N29");
 
-            let edges = graph.getEdges();
-            let expected = [];
+            let edges: { "vertexId_1": string, "vertexId_2": string; }[] = graph.getEdges();
+            let expected: { "id_1": string, "id_2": string; }[] = [];
             expected.push({ "id_1": "N23", "id_2": "N27" });
             expected.push({ "id_1": "N23", "id_2": "N29" });
             expected.push({ "id_1": "N27", "id_2": "N29" });
@@ -265,7 +296,7 @@ function testGraph() {
 
         // Edges only one-way (alphabetically incorrect)
         describe(`Edges only one-way (alphabetically incorrect)`, () => {
-            let graph = new Graph({
+            let graph: Graph = new Graph({
                 "N23": new Vertex("N23", new Vector2(10, 10)),
                 "N27": new Vertex("N27", new Vector2(20, 20)),
                 "N29": new Vertex("N29", new Vector2(30, 30))
@@ -277,8 +308,8 @@ function testGraph() {
 
             graph.vertices["N29"].adjacentVertexIds.push("N27");
 
-            let edges = graph.getEdges();
-            let expected = [];
+            let edges: { "vertexId_1": string, "vertexId_2": string; }[] = graph.getEdges();
+            let expected: { "id_1": string, "id_2": string; }[] = [];
 
             it(`Length is the same (${edges.length} = ${expected.length})`, () => {
                 expect(edges.length).to.equal(expected.length);
@@ -291,7 +322,7 @@ function testGraph() {
 
         // Check Graph.parse
         describe(`Test of Graph.parse (all valid)`, () => {
-            let graph = new Graph({
+            let graph: Graph = new Graph({
                 "N23": new Vertex("N23", new Vector2(10, 10)),
                 "N27": new Vertex("N27", new Vector2(20, 20)),
                 "N29": new Vertex("N29", new Vector2(30, 30))
@@ -310,14 +341,14 @@ function testGraph() {
             let length: number = keys.length;
             for (let i = 0; i < length; i++) {
                 it(`${keys[i]} should be Vertex`, () => {
-                    let currVertex = Vertex.parse(result.vertices[keys[i]]);
+                    let currVertex: Vertex | null = Vertex.parse(result.vertices[keys[i]]);
                     expect(typeof (currVertex)).to.equal("object");
                 });
             }
         });
 
         describe(`Test of Graph.parse (missing both-way edges)`, () => {
-            let graph = new Graph({
+            let graph: Graph = new Graph({
                 "N23": new Vertex("N23", new Vector2(10, 10)),
                 "N27": new Vertex("N27", new Vector2(20, 20)),
                 "N29": new Vertex("N29", new Vector2(30, 30))
@@ -370,14 +401,14 @@ function testGraph() {
     });
 
     describe(`Test of Graph method "clone"`, () => {
-        let graph = new Graph({
+        let graph: Graph = new Graph({
             "N23": new Vertex("N23", new Vector2(10, 10)),
             "N27": new Vertex("N27", new Vector2(20, 20))
         });
-        let vertex1 = graph.vertices["N23"];
-        let vertex2 = graph.vertices["N27"];
+        let vertex1: Vertex = graph.vertices["N23"];
+        let vertex2: Vertex = graph.vertices["N27"];
 
-        let result = graph.clone();
+        let result: Graph = graph.clone();
         graph.vertices["N23"].scheduleItems.push(new ScheduleItem("F29", 10923029, "N23"));
         console.log(result);
         console.log(graph);
@@ -387,8 +418,6 @@ function testGraph() {
         });
     });
 }
-
-
 
 
 describe(`Test of ScheduleItem`, testScheduleItem);
