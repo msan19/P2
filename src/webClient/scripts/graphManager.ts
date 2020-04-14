@@ -202,10 +202,6 @@ function getSGraphAsGraph(): JSON {
     return graph;
 }
 
-function updateSGraph(graph: JSON, ): void {
-    sGraph;
-}
-
 function updateHighlightColor() {
     let hightlightColorPicker: HTMLDivElement = document.querySelector("#hightlightColorPicker");
     //@ts-ignore
