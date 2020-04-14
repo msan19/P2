@@ -87,17 +87,17 @@ export class RouteScheduler {
     }
 
     upStacking(vertex: Vertex, order: Order, nextVertexId: string): number {
-        let fullfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / this.data.warehouse.forkliftSpeed;
+        let fulfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / this.data.warehouse.forkliftSpeed;
         let time: number = (vertex.id === order.startVertexId)
             ? order.time
-            : fullfillTime + this.upStacking(vertex.previousVertex, order, vertex.id);
+            : fulfillTime + this.upStacking(vertex.previousVertex, order, vertex.id);
         vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId));
         return time;
     }
 
     downStacking(vertex: Vertex, order: Order, time: number, nextVertexId: string): void {
-        let fullfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / this.data.warehouse.forkliftSpeed;
-        let timeOnPrev: number = time - fullfillTime;
+        let fulfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / this.data.warehouse.forkliftSpeed;
+        let timeOnPrev: number = time - fulfillTime;
 
         vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId));
         if (vertex.id !== order.startVertexId) {

@@ -1,6 +1,9 @@
 import { Graph, Vertex } from "../shared/graph";
 import { Vector2 } from "../shared/vector2";
 
+/**
+ * Creates a graph object
+ */
 export function createGraph() {
     let vertices = createVertices(10, 10);
     // vertices["n2-4"].id = null;   
@@ -10,6 +13,12 @@ export function createGraph() {
     return graph;
 }
 
+/**
+ * The total amount of generated vertices is xSize * ySize
+ * @param xSize Amount of vertices on the x axis
+ * @param ySize Amount of vertices on the y axis
+ * @return { [key: string]: Vertex; } A dictionary where the values are Vertex objects
+ */
 function createVertices(xSize: number, ySize: number): { [key: string]: Vertex; } {
     let vertices = {};
 
