@@ -280,12 +280,31 @@ function onUpdateEdgeSizeChange(): void {
     sGraph.refresh();
 }
 
+function JsonTryParse(str) {
+    let obj;
+    try {
+        obj = JSON.parse(str);
+    } catch {
+        return null;
+    }
+    return obj;
+}
+
 var webSocket = new WebSocket("ws://localhost:8080/subscribe");
 webSocket.onmessage = function (event) {
-    let data = JSON.parse(event["data"]);
-    switch (data.type) {
-        case PackageTypes.warehouse:
+    let data = JsonTryParse(event["data"]);
+    if (data !== null) {
+        switch (data.type) {
+            case PackageTypes.warehouse:
                 parseWarehouse(data.body);
+                break;
+            default:
+                console.log("Unhandled type: " + data.type);
+                break;
+        }
+    } else {
+        console.log(data);
+    }
 
 };
 
