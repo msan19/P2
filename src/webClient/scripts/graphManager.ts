@@ -34,19 +34,6 @@ var tempPath: JSON = JSON.parse(JSON.stringify({
     ]
 }));
 
-enum PackageTypes {
-    route = "route",
-    routes = "routes",
-    forkliftInfo = "forkliftInfo",
-    forkliftInfos = "forkliftInfos",
-    order = "order",
-    orders = "orders",
-    warehouse = "warehouse",
-    json = "json",
-    other = "other"
-}
-
-
 // https://github.com/jacomyal/sigma.js/tree/master/plugins/sigma.exporters.svg
 function exportGraph(): void {
     let output = sGraph.toSVG({ download: true, filename: 'warehouseGraph.svg', size: 1000 });
@@ -280,33 +267,8 @@ function onUpdateEdgeSizeChange(): void {
     sGraph.refresh();
 }
 
-function JsonTryParse(str) {
-    let obj;
-    try {
-        obj = JSON.parse(str);
-    } catch {
-        return null;
-    }
-    return obj;
-}
 
-var webSocket = new WebSocket("ws://localhost:8080/subscribe");
-webSocket.onmessage = function (event) {
-    let data = JsonTryParse(event["data"]);
-    if (data !== null) {
-        switch (data.type) {
-            case PackageTypes.warehouse:
-                parseWarehouse(data.body);
-                break;
-            default:
-                console.log("Unhandled type: " + data.type);
-                break;
-        }
-    } else {
-        console.log(data);
-    }
-
-};
-
-
-
+window["socketManager"].addEventListener(SocketManager.PackageTypes.warehouse, (e) => {
+    console.log(e.body);
+    parseWarehouse(e.body);
+});
