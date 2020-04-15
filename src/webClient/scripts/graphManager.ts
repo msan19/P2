@@ -53,7 +53,7 @@ function exportGraph(): void {
 
 };
 
-function parseJSON(data: JSON): any {
+function parseWarehouse(data: JSON): any {
     let iData: any = data;
 
 
@@ -285,12 +285,7 @@ webSocket.onmessage = function (event) {
     let data = JSON.parse(event["data"]);
     switch (data.type) {
         case PackageTypes.warehouse:
-            parseJSON(data.body);
-            break;
-        default:
-            console.log("Unhandled type: " + data.type);
-            break;
-    }
+                parseWarehouse(data.body);
 
 };
 
