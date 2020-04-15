@@ -1,4 +1,4 @@
-* {
+/* * {
     margin: 0;
     padding: 0;
     border: 0;
@@ -9,22 +9,22 @@
         Arial,
         sans-serif;
     vertical-align: middle;
-}
+} */
 
 #sigmaContainer {
-    height: 100vh;
+    height: 80vh;
     width: 100%;
 }
 
-#topMenu {
+/* #topMenu {
     top: 10px;
     left: 10px;
     position: fixed;
     border-collapse: collapse;
 
-}
+} */
 
-button {
+/* button {
     padding: 8px;
     background-color: white;
     border: 1px solid black;
@@ -41,4 +41,4 @@ button {
 td {
     padding-right: 4px;
 
-}
+} */

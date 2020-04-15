@@ -74,7 +74,8 @@ function updateGraph(graphO: JSON): void {
             minEdgeSize: 1,
             maxEdgeSize: 8,
             minNodeSize: 1,
-            maxNodeSize: 8
+            maxNodeSize: 8,
+            scalingMode: "outside"
         }
     });
     //hightlightPath(graphO, tempPath, null);
