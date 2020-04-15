@@ -1,12 +1,15 @@
 
 /**
- * This class is a min-priority queue implementation 
- * The queue differs from a traditional one in the following way:
- * - It has a function f
- * - The values of the objects in the heap (array) are function values 
+ * A min-priority queue implementation 
  */
 export class MinPriorityQueue {
+    /** An array containing the elemtns of the priority queue  */
     array: any[];
+
+    /** 
+     * A function defined as the sum of two other functions, 
+     * which in {@link RouteScheduler} is {@link Vertex.g} and {@link RouteScheduler.heuristic}
+     */
     f: (x: any) => number;
 
     constructor(f: (x: any) => number) {
