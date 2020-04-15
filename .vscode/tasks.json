@@ -22,6 +22,13 @@
                 "$tsc"
             ],
             "group": "build"
+        },
+        {
+            "type": "npm",
+            "script": "install",
+            "problemMatcher": [],
+            "label": "npm: install",
+            "detail": "npm i node typescript ts-node mocha chai @types/node @types/chai @types/mocha ws @types/ws --save-dev"
         }
     ]
 }
