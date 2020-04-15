@@ -35,25 +35,12 @@ var tempPath: JSON = JSON.parse(JSON.stringify({
 }));
 var forkliftData: JSON = JSON.parse("{}");
 
-enum PackageTypes {
-    route = "route",
-    routes = "routes",
-    forkliftInfo = "forkliftInfo",
-    forkliftInfos = "forkliftInfos",
-    order = "order",
-    orders = "orders",
-    warehouse = "warehouse",
-    json = "json",
-    other = "other"
-}
-
 enum ForkliftStates {
     idle = 1,
     hasOrder,
     charging,
     initiating
 }
-
 
 // https://github.com/jacomyal/sigma.js/tree/master/plugins/sigma.exporters.svg
 function exportGraph(): void {
@@ -284,16 +271,6 @@ function onUpdateEdgeSizeChange(): void {
     sGraph.refresh();
 }
 
-function JsonTryParse(str) {
-    let obj;
-    try {
-        obj = JSON.parse(str);
-    } catch {
-        return null;
-    }
-    return obj;
-}
-
 function getForkliftColor(state: ForkliftStates): string {
     console.log(state);
     switch (state) {
@@ -322,28 +299,6 @@ function parseForklifts(data: JSON): void {
     sGraph.refresh();
 }
 
-
-var webSocket = new WebSocket("ws://localhost:8080/subscribe");
-webSocket.onmessage = function (event) {
-    let data = JsonTryParse(event["data"]);
-    if (data !== null) {
-        switch (data.type) {
-            case PackageTypes.warehouse:
-                parseWarehouse(data.body);
-                parseForklifts(forkliftData);
-                break;
-            case PackageTypes.forkliftInfos:
-                forkliftData = data.body;
-                break;
-            default:
-                console.log("Unhandled type: " + data.type);
-                break;
-        }
-    } else {
-        console.log(data);
-    }
-
-};
-
-
-
+window["socketManager"].on(SocketManager.PackageTypes.warehouse, (warehouse) => {
+    parseWarehouse(warehouse);
+});
