@@ -13,7 +13,7 @@ import { Order } from '../../../src/shared/order';
  * This function checks whether 2 orders are the same using Mocha's "expect"
  * @param result The actual order that is supposed to be checked
  * @param expected The order that the result is expected to be equal to
- * @returns void There is no output, as Mocha handles the actual response
+ * @returns There is no output, as Mocha handles the actual response
  */
 function checkOrder(result: Order | null, expected: Order | null): void {
     /* First checks whether the expected order is different from null,
@@ -36,11 +36,11 @@ function checkOrder(result: Order | null, expected: Order | null): void {
 
 /**
  * Function that uses Mocha to test the method parse on object Order
- * @returns void Mocha handles the appropriate responses
+ * @returns Mocha handles the appropriate responses
  */
 function testParse(): void {
     /* Creates necessary information for testing a valid order */
-    let data = new DataContainer();
+    let data: DataContainer = new DataContainer();
     let warehouse: Warehouse = new Warehouse(new Graph({
         "N23": new Vertex("N23", new Vector2(10, 10)),
         "N27": new Vertex("N27", new Vector2(20, 20)),
@@ -53,35 +53,35 @@ function testParse(): void {
     data.warehouse = warehouse;
 
     describe(`Test of valid order`, () => {
-        let order = new Order("O4", Order.types.moveForklift, "F2", "P4", "N23", "N29");
-        let result = Order.parse(order, data);
-        let expected = order;
+        let order: Order = new Order("O4", Order.types.moveForklift, "F2", "P4", "N23", "N29");
+        let result: Order | null = Order.parse(order, data);
+        let expected: Order = order;
 
         checkOrder(result, expected);
 
     });
 
     describe(`Test of invalid order vertex id`, () => {
-        let order = new Order("O4", Order.types.moveForklift, "F2", "P4", "N24", "N29");
-        let result = Order.parse(order, data);
-        let expected = null;
+        let order: Order = new Order("O4", Order.types.moveForklift, "F2", "P4", "N24", "N29");
+        let result: Order | null = Order.parse(order, data);
+        let expected: Order | null = null;
 
         checkOrder(result, expected);
     });
 
     describe(`Test of invalid order forklift id`, () => {
-        let order = new Order("O4", Order.types.charge, "F7", "P4", "N23", "N29");
-        let result = Order.parse(order, data);
-        let expected = null;
+        let order: Order = new Order("O4", Order.types.charge, "F7", "P4", "N23", "N29");
+        let result: Order | null = Order.parse(order, data);
+        let expected: Order | null = null;
 
         checkOrder(result, expected);
     });
 
     describe(`Test of valid order type`, () => {
-        let order = new Order("O4", Order.types.charge, "F2", "P4", "N23", "N29");
+        let order: Order = new Order("O4", Order.types.charge, "F2", "P4", "N23", "N29");
         order.type = null;
-        let result = Order.parse(order, data);
-        let expected = null;
+        let result: Order | null = Order.parse(order, data);
+        let expected: Order | null = null;
 
         checkOrder(result, expected);
     });

@@ -9,7 +9,7 @@ import { Vector2 } from "../../../src/shared/vector2";
  * @param vector The vector that is to be checked
  * @param expX The expected x-value
  * @param expY The expected y-value
- * @returns void Mocha handles the appropriate responses
+ * @returns Mocha handles the appropriate responses
  */
 function checkVector(vector: Vector2, expX: number, expY: number) {
     it('x and y are as expected', () => {
@@ -22,7 +22,7 @@ function checkVector(vector: Vector2, expX: number, expY: number) {
  * Checks whether two edges contains same id's
  * @param edge The edge that is to be checked
  * @param expected The expected result
- * @returns void Mocha handles the appropriate responses
+ * @returns Mocha handles the appropriate responses
  */
 function checkEdge(edge: { "vertexId_1": string, "vertexId_2": string; }, expected: { "id_1": string, "id_2": string; }): void {
     it(`ID of the first`, () => {
@@ -38,7 +38,7 @@ function checkEdge(edge: { "vertexId_1": string, "vertexId_2": string; }, expect
  * Checks whether two arrays contains same values
  * @param result The array that is to be checked
  * @param expected The array containing the expected values
- * @returns void Mocha handles the appropriate responses
+ * @returns Mocha handles the appropriate responses
  */
 function checkArray(result: string[], expected: string[]) {
     let length: number = Math.max(result.length, expected.length);
@@ -51,7 +51,7 @@ function checkArray(result: string[], expected: string[]) {
 
 /**
  * Test of the object ScheduleItem
- * @returns void Mocha handles the appropriate responses
+ * @returns Mocha handles the appropriate responses
  */
 function testScheduleItem(): void {
     // forkliftId: string, time: number, nextVertexId: string
@@ -74,7 +74,7 @@ function testScheduleItem(): void {
 
 /**
  * Test of the object Vertex
- * @returns void Mocha handles the appropriate responses
+ * @returns Mocha handles the appropriate responses
  */
 function testVertex(): void {
     // id: string, position: Vector2, label?: string
@@ -162,7 +162,7 @@ function testVertex(): void {
 
 /**
  * Test of the object Graph
- * @returns void Mocha handles the appropriate responses
+ * @returns Mocha handles the appropriate responses
  */
 function testGraph() {
     describe(`Test of Graph object`, () => {

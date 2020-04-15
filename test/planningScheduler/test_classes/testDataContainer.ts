@@ -5,8 +5,12 @@ import { Route } from "../../../src/shared/route";
 import { expect } from 'chai';
 import 'mocha';
 
-function testObject() {
-    let data = new DataContainer();
+/**
+ * Test of the object DataContainer
+ * @returns Mocha handles the appropriate responses
+ */
+function testObject(): void {
+    let data: DataContainer = new DataContainer();
 
     it(`${Object.keys(data)[0]} should be empty`, () => {
         expect(Object.keys(data.forklifts).length).to.equal(0);
@@ -26,10 +30,9 @@ function testObject() {
 }
 
 function testAddOrder() {
-
     // Should be empty when first initialized
     describe(`When no orders are added`, () => {
-        let data = new DataContainer();
+        let data: DataContainer = new DataContainer();
         it(`${Object.keys(data)[1]} should be empty`, () => {
             expect(Object.keys(data.orders).length).to.equal(0);
         });
@@ -37,8 +40,8 @@ function testAddOrder() {
 
     // Adding an order
     describe(`When an order is added`, () => {
-        let data = new DataContainer();
-        let orderId = "sfgojikdfjoi";
+        let data: DataContainer = new DataContainer();
+        let orderId: string = "sfgojikdfjoi";
         data.addOrder(new Order("sfgojikdfjoi", Order.types.moveForklift, "awd", "pallet1", "start1", "slut1"));
 
         it(`Order number 1's ${Object.keys(data.orders[orderId])[0]} should be sfgojikdfjoi`, () => {
@@ -68,24 +71,24 @@ function testAddOrder() {
 
     // Adding multiple orders
     describe(`When multiple orders are added`, () => {
-        let data = new DataContainer();
+        let data: DataContainer = new DataContainer();
         data.addOrder(new Order("O0", Order.types.moveForklift, "TF2", "P17", "N17", "N21"));
         data.addOrder(new Order("O1", Order.types.movePallet, "TF2", "P17", "N21", "N23"));
         data.addOrder(new Order("O2", Order.types.charge, "TF2", "", "N23", "C1"));
         data.addOrder(new Order("O3", Order.types.charge, "TF25", "", "", "C3"));
         data.addOrder(new Order("O4", Order.types.moveForklift, "TF25", "P4", "C3", "N21"));
 
-        let expectO0 = ["O0", Order.types.moveForklift, "TF2", "P17", "N17", "N21"];
-        let expectO1 = ["O1", Order.types.movePallet, "TF2", "P17", "N21", "N23"];
-        let expectO2 = ["O2", Order.types.charge, "TF2", "", "N23", "C1"];
-        let expectO3 = ["O3", Order.types.charge, "TF25", "", "", "C3"];
-        let expectO4 = ["O4", Order.types.moveForklift, "TF25", "P4", "C3", "N21"];
+        let expectO0: any[] = ["O0", Order.types.moveForklift, "TF2", "P17", "N17", "N21"];
+        let expectO1: any[] = ["O1", Order.types.movePallet, "TF2", "P17", "N21", "N23"];
+        let expectO2: any[] = ["O2", Order.types.charge, "TF2", "", "N23", "C1"];
+        let expectO3: any[] = ["O3", Order.types.charge, "TF25", "", "", "C3"];
+        let expectO4: any[] = ["O4", Order.types.moveForklift, "TF25", "P4", "C3", "N21"];
 
-        let expecteds = [expectO0, expectO1, expectO2, expectO3, expectO4];
+        let expecteds: any[][] = [expectO0, expectO1, expectO2, expectO3, expectO4];
 
         for (let i = 0; i < Object.keys(data.orders).length; i++) {
             describe(`The first order`, () => {
-                let orderId = "O" + i;
+                let orderId: string = "O" + i;
                 it(`Order ${orderId}'s ${Object.keys(data.orders[orderId])[0]} should be ${expecteds[i][0]}`, () => {
                     expect(data.orders[orderId].id).to.equal(expecteds[i][0]);
                 });

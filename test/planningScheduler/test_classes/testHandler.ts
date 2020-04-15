@@ -4,8 +4,8 @@ import 'mocha';
 import { DataContainer } from "../../../src/planningScheduler/classes/dataContainer";
 
 
-let data = new DataContainer();
-let handler = new Handler(data);
+let data: DataContainer = new DataContainer();
+let handler: Handler = new Handler(data);
 
 // describe("Handler controllers lowercase and methods uppercased", () => {
 //     for (let controllerId in handler.controllers) {
