@@ -1,9 +1,10 @@
 const container: string = 'sigmaContainer';
-const defaultNodeColor = '#5c3935';
-const defaultEdgeColor = '#5c3935';
-const defaultHighlightColor = "#F7362D";
+const defaultNodeColorValue = '#5c3935';
+const defaultEdgeColorValue = '#5c3935';
+const defaultHighlightColorValue = "#F7362D";
+const defaultLowDarkColorValue = "#e5e5e5";
 const defaultNodeSizeValue = 8;
-const defaultEdgeSize = 4;
+const defaultEdgeSizeValue = 4;
 var sGraph;
 var tempPath: JSON = JSON.parse(JSON.stringify({
     "nodes": [
@@ -64,7 +65,7 @@ function parseJSON(data: JSON): any {
 
 function updateGraph(graphO: JSON): void {
     let newGraph = hightlightPath(graphO, tempPath, null);
-    newGraph = lowdark(newGraph, tempPath);
+    newGraph = lowdark(newGraph, tempPath, null);
     initializeGraphRelatedUiElements();
     // @ts-ignore
     sGraph = new sigma(
@@ -96,7 +97,7 @@ function addEdges(graph: JSON): JSON {
         for (let key in graph["vertices"][vertexId_1]["adjacentVertexIds"]) {
             let vertexId_2 = graph["vertices"][vertexId_1]["adjacentVertexIds"][key];
             if (vertexId_1 < vertexId_2) {
-                output.push({ id: vertexId_1 + "," + vertexId_2, source: vertexId_1, target: vertexId_2, color: defaultEdgeColor, type: 'line', size: defaultEdgeSize });
+                output.push({ id: vertexId_1 + "," + vertexId_2, source: vertexId_1, target: vertexId_2, color: defaultEdgeColorValue, type: 'line', size: defaultEdgeSizeValue });
             }
         }
     }
@@ -111,7 +112,7 @@ function changeNodes(graph: JSON): JSON {
         graph["vertices"][vertexId]["size"] = defaultNodeSizeValue;
         graph["vertices"][vertexId]["x"] = graph["vertices"][vertexId]["position"]["x"];
         graph["vertices"][vertexId]["y"] = graph["vertices"][vertexId]["position"]["y"];
-        graph["vertices"][vertexId]["color"] = defaultNodeColor;
+        graph["vertices"][vertexId]["color"] = defaultNodeColorValue;
         graph["vertices"][vertexId]["label"] = graph["vertices"][vertexId]["id"];
         delete (graph["vertices"][vertexId]["position"]);
         delete (graph["vertices"][vertexId]["adjacentVertexIds"]);
@@ -121,7 +122,7 @@ function changeNodes(graph: JSON): JSON {
             label: graph["vertices"][vertexId]["id"],
             x: graph["vertices"][vertexId]["x"],
             y: graph["vertices"][vertexId]["y"],
-            color: defaultNodeColor,
+            color: defaultNodeColorValue,
             type: 'line',
             size: defaultNodeSizeValue
         });
@@ -137,7 +138,7 @@ function hightlightPath(graph: JSON, path: JSON, color: string | null): JSON {
         let found = false;
         for (let nodeToCheck in graph["nodes"]) {
             if (path["nodes"][nodeToFind] == graph["nodes"][nodeToCheck]["id"]) {
-                graph["nodes"][nodeToCheck]["color"] = (typeof (color) == "string") ? color : defaultHighlightColor;
+                graph["nodes"][nodeToCheck]["color"] = (typeof (color) == "string") ? color : defaultHighlightColorValue;
                 found = true;
                 break;
             }
@@ -156,7 +157,7 @@ function hightlightPath(graph: JSON, path: JSON, color: string | null): JSON {
     return graph;
 }
 
-function lowdark(graph: JSON, path: JSON): JSON | null {
+function lowdark(graph: JSON, path: JSON, color: string | null): JSON | null {
     for (let nodeToBeChecked in graph["nodes"]) {
         let found: boolean = false;
         for (let nodeToBeCheckedAgainst in path["nodes"]) {
@@ -167,7 +168,7 @@ function lowdark(graph: JSON, path: JSON): JSON | null {
             }
         }
         if (found == false)
-            graph["nodes"][nodeToBeChecked]["color"] = "#e5e5e5";
+            graph["nodes"][nodeToBeChecked]["color"] = (typeof (color) == "string") ? color : defaultLowDarkColorValue;
 
     }
     for (let edgeToBeChecked in graph["edges"]) {
@@ -180,7 +181,7 @@ function lowdark(graph: JSON, path: JSON): JSON | null {
             }
         }
         if (found == false)
-            graph["edges"][edgeToBeChecked]["color"] = "#e5e5e5";
+            graph["edges"][edgeToBeChecked]["color"] = (typeof (color) == "string") ? color : defaultLowDarkColorValue;
 
     }
     return graph;
@@ -205,7 +206,14 @@ function initializeGraphRelatedUiElements() {
     //@ts-ignore
     document.getElementById("settings").style.visibility = "hidden";
     //@ts-ignore
+    document.getElementById("hightlightColorPicker").value = defaultHighlightColorValue;
+    //@ts-ignore
+    document.getElementById("lowDarkColorPicker").value = defaultLowDarkColorValue;
+    //@ts-ignore
     document.getElementById("nodeSizeInput").value = defaultNodeSizeValue;
+    //@ts-ignore
+    document.getElementById("edgeSizeInput").value = defaultEdgeSizeValue;
+
 }
 
 function onSettingsButtonClick() {
@@ -221,9 +229,9 @@ function onSettingsButtonClick() {
 
 function setGraphColorToDefault(graph: JSON): JSON {
     for (let node in graph["nodes"])
-        graph["nodes"][node]["color"] = defaultNodeColor;
+        graph["nodes"][node]["color"] = defaultNodeColorValue;
     for (let edge in graph["edges"])
-        graph["edges"][edge]["color"] = defaultEdgeColor;
+        graph["edges"][edge]["color"] = defaultEdgeColorValue;
     return graph;
 }
 
@@ -241,15 +249,34 @@ function updateNodeSizes(graph: JSON, size: number): JSON {
     return graph;
 }
 
+function updateEdgeSizes(graph: JSON, size: number): JSON {
+    for (let edgeIndex in graph["edges"]) {
+        graph["edges"][edgeIndex]["size"] = size;
+    }
+    return graph;
+}
+
 function updateHighlightColor(): void {
     let hightlightColorPicker: HTMLInputElement = document.querySelector("#hightlightColorPicker");
     sGraph.graph = hightlightPath(getSGraphAsGraph(), tempPath, hightlightColorPicker.value);
     sGraph.refresh();
 }
 
+function updateLowDarkColor(): void {
+    let lowDarkColorPicker: HTMLInputElement = document.querySelector("#lowDarkColorPicker");
+    sGraph.graph = lowdark(getSGraphAsGraph(), tempPath, lowDarkColorPicker.value);
+    sGraph.refresh();
+}
+
 function onUpdateNodeSizeChange(): void {
     let nodeSizeInput: HTMLInputElement = document.querySelector("#nodeSizeInput");
     sGraph.graph = updateNodeSizes(getSGraphAsGraph(), +nodeSizeInput.value);
+    sGraph.refresh();
+}
+
+function onUpdateEdgeSizeChange(): void {
+    let edgeSizeInput: HTMLInputElement = document.querySelector("#edgeSizeInput");
+    sGraph.graph = updateEdgeSizes(getSGraphAsGraph(), +edgeSizeInput.value);
     sGraph.refresh();
 }
 

@@ -29,7 +29,7 @@ button {
     background-color: white;
     border: 1px solid black;
     font-size: large;
-
+    font-weight: bold;
 }
 
 #settings {
@@ -41,4 +41,9 @@ button {
 td {
     padding-right: 4px;
 
+}
+
+h3 {
+    font-size: large;
+    font-weight: bold;
 }

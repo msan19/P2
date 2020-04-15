@@ -22,10 +22,30 @@
         <div id="settings">
             <table>
                 <tr>
+                    <td>
+                        <h3>Colors</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Default Color</td>
+                    <td><input id="defaultColorPicker" type="color" onchange="updateDefaultColor();"></input></td>
                     <td>Hightlight Color</td>
                     <td><input id="hightlightColorPicker" type="color" onchange="updateHighlightColor();"></input></td>
-                    <td><input id="nodeSizeInput" type="number" onchange="onUpdateNodeSizeChange();"></input></td>
+                    <td>LowDark Color</td>
+                    <td><input id="lowDarkColorPicker" type="color" onchange="updateLowDarkColor();"></input></td>
                 </tr>
+                <tr>
+                    <td>
+                        <h3>Sizes</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Node Size</td>
+                    <td><input id="nodeSizeInput" type="number" onchange="onUpdateNodeSizeChange();"></input></td>
+                    <td>Edge Size</td>
+                    <td><input id="edgeSizeInput" type="number" onchange="onUpdateEdgeSizeChange();"></input></td>
+                </tr>
+
             </table>
         </div>
 
