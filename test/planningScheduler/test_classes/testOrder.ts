@@ -10,7 +10,7 @@ import { Forklift } from '../../../src/planningScheduler/classes/forklift';
 import { Order } from '../../../src/shared/order';
 
 /**
- * This function checks whether 2 orders are the same using Mocha's "expect"
+ * This function checks whether two orders are the same using Mocha's "expect"
  * @param result The actual order that is supposed to be checked
  * @param expected The order that the result is expected to be equal to
  * @returns There is no output, as Mocha handles the actual response

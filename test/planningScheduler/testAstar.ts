@@ -2,28 +2,45 @@ import { expect } from 'chai';
 import 'mocha';
 
 import { MinPriorityQueue } from '../../src/planningScheduler/classes/minPriorityQueue';
-import { Vertex } from '../../src/shared/graph';
+import { Vertex, Graph } from '../../src/shared/graph';
 import { Vector2 } from '../../src/shared/vector2';
 import { createGraph } from '../../src/blackBox/warehouse';
 import { Order } from '../../src/shared/order';
 import { RouteScheduler } from '../../src/planningScheduler/routeScheduler';
 import { DataContainer } from '../../src/planningScheduler/classes/dataContainer';
 import { RouteSet } from '../../src/shared/route';
+import { Data } from 'ws';
 
-function checkLength(l1: number, l2: number) {
+/**
+ * Checks wether two lengths are equal
+ * @param l1 First length
+ * @param l2 Second length 
+ * @returns Mocha handles the appropriate responses
+ */
+function checkLength(l1: number, l2: number): void {
     it(`Length l1 (${l1}) should be the same as l2 (${l2})`, () => {
         expect(l1).to.equal(l2);
     });
 }
 
-function checkVector(vector: Vector2, expected: Vector2) {
+/**
+ * Checks whether a vector is equal to an expected vector
+ * @param vector The vector that is to be checked
+ * @param expected The expected vector
+ * @returns Mocha handles the appropriate responses
+ */
+function checkVector(vector: Vector2, expected: Vector2): void {
     it('x and y are as expected', () => {
         expect(vector.x).to.equal(expected.x);
         expect(vector.y).to.equal(expected.y);
     });
 }
 
-function testMinPriorityQueue() {
+/**
+ * Test of the object MinPriorityQueue
+ * @returns Mocha handles the appropriate responses
+ */
+function testMinPriorityQueue(): void {
     describe(`Test of MinPriorityQueue.swapByIndex`, () => {
         describe(`Test with correct swap`, () => {
             let queue: MinPriorityQueue = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
@@ -277,30 +294,24 @@ function testMinPriorityQueue() {
     });
 }
 
-function testAStar() {
+/**
+ * Test of A*
+ * @returns Mocha handles the appropriate responses
+ */
+function testAStar(): void {
     describe(`Test of A* with Graph from createGraph input`, () => {
-        let graph = createGraph();
-        let routeSet = new RouteSet([], graph);
-        let data = new DataContainer();
-        let routeScheduler = new RouteScheduler(data);
-        let order = new Order("O0", Order.types.moveForklift, "F23", "P23", "N1-2", "N8-9");
+        let graph: Graph = createGraph();
+        let routeSet: RouteSet = new RouteSet([], graph);
+        let data: DataContainer = new DataContainer();
+        let routeScheduler: RouteScheduler = new RouteScheduler(data);
+        let order: Order = new Order("O0", Order.types.moveForklift, "F23", "P23", "N1-2", "N8-9");
         let expectedRouteLength: number = 14;
 
         routeScheduler.planOptimalRoute(routeSet, order);
 
         checkLength(graph.vertices[order.endVertexId].g(order.startVertexId), expectedRouteLength);
-
-
-
     });
-
-
-
 }
-
-
-
-
 
 //describe(`Test of object "MinPriorityQueue"`, testMinPriorityQueue);
 describe(`Test of A* algorithm`, testAStar);

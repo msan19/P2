@@ -17,7 +17,7 @@ function checkVector(vector: Vector2, expX: number, expY: number): void {
 }
 
 /**
- * Checks whether 2 numbers are the same
+ * Checks whether two numbers are the same
  * @param actual The actual number to be tested
  * @param expected The expected value
  * @returns Mocha handles the appropriate responses

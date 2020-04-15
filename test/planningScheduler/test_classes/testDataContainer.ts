@@ -29,6 +29,10 @@ function testObject(): void {
     });
 }
 
+/**
+ * Test of method addOrder for object DataContainer
+ * @returns Mocha handles the appropriate responses
+ */
 function testAddOrder() {
     // Should be empty when first initialized
     describe(`When no orders are added`, () => {
