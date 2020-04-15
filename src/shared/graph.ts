@@ -1,19 +1,28 @@
 import { Vector2 } from "./vector2";
 
+/** A graph cointaining interconnected vertices */
 export class Graph {
+    /** A dictionary of vertices contained in the graph */
     vertices: { [key: string]: Vertex; };
+
     constructor(vertices: { [key: string]: Vertex; }) {
         this.vertices = vertices || {};
     }
 
+    /**
+     * Returns direct distance between two vertices
+     * @param vertex_1 First vertex
+     * @param vertex_2 Second vertex
+     * @return Distance between the vertices
+     */
     getDistanceDirect(vertex_1: Vertex, vertex_2: Vertex): number {
         return vertex_1.getDistanceDirect(vertex_2);
     }
 
     /**
-    * Loops through each vertice within each vertice on the graph
-    * @returns array of objects with 2 vertex ids
-    */
+     * Loops through each adjecent vertex within each vertex on the graph
+     * @return Array of objects with two vertex ids
+     */
     getEdges(): { vertexId_1: string, vertexId_2: string; }[] {
         let output = [];
         for (let vertexId_1 in this.vertices) {
@@ -27,6 +36,11 @@ export class Graph {
         return output;
     }
 
+    /**
+     * Returns a new graph containing only the legal conent of the parameret graph
+     * @param graph The graph to be parsed
+     * @return The new graph
+     */
     static parse(graph: any): Graph | null {
         // Check necessary fields
         if (typeof (graph) !== "object" || graph === null) return null;
@@ -64,8 +78,12 @@ export class Graph {
         return new Graph(tempVertices);
     }
 
+    /**
+     * Creates a new graph containing a clone of each object in the graph the function is called on
+     * @return A new graph
+     */
     clone(): Graph {
-        let newVertices = {};
+        let newVertices: { [key: string]: Vertex; } = {};
 
         for (let key in this.vertices) {
             newVertices[key] = this.vertices[key].clone();
@@ -74,9 +92,12 @@ export class Graph {
         return new Graph(newVertices);
     }
 
+    /**
+     * Sets the isVisited value of each vertex in the graph to false
+     */
     reset(): void {
-        let keys = Object.keys(this.vertices);
-        let length = keys.length;
+        let keys: string[] = Object.keys(this.vertices);
+        let length: number = keys.length;
         for (let i = 0; i < length; i++) {
             this.vertices[keys[i]].isVisited = false;
         }
@@ -84,17 +105,28 @@ export class Graph {
 
 }
 
+/**
+ * A vertex which in compination with the vertices adjecent to it make up a graph
+ */
 export class Vertex {
+    /** A vertex identification string */
     id: string;
+
+    /** A vector representing the position of the vertex */
     position: Vector2;
+
+    /** A label used by the user interface */
     label: string;
 
+    /** An array of identification strings for adjecent vertices */
     adjacentVertexIds: string[];
 
+    /** An array of Scheduleitems specifying when forklifts move through the vertex */
     scheduleItems?: ScheduleItem[];
 
-    // A* related
+    /** A vertex reference to the previous vertex  */
     previousVertex: Vertex | null;
+
     isVisited: boolean;
 
     constructor(id: string, position: Vector2, label?: string) {
@@ -107,6 +139,11 @@ export class Vertex {
         this.isVisited = false;
     }
 
+    /**
+     * Finds the direct distance between the parameter vertex at the vertex the function is called on
+     * @param vertex The vertex which the distance is calculated to
+     * @return The direct distance
+     */
     getDistanceDirect(vertex: Vertex): number {
         return vertex && this.position.getDistanceTo(vertex.position);
     }
