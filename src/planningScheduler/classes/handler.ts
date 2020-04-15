@@ -181,12 +181,15 @@ export class Handler {
 
                 let setWarehouse = (warehouse: Warehouse) => { webSocket.sendWarehouse(warehouse); };
                 this.data.on(DataContainer.events.setWarehouse, setWarehouse);
+                if (this.data.warehouse !== null) webSocket.sendWarehouse(this.data.warehouse);
 
                 let addForkliftInfo = (forklift: ForkliftInfo) => { webSocket.sendForkliftInfo(forklift); };
                 this.data.on(DataContainer.events.addForklift, addForkliftInfo);
+                webSocket.sendForkliftInfos(this.data.forklifts);
 
                 let lockRoute = (route: Route) => { webSocket.sendRoute(route); };
                 this.data.on(DataContainer.events.lockRoute, lockRoute);
+                webSocket.sendRoutes(this.data.routes);
 
                 webSocket.on("close", () => {
                     this.data.removeListener(DataContainer.events.setWarehouse, setWarehouse);
