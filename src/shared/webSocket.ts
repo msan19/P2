@@ -52,7 +52,7 @@ export class WebSocket extends EventEmitter {
         this.send(WebSocket.packageTypes.route, route);
     }
 
-    sendRoutes(routes: Route[]) {
+    sendRoutes(routes: { [key: string]: Route; }) {
         this.send(WebSocket.packageTypes.routes, routes);
     }
 
@@ -60,7 +60,7 @@ export class WebSocket extends EventEmitter {
         this.send(WebSocket.packageTypes.forkliftInfo, forkliftInfo);
     }
 
-    sendForkliftInfos(forkliftInfo: ForkliftInfo[]) {
+    sendForkliftInfos(forkliftInfo: { [key: string]: ForkliftInfo; }) {
         this.send(WebSocket.packageTypes.forkliftInfos, forkliftInfo);
     }
 
@@ -68,7 +68,7 @@ export class WebSocket extends EventEmitter {
         this.send(WebSocket.packageTypes.order, order);
     }
 
-    sendOrders(orders: Order[]) {
+    sendOrders(orders: { [key: string]: Order; }) {
         this.send(WebSocket.packageTypes.orders, orders);
     }
 

@@ -5,19 +5,112 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warehouse Manager</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/style.css" type="text/css">
-    <script src="scripts/sigma/sigma.min.js"></script>
-    <script src="scripts/sigma/sigma.export.js"></script>
-    <script src="scripts/ts/graphManager.js"></script>
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="exportGraph();">Export</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="onSettingsButtonClick();">Settings</a>
+                </li>
+                <li class=" nav-item">
+                    <a class="nav-link" href="#" onclick="resetGraph();">Reset</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
 
 
-    <div id="sigmaContainer"></div>
+        <div id="topMenu" style="display:none">
+            <button id="export" onclick="exportGraph();">Export</button>
+            <button onclick="onSettingsButtonClick();">Settings</button>
+            <button id="reset" onclick="resetGraph();">Reset</button>
+            <div id="settings">
+                <table>
+                    <tr>
+                        <td>Hightlight Color</td>
+                        <td><input id="hightlightColorPicker" type="color" onchange="updateHighlightColor();"></input>
+                        </td>
+                    </tr>
+                </table>
+            </div>
 
-    <button id="export" onclick="exportGraph();">Export</button>
+        </div>
+        <div class="row">
+            <div class="col-lg-9">
+                <div id="sigmaContainer"></div>
+            </div>
+            <div class="col-lg-3">
+                <div class="accordion" id="accordionExample">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                    data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Orders
+                                </button>
+                            </h2>
+                        </div>
 
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                            data-parent="#accordionExample">
+                            <div class="card-body" id="orders"></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                    data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Routes
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                            data-parent="#accordionExample">
+                            <div class="card-body" id="routes">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingThree">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                    data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Forklifts
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                            data-parent="#accordionExample">
+                            <div class="card-body" id="forklifts"> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="scripts/sigma/sigma.min.js"></script>
+    <script src="scripts/sigma/sigma.export.js"></script>
+    <script src="scripts/ts/graphManager.js"></script>
+    <script src="/scripts/jquery-3.4.1.slim.min.js"></script>
+    <script src="/scripts/popper.min.js"></script>
+    <script src="/scripts/bootstrap.min.js"></script>
+
+    <script>
+        initializeGraphRelatedUiElements();
+    </script>
 </body>
 
 </html>

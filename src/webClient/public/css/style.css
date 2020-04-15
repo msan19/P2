@@ -1,19 +1,44 @@
-* {
+/* * {
     margin: 0;
     padding: 0;
     border: 0;
     font-size: 100%;
     font: inherit;
-    vertical-align: baseline;
-}
+    font-family: 'Franklin Gothic Medium',
+        'Arial Narrow',
+        Arial,
+        sans-serif;
+    vertical-align: middle;
+} */
 
 #sigmaContainer {
-    height: 100vh;
+    height: 80vh;
     width: 100%;
 }
 
-#export {
-    top: 40px;
+/* #topMenu {
+    top: 10px;
     left: 10px;
     position: fixed;
+    border-collapse: collapse;
+
+} */
+
+/* button {
+    padding: 8px;
+    background-color: white;
+    border: 1px solid black;
+    font-size: large;
+
 }
+
+#settings {
+    border: 1px solid black;
+    padding: 8px;
+    background-color: white;
+}
+
+td {
+    padding-right: 4px;
+
+} */
