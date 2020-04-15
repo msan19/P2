@@ -206,13 +206,13 @@ function initializeGraphRelatedUiElements() {
     //@ts-ignore
     document.getElementById("settings").style.visibility = "hidden";
     //@ts-ignore
-    document.getElementById("hightlightColorPicker").value = defaultHighlightColorValue;
+    //document.getElementById("hightlightColorPicker").value = defaultHighlightColorValue;
     //@ts-ignore
-    document.getElementById("lowDarkColorPicker").value = defaultLowDarkColorValue;
+    //document.getElementById("lowDarkColorPicker").value = defaultLowDarkColorValue;
     //@ts-ignore
-    document.getElementById("nodeSizeInput").value = defaultNodeSizeValue;
+    //document.getElementById("nodeSizeInput").value = defaultNodeSizeValue;
     //@ts-ignore
-    document.getElementById("edgeSizeInput").value = defaultEdgeSizeValue;
+    //document.getElementById("edgeSizeInput").value = defaultEdgeSizeValue;
 
 }
 
