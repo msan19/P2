@@ -16,7 +16,15 @@ export class WebServer {
             noServer: true
         });
     }
-
+    /**
+    * Creates a HTTP web server using Node.js methods.
+    * Handles client requests by parsing part of an URL into a controller, and checking whether it is valid (typeof request.method).
+    * If a controller is invalid, the server will return to index.html, prompting an error if unsuccessful.
+    * When the event request 'upgrade' is triggered, a websocket is established at the given URL (?).
+    * @param controllers An array containing the URL of the web server.
+    * @param socketControllers An array containing the URL that a websocket has been established at (?).
+    * @return void; nothing is returned, as createServer() simply creates a web server.
+    */
     createServer(controllers: any, socketControllers: any): void {
         this.server = http.createServer((request: http.IncomingMessage, response: http.ServerResponse): void => {
             request.method = request.method.toUpperCase();
