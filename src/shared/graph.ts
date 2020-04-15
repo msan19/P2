@@ -124,9 +124,10 @@ export class Vertex {
     /** An array of Scheduleitems specifying when forklifts move through the vertex */
     scheduleItems?: ScheduleItem[];
 
-    /** A vertex reference to the previous vertex  */
+    /** A vertex reference to the previous vertex in a route being planned */
     previousVertex: Vertex | null;
 
+    /** A boolean specifying if the vertex has been looked at by the route planning algorithm */
     isVisited: boolean;
 
     constructor(id: string, position: Vector2, label?: string) {
@@ -140,15 +141,20 @@ export class Vertex {
     }
 
     /**
-     * Finds the direct distance between the parameter vertex at the vertex the function is called on
-     * @param vertex The vertex which the distance is calculated to
-     * @return The direct distance
+     * Finds direct distance between the parameter vertex at the vertex the function is called on
+     * @param vertex A vertex which the distance is calculated to
+     * @return Direct distance to the parameter vertex
      */
     getDistanceDirect(vertex: Vertex): number {
         return vertex && this.position.getDistanceTo(vertex.position);
     }
 
-
+    /**
+     * Creates a new vertex containing parsed versions of the content of the parameter vertex
+     * if the content is legal, or null otherwise
+     * @param vertex A vertex to be parsed
+     * @return A legal vertex or null
+     */
     static parse(vertex: any): Vertex | null {
         // Check for necessary field types
         if (typeof (vertex) !== "object" || vertex === null) return null;
@@ -194,8 +200,12 @@ export class Vertex {
         return tempVertex;
     }
 
+    /**
+     * Creates a vertex containing clones of the content of the vertex the function is called on
+     * @return A created vertex
+     */
     clone(): Vertex {
-        let v = new Vertex(this.id, this.position.clone(), this.label);
+        let v: Vertex = new Vertex(this.id, this.position.clone(), this.label);
 
         for (let a in this.adjacentVertexIds) {
             v.adjacentVertexIds.push(a);
@@ -209,6 +219,11 @@ export class Vertex {
         return v;
     }
 
+    /**
+     * Creates an array of vertices containing the legal vertices in the parameter array
+     * @param vertices An array of vertices to be parsed
+     * @return A created array of vertices
+     */
     static parseMultiple(vertices: Vertex[]): Vertex[] | null {
         vertices.forEach(element => {
             if (typeof (Vertex.parse(element)) === "object") return null;

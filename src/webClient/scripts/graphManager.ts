@@ -33,19 +33,14 @@ var tempPath: JSON = JSON.parse(JSON.stringify({
         "N1-0,N2-0"
     ]
 }));
+var forkliftData: JSON = JSON.parse("{}");
 
-enum PackageTypes {
-    route = "route",
-    routes = "routes",
-    forkliftInfo = "forkliftInfo",
-    forkliftInfos = "forkliftInfos",
-    order = "order",
-    orders = "orders",
-    warehouse = "warehouse",
-    json = "json",
-    other = "other"
+enum ForkliftStates {
+    idle = 1,
+    hasOrder,
+    charging,
+    initiating
 }
-
 
 // https://github.com/jacomyal/sigma.js/tree/master/plugins/sigma.exporters.svg
 function exportGraph(): void {
@@ -60,16 +55,15 @@ function parseWarehouse(data: JSON): any {
     iData.graph = addEdges(iData.graph);
     iData.graph = changeNodes(iData.graph);
 
-    updateGraph(iData.graph);
+    initializeGraph(iData.graph);
 }
 
-function updateGraph(graphO: JSON): void {
-    let newGraph = hightlightPath(graphO, tempPath, null);
-    newGraph = lowdark(newGraph, tempPath, null);
+function initializeGraph(graphO: JSON): void {
     initializeGraphRelatedUiElements();
     // @ts-ignore
     sGraph = new sigma(
         {
+            graph: graphO,
             renderer: {
                 container: document.getElementById('sigmaContainer'),
                 type: 'canvas'
@@ -82,7 +76,6 @@ function updateGraph(graphO: JSON): void {
             }
         }
     );
-    sGraph.graph.read(newGraph);
     sGraph.refresh();
     //hightlightPath(graphO, tempPath, null);
     // @ts-ignore
@@ -102,7 +95,6 @@ function addEdges(graph: JSON): JSON {
         }
     }
     graph["edges"] = output;
-    console.log(graph);
     return graph;
 }
 
@@ -123,7 +115,6 @@ function changeNodes(graph: JSON): JSON {
             x: graph["vertices"][vertexId]["x"],
             y: graph["vertices"][vertexId]["y"],
             color: defaultNodeColorValue,
-            type: 'line',
             size: defaultNodeSizeValue
         });
     }
@@ -280,33 +271,34 @@ function onUpdateEdgeSizeChange(): void {
     sGraph.refresh();
 }
 
-function JsonTryParse(str) {
-    let obj;
-    try {
-        obj = JSON.parse(str);
-    } catch {
-        return null;
+function getForkliftColor(state: ForkliftStates): string {
+    console.log(state);
+    switch (state) {
+        case ForkliftStates.idle:
+            return "#f9f57b";
+        case ForkliftStates.charging:
+            return "#ff0000";
+        case ForkliftStates.hasOrder:
+            return "#00ff00";
+        case ForkliftStates.initiating:
+            return "#f9f57b";
     }
-    return obj;
+}
+function addForkliftToGraph(forkliftId: string, state: ForkliftStates, xPos: number, yPos: number): void {
+    sGraph.graph.addNode({ "id": forkliftId, x: xPos, y: yPos, color: getForkliftColor(state), size: 8 });
 }
 
-var webSocket = new WebSocket("ws://localhost:8080/subscribe");
-webSocket.onmessage = function (event) {
-    let data = JsonTryParse(event["data"]);
-    if (data !== null) {
-        switch (data.type) {
-            case PackageTypes.warehouse:
-                parseWarehouse(data.body);
-                break;
-            default:
-                console.log("Unhandled type: " + data.type);
-                break;
-        }
-    } else {
-        console.log(data);
+function parseForklifts(data: JSON): void {
+    //let currentGraph: JSON = getSGraphAsGraph();
+    for (let forklift in data) {
+        if (typeof (data[forklift]["position"]) === "undefined" || typeof (data[forklift]["position"]["x"]) === "undefined" || typeof (data[forklift]["position"]["y"]) === "undefined" || typeof (data[forklift]["id"]) === "undefined")
+            continue;
+        addForkliftToGraph(data[forklift]["id"], data[forklift]["state"], data[forklift]["position"]["x"], data[forklift]["position"]["y"]);
     }
+    //sGraph.graph = currentGraph;
+    sGraph.refresh();
+}
 
-};
-
-
-
+window["socketManager"].on(SocketManager.PackageTypes.warehouse, (warehouse) => {
+    parseWarehouse(warehouse);
+});
