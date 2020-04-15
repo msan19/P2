@@ -42,10 +42,13 @@ class SocketManager extends EventTarget {
             this.dispatchEvent(eventToDispatch);
         };
     }
+    on(eventType, func: (obj) => any): void {
+        this.addEventListener(eventType, (e) => { func(e["body"]); });
+    }
 }
 
 window["socketManager"] = window["socketManager"] || new SocketManager("ws://localhost:8080/subscribe");
 
-window["socketManager"].addEventListener(SocketManager.PackageTypes.other, (e) => {
-    console.log(e.body);
+window["socketManager"].on(SocketManager.PackageTypes.other, (obj) => {
+    console.log(obj);
 });

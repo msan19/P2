@@ -268,7 +268,6 @@ function onUpdateEdgeSizeChange(): void {
 }
 
 
-window["socketManager"].addEventListener(SocketManager.PackageTypes.warehouse, (e) => {
-    console.log(e.body);
-    parseWarehouse(e.body);
+window["socketManager"].on(SocketManager.PackageTypes.warehouse, (warehouse) => {
+    parseWarehouse(warehouse);
 });
