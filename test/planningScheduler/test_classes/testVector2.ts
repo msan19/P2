@@ -7,7 +7,7 @@ import 'mocha';
  * @param vector The vector that is to be checked
  * @param expX The expected x-value
  * @param expY The expected y-value
- * @returns void Mocha handles the appropriate responses
+ * @returns Mocha handles the appropriate responses
  */
 function checkVector(vector: Vector2, expX: number, expY: number): void {
     it('x and y are as expected', () => {
@@ -20,7 +20,7 @@ function checkVector(vector: Vector2, expX: number, expY: number): void {
  * Checks whether 2 numbers are the same
  * @param actual The actual number to be tested
  * @param expected The expected value
- * @returns void Mocha handles the appropriate responses
+ * @returns Mocha handles the appropriate responses
  */
 function checkNumber(actual: number, expected: number): void {
     it(`${expected} should be ${actual}`, () => {
@@ -30,7 +30,7 @@ function checkNumber(actual: number, expected: number): void {
 
 /**
  * Test for the method add on object Vector2
- * @returns void Mocha handles the appropriate responses
+ * @returns Mocha handles the appropriate responses
  */
 function testAdd(): void {
     let vectors: Vector2[] = [];
@@ -52,7 +52,7 @@ function testAdd(): void {
 
 /**
  * Test for the method subtract on object Vector2
- * @returns void Mocha handles the appropriate responses
+ * @returns Mocha handles the appropriate responses
  */
 function testSubtract(): void {
     let vectors: Vector2[] = [];
@@ -74,7 +74,7 @@ function testSubtract(): void {
 
 /**
  * Test for the method scale on object Vector2
- * @returns void Mocha handles the appropriate responses
+ * @returns Mocha handles the appropriate responses
  */
 function testScale(): void {
     let vectors: Vector2[] = [];
@@ -103,7 +103,7 @@ function testScale(): void {
 
 /**
  * Test for the method length on object Vector2
- * @returns void Mocha handles the appropriate responses
+ * @returns Mocha handles the appropriate responses
  */
 function testLength(): void {
     let vectors: Vector2[] = [];
@@ -121,12 +121,11 @@ function testLength(): void {
     for (let i = 0; i < results.length; i++) {
         checkNumber(results[i], expects[i]);
     }
-
 }
 
 /**
  * Test for the method distanceTo on object Vector2
- * @returns void Mocha handles the appropriate responses
+ * @returns Mocha handles the appropriate responses
  */
 function testDistanceTo(): void {
     let vectors: Vector2[] = [];
