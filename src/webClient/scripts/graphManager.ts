@@ -33,14 +33,8 @@ var tempPath: JSON = JSON.parse(JSON.stringify({
         "N1-0,N2-0"
     ]
 }));
-var forkliftData: JSON = JSON.parse("{}");
 
-enum ForkliftStates {
-    idle = 1,
-    hasOrder,
-    charging,
-    initiating
-}
+
 
 // https://github.com/jacomyal/sigma.js/tree/master/plugins/sigma.exporters.svg
 function exportGraph(): void {
@@ -271,34 +265,8 @@ function onUpdateEdgeSizeChange(): void {
     sGraph.refresh();
 }
 
-function getForkliftColor(state: ForkliftStates): string {
-    console.log(state);
-    switch (state) {
-        case ForkliftStates.idle:
-            return "#f9f57b";
-        case ForkliftStates.charging:
-            return "#ff0000";
-        case ForkliftStates.hasOrder:
-            return "#00ff00";
-        case ForkliftStates.initiating:
-            return "#f9f57b";
-    }
-}
-function addForkliftToGraph(forkliftId: string, state: ForkliftStates, xPos: number, yPos: number): void {
-    sGraph.graph.addNode({ "id": forkliftId, x: xPos, y: yPos, color: getForkliftColor(state), size: 8 });
-}
-
-function parseForklifts(data: JSON): void {
-    //let currentGraph: JSON = getSGraphAsGraph();
-    for (let forklift in data) {
-        if (typeof (data[forklift]["position"]) === "undefined" || typeof (data[forklift]["position"]["x"]) === "undefined" || typeof (data[forklift]["position"]["y"]) === "undefined" || typeof (data[forklift]["id"]) === "undefined")
-            continue;
-        addForkliftToGraph(data[forklift]["id"], data[forklift]["state"], data[forklift]["position"]["x"], data[forklift]["position"]["y"]);
-    }
-    //sGraph.graph = currentGraph;
-    sGraph.refresh();
-}
-
+declare function updateForkliftsOnGraph();
 window["socketManager"].on(SocketManager.PackageTypes.warehouse, (warehouse) => {
     parseWarehouse(warehouse);
+    updateForkliftsOnGraph();
 });
