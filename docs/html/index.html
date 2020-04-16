@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>p2</title>
-	<meta name="description" content="Documentation for p2">
+	<title>P2</title>
+	<meta name="description" content="Documentation for P2">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">p2</a>
+					<a href="index.html" class="title">P2</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -56,7 +56,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1>p2</h1>
+			<h1>P2</h1>
 		</div>
 	</div>
 </header>
@@ -67,53 +67,32 @@
 				<a href="#p2" id="p2" style="color: inherit; text-decoration: none;">
 					<h1>P2</h1>
 				</a>
-				<a href="#model" id="model" style="color: inherit; text-decoration: none;">
-					<h2>Model</h2>
+				<a href="#multi-agent-pathfinding-for-autonome-palleløftere-på-transitlagre" id="multi-agent-pathfinding-for-autonome-palleløftere-på-transitlagre" style="color: inherit; text-decoration: none;">
+					<h4>Multi-Agent Pathfinding for Autonome Palleløftere på Transitlagre</h4>
 				</a>
-				<p><img src="model.png" alt=""></p>
-				<a href="#use-case-diagram" id="use-case-diagram" style="color: inherit; text-decoration: none;">
-					<h2>Use-case diagram</h2>
+				<hr>
+				<a href="#overview" id="overview" style="color: inherit; text-decoration: none;">
+					<h3>Overview</h3>
 				</a>
-				<p><img src="Use_case_diagram.png" alt=""></p>
-				<a href="#tidsplan" id="tidsplan" style="color: inherit; text-decoration: none;">
-					<h2>Tidsplan</h2>
+				<a href="#central-files-in-the-program" id="central-files-in-the-program" style="color: inherit; text-decoration: none;">
+					<h4>Central files in the program</h4>
 				</a>
-				<pre><code><span class="hljs-attr">Uge 11-12:</span>    <span class="hljs-string">Planlægning</span> <span class="hljs-string">af</span> <span class="hljs-string">programmering</span>
-
-<span class="hljs-string">Uge</span> <span class="hljs-bullet">-</span> <span class="hljs-number">13</span>      <span class="hljs-string">Planlægning</span> <span class="hljs-string">af</span> <span class="hljs-string">programmering</span>
-
-  <span class="hljs-attr">Mandag:</span> <span class="hljs-string">Swagger</span> <span class="hljs-string">API</span> <span class="hljs-string">Dokumentation</span>
-
-  <span class="hljs-attr">Tirsdag:</span> <span class="hljs-string">Klassediagrammer</span> <span class="hljs-string">(UML)</span>
-
-  <span class="hljs-attr">Onsdag:</span> <span class="hljs-string">Opstart</span> <span class="hljs-string">af</span> <span class="hljs-string">server</span>
-
-  <span class="hljs-attr">Torsdag:</span> <span class="hljs-string">Viderearbejde</span> <span class="hljs-string">på</span> <span class="hljs-string">server</span>
-
-  <span class="hljs-attr">Fredag:</span> <span class="hljs-string">Test</span> <span class="hljs-string">environment</span>
-
-<span class="hljs-attr">Uge 14-17:</span>    <span class="hljs-string">Programmering</span>
-
-   <span class="hljs-attr">Uge 14:</span> <span class="hljs-string">(kommunikation,</span> <span class="hljs-string">storage</span> <span class="hljs-string">classes</span> <span class="hljs-string">og</span> <span class="hljs-string">testmiljø)</span>
-      <span class="hljs-attr">Mandag:</span> <span class="hljs-string">hængeparti</span> <span class="hljs-attr">fra fredag:</span> <span class="hljs-string">omskriv</span> <span class="hljs-string">funktion</span> <span class="hljs-string">til</span> <span class="hljs-string">klasse</span> <span class="hljs-string">&amp;</span> <span class="hljs-string">Use-case</span> <span class="hljs-string">diagram</span> <span class="hljs-string">&amp;</span> <span class="hljs-string">Storage</span> <span class="hljs-string">classes</span>
-      <span class="hljs-attr">Tirsdag:</span> <span class="hljs-string">Unit</span> <span class="hljs-string">Testing.</span> <span class="hljs-string">Opsæt</span> <span class="hljs-string">testmiljø</span> <span class="hljs-string">&amp;</span> <span class="hljs-string">Send</span> <span class="hljs-string">materiale</span> <span class="hljs-string">til</span> <span class="hljs-string">Rasmus</span>
-      <span class="hljs-attr">Onsdag:</span>  <span class="hljs-string">Test</span> <span class="hljs-string">&amp;</span> <span class="hljs-string">Kode</span>
-      <span class="hljs-attr">Torsdag:</span> <span class="hljs-string">Opsæt</span> <span class="hljs-string">klienter</span> <span class="hljs-string">til</span> <span class="hljs-string">kommunikation</span>
-      <span class="hljs-attr">Fredag:</span> 
-
-    <span class="hljs-attr">Uge 15:</span>
-      <span class="hljs-attr">Mandag:</span>  <span class="hljs-string">Parsere</span> <span class="hljs-string">og</span> <span class="hljs-string">Web</span> <span class="hljs-string">(Blackbox</span> <span class="hljs-string">og</span> <span class="hljs-string">Sockets)</span>
-      <span class="hljs-attr">Tirsdag:</span> <span class="hljs-string">Sockets</span>
-      <span class="hljs-attr">Onsdag:</span>  <span class="hljs-string">Buffer</span> <span class="hljs-string">(Test</span> <span class="hljs-string">kommunikationer)</span>
-      <span class="hljs-attr">Torsdag:</span> <span class="hljs-string">Implementation</span> <span class="hljs-string">af</span> <span class="hljs-string">MAPF</span> <span class="hljs-string">(A*-implementation)</span> 
-
-<span class="hljs-attr">Uge 18:</span>       <span class="hljs-string">Bufferperiode</span>
-
-<span class="hljs-attr">Uge 19:</span>       <span class="hljs-string">Test</span>
-
-<span class="hljs-attr">Uge 20 - 21:</span>  <span class="hljs-string">Rapportskrivning</span>
-
-<span class="hljs-attr">Uge 22:</span>       <span class="hljs-string">AFLERVERING!</span></code></pre>
+				<ul>
+					<li><p><a href="./modules/_src_planningscheduler_planningscheduler_.html">planningScheduler</a></p>
+					</li>
+					<li><p><a href="./modules/_src_forklifts_forklift_.html">forklifts</a></p>
+					</li>
+					<li><p><a href="./modules/_src_blackbox_run_.html">blackBox</a></p>
+					</li>
+					<li><p><a href="./modules/_src_webclient_server_.html">webClient</a></p>
+					</li>
+				</ul>
+				<a href="#test" id="test" style="color: inherit; text-decoration: none;">
+					<h4>Test</h4>
+				</a>
+				<ul>
+					<li><a href="./modules/_test_apitest_testplanningschedulerapi_.html">Test of planningScheduler</a></li>
+				</ul>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">

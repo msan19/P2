@@ -17,28 +17,28 @@ export class MinPriorityQueue {
         this.f = f;
     }
 
-    // returns index of left child
+    /** Returns index of left child */
     left(i: number): number {
         return 2 * (i + 1) - 1;
     }
 
-    // returns index of right child
+    /** Returns index of right child */
     right(i: number): number {
         return 2 * (i + 1);
     }
 
-    // returns index of parent
+    /** Returns index of parent */
     parent(i: number): number {
         if (i === 0) return 0;
         return Math.floor((i - 1) / 2);
     }
 
-    // returns first element in the min-heap
+    /** Returns first element in the min-heap */
     heapMinimum(): any {
         return this.array[0];
     }
 
-    // swaps the elements with index i and index j
+    /** Swaps the elements with index i and index j */
     swapByIndex(i: number, j: number): void {
         let temp: any = this.array[i];
         this.array[i] = this.array[j];
@@ -66,8 +66,8 @@ export class MinPriorityQueue {
     }
 
     /**
-     * Returns the first element in the min-heap 
-     * Restores the min-heap property 
+     * Returns the first element in the min-heap and
+     * restores the min-heap property 
      */
     extractMin(): any {
         if (this.array.length === 0) {

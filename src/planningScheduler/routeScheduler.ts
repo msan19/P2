@@ -3,15 +3,31 @@ import { Route, RouteSet } from "../shared/route";
 import { Order } from "../shared/order";
 import { Vertex, ScheduleItem } from "../shared/graph";
 import { MinPriorityQueue } from "./classes/minPriorityQueue";
-import { getHeapCodeStatistics } from "v8";
 
-
+/**
+ * Object to handle routes.
+ * Used for calculations of routes. 
+ */
 export class RouteScheduler {
+    /** Object for data storage */
     data: DataContainer;
+
+    /** List of objects to save calculations in */
     routeSets: RouteSet[];
+
+    /** Object containing best calculated routes */
     bestRouteSet: RouteSet;
+
+    /** Heuristic function for A* implementation */
     heuristic: (v1: Vertex, v2: Vertex) => number;
 
+    /**
+     * Constructor for the object.
+     * Contains description of heuristic function, 
+     * which can be altered to change the workings
+     * of the pathfinding algorithms
+     * @param data Data RouteScheduler requires to function
+     */
     constructor(data: DataContainer) {
         this.data = data;
         this.routeSets = [];
@@ -44,8 +60,11 @@ export class RouteScheduler {
         return null;
     }
 
-    // assumes RouteSet.graph is full
-    // implements A*
+    /**
+     * Implementation of A*. Further description look at https://thisneedstobeadded.org/astar
+     * @param routeSet Routeset where route is added. Assumes RouteSet.graph is full
+     * @param order Order to be calculated route for
+     */
     planOptimalRoute(routeSet: RouteSet, order: Order): void {
         let endVertex: Vertex = routeSet.graph.vertices[order.endVertexId];
         let startVertex: Vertex = routeSet.graph.vertices[order.startVertexId];
