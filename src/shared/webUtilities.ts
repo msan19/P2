@@ -100,16 +100,32 @@ export function returnSuccess(response: ServerResponse) {
     returnStatus(response, 200, "Success");
 }
 
+
+/** 
+ * Makes a http 200 response with a Json as message
+ * @param response Type http.ServerResponse
+ * @param obj Object to be sent as string
+ */
 export function returnJson(response: ServerResponse, obj: any) {
     response.writeHead(200);
     response.write(JSON.stringify(obj));
     response.end();
 }
 
+/** Sanitize a path of illegal characters 
+ * @param publicPath String
+ * @param requestPath String
+ * @returns a sanitized path as a string 
+ */
 export function sanitizePath(publicPath: string, requestPath: string): string {
     return path.normalize(`${publicPath}/${path.normalize(requestPath)}`);
 }
 
+/** Reads a static file from `publicPath/requestPath` as a promise
+ * @param publicPath String
+ * @param requestPath String
+ * @returns Promise with the fileData as a string or empty reject
+*/
 export function getStaticFile(publicPath: string, requestPath: string): Promise<string> {
     let filePath = sanitizePath(publicPath, requestPath);
 
