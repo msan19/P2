@@ -1,3 +1,10 @@
+// testAstar.ts
+/**
+ * Test of dataContainer
+ * @packageDocumentation
+ * @category planningScheduler test
+ */
+
 import { DataContainer } from "./../../../src/planningScheduler/classes/dataContainer";
 import { Warehouse } from "../../../src/shared/warehouse";
 import { Order } from "../../../src/shared/order";
