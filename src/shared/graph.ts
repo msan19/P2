@@ -37,7 +37,7 @@ export class Graph {
     }
 
     /**
-     * Returns a new {@link Graph} containing only the legal conent of the parameret {@link Graph}
+     * Returns a new {@link Graph} containing only the legal content of the parameter {@link Graph}
      * @param graph The {@link Graph} to be parsed
      * @return The new {@link Graph}
      */
