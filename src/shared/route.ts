@@ -1,5 +1,6 @@
 import { Vertex, Graph } from "./graph";
 
+/** An enum of possible states used to describe a route */
 enum RouteStatus {
     queued = 1,
     inProgress,
@@ -7,6 +8,7 @@ enum RouteStatus {
     failed,
 }
 
+/** An enum of possible types of {@link Instruction} */
 enum InstructionType {
     move = 1,
     unloadPallet,
