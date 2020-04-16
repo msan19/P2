@@ -66,8 +66,6 @@ function initializeGraph(graphO) {
         }
     });
     sGraph.refresh();
-    //document.getElementById("export").disabled = false;
-    //document.getElementById("reset").disabled = false;
 }
 
 function addEdges(graph) {
@@ -176,24 +174,6 @@ function resetGraph() {
 function initializeGraphRelatedUiElements() {
     sGraph = null;
     document.getElementById(container).innerHTML = "";
-    //document.getElementById("export").disabled = "disabled";
-    //document.getElementById("reset").disabled = "disabled";
-    //document.getElementById("settings").style.visibility = "hidden";
-    //document.getElementById("hightlightColorPicker").value = defaultHighlightColorValue;
-    //document.getElementById("lowDarkColorPicker").value = defaultLowDarkColorValue;
-    //document.getElementById("nodeSizeInput").value = defaultNodeSizeValue;
-    //document.getElementById("edgeSizeInput").value = defaultEdgeSizeValue;
-}
-
-function onSettingsButtonClick() {
-    let settingsMenu = document.querySelector("#settings");
-    if (settingsMenu.style.visibility === "hidden") {
-        settingsMenu.style.visibility = "visible";
-    } else if (settingsMenu.style.visibility == "visible") {
-        settingsMenu.style.visibility = "hidden";
-    }
-    //sGraph.graph.addNode({ "id": "qwe", x: 7.25, y: 0, size: 8 });
-    sGraph.refresh();
 }
 
 function setGraphColorToDefault(graph) {
@@ -211,43 +191,6 @@ function getSGraphAsGraph() {
     return graph;
 }
 
-function updateNodeSizes(graph, size) {
-    for (let nodeIndex in graph["nodes"]) {
-        graph["nodes"][nodeIndex]["size"] = size;
-    }
-    return graph;
-}
-
-function updateEdgeSizes(graph, size) {
-    for (let edgeIndex in graph["edges"]) {
-        graph["edges"][edgeIndex]["size"] = size;
-    }
-    return graph;
-}
-
-function updateHighlightColor() {
-    let hightlightColorPicker = document.querySelector("#hightlightColorPicker");
-    sGraph.graph = hightlightPath(getSGraphAsGraph(), tempPath, hightlightColorPicker.value);
-    sGraph.refresh();
-}
-
-function updateLowDarkColor() {
-    let lowDarkColorPicker = document.querySelector("#lowDarkColorPicker");
-    sGraph.graph = lowdark(getSGraphAsGraph(), tempPath, lowDarkColorPicker.value);
-    sGraph.refresh();
-}
-
-function onUpdateNodeSizeChange() {
-    let nodeSizeInput = document.querySelector("#nodeSizeInput");
-    sGraph.graph = updateNodeSizes(getSGraphAsGraph(), +nodeSizeInput.value);
-    sGraph.refresh();
-}
-
-function onUpdateEdgeSizeChange() {
-    let edgeSizeInput = document.querySelector("#edgeSizeInput");
-    sGraph.graph = updateEdgeSizes(getSGraphAsGraph(), +edgeSizeInput.value);
-    sGraph.refresh();
-}
 window["socketManager"].on(SocketManager.PackageTypes.warehouse, (warehouse) => {
     parseWarehouse(warehouse);
     updateForkliftsOnGraph();
