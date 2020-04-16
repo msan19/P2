@@ -104,8 +104,8 @@ function initializeNodes(graph) {
         graph["vertices"][vertexId]["y"] = graph["vertices"][vertexId]["position"]["y"];
         graph["vertices"][vertexId]["color"] = defaultNodeColorValue;
         graph["vertices"][vertexId]["label"] = graph["vertices"][vertexId]["id"];
-        delete (graph["vertices"][vertexId]["position"]);
-        delete (graph["vertices"][vertexId]["adjacentVertexIds"]);
+        delete(graph["vertices"][vertexId]["position"]);
+        delete(graph["vertices"][vertexId]["adjacentVertexIds"]);
         output.push({
             id: graph["vertices"][vertexId]["id"],
             label: graph["vertices"][vertexId]["id"],
@@ -187,14 +187,46 @@ function setGraphColorToDefault(graph) {
 }
 
 function getSGraphAsGraph() {
-    // let graph = JSON.parse("{}");
-    // graph["edges"] = sGraph.graph.edges();
+    //let graph = JSON.parse("{}");
+    //graph["edges"] = sGraph.graph.edges();
     // graph["nodes"] = sGraph.graph.nodes();
     // return graph;
 }
 
+// add error handling
+function cloneIncomingData(data) {
+    let forkliftSpeed = data.forkliftSpeed;
+    let vertices = [];
+    for (let verticeKey in data["graph"]["vertices"]) {
+        let adjacentVertexIds = [];
+        for (let adjacentVertexKey in data["graph"]["vertices"][verticeKey]["adjacentVertexIds"]) {
+            adjacentVertexIds.push(data["graph"]["vertices"][verticeKey]["adjacentVertexIds"][adjacentVertexKey]);
+        }
+        let position = [];
+        for (let positionKey in data["graph"]["vertices"][verticeKey]["position"])
+            position.push(data["graph"]["vertices"][verticeKey]["position"][positionKey]);
+        let scheduleItems = [];
+        for (let scheduleItemsKey in data["graph"]["vertices"][verticeKey]["scheduleItems"])
+            position.push(data["graph"]["vertices"][verticeKey]["scheduleItems"][scheduleItemsKey]);
+        vertices.push({
+            adjacentVertexIds: adjacentVertexIds,
+            id: data["graph"]["vertices"][verticeKey]["id"],
+            isVisited: data["graph"]["vertices"][verticeKey]["isVisited"],
+            label: data["graph"]["vertices"][verticeKey]["label"],
+            position: position,
+            previousVertex: data["graph"]["vertices"][verticeKey]["previousVertex"],
+            scheduleItems: scheduleItems
+        })
+    }
+    let newData = {
+        forkliftSpeed: forkliftSpeed,
+        vertices: vertices
+    };
+    return newData;
+}
+
 window["socketManager"].on(SocketManager.PackageTypes.warehouse, (warehouse) => {
-    //parseWarehouse(warehouse);
+    parseWarehouse(cloneIncomingData(warehouse));
 });
 
 window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
