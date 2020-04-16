@@ -1,5 +1,5 @@
 declare var sGraph;
-var forkliftData: JSON;
+var forkliftData;
 enum ForkliftStates {
     idle = 1,
     hasOrder,
@@ -7,8 +7,28 @@ enum ForkliftStates {
     initiating
 }
 
+function updateForkliftOnGraph(forkliftKey, nodeKey) {
+
+}
+
 function updateForkliftsOnGraph() {
+    // Go through each forklift in the forklift data
+    // Which will update the forklift on the graph
+    for (let key in forkliftData) {
+        // Go through each node on the graph to find the forklift
+        // Or initiate it if it doesn't exist.
+        let found = false;
+        for (let nodeKey in sGraph["nodes"]) {
+            // Found forklift
+            if (forkliftData[key] == sGraph["nodes"][nodeKey]) {
+                updateForkliftOnGraph(key, nodeKey);
+                break;
+            }
+        }
+    }
     addForkliftsToGraph(forkliftData);
+
+    sGraph.refresh();
 }
 
 function getForkliftColor(state: ForkliftStates): string {
@@ -40,7 +60,7 @@ function addForkliftsToGraph(data: JSON): void {
         if (getIfForkliftHasPosition(data[forklift]))
             addForkliftToGraph(data[forklift]["id"], data[forklift]["state"], data[forklift]["position"]["x"], data[forklift]["position"]["y"]);
     }
-    sGraph.refresh();
+
 }
 
 function parseForklifts(data: JSON): void {
@@ -64,6 +84,13 @@ function parseForklifts(data: JSON): void {
 function addForkliftToUi(forkliftInfo) {
     document.querySelector("#forklift-list").innerHTML += `<li>${forkliftInfo.id}</li>`;
 }
+
+window.setInterval(function () {
+    updateForkliftsOnGraph();
+}, 500);
+
+
+
 window["socketManager"].on(PackageTypes.forkliftInfos, (forklifts) => {
     document.querySelector("#forklift-list").innerHTML = "";
     for (let key in forklifts) {
