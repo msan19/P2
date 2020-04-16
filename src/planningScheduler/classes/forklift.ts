@@ -3,7 +3,12 @@ import { Route } from "../../shared/route";
 import { Vector2 } from "../../shared/vector2";
 import { ForkliftInfo } from "../../shared/forkliftInfo";
 
+/**
+ * A {@link Forklift} object representing a real forklift and used for communication with it
+ */
 export class Forklift extends ForkliftInfo {
+
+    /** An array of {@link Route} assigned to the {@link Forklift} */
     routes: Route[];
 
     constructor(id: string, socket: WebSocket) {
@@ -13,11 +18,20 @@ export class Forklift extends ForkliftInfo {
         this.state = Forklift.states.initiating;
     }
 
+    /**
+     * Returns a {@link WebSocket} between the {@link Forklift} object and the real forklift
+     * @note Is redefined in {@link Forklift.setSocket}
+     * @returns A socket
+     */
     private getSocket(): WebSocket {
         return null;
     }
 
-    setSocket(socket: WebSocket) {
+    /**
+     * Sets the {@link WebSocket} of the {@link Forklift} by redefining {@link Forklift.getSocket}
+     * @param socket A {@link WebSocket} to be set
+     */
+    setSocket(socket: WebSocket): void {
         if (this.hasSocket()) this.getSocket().close();
 
         this.getSocket = () => { return socket; };
@@ -27,19 +41,27 @@ export class Forklift extends ForkliftInfo {
         });
     }
 
-    hasSocket() {
+    /**
+     * Returns whether a {@link WebSocket} is asigned to the {@link Forklift} the function is called on
+     * @returns True if a {@link WebSocket} is asigned, false otherwise
+     */
+    hasSocket(): boolean {
         return typeof (this.getSocket()) === "object" && this.getSocket() !== null;
     }
 
-    isValid() {
-        return this.hasSocket();
-    }
-
-
+    /**
+     * Sends the parameter {@link Route} through the socket
+     * @param route A route to be sendt
+     */
     sendRoute(route: Route): void {
         this.getSocket().sendRoute(route);
     }
 
+    /**
+     * @note Is not used
+     * @param obj  A {@link Forklift} to be parsed
+     * @returns null
+     */
     static parse(obj: any): Forklift | null {
         if (typeof (obj) !== "object" || obj === null) return null;
         if (typeof (obj.id) !== "string" || obj.id.length < 1) return null;
@@ -47,7 +69,12 @@ export class Forklift extends ForkliftInfo {
         return null;
     }
 
-    // Data can be: batteryStatus, position, state, palletId, orders, routes
+    /**
+     * Adds the content of the paramter object to {@link Forklift} the function is called on
+     * @param obj An object, whose data is saved
+     * @returns A string with a message explaining whether the content of the parameter was accepted
+     * or an explenation if it was not
+     */
     putData(obj: any): string {
         // Valid object (not null and type object)
         if (typeof (obj) !== "object" || obj === null) return "not an object";

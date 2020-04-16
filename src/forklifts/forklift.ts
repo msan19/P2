@@ -1,3 +1,10 @@
+// forklifts.ts
+/**
+ * This is the doc comment for forklifts.ts
+ * @packageDocumentation
+ * @category Forklifts
+ */
+
 import * as WebSocket from "ws";
 import { Route, Instruction } from "../shared/route";
 import { ForkliftInfo } from "./../shared/forkliftInfo";
