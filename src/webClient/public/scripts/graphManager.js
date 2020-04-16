@@ -77,9 +77,11 @@ function initializeGraph(graphO) {
 
 function initializeEdges(graph) {
     let output = [];
-    for (let vertexId_1 in graph["vertices"]) {
-        for (let key in graph["vertices"][vertexId_1]["adjacentVertexIds"]) {
-            let vertexId_2 = graph["vertices"][vertexId_1]["adjacentVertexIds"][key];
+    for (let key in graph["vertices"]) {
+        for (let key2 in graph["vertices"][key]["adjacentVertexIds"]) {
+
+            let vertexId_1 = graph["vertices"][key]["id"];
+            let vertexId_2 = graph["vertices"][key]["adjacentVertexIds"][key2];
             if (vertexId_1 < vertexId_2) {
                 output.push({
                     id: vertexId_1 + "," + vertexId_2,
@@ -99,18 +101,11 @@ function initializeEdges(graph) {
 function initializeNodes(graph) {
     let output = [];
     for (let vertexId in graph["vertices"]) {
-        graph["vertices"][vertexId]["size"] = defaultNodeSizeValue;
-        graph["vertices"][vertexId]["x"] = graph["vertices"][vertexId]["position"]["x"];
-        graph["vertices"][vertexId]["y"] = graph["vertices"][vertexId]["position"]["y"];
-        graph["vertices"][vertexId]["color"] = defaultNodeColorValue;
-        graph["vertices"][vertexId]["label"] = graph["vertices"][vertexId]["id"];
-        delete(graph["vertices"][vertexId]["position"]);
-        delete(graph["vertices"][vertexId]["adjacentVertexIds"]);
         output.push({
             id: graph["vertices"][vertexId]["id"],
             label: graph["vertices"][vertexId]["id"],
-            x: graph["vertices"][vertexId]["x"],
-            y: graph["vertices"][vertexId]["y"],
+            x: graph["vertices"][vertexId]["position"]["x"],
+            y: graph["vertices"][vertexId]["position"]["y"],
             color: defaultNodeColorValue,
             size: defaultNodeSizeValue
         });
@@ -187,13 +182,19 @@ function setGraphColorToDefault(graph) {
 }
 
 function getSGraphAsGraph() {
-    //let graph = JSON.parse("{}");
-    //graph["edges"] = sGraph.graph.edges();
-    // graph["nodes"] = sGraph.graph.nodes();
-    // return graph;
+    let edges = [];
+    for (let edgeKey in sGraph.graph.edges()) {
+
+    }
+
+
+    graph["edges"] = sGraph.graph.edges();
+    graph["nodes"] = sGraph.graph.nodes();
+    return graph;
 }
 
 // add error handling
+// NOTE: changes vertices from object to array
 function cloneIncomingData(data) {
     let forkliftSpeed = data.forkliftSpeed;
     let vertices = [];
@@ -202,9 +203,6 @@ function cloneIncomingData(data) {
         for (let adjacentVertexKey in data["graph"]["vertices"][verticeKey]["adjacentVertexIds"]) {
             adjacentVertexIds.push(data["graph"]["vertices"][verticeKey]["adjacentVertexIds"][adjacentVertexKey]);
         }
-        let position = [];
-        for (let positionKey in data["graph"]["vertices"][verticeKey]["position"])
-            position.push(data["graph"]["vertices"][verticeKey]["position"][positionKey]);
         let scheduleItems = [];
         for (let scheduleItemsKey in data["graph"]["vertices"][verticeKey]["scheduleItems"])
             position.push(data["graph"]["vertices"][verticeKey]["scheduleItems"][scheduleItemsKey]);
@@ -213,14 +211,21 @@ function cloneIncomingData(data) {
             id: data["graph"]["vertices"][verticeKey]["id"],
             isVisited: data["graph"]["vertices"][verticeKey]["isVisited"],
             label: data["graph"]["vertices"][verticeKey]["label"],
-            position: position,
+            position: {
+                x: data["graph"]["vertices"][verticeKey]["position"]["x"],
+                y: data["graph"]["vertices"][verticeKey]["position"]["y"]
+
+            },
             previousVertex: data["graph"]["vertices"][verticeKey]["previousVertex"],
             scheduleItems: scheduleItems
         })
     }
     let newData = {
-        forkliftSpeed: forkliftSpeed,
-        vertices: vertices
+
+        graph: {
+            vertices: vertices
+        },
+        forkliftSpeed: forkliftSpeed
     };
     return newData;
 }

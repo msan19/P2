@@ -161,7 +161,6 @@ window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
     for (let key in forklifts) {
         addForkliftToUi(forklifts[key]);
     }
-    parseForklifts(forklifts);
 });
 
 window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
