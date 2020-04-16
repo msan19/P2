@@ -12,10 +12,6 @@ export class MinPriorityQueue {
      */
     f: (x: any) => number;
 
-
-    /** Constructor of Object
-     *  @param f Function to decide how to sort the MinPrioryQueue
-     */
     constructor(f: (x: any) => number) {
         this.array = [];
         this.f = f;
