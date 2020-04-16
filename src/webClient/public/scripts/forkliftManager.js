@@ -24,7 +24,7 @@ function updateForkliftsOnGraph() {
         let found = false;
         for (let nodeKey in graph["nodes"]) {
             if (forkliftData[key]["id"] == graph["nodes"][nodeKey]["id"]) {
-                graph = updateForkliftOnGraph(graph, key, nodeKey)
+                graph = updateForkliftOnGraph(graph, key, nodeKey);
                 found = true;
             }
 
@@ -102,8 +102,8 @@ function parseForklifts(data) {
 
 function addForkliftToUi(forkliftInfo) {
     document.querySelector("#forklift-list").innerHTML += `<li>${forkliftInfo.id}</li>`;
-    document.querySelectorAll('.select-forklifts').forEach((item) => {
-        item.innerHTML += `<option>${forkliftInfo.id}</option>`;
+    document.querySelectorAll('.select-forklift').forEach((item) => {
+        item.innerHTML += `<option value=${forkliftInfo.id}>${forkliftInfo.id}</option>`;
     });
 }
 
@@ -135,7 +135,7 @@ function addTestDataToForklifts() {
                             startTime: date.getTime()
                         },
                     }
-                }
+                };
             }
         }
 
@@ -152,8 +152,9 @@ window.setInterval(function () {
     updateForkliftsOnGraph();
     addTestDataToForklifts();
 }, 500);
+
 window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
-    document.querySelectorAll('.select-forklifts').forEach((item) => {
+    document.querySelectorAll('.select-forklift').forEach((item) => {
         item.innerHTML = "";
     });
     document.querySelector("#forklift-list").innerHTML = "";

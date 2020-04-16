@@ -101,8 +101,8 @@ function changeNodes(graph) {
         graph["vertices"][vertexId]["y"] = graph["vertices"][vertexId]["position"]["y"];
         graph["vertices"][vertexId]["color"] = defaultNodeColorValue;
         graph["vertices"][vertexId]["label"] = graph["vertices"][vertexId]["id"];
-        delete(graph["vertices"][vertexId]["position"]);
-        delete(graph["vertices"][vertexId]["adjacentVertexIds"]);
+        delete (graph["vertices"][vertexId]["position"]);
+        delete (graph["vertices"][vertexId]["adjacentVertexIds"]);
         output.push({
             id: graph["vertices"][vertexId]["id"],
             label: graph["vertices"][vertexId]["id"],
@@ -197,4 +197,16 @@ function getSGraphAsGraph() {
 
 window["socketManager"].on(SocketManager.PackageTypes.warehouse, (warehouse) => {
     parseWarehouse(warehouse);
+});
+
+window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
+    document.querySelectorAll('.select-vertex').forEach((item) => {
+        item.innerHTML = "";
+    });
+    for (let key in warehouse.graph.vertices) {
+        let vertexId = warehouse.graph.vertices[key].id;
+        document.querySelectorAll('.select-vertex').forEach((item) => {
+            item.innerHTML += `<option value="${vertexId}>${vertexId}</option>`;
+        });
+    }
 });
