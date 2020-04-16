@@ -35,7 +35,8 @@ export class MinPriorityQueue {
         return 2 * (i + 1);
     }
 
-    /** Returns index of parent 
+    /** 
+     * Returns index of parent 
      * @param i An index of the array
      * @returns Index of the parent of index i
      */
@@ -52,7 +53,8 @@ export class MinPriorityQueue {
         return this.array[0];
     }
 
-    /** Swaps the elements with index i and index j
+    /** 
+     * Swaps the elements with index i and index j
      * @param i The first index to swap 
      * @param j The second index to swap
      */
