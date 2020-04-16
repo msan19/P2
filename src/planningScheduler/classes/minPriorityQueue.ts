@@ -2,17 +2,17 @@
 /**
  * A min-priority queue implementation 
  */
-export class MinPriorityQueue {
+export class MinPriorityQueue<T> {
     /** An array containing the elemtns of the priority queue  */
-    array: any[];
+    array: T[];
 
     /** 
      * A function defined as the sum of two other functions, 
      * which in {@link RouteScheduler} is {@link Vertex.g} and {@link RouteScheduler.heuristic}
      */
-    f: (x: any) => number;
+    f: (x: T) => number;
 
-    constructor(f: (x: any) => number) {
+    constructor(f: (x: T) => number) {
         this.array = [];
         this.f = f;
     }
@@ -45,7 +45,7 @@ export class MinPriorityQueue {
     /** Returns first element in the min-heap 
      * @returns The smallest element of the heap
     */
-    heapMinimum(): any {
+    heapMinimum(): T {
         return this.array[0];
     }
 
@@ -54,7 +54,7 @@ export class MinPriorityQueue {
      * @param j The second index to swap
      */
     swapByIndex(i: number, j: number): void {
-        let temp: any = this.array[i];
+        let temp: T = this.array[i];
         this.array[i] = this.array[j];
         this.array[j] = temp;
     }
@@ -83,7 +83,7 @@ export class MinPriorityQueue {
      * Returns the first element in the min-heap and
      * restores the min-heap property 
      */
-    extractMin(): any {
+    extractMin(): T {
         if (this.array.length === 0) {
             console.log("Underflow");
             return null;
@@ -100,7 +100,7 @@ export class MinPriorityQueue {
      * Inserts a new element into the heap
      * @param newElement The element that is to be inserted into the min-heap
      */
-    insert(newElement: any): void {
+    insert(newElement: T): void {
         this.array.push(newElement);
         let index = this.array.length - 1;
 
