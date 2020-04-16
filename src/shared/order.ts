@@ -74,7 +74,6 @@ export class Order {
     static parse(obj: any, data: DataContainer): Order | null {
         // Check for types of necessary fields
         if (typeof (obj.id) !== "string") return null;
-        if (typeof (obj.type) !== "number") return null;
         if (typeof (obj.forkliftId) !== "string") return null;
         if (typeof (obj.palletId) !== "string") return null;
         if (typeof (obj.startVertexId) !== "string") return null;
@@ -84,6 +83,7 @@ export class Order {
 
         // Check for valid vertixIds (If either is invalid, return null)
         let keysVertices: string[] = Object.keys(data.warehouse.graph.vertices);
+
         if (!keysVertices.includes(obj.startVertexId) || !keysVertices.includes(obj.endVertexId)) return null;
 
         // Check for valid forkliftId
@@ -95,7 +95,16 @@ export class Order {
         if (!present) return null;
 
         // Check for valid type
+        obj.type = Number(obj.type);
         if (typeof (Order.types[obj.type]) === "undefined") return null;
+
+        // Check for valid timeType
+        /*obj.timeType = Number(obj.timeType);
+        if (typeof (Order.timeTypes[obj.timeType]) === "undefined") return null;*/
+
+        // Check for valid time abc
+        /*obj.time = Number(obj.time);
+        if (isNaN(obj.time)) return null;*/
 
         return new Order(obj.id, obj.type, obj.forkliftId, obj.palletId, obj.startVertexId, obj.endVertexId);
     }
