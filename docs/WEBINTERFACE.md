@@ -2,7 +2,7 @@
 
 Kontrolpanelet har sin egen server.
 
-![](kontrolpanel.png)
+![](./media/kontrolpanel.png)
 
 ## Kontrolpanelet skal modtage følgende fra planlægningssystemet
 
@@ -81,4 +81,4 @@ Ud fra den angivede information oversætter planlægningssytemet en ordre til en
 
 ## "Sketch" for graf-delen af kontrolpanelet
 
-![](webinterface.png)
+![](./media/webinterface.png)
