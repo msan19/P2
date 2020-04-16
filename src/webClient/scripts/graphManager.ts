@@ -33,7 +33,7 @@ var tempPath: JSON = JSON.parse(JSON.stringify({
         "N1-0,N2-0"
     ]
 }));
-var forkliftData: JSON = JSON.parse("{}");
+var forkliftData: JSON;
 
 enum ForkliftStates {
     idle = 1,
@@ -288,17 +288,35 @@ function addForkliftToGraph(forkliftId: string, state: ForkliftStates, xPos: num
     sGraph.graph.addNode({ "id": forkliftId, x: xPos, y: yPos, color: getForkliftColor(state), size: 8 });
 }
 
-function parseForklifts(data: JSON): void {
-    //let currentGraph: JSON = getSGraphAsGraph();
+function addForkliftsToGraph(data: JSON): void {
     for (let forklift in data) {
-        if (typeof (data[forklift]["position"]) === "undefined" || typeof (data[forklift]["position"]["x"]) === "undefined" || typeof (data[forklift]["position"]["y"]) === "undefined" || typeof (data[forklift]["id"]) === "undefined")
-            continue;
         addForkliftToGraph(data[forklift]["id"], data[forklift]["state"], data[forklift]["position"]["x"], data[forklift]["position"]["y"]);
     }
-    //sGraph.graph = currentGraph;
     sGraph.refresh();
+}
+
+function parseForklifts(data: JSON): void {
+    let forklifts: JSON = JSON.parse("{}");
+    //let currentGraph: JSON = getSGraphAsGraph();
+    for (let forklift in data) {
+        if (typeof (data[forklift]["id"]) == "undefined")
+            continue;
+        else if (typeof (data[forklift]["position"]) === "undefined" || typeof (data[forklift]["position"]["x"]) === "undefined" || typeof (data[forklift]["position"]["y"]) === "undefined") {
+            forklifts[data[forklift]["id"]] = { id: data[forklift]["id"], position: { x: Math.random(), y: Math.random() }, state: data[forklift]["state"] };
+        } else {
+            forklifts[data[forklift]["id"]] = { id: data[forklift]["id"], position: { x: data[forklift]["x"], y: data[forklift]["y"] }, state: data[forklift]["state"] };
+        }
+    }
+    forkliftData = forklifts;
+    if (sGraph !== null)
+        addForkliftsToGraph(forkliftData);
 }
 
 window["socketManager"].on(SocketManager.PackageTypes.warehouse, (warehouse) => {
     parseWarehouse(warehouse);
+    addForkliftsToGraph(forkliftData);
+});
+
+window["socketManager"].on(SocketManager.PackageTypes.forkliftInfos, (forklifts) => {
+    parseForklifts(forklifts);
 });

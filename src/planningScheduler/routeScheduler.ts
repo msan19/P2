@@ -105,6 +105,21 @@ export class RouteScheduler {
         }
     }
 
+    /**
+     * Adds scheduleItems to all vertices the sorting algorithm pathed through.
+     * As start time is known it goes from the end element to the start element,
+     * whereafter, as it resolves the stack, it appends the scheduleItem,
+     * using the time from the vertex before it (in the stack), ending at the end vertex
+     * @param vertex Initially the end vertex, later in the recursion it will be the vertices,
+     *               which were added to the path (using Vertex.previousVertex) 
+     * @param order The order the route was planned for. Used for start/end time,
+     *              as well as start and end vertex
+     * @param nextVertexId Used to point to the next vertex in the path,
+     *                     as only previous is part of the object,
+     *                     and the recursion requires pointer to next object as well.
+     * @returns The time at which the vertex's scheduleItem was calculated.
+     *          Only used by the recursion.
+     */
     upStacking(vertex: Vertex, order: Order, nextVertexId: string): number {
         let fulfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / this.data.warehouse.forkliftSpeed;
         let time: number = (vertex.id === order.startVertexId)
@@ -114,6 +129,17 @@ export class RouteScheduler {
         return time;
     }
 
+    /** 
+     * Adds scheduleItems to all vertices the sorting algorithm pathed through.
+     * As end time is known the algorithm appends from the last element (end vertex)
+     * to the first (start vertex), using the time of the next vertex (not Vertex.previousVertex).
+     * Thus is appends scheduleItems while creating the stack, and not while resolving it.
+     * @param vertex Initially the end vertex. After it is the previous vertex in the path
+     * @param order The order for which the route was created
+     * @param time The time of the next vertex (as in opposite Vertex.previousVertex)
+     * @param nextVertexId The ID of the next vertex (as in opposite Vertex.previousVertex)
+     * @returns Nothing as the recursion uses the creation of the stack and not the resolution
+     */
     downStacking(vertex: Vertex, order: Order, time: number, nextVertexId: string): void {
         let fulfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / this.data.warehouse.forkliftSpeed;
         let timeOnPrev: number = time - fulfillTime;

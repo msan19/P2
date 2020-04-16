@@ -236,7 +236,11 @@ export class Vertex {
         return newVertices;
     }
 
-    // A* related 
+    /**
+     * Finds distance from the vertex which the function is called on to the vertex specified 
+     * by the parameter id by recursively adding the distance to the previousVertex 
+     * @param startId An identification string specifying the last vertex in the recursion
+     */
     g(startId: string): number {
         if (this.id === startId || this.previousVertex === null) {
             return 0;
