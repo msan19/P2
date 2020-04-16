@@ -1,3 +1,10 @@
+// testAstar.ts
+/**
+ * Test of {@link graph}
+ * @packageDocumentation
+ * @category planningScheduler test
+ */
+
 import { expect } from 'chai';
 import 'mocha';
 

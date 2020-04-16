@@ -1,3 +1,10 @@
+// testAstar.ts
+/**
+ * Test of {@link Handler}
+ * @packageDocumentation
+ * @category planningScheduler test
+ */
+
 import { Handler } from "../../../src/planningScheduler/classes/handler";
 import { expect } from 'chai';
 import 'mocha';
