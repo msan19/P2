@@ -5,7 +5,9 @@ const defaultHighlightColorValue = "#F7362D";
 const defaultLowDarkColorValue = "#e5e5e5";
 const defaultNodeSizeValue = 8;
 const defaultEdgeSizeValue = 4;
-var sGraph;
+// contains nodes and the index of their id
+window.graphInformation;
+window.sGraph;
 var moveSpeed;
 var tempPath = JSON.parse(JSON.stringify({
     "nodes": [
@@ -47,10 +49,11 @@ function parseWarehouse(data) {
     // get forklift speed
     moveSpeed = data["forkliftSpeed"];
     // parse physical warehouse
-    let iData = data;
-    iData.graph = initializeEdges(iData.graph);
-    iData.graph = initializeNodes(iData.graph);
-    initializeGraph(iData.graph);
+    let iData = data.graph;
+    iData = initializeEdges(iData);
+    iData = initializeNodes(iData);
+    initializeGraph(iData);
+    console.log(iData);
 }
 
 function initializeGraph(graphO) {
@@ -71,6 +74,7 @@ function initializeGraph(graphO) {
             maxNodeSize: 0,
         }
     });
+    graphInformation = graphO;
     // apply sigma graph
     sGraph.refresh();
 }
@@ -100,6 +104,7 @@ function initializeEdges(graph) {
 
 function initializeNodes(graph) {
     let output = [];
+    let outputIndex = {};
     for (let vertexId in graph["vertices"]) {
         output.push({
             id: graph["vertices"][vertexId]["id"],
@@ -109,9 +114,11 @@ function initializeNodes(graph) {
             color: defaultNodeColorValue,
             size: defaultNodeSizeValue
         });
+        outputIndex[(graph["vertices"][vertexId]["id"])] = vertexId;
     }
     delete graph["vertices"];
     graph["nodes"] = output;
+    graph["nodeIndexes"] = outputIndex;
     return graph;
 }
 
@@ -162,34 +169,6 @@ function lowdark(graph, path, color) {
         if (found == false)
             graph["edges"][edgeToBeChecked]["color"] = (typeof (color) == "string") ? color : defaultLowDarkColorValue;
     }
-    return graph;
-}
-
-function resetGraph() {
-    tempPath = JSON.parse("{}");
-    let graph = getSGraphAsGraph();
-    setGraphColorToDefault(graph);
-    sGraph.graph = graph;
-    sGraph.refresh();
-}
-
-function setGraphColorToDefault(graph) {
-    for (let node in graph["nodes"])
-        graph["nodes"][node]["color"] = defaultNodeColorValue;
-    for (let edge in graph["edges"])
-        graph["edges"][edge]["color"] = defaultEdgeColorValue;
-    return graph;
-}
-
-function getSGraphAsGraph() {
-    let edges = [];
-    for (let edgeKey in sGraph.graph.edges()) {
-
-    }
-
-
-    graph["edges"] = sGraph.graph.edges();
-    graph["nodes"] = sGraph.graph.nodes();
     return graph;
 }
 

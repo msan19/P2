@@ -7,39 +7,38 @@ var ForkliftStates;
     ForkliftStates[ForkliftStates["initiating"] = 4] = "initiating";
 })(ForkliftStates || (ForkliftStates = {}));
 
-function updateForkliftOnGraph(graph, forkliftKey, nodeKey) {
-    graph["nodes"][nodeKey]["x"] = forkliftData[forkliftKey]["position"]["x"];
-    graph["nodes"][nodeKey]["y"] = forkliftData[forkliftKey]["position"]["y"];
-    graph["nodes"][nodeKey]["state"] = forkliftData[forkliftKey]["state"];
-    return graph;
+function updateForkliftOnGraph(forkliftId) {
+    let nodes = sGraph.graph.nodes();
+    nodes[graphInformation["nodeIndexes"][forkliftId]]["x"] = forkliftData[forkliftId]["position"]["x"];
+    graphInformation["nodes"][graphInformation["nodeIndexes"][forkliftId]]["x"] = forkliftData[forkliftId]["position"]["x"];
+    nodes[graphInformation["nodeIndexes"][forkliftId]]["y"] = forkliftData[forkliftId]["position"]["y"];
+    graphInformation["nodes"][graphInformation["nodeIndexes"][forkliftId]]["y"] = forkliftData[forkliftId]["position"]["y"];
 }
 
 function updateForkliftsOnGraph() {
-    // if (sGraph === null)
-    //     return;
-    // let graph = getSGraphAsGraph();
-    // // Go through each forklift in the forklift data
-    // // Which will update the forklift on the graph
-    // for (let key in forkliftData) {
-    //     let found = false;
-    //     for (let nodeKey in graph["nodes"]) {
-    //         if (forkliftData[key]["id"] == graph["nodes"][nodeKey]["id"]) {
-    //             graph = updateForkliftOnGraph(graph, key, nodeKey);
-    //             found = true;
-    //         }
-
-    //     }
-
-    //     if (!found) {
-    //         if (getIfForkliftHasPosition(forkliftData[key])) {
-    //             addForkliftToGraph(forkliftData[key]["id"], forkliftData[key]["state"], forkliftData[key]["position"]["x"], forkliftData[key]["position"]["y"]);
-    //         }
-    //     }
-
-
-    // }
-    // sGraph.graph = graph;
-    // sGraph.refresh();
+    if (sGraph === null)
+        return;
+    //Go through each forklift in the forklift data
+    //Which will update the forklift on the graph
+    for (let key in forkliftData) {
+        if (typeof (graphInformation["nodeIndexes"][forkliftData[key]["id"]]) != "undefined") {
+            updateForkliftOnGraph(forkliftData[key]["id"]);
+        } else {
+            // if the forklift isn't on the graph already it adds it
+            if (getIfForkliftHasPosition(forkliftData[key])) {
+                graphInformation["nodeIndexes"][forkliftData[key]["id"]] = JSON.stringify(graphInformation["nodes"].length);
+                graphInformation["nodes"][graphInformation["nodeIndexes"][forkliftData[key]["id"]]] = {
+                    id: forkliftData[key]["id"],
+                    x: forkliftData[key]["position"]["x"],
+                    y: forkliftData[key]["position"]["y"],
+                    color: getForkliftColor(forkliftData[key]["state"]),
+                    size: 8
+                }
+                sGraph.graph.addNode(graphInformation["nodes"][graphInformation["nodeIndexes"][forkliftData[key]["id"]]]);
+            }
+        }
+    }
+    sGraph.refresh();
 }
 
 function getForkliftColor(state) {
@@ -55,17 +54,6 @@ function getForkliftColor(state) {
     }
 }
 
-function addForkliftToGraph(forkliftId, state, xPos, yPos) {
-    //console.log(forkliftId);
-    sGraph.graph.addNode({
-        "id": forkliftId,
-        x: xPos,
-        y: yPos,
-        color: getForkliftColor(state),
-        size: 8
-    });
-}
-
 function getIfForkliftHasPosition(forklift) {
     if (typeof (forklift["position"]) === "undefined" || typeof (forklift["position"]["x"]) === "undefined" || typeof (forklift["position"]["y"]) === "undefined")
         return false;
@@ -74,8 +62,7 @@ function getIfForkliftHasPosition(forklift) {
 }
 
 function parseForklifts(data) {
-    let forklifts = JSON.parse("{}");
-    //let currentGraph: JSON = getSGraphAsGraph();
+    let forklifts = [];
     for (let key in data) {
         if (typeof (data[key]["id"]) == "undefined")
             continue;
@@ -96,8 +83,6 @@ function parseForklifts(data) {
         }
     }
     forkliftData = forklifts;
-    // if (sGraph !== null)
-    //     addForkliftsToGraph(forkliftData);
 }
 
 function addForkliftToUi(forkliftInfo) {
@@ -144,13 +129,28 @@ function addTestDataToForklifts() {
 
 function calculateAndUpdateForkliftPositionData() {
     for (let key in forkliftData) {
-
+        // find forklifts with active route
+        if (typeof (forkliftData[key]["route"]) != "undefined") {
+            // set position to beginning of route if it doesn't have one
+            // REMOVE WHEN NOT NEEDED FOR TESTING
+            if (typeof (forkliftData[key]["position"]) != "undefined" ||
+                typeof (forkliftData[key]["position"]["x"]) != "undefined" ||
+                typeof (forkliftData[key]["position"]["y"]) != "undefined") {
+                let node = graphInformation["nodes"][
+                    graphInformation["nodeIndexes"][forkliftData[key]["route"]["instructions"][0]["nodeId"]]
+                ]
+                forkliftData[key]["position"] = {
+                    x: node["x"],
+                    y: node["y"]
+                }
+            }
+        }
     }
 }
 
 window.setInterval(function () {
     updateForkliftsOnGraph();
-    addTestDataToForklifts();
+    calculateAndUpdateForkliftPositionData();
 }, 500);
 
 window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
@@ -161,6 +161,8 @@ window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
     for (let key in forklifts) {
         addForkliftToUi(forklifts[key]);
     }
+    parseForklifts(forklifts);
+    addTestDataToForklifts();
 });
 
 window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
