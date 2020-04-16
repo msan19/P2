@@ -33,14 +33,8 @@ var tempPath: JSON = JSON.parse(JSON.stringify({
         "N1-0,N2-0"
     ]
 }));
-var forkliftData: JSON = JSON.parse("{}");
 
-enum ForkliftStates {
-    idle = 1,
-    hasOrder,
-    charging,
-    initiating
-}
+
 
 // https://github.com/jacomyal/sigma.js/tree/master/plugins/sigma.exporters.svg
 function exportGraph(): void {
@@ -65,7 +59,7 @@ function initializeGraph(graphO: JSON): void {
         {
             graph: graphO,
             renderer: {
-                container: document.getElementById('sigmaContainer'),
+                container: document.getElementById(container),
                 type: 'canvas'
             },
             settings: {
@@ -79,9 +73,9 @@ function initializeGraph(graphO: JSON): void {
     sGraph.refresh();
     //hightlightPath(graphO, tempPath, null);
     // @ts-ignore
-    document.getElementById("export").disabled = false;
+    //document.getElementById("export").disabled = false;
     // @ts-ignore
-    document.getElementById("reset").disabled = false;
+    //document.getElementById("reset").disabled = false;
 }
 
 function addEdges(graph: JSON): JSON {
@@ -191,11 +185,11 @@ function initializeGraphRelatedUiElements() {
     sGraph = null;
     document.getElementById(container).innerHTML = "";
     // @ts-ignore
-    document.getElementById("export").disabled = "disabled";
+    //document.getElementById("export").disabled = "disabled";
     // @ts-ignore
-    document.getElementById("reset").disabled = "disabled";
+    //document.getElementById("reset").disabled = "disabled";
     //@ts-ignore
-    document.getElementById("settings").style.visibility = "hidden";
+    //document.getElementById("settings").style.visibility = "hidden";
     //@ts-ignore
     //document.getElementById("hightlightColorPicker").value = defaultHighlightColorValue;
     //@ts-ignore
@@ -271,34 +265,8 @@ function onUpdateEdgeSizeChange(): void {
     sGraph.refresh();
 }
 
-function getForkliftColor(state: ForkliftStates): string {
-    console.log(state);
-    switch (state) {
-        case ForkliftStates.idle:
-            return "#f9f57b";
-        case ForkliftStates.charging:
-            return "#ff0000";
-        case ForkliftStates.hasOrder:
-            return "#00ff00";
-        case ForkliftStates.initiating:
-            return "#f9f57b";
-    }
-}
-function addForkliftToGraph(forkliftId: string, state: ForkliftStates, xPos: number, yPos: number): void {
-    sGraph.graph.addNode({ "id": forkliftId, x: xPos, y: yPos, color: getForkliftColor(state), size: 8 });
-}
-
-function parseForklifts(data: JSON): void {
-    //let currentGraph: JSON = getSGraphAsGraph();
-    for (let forklift in data) {
-        if (typeof (data[forklift]["position"]) === "undefined" || typeof (data[forklift]["position"]["x"]) === "undefined" || typeof (data[forklift]["position"]["y"]) === "undefined" || typeof (data[forklift]["id"]) === "undefined")
-            continue;
-        addForkliftToGraph(data[forklift]["id"], data[forklift]["state"], data[forklift]["position"]["x"], data[forklift]["position"]["y"]);
-    }
-    //sGraph.graph = currentGraph;
-    sGraph.refresh();
-}
-
+declare function updateForkliftsOnGraph();
 window["socketManager"].on(SocketManager.PackageTypes.warehouse, (warehouse) => {
     parseWarehouse(warehouse);
+    updateForkliftsOnGraph();
 });

@@ -236,7 +236,11 @@ export class Vertex {
         return newVertices;
     }
 
-    // A* related 
+    /**
+     * Finds distance from the vertex which the function is called on to the vertex specified 
+     * by the parameter id by recursively adding the distance to the previousVertex 
+     * @param startId An identification string specifying the last vertex in the recursion
+     */
     g(startId: string): number {
         if (this.id === startId || this.previousVertex === null) {
             return 0;
@@ -245,16 +249,22 @@ export class Vertex {
         }
     }
 
-
-
-
-
-
 }
 
+
+/**
+ * A point in time located at a vertex specifying which forklift moved through the vertex, when it did and where it moved to
+ */
 export class ScheduleItem {
+
+    /** An identification string for the forklift */
     forkliftId: string;
+
+    /** A number representing the epoch time in miliseconds */
     time: number;
+
+    /** An identification string for the vertex to which the forklift is moving,
+     *  or if the forklift is stopped the id of the vertex it is placed on */
     nextVertexId: string;
 
     constructor(forkliftId: string, time: number, nextVertexId: string) {
@@ -263,6 +273,11 @@ export class ScheduleItem {
         this.nextVertexId = nextVertexId;
     }
 
+    /**
+     * Creates a ScheduleItem with the content of the parameter object
+     * @param item An object to be parsed
+     * @return A new ScheduleItem if the content of the parameter object is legal or null otherwise
+     */
     static parse(item: any): ScheduleItem | null {
         // Check all necessary fields
         if (typeof (item) !== "object" || item === null) return null;
@@ -273,6 +288,10 @@ export class ScheduleItem {
         return new ScheduleItem(item.forkliftId, item.time, item.nextVertexId);
     }
 
+    /**
+     * Creates a ScheduleItem with the content of the ScheduleItem the function is called on
+     * @return A new ScheduleItem
+     */
     clone(): ScheduleItem {
         return new ScheduleItem(this.forkliftId, this.time, this.nextVertexId);
     }

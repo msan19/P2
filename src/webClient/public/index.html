@@ -27,22 +27,6 @@
     </nav>
 
     <div class="full-width-container">
-
-        <div id="topMenu" style="display:none">
-            <button id="export" onclick="exportGraph();">Export</button>
-            <button onclick="onSettingsButtonClick();">Settings</button>
-            <button id="reset" onclick="resetGraph();">Reset</button>
-            <div id="settings">
-                <table>
-                    <tr>
-                        <td>Hightlight Color</td>
-                        <td><input id="hightlightColorPicker" type="color" onchange="updateHighlightColor();"></input>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-        </div>
         <div class="row">
             <div class="col-lg-3">
                 <div class="accordion" id="accordionExample">
@@ -58,7 +42,12 @@
 
                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
                             data-parent="#accordionExample">
-                            <div class="card-body" id="orders"></div>
+                            <div class="card-body" id="orders">
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#modal-add-order">
+                                    Add Order
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="card">
@@ -102,6 +91,49 @@
         </div>
     </div>
 
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal-add-order" tabindex="-1" role="dialog" aria-labelledby="modal-add-order-label"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-add-order-label">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="palletId">Pallet ID</label>
+                            <input type="text" class="form-control" name="palletId">
+                        </div>
+                        <div class="form-group">
+                            <label for="vertexIdStart">Initial Vertex</label>
+                            <select name="vertexIdStart" class="form-control">
+                                <option selected>Choose...</option>
+                                <option>...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="vertexIdFinal">Final Vertex</label>
+                            <select id="vertexIdFinal" class="form-control">
+                                <option selected>Choose...</option>
+                                <option>...</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Sign in</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+        </div>
+    </div>
+    </div>
 
     <script src="scripts/sigma/sigma.min.js"></script>
     <script src="scripts/sigma/sigma.export.js"></script>
