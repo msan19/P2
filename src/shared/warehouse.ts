@@ -5,7 +5,7 @@ export class Warehouse {
     /** The layout of the warehouse */
     graph: Graph;
 
-    /** The general speed of forklifts in the warehpuse */
+    /** The general speed of forklifts in the warehouse in m/s */
     forkliftSpeed: number;
 
     constructor(graph: Graph, forkliftSpeed: number) {
@@ -13,7 +13,8 @@ export class Warehouse {
         this.forkliftSpeed = forkliftSpeed;
     }
 
-    /** Parses to a warehouse
+    /** 
+     * Parses to a warehouse
      * @param obj What should be parsed 
      * @returns A Warehouse if possible else null
      */

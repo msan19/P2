@@ -1,3 +1,10 @@
+// testAstar.ts
+/**
+ * Test of {@link Order}
+ * @packageDocumentation
+ * @category planningScheduler test
+ */
+
 import { expect } from 'chai';
 import 'mocha';
 import * as WebSocket from "ws";

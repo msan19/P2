@@ -1,3 +1,10 @@
+// testAstar.ts
+/**
+ * Test of A* ({@link RouteScheduler.planOptimalRoute})
+ * @packageDocumentation
+ * @category planningScheduler test
+ */
+
 import { expect } from 'chai';
 import 'mocha';
 
