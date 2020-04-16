@@ -1,5 +1,6 @@
 import { Vertex, Graph } from "./graph";
 
+/** An enum of possible states used to describe a route */
 enum RouteStatus {
     queued = 1,
     inProgress,
@@ -7,6 +8,7 @@ enum RouteStatus {
     failed,
 }
 
+/** An enum of possible types of {@link Instruction} */
 enum InstructionType {
     move = 1,
     unloadPallet,
@@ -16,11 +18,22 @@ enum InstructionType {
     sendFeedback,
 }
 
+/** An instruction for a forklift */
 export class Instruction {
+
+    /** Static types of instructions */
     static types = InstructionType;
+
+    /** The type of the instruction */
     type: InstructionType;
+
+    /** The id of the end Vertex */
     vertexId: string;
+
+    /** The id of the pallet that the instruction may involve*/
     palletId: string;
+
+    /** The starting time of the instruction */
     startTime: number;
 
     constructor(type: InstructionType, vertexId: string, palletId: string, startTime: number) {
@@ -30,6 +43,10 @@ export class Instruction {
         this.startTime = startTime;
     }
 
+    /** Parses into Instruction
+     * @param instruction Object that should be parsed to Instruction
+     * @returns An Instruction if possible else null
+     */
     static parse(instruction: any): Instruction | null {
 
         if (typeof (Instruction.types[instruction.type]) === "undefined") return null;
@@ -45,6 +62,10 @@ export class Instruction {
         return new Instruction(instruction.type, instruction.vertexId, instruction.palletId, instruction.startTime);
     }
 
+    /** Parses into an array of Instructions 
+     * @param instructions What should be parsed
+     * @returns An array of Instructions if possible else null
+     */
     static parseMultiple(instructions: any): Instruction[] | null {
         if (!Array.isArray(instructions)) return null;
         instructions = <any[]>instructions; // Typescript-specific casting to array
@@ -61,10 +82,18 @@ export class Instruction {
     }
 }
 
+/** A route containing an array of Instructions */
 export class Route {
+    /** An id for the route */
     routeId: string;
+
+    /** An id for the order */
     orderId: string;
+
+    /** The status of the route */
     status: RouteStatus;
+
+    /** An array of instructions */
     instructions: Instruction[];
 
     constructor(routeId: string, orderId: string, status: RouteStatus, instructions: Instruction[]) {
@@ -74,6 +103,10 @@ export class Route {
         this.instructions = instructions;
     }
 
+    /** Parses into a Route
+     * @param route What should be parsed
+     * @returns A Route if possible else null
+     */
     static parse(route: any): Route | null {
         if (typeof (route.routeId) !== "string") return null;
         if (typeof (route.orderId) !== "string") return null;
@@ -84,6 +117,10 @@ export class Route {
         return new Route(route.routeId, route.orderId, route.RouteStatus, route.instructions);
     }
 
+    /** Parses into an array of Routes
+    * @param routes What should be parsed
+    * @returns An array of Routes if possible else null
+    */
     static parseMultiple(routes: any[]): Route[] | null {
         routes.forEach(element => {
             if (typeof (Route.parse(element)) === "object") return null;
@@ -98,6 +135,8 @@ export class Route {
 
 }
 
+
+/** A set of Routes containing priorities and a graph */
 export class RouteSet {
     priorities: string[];
     graph: Graph;
@@ -107,6 +146,10 @@ export class RouteSet {
         this.graph = graph;
     }
 
+    /** Parses into a RouteSet
+     * @param routeSet What should be parsed
+     * @returns a RouteSet if possible else null
+     */
     static parse(routeSet: any): RouteSet | null {
         if (typeof (Route.parseMultiple(routeSet.routes)) === "object") return null;
         if (typeof (routeSet.priorities) !== null) {

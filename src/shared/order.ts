@@ -1,6 +1,6 @@
 import { DataContainer } from "../planningScheduler/classes/dataContainer";
 
-/** An enum of posible types of orders */
+/** An enum of posible types of {@link Order} */
 enum OrderTypes {
     movePallet = 1,
     moveForklift,
@@ -14,7 +14,7 @@ enum TimeType {
 }
 
 /**
- * An order speficying a task to be carried out by a forklift
+ * An {@link Order} speficying a task to be carried out by a forklift
  */
 export class Order {
 
@@ -24,7 +24,7 @@ export class Order {
     /** A reference to the entire enum of OrderTypes */
     static timeTypes = TimeType;
 
-    /** An identification string for the Order */
+    /** An identification string for the {@link Order} */
     id: string;
 
     /** An enum specifying the type of time */
@@ -33,20 +33,20 @@ export class Order {
     /** A number representing the epoch time in miliseconds */
     time: number;
 
-    /** An enum specifying the type of Order */
+    /** An enum specifying the type of {@link Order} */
     type: OrderTypes;
 
-    /** An identification string for the forklift assigned to the order, null for movePallet Orders */
+    /** An identification string for the forklift assigned to the {@link Order}, null for movePallet a {@link Order} */
     forkliftId: string;
 
     /** An identification string for the pallet to be moved, 
-     * only used for movePallet Orders, null otherwise */
+     * only used for movePallet a {@link Order}, null otherwise */
     palletId: string;
 
-    /** An identification string for the vertex position of the pallet in a movePallet Order, null otherwise */
+    /** An identification string for the {@link Vertex} position of the pallet in a movePallet {@link Order}, null otherwise */
     startVertexId: string;
 
-    /** An identification string for the vertex at which the forklift should drive to */
+    /** An identification string for the {@link Vertex} at which the forklift should drive to */
     endVertexId: string;
 
     constructor(orderId: string, type: OrderTypes, forkliftId: string, palletId: string, startVertexId: string, endVertexId: string) {
@@ -59,11 +59,11 @@ export class Order {
     }
 
     /**
-     * Creates an Order containing the content of the parameter object obj
+     * Creates an {@link Order} containing the content of the parameter object obj
      * @param obj An object to be parsed
      * @param data A DataContainer used to verify the existance of object speficied 
      * by identification strings in obj
-     * @return A new Order if the content of the parameter object is legal or null otherwise
+     * @return A new {@link Order} if the content of the parameter object is legal or null otherwise
      */
     static parse(obj: any, data: DataContainer): Order | null {
         // Check for types of necessary fields

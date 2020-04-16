@@ -10,22 +10,6 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="exportGraph();">Export</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="onSettingsButtonClick();">Settings</a>
-                </li>
-                <li class=" nav-item">
-                    <a class="nav-link" href="#" onclick="resetGraph();">Reset</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
     <div class="full-width-container">
         <div class="row">
             <div class="col-lg-3">
@@ -111,17 +95,11 @@
                         </div>
                         <div class="form-group">
                             <label for="vertexIdStart">Initial Vertex</label>
-                            <select name="vertexIdStart" class="form-control">
-                                <option selected>Choose...</option>
-                                <option>...</option>
-                            </select>
+                            <select name="vertexIdStart" class="form-control select-forklifts"></select>
                         </div>
                         <div class="form-group">
                             <label for="vertexIdFinal">Final Vertex</label>
-                            <select id="vertexIdFinal" class="form-control">
-                                <option selected>Choose...</option>
-                                <option>...</option>
-                            </select>
+                            <select name="vertexIdFinal" class="form-control select-forklifts"></select>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Sign in</button>
@@ -141,9 +119,9 @@
     <script src="/scripts/popper.min.js"></script>
     <script src="/scripts/bootstrap.min.js"></script>
 
-    <script src="/scripts/ts/socketManager.js"></script>
-    <script src="/scripts/ts/graphManager.js"></script>
-    <script src="/scripts/ts/forkliftManager.js"></script>
+    <script src="/scripts/socketManager.js"></script>
+    <script src="/scripts/graphManager.js"></script>
+    <script src="/scripts/forkliftManager.js"></script>
 
     <script>
         initializeGraphRelatedUiElements();

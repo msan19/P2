@@ -50,7 +50,7 @@ function checkVector(vector: Vector2, expected: Vector2): void {
 function testMinPriorityQueue(): void {
     describe(`Test of MinPriorityQueue.swapByIndex`, () => {
         describe(`Test with correct swap`, () => {
-            let queue: MinPriorityQueue = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
+            let queue: MinPriorityQueue<Vertex> = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
             let vertices: Vertex[] = [new Vertex("", new Vector2(0, 0)), new Vertex("", new Vector2(10, 10)), new Vertex("", new Vector2(20, 20))];
             let expected: Vertex[] = [new Vertex("", new Vector2(20, 20)), new Vertex("", new Vector2(10, 10)), new Vertex("", new Vector2(0, 0))];
 
@@ -66,7 +66,7 @@ function testMinPriorityQueue(): void {
         });
 
         describe(`Test with correct swap`, () => {
-            let queue: MinPriorityQueue = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
+            let queue: MinPriorityQueue<Vertex> = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
             let vertices: Vertex[] = [new Vertex("", new Vector2(0, 0)), new Vertex("", new Vector2(10, 10)), new Vertex("", new Vector2(20, 20))];
             let expected: Vertex[] = [new Vertex("", new Vector2(0, 0)), new Vertex("", new Vector2(10, 10)), new Vertex("", new Vector2(20, 20))];
 
@@ -84,7 +84,7 @@ function testMinPriorityQueue(): void {
 
     describe(`Test of minHeapify`, () => {
         describe(`The queue needs a heapify to satisfy the min-heap-property`, () => {
-            let queue: MinPriorityQueue = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
+            let queue: MinPriorityQueue<Vertex> = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
             let vertices: Vertex[] = [
                 new Vertex("", new Vector2(25, 25)),
                 new Vertex("", new Vector2(0, 0)),
@@ -116,7 +116,7 @@ function testMinPriorityQueue(): void {
         });
 
         describe(`The queue already satisfy the min-heap-property`, () => {
-            let queue: MinPriorityQueue = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
+            let queue: MinPriorityQueue<Vertex> = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
             let vertices: Vertex[] = [
                 new Vertex("", new Vector2(0, 0)),
                 new Vertex("", new Vector2(5, 5)),
@@ -150,7 +150,7 @@ function testMinPriorityQueue(): void {
 
     describe(`Test of extractMin`, () => {
         describe(`Using extractMin and testing length and first element`, () => {
-            let queue: MinPriorityQueue = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
+            let queue: MinPriorityQueue<Vertex> = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
             let vertices: Vertex[] = [
                 new Vertex("", new Vector2(0, 0)),
                 new Vertex("", new Vector2(5, 5)),
@@ -182,7 +182,7 @@ function testMinPriorityQueue(): void {
         });
 
         describe(`Using extractMin on empty queue`, () => {
-            let queue: MinPriorityQueue = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
+            let queue: MinPriorityQueue<Vertex> = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
             let vertices: Vertex[] = [];
 
 
@@ -198,7 +198,7 @@ function testMinPriorityQueue(): void {
 
     describe(`Test of insert`, () => {
         describe(`Inserting in empty queue`, () => {
-            let queue: MinPriorityQueue = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
+            let queue: MinPriorityQueue<Vertex> = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
             let vertices: Vertex[] = [];
             let expected: Vertex = new Vertex("", new Vector2(10, 10));
 
@@ -208,7 +208,7 @@ function testMinPriorityQueue(): void {
         });
 
         describe(`Inserting in non-empty queue with high expected index position`, () => {
-            let queue: MinPriorityQueue = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
+            let queue: MinPriorityQueue<Vertex> = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
             let vertices: Vertex[] = [
                 new Vertex("", new Vector2(0, 0)),
                 new Vertex("", new Vector2(5, 5)),
@@ -239,7 +239,7 @@ function testMinPriorityQueue(): void {
         });
 
         describe(`Inserting in non-empty queue with low expected index position`, () => {
-            let queue: MinPriorityQueue = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
+            let queue: MinPriorityQueue<Vertex> = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
             let vertices: Vertex[] = [
                 new Vertex("", new Vector2(0, 0)),
                 new Vertex("", new Vector2(5, 5)),
@@ -270,7 +270,7 @@ function testMinPriorityQueue(): void {
         });
 
         describe(`Inserting multiple in empty queue`, () => {
-            let queue: MinPriorityQueue = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
+            let queue: MinPriorityQueue<Vertex> = new MinPriorityQueue((vertex: Vertex): number => { return vertex.position.getLength(); });
             let vertices: Vertex[] = [
                 new Vertex("", new Vector2(7, 7)),
                 new Vertex("", new Vector2(15, 15)),
