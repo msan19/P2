@@ -6,6 +6,7 @@ import { Warehouse } from "./warehouse";
 import { EventEmitter } from "events";
 import { JsonTryParse } from "./webUtilities";
 
+/** An enum representing the type of package being sendt and recieved */
 enum PackageTypes {
     route = "route",
     routes = "routes",
@@ -18,16 +19,16 @@ enum PackageTypes {
     other = "other"
 }
 
+/**
+ * A {@link WebSocket} object implementing functions to manage a socket connection
+ */
 export class WebSocket extends EventEmitter {
-    static packageTypes = PackageTypes;
-    private socket: ws;
 
-    private send(type: PackageTypes, obj: any) {
-        this.socket.send(JSON.stringify({
-            type: type,
-            body: obj
-        }));
-    }
+    /** A reference to the entire enum of PackageTypes */
+    static packageTypes = PackageTypes;
+
+    /** A socket which the class manages */
+    private socket: ws;
 
     constructor(socket: ws) {
         super();
@@ -48,45 +49,98 @@ export class WebSocket extends EventEmitter {
         });
     }
 
-    sendRoute(route: Route) {
+    /**
+     * Sends the parameter object through the socket
+     * @param type A {@link Websocket.packageTypes} enum
+     * @param obj An object to be sendt
+     */
+    private send(type: PackageTypes, obj: any): void {
+        this.socket.send(JSON.stringify({
+            type: type,
+            body: obj
+        }));
+    }
+
+    /**
+    * Sends the parameter {@link Route} through the socket
+    * @param obj A {@link Route} to be sendt
+    */
+    sendRoute(route: Route): void {
         this.send(WebSocket.packageTypes.route, route);
     }
 
-    sendRoutes(routes: { [key: string]: Route; }) {
+    /**
+    * Sends the parameter {@link Route} dictionary through the socket
+    * @param obj A {@link Route} dictionary to be sendt
+    */
+    sendRoutes(routes: { [key: string]: Route; }): void {
         this.send(WebSocket.packageTypes.routes, routes);
     }
 
-    sendForkliftInfo(forkliftInfo: ForkliftInfo) {
+    /**
+    * Sends the parameter {@link ForkliftInfo} through the socket
+    * @param obj A {@link ForkliftInfo} to be sendt
+    */
+    sendForkliftInfo(forkliftInfo: ForkliftInfo): void {
         this.send(WebSocket.packageTypes.forkliftInfo, forkliftInfo);
     }
 
-    sendForkliftInfos(forkliftInfo: { [key: string]: ForkliftInfo; }) {
+    /**
+    * Sends the parameter {@link ForkliftInfo} dictionary through the socket
+    * @param obj A {@link ForkliftInfo} dictionary to be sendt
+    */
+    sendForkliftInfos(forkliftInfo: { [key: string]: ForkliftInfo; }): void {
         this.send(WebSocket.packageTypes.forkliftInfos, forkliftInfo);
     }
 
-    sendOrder(order: Order) {
+    /**
+    * Sends the parameter {@link Order} through the socket
+    * @param obj A {@link Order} to be sendt
+    */
+    sendOrder(order: Order): void {
         this.send(WebSocket.packageTypes.order, order);
     }
 
-    sendOrders(orders: { [key: string]: Order; }) {
+    /**
+    * Sends the parameter {@link Order} dictionary through the socket
+    * @param obj A {@link Order} dictionary to be sendt
+    */
+    sendOrders(orders: { [key: string]: Order; }): void {
         this.send(WebSocket.packageTypes.orders, orders);
     }
 
-    sendWarehouse(warehouse: Warehouse) {
+    /**
+    * Sends the parameter {@link Warehouse} through the socket
+    * @param obj A {@link Warehouse} to be sendt
+    */
+    sendWarehouse(warehouse: Warehouse): void {
         this.send(WebSocket.packageTypes.warehouse, warehouse);
     }
 
-    accept() {
+    /**
+     * Sends a messege through the socket accepting initialization
+     */
+    accept(): void {
         this.socket.send('HTTP/1.1 101 Web Socket Protocol Handshake\r\n' +
             'Upgrade: WebSocket\r\n' +
             'Connection: Upgrade\r\n' +
             '\r\n');
     }
-    close() {
+
+    /**
+     * Closes the socket
+     */
+    close(): void {
         this.socket.close();
     }
 
-    listenToSocket(socketToListenTo: WebSocket, type: PackageTypes) {
+    /**
+     * Changes the parameter {@link WebSocket} so that the {@link WebSocket} the function is called on
+     * recieves a message of the parameter enum {@link WebSocket.packageTypes} when the parameter {@link WebSocket} does
+     * @param socketToListenTo A {@link WebSocket} whose messages are forwarded
+     * @param type An enum {@link WebSocket.packageTypes} specifying what messages to forward
+     */
+    listenToSocket(socketToListenTo: WebSocket, type: PackageTypes): void {
         let self = this;
         let func = (obj: any) => { self.send(type, obj); };
         socketToListenTo.on(type, func);
