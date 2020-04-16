@@ -204,7 +204,7 @@ window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
     for (let key in warehouse.graph.vertices) {
         let vertexId = warehouse.graph.vertices[key].id;
         document.querySelectorAll('.select-vertex').forEach((item) => {
-            item.innerHTML += `<option value="${vertexId}>${vertexId}</option>`;
+            item.innerHTML += `<option value="${vertexId}">${vertexId}</option>`;
         });
     }
 });
