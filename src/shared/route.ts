@@ -49,7 +49,8 @@ export class Instruction {
         this.startTime = startTime;
     }
 
-    /** Parses into Instruction
+    /** 
+     * Parses into Instruction
      * @param instruction Object that should be parsed to Instruction
      * @returns An Instruction if possible else null
      */
@@ -68,7 +69,8 @@ export class Instruction {
         return new Instruction(instruction.type, instruction.vertexId, instruction.palletId, instruction.startTime);
     }
 
-    /** Parses into an array of Instructions 
+    /** 
+     * Parses into an array of Instructions 
      * @param instructions What should be parsed
      * @returns An array of Instructions if possible else null
      */
@@ -109,7 +111,8 @@ export class Route {
         this.instructions = instructions;
     }
 
-    /** Parses into a Route
+    /** 
+     * Parses into a Route
      * @param route What should be parsed
      * @returns A Route if possible else null
      */
@@ -123,7 +126,8 @@ export class Route {
         return new Route(route.routeId, route.orderId, route.RouteStatus, route.instructions);
     }
 
-    /** Parses into an array of Routes
+    /** 
+     * Parses into an array of Routes
     * @param routes What should be parsed
     * @returns An array of Routes if possible else null
     */
@@ -152,7 +156,8 @@ export class RouteSet {
         this.graph = graph;
     }
 
-    /** Parses into a RouteSet
+    /** 
+     * Parses into a RouteSet
      * @param routeSet What should be parsed
      * @returns a RouteSet if possible else null
      */
