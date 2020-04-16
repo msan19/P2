@@ -66,10 +66,7 @@ function initializeGraph(graphO) {
         }
     });
     sGraph.refresh();
-    //hightlightPath(graphO, tempPath, null);
-    // @ts-ignore
     //document.getElementById("export").disabled = false;
-    // @ts-ignore
     //document.getElementById("reset").disabled = false;
 }
 
@@ -179,19 +176,12 @@ function resetGraph() {
 function initializeGraphRelatedUiElements() {
     sGraph = null;
     document.getElementById(container).innerHTML = "";
-    // @ts-ignore
     //document.getElementById("export").disabled = "disabled";
-    // @ts-ignore
     //document.getElementById("reset").disabled = "disabled";
-    //@ts-ignore
     //document.getElementById("settings").style.visibility = "hidden";
-    //@ts-ignore
     //document.getElementById("hightlightColorPicker").value = defaultHighlightColorValue;
-    //@ts-ignore
     //document.getElementById("lowDarkColorPicker").value = defaultLowDarkColorValue;
-    //@ts-ignore
     //document.getElementById("nodeSizeInput").value = defaultNodeSizeValue;
-    //@ts-ignore
     //document.getElementById("edgeSizeInput").value = defaultEdgeSizeValue;
 }
 
