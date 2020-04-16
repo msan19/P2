@@ -59,7 +59,7 @@ function initializeGraph(graphO: JSON): void {
         {
             graph: graphO,
             renderer: {
-                container: document.getElementById('sigmaContainer'),
+                container: document.getElementById(container),
                 type: 'canvas'
             },
             settings: {
@@ -73,9 +73,9 @@ function initializeGraph(graphO: JSON): void {
     sGraph.refresh();
     //hightlightPath(graphO, tempPath, null);
     // @ts-ignore
-    document.getElementById("export").disabled = false;
+    //document.getElementById("export").disabled = false;
     // @ts-ignore
-    document.getElementById("reset").disabled = false;
+    //document.getElementById("reset").disabled = false;
 }
 
 function addEdges(graph: JSON): JSON {
@@ -185,11 +185,11 @@ function initializeGraphRelatedUiElements() {
     sGraph = null;
     document.getElementById(container).innerHTML = "";
     // @ts-ignore
-    document.getElementById("export").disabled = "disabled";
+    //document.getElementById("export").disabled = "disabled";
     // @ts-ignore
-    document.getElementById("reset").disabled = "disabled";
+    //document.getElementById("reset").disabled = "disabled";
     //@ts-ignore
-    document.getElementById("settings").style.visibility = "hidden";
+    //document.getElementById("settings").style.visibility = "hidden";
     //@ts-ignore
     //document.getElementById("hightlightColorPicker").value = defaultHighlightColorValue;
     //@ts-ignore
