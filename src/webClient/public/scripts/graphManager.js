@@ -187,14 +187,14 @@ function setGraphColorToDefault(graph) {
 }
 
 function getSGraphAsGraph() {
-    let graph = JSON.parse("{}");
-    graph["edges"] = sGraph.graph.edges();
-    graph["nodes"] = sGraph.graph.nodes();
-    return graph;
+    // let graph = JSON.parse("{}");
+    // graph["edges"] = sGraph.graph.edges();
+    // graph["nodes"] = sGraph.graph.nodes();
+    // return graph;
 }
 
 window["socketManager"].on(SocketManager.PackageTypes.warehouse, (warehouse) => {
-    parseWarehouse(warehouse);
+    //parseWarehouse(warehouse);
 });
 
 window.socketManager.on(PackageTypes.warehouse, (warehouse) => {

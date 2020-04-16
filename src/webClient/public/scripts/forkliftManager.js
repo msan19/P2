@@ -15,31 +15,31 @@ function updateForkliftOnGraph(graph, forkliftKey, nodeKey) {
 }
 
 function updateForkliftsOnGraph() {
-    if (sGraph === null)
-        return;
-    let graph = getSGraphAsGraph();
-    // Go through each forklift in the forklift data
-    // Which will update the forklift on the graph
-    for (let key in forkliftData) {
-        let found = false;
-        for (let nodeKey in graph["nodes"]) {
-            if (forkliftData[key]["id"] == graph["nodes"][nodeKey]["id"]) {
-                graph = updateForkliftOnGraph(graph, key, nodeKey);
-                found = true;
-            }
+    // if (sGraph === null)
+    //     return;
+    // let graph = getSGraphAsGraph();
+    // // Go through each forklift in the forklift data
+    // // Which will update the forklift on the graph
+    // for (let key in forkliftData) {
+    //     let found = false;
+    //     for (let nodeKey in graph["nodes"]) {
+    //         if (forkliftData[key]["id"] == graph["nodes"][nodeKey]["id"]) {
+    //             graph = updateForkliftOnGraph(graph, key, nodeKey);
+    //             found = true;
+    //         }
 
-        }
+    //     }
 
-        if (!found) {
-            if (getIfForkliftHasPosition(forkliftData[key])) {
-                addForkliftToGraph(forkliftData[key]["id"], forkliftData[key]["state"], forkliftData[key]["position"]["x"], forkliftData[key]["position"]["y"]);
-            }
-        }
+    //     if (!found) {
+    //         if (getIfForkliftHasPosition(forkliftData[key])) {
+    //             addForkliftToGraph(forkliftData[key]["id"], forkliftData[key]["state"], forkliftData[key]["position"]["x"], forkliftData[key]["position"]["y"]);
+    //         }
+    //     }
 
 
-    }
-    sGraph.graph = graph;
-    sGraph.refresh();
+    // }
+    // sGraph.graph = graph;
+    // sGraph.refresh();
 }
 
 function getForkliftColor(state) {
@@ -96,8 +96,8 @@ function parseForklifts(data) {
         }
     }
     forkliftData = forklifts;
-    if (sGraph !== null)
-        addForkliftsToGraph(forkliftData);
+    // if (sGraph !== null)
+    //     addForkliftsToGraph(forkliftData);
 }
 
 function addForkliftToUi(forkliftInfo) {
