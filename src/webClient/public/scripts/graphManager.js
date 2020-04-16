@@ -6,6 +6,7 @@ const defaultLowDarkColorValue = "#e5e5e5";
 const defaultNodeSizeValue = 8;
 const defaultEdgeSizeValue = 4;
 var sGraph;
+var moveSpeed;
 var tempPath = JSON.parse(JSON.stringify({
     "nodes": [
         "N0-0",
@@ -43,6 +44,9 @@ function exportGraph() {
 };
 
 function parseWarehouse(data) {
+    // get forklift speed
+    moveSpeed = data["forkliftSpeed"];
+    // parse physical warehouse
     let iData = data;
     iData.graph = addEdges(iData.graph);
     iData.graph = changeNodes(iData.graph);
@@ -193,5 +197,4 @@ function getSGraphAsGraph() {
 
 window["socketManager"].on(SocketManager.PackageTypes.warehouse, (warehouse) => {
     parseWarehouse(warehouse);
-    updateForkliftsOnGraph();
 });
