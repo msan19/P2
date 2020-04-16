@@ -48,14 +48,16 @@ function parseWarehouse(data) {
     moveSpeed = data["forkliftSpeed"];
     // parse physical warehouse
     let iData = data;
-    iData.graph = addEdges(iData.graph);
-    iData.graph = changeNodes(iData.graph);
+    iData.graph = initializeEdges(iData.graph);
+    iData.graph = initializeNodes(iData.graph);
     initializeGraph(iData.graph);
 }
 
 function initializeGraph(graphO) {
-    initializeGraphRelatedUiElements();
-    // @ts-ignore
+    // Clear graph
+    sGraph = null;
+    document.getElementById(container).innerHTML = "";
+    // create sigma graph
     sGraph = new sigma({
         graph: graphO,
         renderer: {
@@ -69,10 +71,11 @@ function initializeGraph(graphO) {
             maxNodeSize: 0,
         }
     });
+    // apply sigma graph
     sGraph.refresh();
 }
 
-function addEdges(graph) {
+function initializeEdges(graph) {
     let output = [];
     for (let vertexId_1 in graph["vertices"]) {
         for (let key in graph["vertices"][vertexId_1]["adjacentVertexIds"]) {
@@ -93,7 +96,7 @@ function addEdges(graph) {
     return graph;
 }
 
-function changeNodes(graph) {
+function initializeNodes(graph) {
     let output = [];
     for (let vertexId in graph["vertices"]) {
         graph["vertices"][vertexId]["size"] = defaultNodeSizeValue;
@@ -173,11 +176,6 @@ function resetGraph() {
     setGraphColorToDefault(graph);
     sGraph.graph = graph;
     sGraph.refresh();
-}
-
-function initializeGraphRelatedUiElements() {
-    sGraph = null;
-    document.getElementById(container).innerHTML = "";
 }
 
 function setGraphColorToDefault(graph) {

@@ -1,3 +1,9 @@
+// planningScheduler.ts
+/**
+ * @packageDocumentation
+ * @category PlanningScheduler
+ */
+
 import { DataContainer } from "./classes/dataContainer";
 import { WebServerPlanningScheduler } from "./classes/WebServer";
 

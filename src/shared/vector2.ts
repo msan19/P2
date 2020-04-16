@@ -1,3 +1,8 @@
+// vector2.ts
+/**
+ * @packageDocumentation
+ * @category Shared
+ */
 
 /**
  * A {@link Vector2} representing a position in two-dimentional space relative to a center origin point

@@ -1,3 +1,9 @@
+// run.ts
+/**
+ * @packageDocumentation
+ * @category BlackBox
+ */
+
 import { createGraph } from "./warehouse";
 import * as fs from "fs";
 import { Warehouse } from "../shared/warehouse";

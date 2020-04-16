@@ -5,6 +5,8 @@
 
 ### Overview 
 
+- [Overview of modules](./globals.html)
+
 #### Central files in the program
 
 - [planningScheduler](./modules/_src_planningscheduler_planningscheduler_.html)

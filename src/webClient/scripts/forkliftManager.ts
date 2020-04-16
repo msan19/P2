@@ -1,3 +1,9 @@
+// server.ts
+/**
+ * @packageDocumentation
+ * @category WebClient
+ */
+
 declare var sGraph;
 var forkliftData;
 enum ForkliftStates {

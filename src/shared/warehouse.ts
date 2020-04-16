@@ -1,3 +1,9 @@
+// warehouse.ts
+/**
+ * @packageDocumentation
+ * @category Shared
+ */
+
 import { Graph } from "./graph";
 
 /** A Warehouse containing a graph and the general forkliftspeed */

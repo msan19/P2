@@ -1,3 +1,9 @@
+// apiCaller.ts
+/**
+ * @packageDocumentation
+ * @category Shared
+ */
+
 import { Warehouse } from "./warehouse";
 import { default as fetch, Response } from "node-fetch";
 import { Route } from "./route";

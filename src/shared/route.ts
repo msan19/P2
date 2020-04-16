@@ -1,3 +1,9 @@
+// route.ts
+/**
+ * @packageDocumentation
+ * @category Shared
+ */
+
 import { Vertex, Graph } from "./graph";
 
 /** An enum of possible states used to describe a route */

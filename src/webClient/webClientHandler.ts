@@ -1,3 +1,9 @@
+// webClientHandler.ts
+/**
+ * @packageDocumentation
+ * @category WebClient
+ */
+
 import { IncomingMessage, ServerResponse } from "http";
 import * as ws from "ws";
 import { Socket } from "net";

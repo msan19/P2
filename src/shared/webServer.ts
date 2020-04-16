@@ -1,3 +1,9 @@
+// webServer.ts
+/**
+ * @packageDocumentation
+ * @category Shared
+ */
+
 import * as http from "http";
 import * as WebSocket from "ws";
 import * as net from "net";

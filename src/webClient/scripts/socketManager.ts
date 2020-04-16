@@ -1,3 +1,8 @@
+// server.ts
+/**
+ * @packageDocumentation
+ * @category WebClient
+ */
 
 enum PackageTypes {
     route = "route",

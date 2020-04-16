@@ -1,3 +1,9 @@
+// warehouse.ts
+/**
+ * @packageDocumentation
+ * @category BlackBox
+ */
+
 import { Graph, Vertex } from "../shared/graph";
 import { Vector2 } from "../shared/vector2";
 
