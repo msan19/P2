@@ -1,3 +1,9 @@
+// webSocket.ts
+/**
+ * @packageDocumentation
+ * @category Shared
+ */
+
 import * as ws from "ws";
 import { Route } from "./route";
 import { ForkliftInfo } from "./forkliftInfo";

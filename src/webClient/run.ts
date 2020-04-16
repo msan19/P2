@@ -1,3 +1,9 @@
+// server.ts
+/**
+ * @packageDocumentation
+ * @category WebClient
+ */
+
 import { WebServerClient } from "./server";
 
 setTimeout(() => {

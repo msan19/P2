@@ -1,3 +1,8 @@
+// minPriorityQueue.ts
+/**
+ * @packageDocumentation
+ * @category PlanningScheduler
+ */
 
 /**
  * A min-priority queue implementation 

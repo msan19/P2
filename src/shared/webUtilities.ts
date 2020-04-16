@@ -1,3 +1,9 @@
+// webUtilities.ts
+/**
+ * @packageDocumentation
+ * @category Shared
+ */
+
 import { IncomingMessage, ServerResponse } from "http";
 import * as path from "path";
 import * as fs from "fs";

@@ -3,7 +3,7 @@
  * {@link DataContainer} is initialized in {@link PlanningScheduler} and 
  * is used in {@link WebServerPlanningScheduler}
  * @packageDocumentation
- * @category DataContainer
+ * @category PlanningScheduler
  */
 
 import * as events from "events";

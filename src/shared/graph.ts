@@ -1,3 +1,9 @@
+// graph.ts
+/**
+ * @packageDocumentation
+ * @category Shared
+ */
+
 import { Vector2 } from "./vector2";
 
 /** A {@link Graph} cointaining interconnected vertices */

@@ -1,3 +1,9 @@
+// server.ts
+/**
+ * @packageDocumentation
+ * @category WebClient
+ */
+
 import * as ws from "ws";
 import { WebServer } from "../shared/webServer";
 import { WebSocket } from "../shared/webSocket";

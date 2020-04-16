@@ -1,3 +1,9 @@
+// order.ts
+/**
+ * @packageDocumentation
+ * @category Shared
+ */
+
 import { DataContainer } from "../planningScheduler/classes/dataContainer";
 
 /** An enum of posible types of {@link Order} */
