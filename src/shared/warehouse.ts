@@ -13,7 +13,8 @@ export class Warehouse {
         this.forkliftSpeed = forkliftSpeed;
     }
 
-    /** Parses to a warehouse
+    /** 
+     * Parses to a warehouse
      * @param obj What should be parsed 
      * @returns A Warehouse if possible else null
      */
