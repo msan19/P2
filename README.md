@@ -1,10 +1,10 @@
 # P2
 
 ## Model
-![](model.png)
+![](./docs/media/model.png)
 
 ## Use-case diagram
-![](Use_case_diagram.png)
+![](./docs/media/Use_case_diagram.png)
 
 ## Tidsplan
 ```
