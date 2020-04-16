@@ -73,17 +73,20 @@ function parseForklifts(data) {
 }
 function addForkliftToUi(forkliftInfo) {
     document.querySelector("#forklift-list").innerHTML += `<li>${forkliftInfo.id}</li>`;
+    document.querySelectorAll('.select-forklifts').forEach((item) => { item.innerHTML += `<option>${forkliftInfo.id}</option>`; });
 }
 window.setInterval(function () {
     updateForkliftsOnGraph();
 }, 500);
-window["socketManager"].on(PackageTypes.forkliftInfos, (forklifts) => {
+window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
+    document.querySelectorAll('.select-forklifts').forEach((item) => { item.innerHTML = ""; });
     document.querySelector("#forklift-list").innerHTML = "";
     for (let key in forklifts) {
         addForkliftToUi(forklifts[key]);
     }
     parseForklifts(forklifts);
 });
-window["socketManager"].on(PackageTypes.forkliftInfo, (forklift) => {
+
+window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
     addForkliftToUi(forklift);
 });
