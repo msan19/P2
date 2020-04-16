@@ -12,21 +12,31 @@ import { getJson, returnJson, returnNotFound, returnStatus, passId, returnInvali
 import { ForkliftInfo } from "../../shared/forkliftInfo";
 import { Route } from "../../shared/route";
 
-
+/** An interface specifying a function which handles HTTP requests */
 interface IHttpMethod { (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void; }
+
+/** An interface specifying a dictionary of {@link IHttpMethod} */
 interface IController { [key: string]: IHttpMethod; };
 
 //interface IHttpUpgrade { (request: IncomingMessage, webSocket: WebSocket, parsedUrl: string[]): void; }
 //interface IHttpUpgrade { (request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void; }
+
+/** An interface specifying a function which handles socket messages */
 interface ISocketController { (socketServer: ws.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void; }
 
-
+/**
+ * A {@link Handler} handles every API call efter they have been identified
+ */
 export class Handler {
+
+    /** A {@link DataContainer} for the {@link Handler} to acces the shared data on the server */
     data: DataContainer;
+
     constructor(data: DataContainer) {
         this.data = data;
     }
 
+    /** A dictionary of {@link IController} */
     controllers: { [key: string]: IController; } = {
         warehouse: {
             // /warehouse
@@ -157,6 +167,8 @@ export class Handler {
             }
         }
     };
+
+    /** A dictionary of {@link ISocketController} */
     socketControllers: { [key: string]: ISocketController; } = {
         // /forklifts/{guid}/intiate
         forklifts: (socketServer: ws.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void => {
