@@ -1,3 +1,10 @@
+// testAstar.ts
+/**
+ * Test of ({@link Warehouse})
+ * @packageDocumentation
+ * @category planningScheduler test
+ */
+
 import { expect } from 'chai';
 import 'mocha';
 import { Warehouse } from '../../../src/shared/warehouse';

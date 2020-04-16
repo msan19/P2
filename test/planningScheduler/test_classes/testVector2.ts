@@ -1,3 +1,10 @@
+// testAstar.ts
+/**
+ * Test of {@link Vector2}
+ * @packageDocumentation
+ * @category planningScheduler test
+ */
+
 import { Vector2 } from "../../../src/shared/vector2";
 import { expect } from 'chai';
 import 'mocha';

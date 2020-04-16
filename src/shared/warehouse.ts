@@ -5,7 +5,7 @@ export class Warehouse {
     /** The layout of the warehouse */
     graph: Graph;
 
-    /** The general speed of forklifts in the warehpuse */
+    /** The general speed of forklifts in the warehouse in m/s */
     forkliftSpeed: number;
 
     constructor(graph: Graph, forkliftSpeed: number) {

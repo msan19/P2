@@ -17,7 +17,8 @@ export class MinPriorityQueue<T> {
         this.f = f;
     }
 
-    /** Returns index of left child
+    /** 
+     * Returns index of left child
      * @param i An index of the array
      * @returns Index of the left side of index i
      */
@@ -25,31 +26,35 @@ export class MinPriorityQueue<T> {
         return 2 * (i + 1) - 1;
     }
 
-    /** Returns index of right child 
+    /** 
+     * Returns index of right child 
      * @param i An index of the array
      * @returns Index of the right side of index i
-    */
+     */
     right(i: number): number {
         return 2 * (i + 1);
     }
 
-    /** Returns index of parent 
+    /** 
+     * Returns index of parent 
      * @param i An index of the array
      * @returns Index of the parent of index i
-    */
+     */
     parent(i: number): number {
         if (i === 0) return 0;
         return Math.floor((i - 1) / 2);
     }
 
-    /** Returns first element in the min-heap 
+    /** 
+     * Returns first element in the min-heap 
      * @returns The smallest element of the heap
     */
     heapMinimum(): T {
         return this.array[0];
     }
 
-    /** Swaps the elements with index i and index j
+    /** 
+     * Swaps the elements with index i and index j
      * @param i The first index to swap 
      * @param j The second index to swap
      */

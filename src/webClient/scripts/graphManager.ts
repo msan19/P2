@@ -265,8 +265,6 @@ function onUpdateEdgeSizeChange(): void {
     sGraph.refresh();
 }
 
-declare function updateForkliftsOnGraph();
 window["socketManager"].on(SocketManager.PackageTypes.warehouse, (warehouse) => {
     parseWarehouse(warehouse);
-    updateForkliftsOnGraph();
 });

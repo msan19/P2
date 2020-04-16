@@ -7,11 +7,11 @@ var ForkliftStates;
     ForkliftStates[ForkliftStates["initiating"] = 4] = "initiating";
 })(ForkliftStates || (ForkliftStates = {}));
 
-function updateForkliftOnGraph(forkliftKey, nodeKey) {
+function updateForkliftOnGraph(graph, forkliftKey, nodeKey) {
     graph["nodes"][nodeKey]["x"] = forkliftData[forkliftKey]["position"]["x"];
     graph["nodes"][nodeKey]["y"] = forkliftData[forkliftKey]["position"]["y"];
     graph["nodes"][nodeKey]["state"] = forkliftData[forkliftKey]["state"];
-    return nodes;
+    return graph;
 }
 
 function updateForkliftsOnGraph() {
@@ -24,7 +24,7 @@ function updateForkliftsOnGraph() {
         let found = false;
         for (let nodeKey in graph["nodes"]) {
             if (forkliftData[key]["id"] == graph["nodes"][nodeKey]["id"]) {
-                graph = updateForkliftOnGraph(graph)
+                graph = updateForkliftOnGraph(graph, key, nodeKey)
                 found = true;
             }
 
@@ -107,8 +107,50 @@ function addForkliftToUi(forkliftInfo) {
     });
 }
 
+function addTestDataToForklifts() {
+    let date = new Date();
+    for (let key in forkliftData) {
+        if (typeof (forkliftData[key]["route"] == undefined)) {
+            if (forkliftData[key]["id"] == "F0") {
+                forkliftData[key]["route"] = {
+                    instructions: {
+                        0: {
+                            nodeId: "N0-0",
+                            startTime: date.getTime()
+                        },
+                        1: {
+                            nodeId: "N0-1",
+                            startTime: date.getTime()
+                        },
+                        2: {
+                            nodeId: "N0-2",
+                            startTime: date.getTime()
+                        },
+                        3: {
+                            nodeId: "N0-3",
+                            startTime: date.getTime()
+                        },
+                        4: {
+                            nodeId: "N0-4",
+                            startTime: date.getTime()
+                        },
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+function calculateAndUpdateForkliftPositionData() {
+    for (let key in forkliftData) {
+
+    }
+}
+
 window.setInterval(function () {
     updateForkliftsOnGraph();
+    addTestDataToForklifts();
 }, 500);
 window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
     document.querySelectorAll('.select-forklifts').forEach((item) => {
