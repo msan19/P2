@@ -1,8 +1,8 @@
 import { Vector2 } from "./vector2";
 
-/** A graph cointaining interconnected vertices */
+/** A {@link Graph} cointaining interconnected vertices */
 export class Graph {
-    /** A dictionary of vertices contained in the graph */
+    /** A dictionary of vertices contained in the {@link Graph} */
     vertices: { [key: string]: Vertex; };
 
     constructor(vertices: { [key: string]: Vertex; }) {
@@ -11,8 +11,8 @@ export class Graph {
 
     /**
      * Returns direct distance between two vertices
-     * @param vertex_1 First vertex
-     * @param vertex_2 Second vertex
+     * @param vertex_1 First {@link Vertex} 
+     * @param vertex _2 Second {@link Vertex} 
      * @return Distance between the vertices
      */
     getDistanceDirect(vertex_1: Vertex, vertex_2: Vertex): number {
@@ -20,8 +20,8 @@ export class Graph {
     }
 
     /**
-     * Loops through each adjecent vertex within each vertex on the graph
-     * @return Array of objects with two vertex ids
+     * Loops through each adjecent {@link Vertex}  within each {@link Vertex} on the {@link Graph}
+     * @return Array of objects with two {@link Vertex} ids
      */
     getEdges(): { vertexId_1: string, vertexId_2: string; }[] {
         let output = [];
@@ -37,9 +37,9 @@ export class Graph {
     }
 
     /**
-     * Returns a new graph containing only the legal conent of the parameret graph
-     * @param graph The graph to be parsed
-     * @return The new graph
+     * Returns a new {@link Graph} containing only the legal conent of the parameret {@link Graph}
+     * @param graph The {@link Graph} to be parsed
+     * @return The new {@link Graph}
      */
     static parse(graph: any): Graph | null {
         // Check necessary fields
@@ -79,8 +79,8 @@ export class Graph {
     }
 
     /**
-     * Creates a new graph containing a clone of each object in the graph the function is called on
-     * @return A new graph
+     * Creates a new {@link Graph} containing a clone of each object in the {@link Graph} the function is called on
+     * @return A new {@link Graph}
      */
     clone(): Graph {
         let newVertices: { [key: string]: Vertex; } = {};
@@ -93,7 +93,7 @@ export class Graph {
     }
 
     /**
-     * Sets the isVisited value of each vertex in the graph to false
+     * Sets the isVisited value of each {@link Vertex} in the {@link Graph} to false
      */
     reset(): void {
         let keys: string[] = Object.keys(this.vertices);
@@ -106,13 +106,13 @@ export class Graph {
 }
 
 /**
- * A vertex which in compination with the vertices adjecent to it make up a graph
+ * A {@link Vertex} which in compination with the vertices adjecent to it make up a {@link Graph}
  */
 export class Vertex {
-    /** A vertex identification string */
+    /** A {@link Vertex} identification string */
     id: string;
 
-    /** A vector representing the position of the vertex */
+    /** A {@link Vector2} representing the position of the {@link Vertex} */
     position: Vector2;
 
     /** A label used by the user interface */
@@ -121,13 +121,13 @@ export class Vertex {
     /** An array of identification strings for adjecent vertices */
     adjacentVertexIds: string[];
 
-    /** An array of Scheduleitems specifying when forklifts move through the vertex */
+    /** An array of {@link ScheduleItem} specifying when forklifts move through the {@link Vertex} */
     scheduleItems?: ScheduleItem[];
 
-    /** A vertex reference to the previous vertex in a route being planned */
+    /** A {@link Vertex} reference to the previous {@link Vertex} in a route being planned */
     previousVertex: Vertex | null;
 
-    /** A boolean specifying if the vertex has been looked at by the route planning algorithm */
+    /** A boolean specifying if the {@link Vertex} has been looked at by the route planning algorithm */
     isVisited: boolean;
 
     constructor(id: string, position: Vector2, label?: string) {
@@ -274,9 +274,9 @@ export class ScheduleItem {
     }
 
     /**
-     * Creates a ScheduleItem with the content of the parameter object
+     * Creates a {@link ScheduleItem} with the content of the parameter object
      * @param item An object to be parsed
-     * @return A new ScheduleItem if the content of the parameter object is legal or null otherwise
+     * @return A new {@link ScheduleItem} if the content of the parameter object is legal or null otherwise
      */
     static parse(item: any): ScheduleItem | null {
         // Check all necessary fields
@@ -289,8 +289,8 @@ export class ScheduleItem {
     }
 
     /**
-     * Creates a ScheduleItem with the content of the ScheduleItem the function is called on
-     * @return A new ScheduleItem
+     * Creates a {@link ScheduleItem} with the content of the {@link ScheduleItem} the function is called on
+     * @return A new {@link ScheduleItem}
      */
     clone(): ScheduleItem {
         return new ScheduleItem(this.forkliftId, this.time, this.nextVertexId);
