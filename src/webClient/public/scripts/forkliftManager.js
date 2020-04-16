@@ -7,11 +7,11 @@ var ForkliftStates;
     ForkliftStates[ForkliftStates["initiating"] = 4] = "initiating";
 })(ForkliftStates || (ForkliftStates = {}));
 
-function updateForkliftOnGraph(forkliftKey, nodeKey) {
+function updateForkliftOnGraph(graph, forkliftKey, nodeKey) {
     graph["nodes"][nodeKey]["x"] = forkliftData[forkliftKey]["position"]["x"];
     graph["nodes"][nodeKey]["y"] = forkliftData[forkliftKey]["position"]["y"];
     graph["nodes"][nodeKey]["state"] = forkliftData[forkliftKey]["state"];
-    return nodes;
+    return graph;
 }
 
 function updateForkliftsOnGraph() {
@@ -24,7 +24,7 @@ function updateForkliftsOnGraph() {
         let found = false;
         for (let nodeKey in graph["nodes"]) {
             if (forkliftData[key]["id"] == graph["nodes"][nodeKey]["id"]) {
-                graph = updateForkliftOnGraph(graph)
+                graph = updateForkliftOnGraph(graph, key, nodeKey)
                 found = true;
             }
 
@@ -106,6 +106,7 @@ function addForkliftToUi(forkliftInfo) {
         item.innerHTML += `<option>${forkliftInfo.id}</option>`;
     });
 }
+
 
 window.setInterval(function () {
     updateForkliftsOnGraph();
