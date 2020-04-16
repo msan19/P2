@@ -63,7 +63,7 @@ export class Order {
      * @param obj An object to be parsed
      * @param data A DataContainer used to verify the existance of object speficied 
      * by identification strings in obj
-     * @return A new {@link Order} if the content of the parameter object is legal or null otherwise
+     * @returns A new {@link Order} if the content of the parameter object is legal or null otherwise
      */
     static parse(obj: any, data: DataContainer): Order | null {
         // Check for types of necessary fields

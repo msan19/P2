@@ -13,7 +13,7 @@ export class Graph {
      * Returns direct distance between two vertices
      * @param vertex_1 First {@link Vertex} 
      * @param vertex _2 Second {@link Vertex} 
-     * @return Distance between the vertices
+     * @returns Distance between the vertices
      */
     getDistanceDirect(vertex_1: Vertex, vertex_2: Vertex): number {
         return vertex_1.getDistanceDirect(vertex_2);
@@ -21,7 +21,7 @@ export class Graph {
 
     /**
      * Loops through each adjecent {@link Vertex}  within each {@link Vertex} on the {@link Graph}
-     * @return Array of objects with two {@link Vertex} ids
+     * @returns Array of objects with two {@link Vertex} ids
      */
     getEdges(): { vertexId_1: string, vertexId_2: string; }[] {
         let output = [];
@@ -39,7 +39,7 @@ export class Graph {
     /**
      * Returns a new {@link Graph} containing only the legal conent of the parameret {@link Graph}
      * @param graph The {@link Graph} to be parsed
-     * @return The new {@link Graph}
+     * @returns The new {@link Graph}
      */
     static parse(graph: any): Graph | null {
         // Check necessary fields
@@ -80,7 +80,7 @@ export class Graph {
 
     /**
      * Creates a new {@link Graph} containing a clone of each object in the {@link Graph} the function is called on
-     * @return A new {@link Graph}
+     * @returns A new {@link Graph}
      */
     clone(): Graph {
         let newVertices: { [key: string]: Vertex; } = {};
@@ -143,7 +143,7 @@ export class Vertex {
     /**
      * Finds direct distance between the parameter vertex at the vertex the function is called on
      * @param vertex A vertex which the distance is calculated to
-     * @return Direct distance to the parameter vertex
+     * @returns Direct distance to the parameter vertex
      */
     getDistanceDirect(vertex: Vertex): number {
         return vertex && this.position.getDistanceTo(vertex.position);
@@ -153,7 +153,7 @@ export class Vertex {
      * Creates a new vertex containing parsed versions of the content of the parameter vertex
      * if the content is legal, or null otherwise
      * @param vertex A vertex to be parsed
-     * @return A legal vertex or null
+     * @returns A legal vertex or null
      */
     static parse(vertex: any): Vertex | null {
         // Check for necessary field types
@@ -202,7 +202,7 @@ export class Vertex {
 
     /**
      * Creates a vertex containing clones of the content of the vertex the function is called on
-     * @return A created vertex
+     * @returns A created vertex
      */
     clone(): Vertex {
         let v: Vertex = new Vertex(this.id, this.position.clone(), this.label);
@@ -222,7 +222,7 @@ export class Vertex {
     /**
      * Creates an array of vertices containing the legal vertices in the parameter array
      * @param vertices An array of vertices to be parsed
-     * @return A created array of vertices
+     * @returns A created array of vertices
      */
     static parseMultiple(vertices: Vertex[]): Vertex[] | null {
         vertices.forEach(element => {
@@ -276,7 +276,7 @@ export class ScheduleItem {
     /**
      * Creates a {@link ScheduleItem} with the content of the parameter object
      * @param item An object to be parsed
-     * @return A new {@link ScheduleItem} if the content of the parameter object is legal or null otherwise
+     * @returns A new {@link ScheduleItem} if the content of the parameter object is legal or null otherwise
      */
     static parse(item: any): ScheduleItem | null {
         // Check all necessary fields
@@ -290,7 +290,7 @@ export class ScheduleItem {
 
     /**
      * Creates a {@link ScheduleItem} with the content of the {@link ScheduleItem} the function is called on
-     * @return A new {@link ScheduleItem}
+     * @returns A new {@link ScheduleItem}
      */
     clone(): ScheduleItem {
         return new ScheduleItem(this.forkliftId, this.time, this.nextVertexId);
