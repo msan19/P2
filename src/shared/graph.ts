@@ -260,7 +260,7 @@ export class ScheduleItem {
     /** An identification string for the forklift */
     forkliftId: string;
 
-    /** A number representing the epoch time in miliseconds */
+    /** A number representing the epoch time in ms */
     time: number;
 
     /** An identification string for the vertex to which the forklift is moving,
