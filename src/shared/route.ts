@@ -41,7 +41,7 @@ export class Instruction {
         this.startTime = startTime;
     }
 
-    /** Static function that parses into Instruction
+    /** Parses into Instruction
      * @param instruction Object that should be parsed to Instruction
      * @returns An Instruction if possible else null
      */
@@ -60,7 +60,7 @@ export class Instruction {
         return new Instruction(instruction.type, instruction.vertexId, instruction.palletId, instruction.startTime);
     }
 
-    /** Static function that parses into an array of Instructions 
+    /** Parses into an array of Instructions 
      * @param instructions What should be parsed
      * @returns An array of Instructions if possible else null
      */
@@ -101,7 +101,7 @@ export class Route {
         this.instructions = instructions;
     }
 
-    /** Static function that parses into a Route
+    /** Parses into a Route
      * @param route What should be parsed
      * @returns A Route if possible else null
      */
@@ -115,7 +115,7 @@ export class Route {
         return new Route(route.routeId, route.orderId, route.RouteStatus, route.instructions);
     }
 
-    /** Static function that parses into an array of Routes
+    /** Parses into an array of Routes
     * @param routes What should be parsed
     * @returns An array of Routes if possible else null
     */
@@ -144,7 +144,7 @@ export class RouteSet {
         this.graph = graph;
     }
 
-    /** Static function that parses into a RouteSet
+    /** Parses into a RouteSet
      * @param routeSet What should be parsed
      * @returns a RouteSet if possible else null
      */
