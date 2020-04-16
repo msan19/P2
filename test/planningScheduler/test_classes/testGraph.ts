@@ -166,7 +166,7 @@ function testVertex(): void {
  */
 function testGraph() {
     describe(`Test of Graph object`, () => {
-        describe(``, () => {
+        describe(`Valid fields`, () => {
             let graph: Graph = new Graph({
                 "N23": new Vertex("N23", new Vector2(10, 10)),
                 "N27": new Vertex("N27", new Vector2(20, 20))
@@ -410,8 +410,6 @@ function testGraph() {
 
         let result: Graph = graph.clone();
         graph.vertices["N23"].scheduleItems.push(new ScheduleItem("F29", 10923029, "N23"));
-        console.log(result);
-        console.log(graph);
 
         it(`${result} and ${graph}`, () => {
             expect(result).to.not.equal(graph);
