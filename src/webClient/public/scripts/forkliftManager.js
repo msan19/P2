@@ -168,7 +168,7 @@ function intepretInstructions(instructions) {
     }
     return {
         nodes: nodesIds,
-        edges: edgeIds
+        edges: correctedEdgeIds
     }
 }
 
