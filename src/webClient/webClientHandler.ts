@@ -6,12 +6,14 @@
 
 import { IncomingMessage, ServerResponse } from "http";
 import * as ws from "ws";
+import * as fs from "fs";
 import { Socket } from "net";
 import { WebSocket } from "../shared/webSocket";
 import { Warehouse } from "../shared/warehouse";
 import { ForkliftInfo } from "../shared/forkliftInfo";
 import { Order } from "../shared/order";
 import { Route } from "../shared/route";
+import { getStaticFile, sanitizePath, getContentsHTML } from "../shared/webUtilities";
 
 
 interface IController { [key: string]: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]) => void; };
@@ -43,7 +45,16 @@ export class WebClientHandler {
     }
 
     controllers: { [key: string]: IController; } = {
+        home: {
+            GET: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
+                response.writeHead(200, `ok`);
 
+                let fileContents = getContentsHTML("src/webClient/ressources", "index.html");
+
+                response.write(fileContents);
+                response.end();
+            }
+        }
     };
 
     socketControllers: { [key: string]: ISocketController; } = {

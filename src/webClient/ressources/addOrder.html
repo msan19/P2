@@ -1,0 +1,57 @@
+<!-- Modal -->
+<div class="modal fade" id="modal-add-order" tabindex="-1" role="dialog" aria-labelledby="modal-add-order-label"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form class="modal-content" id="addOrder">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-add-order-label">Add Order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="id">Order ID</label>
+                        <input type="text" class="form-control" name="id">
+                    </div>
+                    <div class="form-group">
+                        <label for="timeType">Time Type</label>
+                        <select name="timeType" class="form-control">
+                            <option value="1">Start</option>
+                            <option value="2">End</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Order Type</label>
+                        <select name="type" class="form-control">
+                            <option value="1">movePallet</option>
+                            <option value="2">moveForklift</option>
+                            <option value="3">charge</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="forkliftId">Forklift ID</label>
+                        <select name="forkliftId" class="form-control select-forklift"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="palletId">Pallet ID</label>
+                        <input type="text" class="form-control" name="palletId">
+                    </div>
+                    <div class="form-group">
+                        <label for="startVertexId">Initial Vertex</label>
+                        <select name="startVertexId" class="form-control select-vertex"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="endVertexId">Final Vertex</label>
+                        <select name="endVertexId" class="form-control select-vertex"></select>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+    </div>
+</div>
+</div>

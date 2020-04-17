@@ -150,3 +150,18 @@ export function getStaticFile(publicPath: string, requestPath: string): Promise<
         });
     });
 }
+
+export function getContentsHTML(folder: string, file: string) {
+    let fileContents = String(fs.readFileSync(sanitizePath(folder, file)));
+    let matches = fileContents.match(/@{file:(?<file>[^}]+)}/ig);
+
+    if (matches !== null) {
+        for (let match of matches) {
+            let contents = getContentsHTML(folder, match.substring(7, match.length - 1));
+
+            fileContents = fileContents.replace(match, contents);
+        }
+    }
+
+    return fileContents;
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Manager</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
+
+<body>
+    <div class="full-width-container">
+        <div class="row">
+            <div class="col-lg-3">
+                @{file:sideMenu.html}
+            </div>
+            <div class="col-lg-9">
+                <div id="sigmaContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    @{file:addOrder.html}
+
+    <script src="scripts/sigma/sigma.min.js"></script>
+    <script src="scripts/sigma/sigma.export.js"></script>
+    <script src="/scripts/jquery-3.4.1.slim.min.js"></script>
+    <script src="/scripts/popper.min.js"></script>
+    <script src="/scripts/bootstrap.min.js"></script>
+
+    <script src="/scripts/apiHandler.js"></script>
+    <script src="/scripts/socketManager.js"></script>
+    <script src="/scripts/graphManager.js"></script>
+    <script src="/scripts/forkliftManager.js"></script>
+    <!-- 
+    <script>
+        initializeGraphRelatedUiElements();
+    </script> -->
+</body>
+
+</html>
