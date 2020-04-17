@@ -1,11 +1,35 @@
 var forkliftData;
 var ForkliftStates;
+window.selectedForklift = "";
 (function (ForkliftStates) {
     ForkliftStates[ForkliftStates["idle"] = 1] = "idle";
     ForkliftStates[ForkliftStates["hasOrder"] = 2] = "hasOrder";
     ForkliftStates[ForkliftStates["charging"] = 3] = "charging";
     ForkliftStates[ForkliftStates["initiating"] = 4] = "initiating";
 })(ForkliftStates || (ForkliftStates = {}));
+
+function addForkliftClickDetectionAndHandling() {
+    sGraph.bind('clickNode', function (e) {
+        let graph = {
+            nodes: sGraph.graph.nodes(),
+            edges: sGraph.graph.edges()
+        }
+        if (e.data.node.id[0] == "F") {
+            selectedForklift = e.data.node.id;
+            if (typeof (forkliftData[selectedForklift]["route"]) != "undefined" && typeof (forkliftData[selectedForklift]["route"]["instructions"]) != "undefined") {
+                let path = intepretInstructions(forkliftData[selectedForklift]["route"]["instructions"]);
+                hightlightPath(graph, path, null);
+                lowdark(graph, path, null);
+                sGraph.graph = graph;
+            }
+
+        } else {
+            setGraphColorToDefault(graph);
+            selectedForklift = "";
+        }
+        console.log(selectedForklift);
+    })
+}
 
 function updateForkliftOnGraph(forkliftId) {
     let nodes = sGraph.graph.nodes();
@@ -32,7 +56,7 @@ function updateForkliftsOnGraph() {
                     x: forkliftData[key]["position"]["x"],
                     y: forkliftData[key]["position"]["y"],
                     color: getForkliftColor(forkliftData[key]["state"]),
-                    size: 8
+                    size: 14
                 }
                 sGraph.graph.addNode(graphInformation["nodes"][graphInformation["nodeIndexes"][forkliftData[key]["id"]]]);
             }
@@ -124,6 +148,24 @@ function addTestDataToForklifts() {
             }
         }
 
+    }
+}
+
+function intepretInstructions(instructions) {
+    let nodesIds = [];
+    let edgeIds = [];
+
+    for (let key in instructions) {
+        nodesIds.push(instructions[key]["nodeId"]);
+    }
+    for (let key in nodesIds) {
+        edgeIds.push(nodesIds[key]);
+        if (key != 0)
+            edgeIds[key - 1] += "," + nodesIds[key];
+    }
+    return {
+        nodes: nodesIds,
+        edges: edgeIds
     }
 }
 
