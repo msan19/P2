@@ -10,7 +10,7 @@ import { Warehouse } from "../shared/warehouse";
 import { ApiCaller } from "../shared/apiCaller";
 import { Response } from "node-fetch";
 
-let warehouse = new Warehouse(createGraph(), 4.17);
+let warehouse = new Warehouse(createGraph(), 0.417);
 let graph = JSON.stringify(warehouse, null, 4);
 //fs.writeFileSync("./src/blackBox/graph.json", graph);
 

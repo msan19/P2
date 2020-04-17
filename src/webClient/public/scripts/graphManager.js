@@ -8,31 +8,7 @@ const defaultEdgeSizeValue = 4;
 // contains nodes and the index of their id
 window.graphInformation;
 window.sGraph;
-
-var moveSpeed;
-var tempPath = JSON.parse(JSON.stringify({
-    "nodes": [
-        "N0-0",
-        "N0-1",
-        "N0-2",
-        "N0-3",
-        "N0-4",
-        "N0-5",
-        "N0-6",
-        "N0-7",
-        "N0-8",
-    ],
-    "edges": [
-        "N0-0,N0-1",
-        "N0-1,N0-2",
-        "N0-2,N0-3",
-        "N0-3,N0-4",
-        "N0-4,N0-5",
-        "N0-5,N0-6",
-        "N0-6,N0-7",
-        "N0-7,N0-8",
-    ]
-}));
+window.framerate = 60;
 // https://github.com/jacomyal/sigma.js/tree/master/plugins/sigma.exporters.svg
 function exportGraph() {
     let output = sGraph.toSVG({
@@ -44,13 +20,12 @@ function exportGraph() {
 
 function parseWarehouse(data) {
     // get forklift speed
-    moveSpeed = data["forkliftSpeed"];
+    forkliftSpeed = data["forkliftSpeed"];
     // parse physical warehouse
     let iData = data.graph;
     iData = initializeEdges(iData);
     iData = initializeNodes(iData);
     initializeGraph(iData);
-    console.log(iData);
 }
 
 function initializeGraph(graphO) {
@@ -72,7 +47,9 @@ function initializeGraph(graphO) {
         }
     });
     addForkliftClickDetectionAndHandling();
-    graphInformation = graphO;
+    graphInformation = {
+        nodeIndexes: graphO["nodeIndexes"]
+    };
     // apply sigma graph
     CustomShapes.init(sGraph);
     sGraph.refresh();
