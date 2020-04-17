@@ -130,6 +130,42 @@ function addTestDataToForklifts() {
                     ]
                 };
                 forkliftData[key]["route"]["instructions"].push({
+                    nodeId: "N9-0",
+                    startTime: date.getTime()
+                });
+                forkliftData[key]["route"]["instructions"].push({
+                    nodeId: "N8-0",
+                    startTime: date.getTime()
+                });
+                forkliftData[key]["route"]["instructions"].push({
+                    nodeId: "N7-0",
+                    startTime: date.getTime()
+                });
+                forkliftData[key]["route"]["instructions"].push({
+                    nodeId: "N6-0",
+                    startTime: date.getTime()
+                });
+                forkliftData[key]["route"]["instructions"].push({
+                    nodeId: "N5-0",
+                    startTime: date.getTime()
+                });
+                forkliftData[key]["route"]["instructions"].push({
+                    nodeId: "N4-0",
+                    startTime: date.getTime()
+                });
+                forkliftData[key]["route"]["instructions"].push({
+                    nodeId: "N3-0",
+                    startTime: date.getTime()
+                });
+                forkliftData[key]["route"]["instructions"].push({
+                    nodeId: "N2-0",
+                    startTime: date.getTime()
+                });
+                forkliftData[key]["route"]["instructions"].push({
+                    nodeId: "N1-0",
+                    startTime: date.getTime()
+                });
+                forkliftData[key]["route"]["instructions"].push({
                     nodeId: "N0-0",
                     startTime: date.getTime()
                 });
@@ -179,12 +215,18 @@ function intepretInstructions(instructions) {
     }
 }
 
+function getDistanceBetweenPoints(x, y, targetX, targetY) {
+    let xDiff = targetX - x;
+    let yDiff = targetY - y;
+    return Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+}
+
 // returns unit vector with direction towards target
-function getDirectionVector(x, y, targetX, targetY) {
+function getDirectionVector(distance, x, y, targetX, targetY) {
     // distance
     let xDiff = targetX - x;
     let yDiff = targetY - y;
-    let distance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+
     if (distance == 0)
         return {
             x: 0,
@@ -230,7 +272,64 @@ function checkIfForkliftReachedNextNodeInRoute(graph, calculatedForkliftPosition
 
 }
 
-function calculateAndUpdateForkliftPositionData() {
+// i might just make this a recursive function
+function calculateForkliftPosition(graph, forklift, movementLength) {
+    // gets direction between forklift at the second point in instructions
+    let targetNode = graph["nodes"][
+        graphInformation["nodeIndexes"][forklift["route"]["instructions"][0]["nodeId"]]
+    ];
+    let distance = getDistanceBetweenPoints(
+        forklift["position"]["x"],
+        forklift["position"]["y"],
+        targetNode["x"],
+        targetNode["y"]
+    );
+    let directionVector = getDirectionVector(
+        distance,
+        forklift["position"]["x"],
+        forklift["position"]["y"],
+        targetNode["x"],
+        targetNode["y"]
+    );
+    // gets new position based on the direction vector over the framerate
+    let newPosition = {
+        x: forklift["position"]["x"] + movementLength * directionVector["x"],
+        y: forklift["position"]["y"] + movementLength * directionVector["y"]
+    };
+    // if the forklift reaches the next point in the graph; handle it
+    if (checkIfForkliftReachedNextNodeInRoute(graph, newPosition, directionVector, forklift["route"]["instructions"])) {
+        let instructions = forklift["route"]["instructions"];
+
+
+        instructions.splice(0, 1);
+        // update displayed path if the it is the current forklift
+        if (selectedForklift == forklift["id"]) {
+            displayPath(graph, intepretInstructions(instructions), null, null);
+        }
+        // if forklift has reached last node, set position to last node
+        // this just makes it easier to calculate, can be made better i suspect
+        forklift["position"] = {
+            x: targetNode["x"],
+            y: targetNode["y"]
+        }
+        if (instructions.length == 0) {
+            delete forklift["route"];
+        } else {
+            // if through this movement it goes further than the distance to the node
+            // it will run it again with start position of the node
+            // i think.
+            // this should be tested more
+            if (movementLength > Math.abs(distance))
+                calculateForkliftPosition(graph, forklift, movementLength - Math.abs(distance));
+        }
+        // if not 
+
+    } else {
+        forklift["position"] = newPosition;
+    }
+}
+
+function handleForkliftMovement() {
     let graph = {
         nodes: sGraph.graph.nodes(),
         edges: sGraph.graph.edges()
@@ -252,45 +351,7 @@ function calculateAndUpdateForkliftPositionData() {
                     y: node["y"]
                 }
             } else {
-                // gets direction between forklift at the second point in instructions
-                let targetNode = graph["nodes"][
-                    graphInformation["nodeIndexes"][forkliftData[key]["route"]["instructions"][0]["nodeId"]]
-                ];
-                let directionVector = getDirectionVector(
-                    forkliftData[key]["position"]["x"],
-                    forkliftData[key]["position"]["y"],
-                    targetNode["x"],
-                    targetNode["y"]
-                );
-                // gets new position based on the direction vector over the framerate
-                let newPosition = {
-                    x: forkliftData[key]["position"]["x"] + forkliftSpeed * directionVector["x"] / framerate,
-                    y: forkliftData[key]["position"]["y"] + forkliftSpeed * directionVector["y"] / framerate
-                };
-                // if the forklift reaches the next point in the graph; handle it
-                if (checkIfForkliftReachedNextNodeInRoute(graph, newPosition, directionVector, forkliftData[key]["route"]["instructions"])) {
-                    let instructions = forkliftData[key]["route"]["instructions"];
-
-                    console.log(instructions);
-                    instructions.splice(0, 1);
-                    if (selectedForklift == forkliftData[key]["id"]) {
-                        displayPath(graph, intepretInstructions(instructions), null, null);
-                    }
-                    // if forklift has reached last node, set position to last node
-                    // this just makes it easier to calculate, can be made better i suspect
-                    if (instructions.length == 0) {
-                        forkliftData[key]["position"] = {
-                            x: targetNode["x"],
-                            y: targetNode["y"]
-                        }
-                        delete forkliftData[key]["route"];
-                    } else {
-                        forkliftData[key]["position"] = newPosition;
-                    }
-
-                } else {
-                    forkliftData[key]["position"] = newPosition;
-                }
+                calculateForkliftPosition(graph, forkliftData[key], forkliftSpeed / framerate);
 
             }
 
@@ -300,7 +361,7 @@ function calculateAndUpdateForkliftPositionData() {
 
 window.setInterval(function () {
     updateForkliftsOnGraph();
-    calculateAndUpdateForkliftPositionData();
+    handleForkliftMovement();
 }, 1000 / framerate);
 
 window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
