@@ -308,7 +308,6 @@ function calculateForkliftPosition(graph, forklift, movementLength) {
     if (checkIfForkliftReachedNextNodeInRoute(graph, newPosition, directionVector, forklift["route"]["instructions"])) {
         let instructions = forklift["route"]["instructions"];
 
-
         instructions.splice(0, 1);
         // update displayed path if the it is the current forklift
         if (selectedForklift == forklift["id"]) {
@@ -322,6 +321,7 @@ function calculateForkliftPosition(graph, forklift, movementLength) {
         }
         if (instructions.length == 0) {
             delete forklift["route"];
+            setGraphColorToDefault(graph);
         } else {
             // if through this movement it goes further than the distance to the node
             // it will run it again with start position of the node
