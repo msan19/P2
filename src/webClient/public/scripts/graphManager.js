@@ -8,6 +8,7 @@ const defaultEdgeSizeValue = 4;
 // contains nodes and the index of their id
 window.graphInformation;
 window.sGraph;
+
 var moveSpeed;
 var tempPath = JSON.parse(JSON.stringify({
     "nodes": [
@@ -20,12 +21,9 @@ var tempPath = JSON.parse(JSON.stringify({
         "N0-6",
         "N0-7",
         "N0-8",
-        "N1-0",
-        "N2-0"
     ],
     "edges": [
         "N0-0,N0-1",
-        "N0-0,N1-0",
         "N0-1,N0-2",
         "N0-2,N0-3",
         "N0-3,N0-4",
@@ -33,7 +31,6 @@ var tempPath = JSON.parse(JSON.stringify({
         "N0-5,N0-6",
         "N0-6,N0-7",
         "N0-7,N0-8",
-        "N1-0,N2-0"
     ]
 }));
 // https://github.com/jacomyal/sigma.js/tree/master/plugins/sigma.exporters.svg
@@ -74,6 +71,7 @@ function initializeGraph(graphO) {
             maxNodeSize: 0,
         }
     });
+    addForkliftClickDetectionAndHandling();
     graphInformation = graphO;
     // apply sigma graph
     sGraph.refresh();
@@ -122,6 +120,12 @@ function initializeNodes(graph) {
     return graph;
 }
 
+function displayPath(graph, path, hightlightColor, lowdarkColor) {
+    hightlightPath(graph, path, hightlightColor);
+    lowdarkNotPath(graph, path, lowdarkColor);
+
+}
+
 function hightlightPath(graph, path, color) {
     for (let nodeToFind in path["nodes"]) {
         let found = false;
@@ -146,8 +150,10 @@ function hightlightPath(graph, path, color) {
     return graph;
 }
 
-function lowdark(graph, path, color) {
+function lowdarkNotPath(graph, path, color) {
     for (let nodeToBeChecked in graph["nodes"]) {
+        if (graph["nodes"][nodeToBeChecked]["id"][0] == "F")
+            continue;
         let found = false;
         for (let nodeToBeCheckedAgainst in path["nodes"]) {
             if (graph["nodes"][nodeToBeChecked]["id"] == path["nodes"][nodeToBeCheckedAgainst]) {
@@ -169,6 +175,16 @@ function lowdark(graph, path, color) {
         if (found == false)
             graph["edges"][edgeToBeChecked]["color"] = (typeof (color) == "string") ? color : defaultLowDarkColorValue;
     }
+    return graph;
+}
+
+function setGraphColorToDefault(graph) {
+    for (let node in graph["nodes"]) {
+        if (graph["nodes"][node]["id"][0] != "F")
+            graph["nodes"][node]["color"] = defaultNodeColorValue;
+    }
+    for (let edge in graph["edges"])
+        graph["edges"][edge]["color"] = defaultEdgeColorValue;
     return graph;
 }
 
