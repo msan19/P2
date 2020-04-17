@@ -153,12 +153,18 @@ function intepretInstructions(instructions) {
     let edgeIds = [];
 
     for (let key in instructions) {
-        nodesIds.push(instructions[key]["nodeId"]);
+        if (!nodesIds.includes(instructions[key]["nodeId"]))
+            nodesIds.push(instructions[key]["nodeId"]);
     }
     for (let key in nodesIds) {
         edgeIds.push(nodesIds[key]);
         if (key != 0)
             edgeIds[key - 1] += "," + nodesIds[key];
+    }
+    let correctedEdgeIds = [];
+    for (let key in edgeIds) {
+        if (!correctedEdgeIds.includes(edgeIds[key]))
+            correctedEdgeIds.push(edgeIds[key]);
     }
     return {
         nodes: nodesIds,
