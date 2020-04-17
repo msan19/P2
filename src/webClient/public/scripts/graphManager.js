@@ -8,7 +8,7 @@ const defaultEdgeSizeValue = 4;
 // contains nodes and the index of their id
 window.graphInformation;
 window.sGraph;
-window.selectedForklift = "";
+
 var moveSpeed;
 var tempPath = JSON.parse(JSON.stringify({
     "nodes": [
@@ -72,26 +72,7 @@ function initializeGraph(graphO) {
         }
     });
 
-    sGraph.bind('clickNode', function (e) {
-        let graph = {
-            nodes: sGraph.graph.nodes(),
-            edges: sGraph.graph.edges()
-        }
-        if (e.data.node.id[0] == "F") {
-            selectedForklift = e.data.node.id;
-            if (typeof (forkliftData[selectedForklift]["route"]) != "undefined" && typeof (forkliftData[selectedForklift]["route"]["instructions"]) != "undefined") {
-                let path = intepretInstructions(forkliftData[selectedForklift]["route"]["instructions"]);
-                hightlightPath(graph, path, null);
-                lowdark(graph, path, null);
-                sGraph.graph = graph;
-            }
 
-        } else {
-            setGraphColorToDefault(graph);
-            selectedForklift = "";
-        }
-        console.log(selectedForklift);
-    })
     graphInformation = graphO;
     // apply sigma graph
     sGraph.refresh();
