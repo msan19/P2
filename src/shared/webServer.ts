@@ -22,6 +22,7 @@ export class WebServer {
             noServer: true
         });
     }
+
     /**
     * Creates a HTTP web server using Node.js methods.
     * Handles client requests by parsing part of an URL into a controller, and checking whether it is valid (typeof request.method).
