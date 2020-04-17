@@ -71,8 +71,7 @@ function initializeGraph(graphO) {
             maxNodeSize: 0,
         }
     });
-
-
+    addForkliftClickDetectionAndHandling();
     graphInformation = graphO;
     // apply sigma graph
     sGraph.refresh();
@@ -121,6 +120,12 @@ function initializeNodes(graph) {
     return graph;
 }
 
+function displayPath(graph, path, hightlightColor, lowdarkColor) {
+    hightlightPath(graph, path, hightlightColor);
+    lowdarkNotPath(graph, path, lowdarkColor);
+
+}
+
 function hightlightPath(graph, path, color) {
     for (let nodeToFind in path["nodes"]) {
         let found = false;
@@ -145,7 +150,7 @@ function hightlightPath(graph, path, color) {
     return graph;
 }
 
-function lowdark(graph, path, color) {
+function lowdarkNotPath(graph, path, color) {
     for (let nodeToBeChecked in graph["nodes"]) {
         if (graph["nodes"][nodeToBeChecked]["id"][0] == "F")
             continue;

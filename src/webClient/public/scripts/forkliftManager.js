@@ -18,16 +18,13 @@ function addForkliftClickDetectionAndHandling() {
             selectedForklift = e.data.node.id;
             if (typeof (forkliftData[selectedForklift]["route"]) != "undefined" && typeof (forkliftData[selectedForklift]["route"]["instructions"]) != "undefined") {
                 let path = intepretInstructions(forkliftData[selectedForklift]["route"]["instructions"]);
-                hightlightPath(graph, path, null);
-                lowdark(graph, path, null);
-                sGraph.graph = graph;
+                displayPath(graph, path, null, null);
             }
 
         } else {
             setGraphColorToDefault(graph);
             selectedForklift = "";
         }
-        console.log(selectedForklift);
     })
 }
 
