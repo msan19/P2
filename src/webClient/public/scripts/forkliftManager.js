@@ -195,15 +195,23 @@ function intepretInstructions(instructions) {
     let nodesIds = [];
     let edgeIds = [];
 
+    // add nodes
     for (let key in instructions) {
         if (!nodesIds.includes(instructions[key]["nodeId"]))
             nodesIds.push(instructions[key]["nodeId"]);
     }
+    // add edges
     for (let key in nodesIds) {
         edgeIds.push(nodesIds[key]);
-        if (key != 0)
-            edgeIds[key - 1] += "," + nodesIds[key];
+        if (key != 0) {
+            if (edgeIds[key - 1] < nodesIds[key])
+                edgeIds[key - 1] += "," + nodesIds[key];
+            else
+                edgeIds[key - 1] = nodesIds[key] + "," + edgeIds[key - 1];
+        }
+
     }
+    // remove duplicates
     let correctedEdgeIds = [];
     for (let key in edgeIds) {
         if (!correctedEdgeIds.includes(edgeIds[key]))
@@ -272,7 +280,7 @@ function checkIfForkliftReachedNextNodeInRoute(graph, calculatedForkliftPosition
 
 }
 
-// i might just make this a recursive function
+// NOTE: this fuction is recursive: take care
 function calculateForkliftPosition(graph, forklift, movementLength) {
     // gets direction between forklift at the second point in instructions
     let targetNode = graph["nodes"][
@@ -322,7 +330,6 @@ function calculateForkliftPosition(graph, forklift, movementLength) {
             if (movementLength > Math.abs(distance))
                 calculateForkliftPosition(graph, forklift, movementLength - Math.abs(distance));
         }
-        // if not 
 
     } else {
         forklift["position"] = newPosition;
