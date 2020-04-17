@@ -82,3 +82,42 @@ Ud fra den angivede information oversætter planlægningssytemet en ordre til en
 ## "Sketch" for graf-delen af kontrolpanelet
 
 ![](./media/webinterface.png)
+
+
+## UI
+
+- Grafen: 
+    - Her vises den nuværnede placering af alle palleløftere.
+    - En udvalgt rute kan vises.
+
+- Panel:
+  - Palleløftere (dette er en liste): 
+    - Skal have sin egen scrollbar, som skal holde sig indenfor skærmen.
+    - Information om en palleløfter:
+      - En palleløfters nuværende rute vises på grafen.
+      - For hver palleløfter er dens ruter synlig i en liste og ruterne står i prioriteret rækkefølge, prioriteret efter rækkefølgen de skal udføres i.
+      - Position.
+      - Batteristatus.
+      - Palleløfterstatus (instructionType).
+
+  - Ordrer:
+    - Afventende ordrer.
+    - Aktive ordrer.
+    - (Udførte ordrer: disse vil ikke blive vist).
+    - For hver ordre vises information om denne:
+        - Startplacering. 
+        - Slutplacering.
+        - Enten starttidspunkt eller sluttidspunkt alt efter hvad `timeType` viser.
+        - ForkliftId.
+        - PalletId.
+        - (nice-to-have: start- og slutplacering kan markeres på grafen)
+    - Mulighed for tilføjelse af en ordre via. en form.
+
+---
+
+# Front end kan deles op i
+
+## Det visuelle
+
+## Informationsflow
+
