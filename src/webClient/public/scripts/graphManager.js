@@ -74,6 +74,7 @@ function initializeGraph(graphO) {
     addForkliftClickDetectionAndHandling();
     graphInformation = graphO;
     // apply sigma graph
+    CustomShapes.init(sGraph);
     sGraph.refresh();
 }
 

@@ -50,6 +50,10 @@ function updateForkliftsOnGraph() {
                 graphInformation["nodeIndexes"][forkliftData[key]["id"]] = JSON.stringify(graphInformation["nodes"].length);
                 graphInformation["nodes"][graphInformation["nodeIndexes"][forkliftData[key]["id"]]] = {
                     id: forkliftData[key]["id"],
+                    // See https://github.com/jacomyal/sigma.js/blob/master/examples/plugin-customShapes.html
+                    type: ShapeLibrary.enumerate().map(function (s) {
+                        return s.name;
+                    })[0],
                     x: forkliftData[key]["position"]["x"],
                     y: forkliftData[key]["position"]["y"],
                     color: getForkliftColor(forkliftData[key]["state"]),
