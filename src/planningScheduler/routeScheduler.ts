@@ -82,6 +82,7 @@ export class RouteScheduler {
         queue.insert(startVertex);
         let pathLength = Infinity;
         routeSet.graph.reset();
+        startVertex.isVisited = true;
 
         while (queue.array.length > 0) {
             let v: Vertex = queue.extractMin();
@@ -109,6 +110,15 @@ export class RouteScheduler {
             this.downStacking(endVertex, order, order.time, "");
             // Recursively stacking down
         }
+
+        this.printRoute(startVertex, endVertex);
+    }
+
+    printRoute(startVertex: Vertex, endVertex: Vertex) {
+        if (endVertex !== startVertex && endVertex !== null) {
+            this.printRoute(startVertex, endVertex.previousVertex);
+        }
+        console.log(endVertex.id);
     }
 
     /**
