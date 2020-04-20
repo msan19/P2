@@ -242,13 +242,17 @@ function parseForklifts(data) {
 }
 // END --- DATA HANDLING
 
-function forkliftSelection(e) {
-    selectedForklift = e.value;
-    console.log(selectedForklift);
+function forkliftSelection(event) {
+    selectedForklift = event.toElement.value;
+    updateForkliftFocus(selectedForklift);
+}
+
+function updateForkliftFocus(forklift) {
+    document.querySelector("#currentForklift").innerHTML = `<h3>${forklift}</h3>`;
 }
 
 function addForkliftToUi(forkliftInfo) {
-    document.querySelector("#forklift-list").innerHTML += `<a class="dropdown-item" value="${forkliftInfo.id}">${forkliftInfo.id}</a>`;
+    //document.querySelector("#forklift-list").innerHTML += `<a class="dropdown-item" value="${forkliftInfo.id}">${forkliftInfo.id}</a>`;
     document.querySelectorAll('.select-forklift').forEach((item) => {
         item.innerHTML += `<option value=${forkliftInfo.id}>${forkliftInfo.id}</option>`;
     });
@@ -285,9 +289,13 @@ window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
     addForkliftToUi(forklift);
 });
 
-/*document.querySelector("#forklift-list .dropdown-item").addEventListener("onclick", (e) => {
-    console.log(e.value);
-}); */
+var selectForklift = document.querySelector("form .form-group");
+console.log(selectForklift);
+selectForklift.onclick = (e) => {
+    forkliftSelection(e);
+};
+
+
 
 
 

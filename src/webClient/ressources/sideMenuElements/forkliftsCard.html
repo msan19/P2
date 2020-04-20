@@ -10,19 +10,19 @@
     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
         <div class="card-body" id="forklifts" style="min-height: 450px;">
             <div id="currentForklift" style="min-height: 100px;">
-                <h3>F12</h1>
+                <h3>F0</h1>
             </div>
 
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    forklifts
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="forklift-list"
-                    style="max-height: 250px; overflow: scroll;">
-
+            <form>
+                <div class="form-group">
+                    <label for="forkliftId">Forklift ID</label>
+                    <select name="forkliftId" class="form-control select-forklift" id="forklift-list"></select>
                 </div>
-            </div>
+            </form>
+
+
+
+
 
         </div>
     </div>
