@@ -268,7 +268,6 @@ window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
         addForkliftToUi(forklifts[key]);
     }
     parseForklifts(forklifts);
-    console.log(forkliftData)
 });
 
 window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
