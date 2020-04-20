@@ -65,10 +65,13 @@ function generateRoute(route, node, length) {
     let nodes = mainGraph.sigmaGraph.graph.neighbors(node);
     //console.log(route)
     let num = Math.floor(Math.random() * Object.keys(nodes).length);
+
+    // Remove if forklifts from neighbors
+
     if (route.instructions.length > 1) {
-        while (Object.keys(nodes).splice(num, 1)[0] == route.instructions[route.instructions.length - 2].nodeId) {
-            delete Object.keys(nodes).splice(num, 1)[0];
+        while (Object.keys(nodes).splice(num, 1)[0] == route.instructions[route.instructions.length - 2].nodeId || Object.keys(nodes).splice(num, 1)[0][0] == "F") {
             num = Math.floor(Math.random() * Object.keys(nodes).length);
+            delete Object.keys(nodes).splice(num, 1)[0];
         }
     }
 
@@ -96,6 +99,8 @@ function addTestDataToForklifts() {
             generateRoute(route, (typeof (currentNode) == "undefined") ? nodes[Math.floor(Math.random() * nodes.length)].id : currentNode, 15);
             if (route.instructions.length != 0)
                 forkliftData[key].route = route;
+            if (key == selectedForklift)
+                mainGraph.displaySelectedForkliftPath();
         }
 
     }
@@ -145,8 +150,6 @@ function calculateForkliftPosition(forklift, movementLength) {
         if (instructions.length == 0 || typeof (instructions[0]) == "undefined") {
             delete forklift.route.instructions;
             delete forklift.route;
-            if (selectedForklift == forklift["id"])
-                mainGraph.revertColorsToOriginal();
         } else {
             // if through this movement it goes further than the distance to the node
             // it will run it again with start position of the node
@@ -265,7 +268,6 @@ window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
         addForkliftToUi(forklifts[key]);
     }
     parseForklifts(forklifts);
-
 });
 
 window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {

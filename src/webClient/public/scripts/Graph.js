@@ -152,6 +152,8 @@ class Graph {
         this.sigmaGraph.graph.nodes().forEach((element) => {
             if (element.id != selectedForklift)
                 element.color = unFocusColor;
+            else
+                element.color = element.originalColor;
         });
         this.sigmaGraph.graph.edges().forEach((element) => {
             if (element.id != forkliftHighlightEdgePathPiece)
@@ -162,7 +164,6 @@ class Graph {
             this.sigmaGraph.graph.nodes(path.nodes[node]).color = hightlightcolor;
 
         for (let edge in path.edges) {
-
             this.sigmaGraph.graph.edges(path.edges[edge]).color = hightlightcolor;
         }
 
