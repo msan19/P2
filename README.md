@@ -37,6 +37,20 @@ Uge 14-17:    Programmering
       Onsdag:  Buffer (Test kommunikationer)
       Torsdag: Implementation af MAPF (A*-implementation) 
 
+    Uge 16:
+      Mandag:  Dokumentation
+      Tirsdag: Doxygen-dokumentation af kode
+      Onsdag:  Doxygen-dokumentation af kode
+      Torsdag: Dokumentation til rapport
+      Fredag:  Dokumentation
+
+    Uge 17:
+      Mandag:  MAPF
+      Tirsdag: MAPF
+      Onsdag:  MAPF
+      Torsdag: MAPF
+      Fredag:  MAPF
+
 Uge 18:       Bufferperiode
 
 Uge 19:       Test
