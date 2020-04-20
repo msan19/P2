@@ -14,7 +14,7 @@ var forklifts = [];
 setTimeout(function () {
 
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 50; i++) {
         forklifts.push(new Forklift("F" + i, SERVER_HOSTNAME, SERVER_PORT));
     }
 }, 3000);

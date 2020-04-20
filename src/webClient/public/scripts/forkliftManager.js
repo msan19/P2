@@ -65,10 +65,13 @@ function generateRoute(route, node, length) {
     let nodes = mainGraph.sigmaGraph.graph.neighbors(node);
     //console.log(route)
     let num = Math.floor(Math.random() * Object.keys(nodes).length);
+
+    // Remove if forklifts from neighbors
+
     if (route.instructions.length > 1) {
-        while (Object.keys(nodes).splice(num, 1)[0] == route.instructions[route.instructions.length - 2].nodeId) {
-            delete Object.keys(nodes).splice(num, 1)[0];
+        while (Object.keys(nodes).splice(num, 1)[0] == route.instructions[route.instructions.length - 2].nodeId || Object.keys(nodes).splice(num, 1)[0][0] == "F") {
             num = Math.floor(Math.random() * Object.keys(nodes).length);
+            delete Object.keys(nodes).splice(num, 1)[0];
         }
     }
 
