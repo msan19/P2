@@ -31,25 +31,25 @@ Uge 14-17:    Programmering
       Torsdag: Opsæt klienter til kommunikation
       Fredag: 
     
-    Uge 15:
+    Uge 15: Internet
       Mandag:  Parsere og Web (Blackbox og Sockets)
       Tirsdag: Sockets
       Onsdag:  Buffer (Test kommunikationer)
       Torsdag: Implementation af MAPF (A*-implementation) 
 
-    Uge 16:
+    Uge 16: Dokumentation og front end
       Mandag:  Dokumentation
       Tirsdag: Doxygen-dokumentation af kode
       Onsdag:  Doxygen-dokumentation af kode
       Torsdag: Dokumentation til rapport
       Fredag:  Dokumentation
 
-    Uge 17:
-      Mandag:  MAPF
-      Tirsdag: MAPF
-      Onsdag:  MAPF
-      Torsdag: MAPF
-      Fredag:  MAPF
+    Uge 17: Mapf og front end
+      Mandag:  collision
+      Tirsdag: collision og a* på et routeset
+      Onsdag:  a* på et routeset
+      Torsdag: priority search
+      Fredag:  priority search
 
 Uge 18:       Bufferperiode
 
