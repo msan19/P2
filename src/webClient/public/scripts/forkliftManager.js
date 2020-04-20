@@ -242,6 +242,11 @@ function parseForklifts(data) {
 }
 // END --- DATA HANDLING
 
+function forkliftSelection(e) {
+    selectedForklift = e.value;
+    console.log(selectedForklift);
+}
+
 function addForkliftToUi(forkliftInfo) {
     document.querySelector("#forklift-list").innerHTML += `<a class="dropdown-item" value="${forkliftInfo.id}">${forkliftInfo.id}</a>`;
     document.querySelectorAll('.select-forklift').forEach((item) => {
@@ -267,6 +272,12 @@ window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
     for (let key in forklifts) {
         addForkliftToUi(forklifts[key]);
     }
+
+    for (let i = 0; i < forklifts.length; i++) {
+        let element = document.querySelector("#forklift-list").children[i];
+        element.addEventListener("click", forkliftSelection);
+    }
+
     parseForklifts(forklifts);
 });
 
