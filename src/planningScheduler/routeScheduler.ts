@@ -103,21 +103,22 @@ export class RouteScheduler {
         }
 
         if (order.timeType === Order.timeTypes.start) {
-            this.upStacking(endVertex, order, "");
+            this.upStacking(endVertex, order, "", this.data.warehouse.forkliftSpeed);
             // Recursively stacking up
         } else if (order.timeType === Order.timeTypes.end) {
-            this.downStacking(endVertex, order, order.time, "");
+            this.downStacking(endVertex, order, order.time, "", this.data.warehouse.forkliftSpeed);
             // Recursively stacking down
         }
 
         this.printRoute(startVertex, endVertex);
+        console.log("\n");
     }
 
     printRoute(startVertex: Vertex, endVertex: Vertex) {
         if (endVertex !== startVertex && endVertex !== null) {
             this.printRoute(startVertex, endVertex.previousVertex);
         }
-        console.log(endVertex.id);
+        console.log(endVertex.scheduleItems);
     }
 
     /**
@@ -135,11 +136,11 @@ export class RouteScheduler {
      * @returns The time at which the vertex's scheduleItem was calculated.
      *          Only used by the recursion.
      */
-    upStacking(vertex: Vertex, order: Order, nextVertexId: string): number {
-        let fulfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / this.data.warehouse.forkliftSpeed;
+    upStacking(vertex: Vertex, order: Order, nextVertexId: string, forkliftSpeed: number): number {
+        let fulfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / forkliftSpeed;
         let time: number = (vertex.id === order.startVertexId)
             ? order.time
-            : fulfillTime + this.upStacking(vertex.previousVertex, order, vertex.id);
+            : fulfillTime + this.upStacking(vertex.previousVertex, order, vertex.id, forkliftSpeed);
         vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId));
         return time;
     }
@@ -155,13 +156,13 @@ export class RouteScheduler {
      * @param nextVertexId The ID of the next vertex (as in opposite Vertex.previousVertex)
      * @returns Nothing as the recursion uses the creation of the stack and not the resolution
      */
-    downStacking(vertex: Vertex, order: Order, time: number, nextVertexId: string): void {
-        let fulfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / this.data.warehouse.forkliftSpeed;
+    downStacking(vertex: Vertex, order: Order, time: number, nextVertexId: string, forkliftSpeed: number): void {
+        let fulfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / forkliftSpeed;
         let timeOnPrev: number = time - fulfillTime;
 
         vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId));
         if (vertex.id !== order.startVertexId) {
-            this.downStacking(vertex.previousVertex, order, timeOnPrev, vertex.id);
+            this.downStacking(vertex.previousVertex, order, timeOnPrev, vertex.id, forkliftSpeed);
         }
     }
 
