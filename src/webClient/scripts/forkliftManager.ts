@@ -88,7 +88,7 @@ function parseForklifts(data: JSON): void {
 }
 
 function addForkliftToUi(forkliftInfo) {
-    document.querySelector("#forklift-list").innerHTML += `<li>${forkliftInfo.id}</li>`;
+    document.querySelector("#forklift-list").innerHTML += `<li class="list-group-item>${forkliftInfo.id}</li>`;
 }
 
 window.setInterval(function () {

@@ -25,11 +25,11 @@ function getDirectionVector(distance, x, y, targetX, targetY) {
         return {
             x: 0,
             y: 0
-        }
+        };
     return {
         x: xDiff / distance,
         y: yDiff / distance
-    }
+    };
 }
 
 function checkIfReachedNode(calculatedForkliftPosition, directionVector, instructions) {
@@ -146,7 +146,7 @@ function calculateForkliftPosition(forklift, movementLength) {
         forklift["position"] = {
             x: targetNode["x"],
             y: targetNode["y"]
-        }
+        };
         if (instructions.length == 0 || typeof (instructions[0]) == "undefined") {
             delete forklift.route.instructions;
             delete forklift.route;
@@ -178,7 +178,7 @@ function handleForkliftMovement() {
                 forkliftData[key]["position"] = {
                     x: node["x"],
                     y: node["y"]
-                }
+                };
             } else {
                 calculateForkliftPosition(forkliftData[key], forkliftSpeed / frameRate);
             }
@@ -207,7 +207,7 @@ function intepretInstructions(instructions) {
     return {
         nodes: nodesIds,
         edges: edgeIds
-    }
+    };
 }
 
 function getIfForkliftHasPosition(forklift) {
@@ -243,7 +243,7 @@ function parseForklifts(data) {
 // END --- DATA HANDLING
 
 function addForkliftToUi(forkliftInfo) {
-    document.querySelector("#forklift-list").innerHTML += `<li>${forkliftInfo.id}</li>`;
+    document.querySelector("#forklift-list").innerHTML += `<a class="dropdown-item" value="${forkliftInfo.id}">${forkliftInfo.id}</a>`;
     document.querySelectorAll('.select-forklift').forEach((item) => {
         item.innerHTML += `<option value=${forkliftInfo.id}>${forkliftInfo.id}</option>`;
     });
@@ -273,3 +273,10 @@ window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
 window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
     addForkliftToUi(forklift);
 });
+
+/*document.querySelector("#forklift-list .dropdown-item").addEventListener("onclick", (e) => {
+    console.log(e.value);
+}); */
+
+
+
