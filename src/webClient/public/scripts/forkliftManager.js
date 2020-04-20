@@ -14,7 +14,7 @@ function addForkliftClickDetectionAndHandling() {
         let graph = {
             nodes: sGraph.graph.nodes(),
             edges: sGraph.graph.edges()
-        }
+        };
         if (e.data.node.id[0] == "F") {
             selectedForklift = e.data.node.id;
             if (typeof (forkliftData[selectedForklift]["route"]) != "undefined" && typeof (forkliftData[selectedForklift]["route"]["instructions"]) != "undefined") {
@@ -26,7 +26,7 @@ function addForkliftClickDetectionAndHandling() {
             setGraphColorToDefault(graph);
             selectedForklift = "";
         }
-    })
+    });
 }
 
 function updateForkliftPositionOnGraph(graph, forkliftId) {
@@ -60,7 +60,7 @@ function updateForkliftsOnGraph() {
                     y: forkliftData[key]["position"]["y"],
                     color: getForkliftColor(forkliftData[key]["state"]),
                     size: 14
-                }
+                };
                 sGraph.graph.addNode(graph["nodes"][graphInformation["nodeIndexes"][forkliftData[key]["id"]]]);
             }
         }
@@ -113,7 +113,7 @@ function parseForklifts(data) {
 }
 
 function addForkliftToUi(forkliftInfo) {
-    document.querySelector("#forklift-list").innerHTML += `<li>${forkliftInfo.id}</li>`;
+    document.querySelector("#forklift-list").innerHTML += `<a class="dropdown-item" value="${forkliftInfo.id}">${forkliftInfo.id}</a>`;
     document.querySelectorAll('.select-forklift').forEach((item) => {
         item.innerHTML += `<option value=${forkliftInfo.id}>${forkliftInfo.id}</option>`;
     });
@@ -220,7 +220,7 @@ function intepretInstructions(instructions) {
     return {
         nodes: nodesIds,
         edges: correctedEdgeIds
-    }
+    };
 }
 
 function getDistanceBetweenPoints(x, y, targetX, targetY) {
@@ -239,38 +239,38 @@ function getDirectionVector(distance, x, y, targetX, targetY) {
         return {
             x: 0,
             y: 0
-        }
+        };
     return {
         x: xDiff / distance,
         y: yDiff / distance
-    }
+    };
 }
 
 function checkIfForkliftReachedNextNodeInRoute(graph, calculatedForkliftPosition, directionVector, instructions) {
     // check y direction
     if (directionVector["y"] > 0) {
         if (calculatedForkliftPosition["y"] > graph["nodes"][
-                graphInformation["nodeIndexes"][instructions[0]["nodeId"]]
-            ]["y"]) {
+            graphInformation["nodeIndexes"][instructions[0]["nodeId"]]
+        ]["y"]) {
             return true;
         }
     } else if (directionVector["y" < 0]) {
         if (calculatedForkliftPosition["y"] < graph["nodes"][
-                graphInformation["nodeIndexes"][instructions[0]["nodeId"]]
-            ]["y"]) {
+            graphInformation["nodeIndexes"][instructions[0]["nodeId"]]
+        ]["y"]) {
             return true;
         }
     }
     if (directionVector["x"] > 0) {
         if (calculatedForkliftPosition["x"] > graph["nodes"][
-                graphInformation["nodeIndexes"][instructions[0]["nodeId"]]
-            ]["x"]) {
+            graphInformation["nodeIndexes"][instructions[0]["nodeId"]]
+        ]["x"]) {
             return true;
         }
     } else if (directionVector["x"] < 0) {
         if (calculatedForkliftPosition["x"] < graph["nodes"][
-                graphInformation["nodeIndexes"][instructions[0]["nodeId"]]
-            ]["x"]) {
+            graphInformation["nodeIndexes"][instructions[0]["nodeId"]]
+        ]["x"]) {
             return true;
         }
     }
@@ -318,7 +318,7 @@ function calculateForkliftPosition(graph, forklift, movementLength) {
         forklift["position"] = {
             x: targetNode["x"],
             y: targetNode["y"]
-        }
+        };
         if (instructions.length == 0) {
             delete forklift["route"];
             setGraphColorToDefault(graph);
@@ -341,7 +341,7 @@ function handleForkliftMovement() {
         nodes: sGraph.graph.nodes(),
         edges: sGraph.graph.edges()
 
-    }
+    };
     for (let key in forkliftData) {
         // find forklifts with active route
         if (typeof (forkliftData[key]["route"]) != "undefined") {
@@ -352,11 +352,11 @@ function handleForkliftMovement() {
                 typeof (forkliftData[key]["position"]["y"]) == "undefined") {
                 let node = graph["nodes"][
                     graphInformation["nodeIndexes"][forkliftData[key]["route"]["instructions"][0]["nodeId"]]
-                ]
+                ];
                 forkliftData[key]["position"] = {
                     x: node["x"],
                     y: node["y"]
-                }
+                };
             } else {
                 calculateForkliftPosition(graph, forkliftData[key], forkliftSpeed / framerate);
 
@@ -381,8 +381,17 @@ window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
     }
     parseForklifts(forklifts);
     addTestDataToForklifts();
+
+
 });
 
 window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
     addForkliftToUi(forklift);
 });
+
+/*document.querySelector("#forklift-list .dropdown-item").addEventListener("onclick", (e) => {
+    console.log(e.value);
+}); */
+
+
+
