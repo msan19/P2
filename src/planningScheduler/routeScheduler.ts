@@ -104,10 +104,10 @@ export class RouteScheduler {
         }
 
         if (order.timeType === Order.timeTypes.start) {
-            this.upStacking(endVertex, order, "", this.data.warehouse.forkliftSpeed);
+            this.upStacking(endVertex, order, "", this.data.warehouse.maxForkliftSpeed);
             // Recursively stacking up
         } else if (order.timeType === Order.timeTypes.end) {
-            this.downStacking(endVertex, order, order.time, "", this.data.warehouse.forkliftSpeed);
+            this.downStacking(endVertex, order, order.time, "", this.data.warehouse.maxForkliftSpeed);
             // Recursively stacking down
         }
 
