@@ -110,6 +110,15 @@ export class RouteScheduler {
             this.downStacking(endVertex, order, order.time, "");
             // Recursively stacking down
         }
+
+        this.printRoute(startVertex, endVertex);
+    }
+
+    printRoute(startVertex: Vertex, endVertex: Vertex) {
+        if (endVertex !== startVertex && endVertex !== null) {
+            this.printRoute(startVertex, endVertex.previousVertex);
+        }
+        console.log(endVertex.id);
     }
 
     /**
