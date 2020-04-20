@@ -1,58 +1,22 @@
-const container = 'sigmaContainer';
-const defaultNodeColorValue = '#5c3935';
-const defaultEdgeColorValue = '#5c3935';
-const defaultHighlightColorValue = "#F7362D";
-const defaultLowDarkColorValue = "#e5e5e5";
-const defaultNodeSizeValue = 8;
-const defaultEdgeSizeValue = 4;
-// contains nodes and the index of their id
-window.graphInformation;
-window.sGraph;
-window.framerate = 60;
-// https://github.com/jacomyal/sigma.js/tree/master/plugins/sigma.exporters.svg
-function exportGraph() {
-    let output = sGraph.toSVG({
-        download: true,
-        filename: 'warehouseGraph.svg',
-        size: 1000
-    });
-};
+window.frameRate = 60;
+window.mainGraph;
+// DATA HANDLING
 
-function parseWarehouse(data) {
-    // get forklift speed
-    forkliftSpeed = data["forkliftSpeed"];
-    // parse physical warehouse
-    let iData = data.graph;
-    iData = initializeEdges(iData);
-    iData = initializeNodes(iData);
-    initializeGraph(iData);
-}
-
-function initializeGraph(graphO) {
-    // Clear graph
-    sGraph = null;
-    document.getElementById(container).innerHTML = "";
-    // create sigma graph
-    sGraph = new sigma({
-        graph: graphO,
-        renderer: {
-            container: document.getElementById(container),
-            type: 'canvas'
-        },
-        settings: {
-            minEdgeSize: 0,
-            maxEdgeSize: 0,
-            minNodeSize: 0,
-            maxNodeSize: 0,
-        }
-    });
-    addForkliftClickDetectionAndHandling();
-    graphInformation = {
-        nodeIndexes: graphO["nodeIndexes"]
-    };
-    // apply sigma graph
-    CustomShapes.init(sGraph);
-    sGraph.refresh();
+function initializeNodes(graph) {
+    let output = [];
+    for (let vertexId in graph["vertices"]) {
+        output.push({
+            id: graph["vertices"][vertexId]["id"],
+            label: graph["vertices"][vertexId]["id"],
+            x: graph["vertices"][vertexId]["position"]["x"],
+            y: graph["vertices"][vertexId]["position"]["y"],
+            color: "#000000",
+            size: 8
+        });
+    }
+    delete graph["vertices"];
+    graph["nodes"] = output;
+    return graph;
 }
 
 function initializeEdges(graph) {
@@ -67,9 +31,8 @@ function initializeEdges(graph) {
                     id: vertexId_1 + "," + vertexId_2,
                     source: vertexId_1,
                     target: vertexId_2,
-                    color: defaultEdgeColorValue,
-                    type: 'line',
-                    size: defaultEdgeSizeValue
+                    color: "#000000",
+                    size: 4
                 });
             }
         }
@@ -78,93 +41,14 @@ function initializeEdges(graph) {
     return graph;
 }
 
-function initializeNodes(graph) {
-    let output = [];
-    let outputIndex = {};
-    for (let vertexId in graph["vertices"]) {
-        output.push({
-            id: graph["vertices"][vertexId]["id"],
-            label: graph["vertices"][vertexId]["id"],
-            x: graph["vertices"][vertexId]["position"]["x"],
-            y: graph["vertices"][vertexId]["position"]["y"],
-            color: defaultNodeColorValue,
-            size: defaultNodeSizeValue
-        });
-        outputIndex[(graph["vertices"][vertexId]["id"])] = vertexId;
-    }
-    delete graph["vertices"];
-    graph["nodes"] = output;
-    graph["nodeIndexes"] = outputIndex;
-    return graph;
+function parseIncomingData(data) {
+    forkliftSpeed = data.forkliftSpeed;
+    initializeEdges(data.graph);
+    initializeNodes(data.graph);
+    return data;
 }
 
-function displayPath(graph, path, hightlightColor, lowdarkColor) {
-    hightlightPath(graph, path, hightlightColor);
-    lowdarkNotPath(graph, path, lowdarkColor);
-
-}
-
-function hightlightPath(graph, path, color) {
-    for (let nodeToFind in path["nodes"]) {
-        let found = false;
-        for (let nodeToCheck in graph["nodes"]) {
-            if (path["nodes"][nodeToFind] == graph["nodes"][nodeToCheck]["id"]) {
-                graph["nodes"][nodeToCheck]["color"] = (typeof (color) == "string") ? color : defaultHighlightColorValue;
-                found = true;
-                break;
-            }
-        }
-    }
-    for (let edgeToFind in path["edges"]) {
-        let found = false;
-        for (let edgeToCheck in graph["edges"]) {
-            if (path["edges"][edgeToFind] == graph["edges"][edgeToCheck]["id"]) {
-                graph["edges"][edgeToCheck]["color"] = color;
-                found = true;
-                break;
-            }
-        }
-    }
-    return graph;
-}
-
-function lowdarkNotPath(graph, path, color) {
-    for (let nodeToBeChecked in graph["nodes"]) {
-        if (graph["nodes"][nodeToBeChecked]["id"][0] == "F")
-            continue;
-        let found = false;
-        for (let nodeToBeCheckedAgainst in path["nodes"]) {
-            if (graph["nodes"][nodeToBeChecked]["id"] == path["nodes"][nodeToBeCheckedAgainst]) {
-                found = true;
-                break;
-            }
-        }
-        if (found == false)
-            graph["nodes"][nodeToBeChecked]["color"] = (typeof (color) == "string") ? color : defaultLowDarkColorValue;
-    }
-    for (let edgeToBeChecked in graph["edges"]) {
-        let found = false;
-        for (let edgeToBeCheckedAgainst in path["edges"]) {
-            if (graph["edges"][edgeToBeChecked]["id"] == path["edges"][edgeToBeCheckedAgainst]) {
-                found = true;
-                break;
-            }
-        }
-        if (found == false)
-            graph["edges"][edgeToBeChecked]["color"] = (typeof (color) == "string") ? color : defaultLowDarkColorValue;
-    }
-    return graph;
-}
-
-function setGraphColorToDefault(graph) {
-    for (let node in graph["nodes"]) {
-        if (graph["nodes"][node]["id"][0] != "F")
-            graph["nodes"][node]["color"] = defaultNodeColorValue;
-    }
-    for (let edge in graph["edges"])
-        graph["edges"][edge]["color"] = defaultEdgeColorValue;
-    return graph;
-}
+// END --- DATA HANDLING --- END
 
 // add error handling
 // NOTE: changes vertices from object to array
@@ -203,8 +87,8 @@ function cloneIncomingData(data) {
     return newData;
 }
 
-window["socketManager"].on(SocketManager.PackageTypes.warehouse, (warehouse) => {
-    parseWarehouse(cloneIncomingData(warehouse));
+window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
+    mainGraph = new Graph('sigmaContainer', parseIncomingData(cloneIncomingData(warehouse)).graph);
 });
 
 window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
