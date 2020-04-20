@@ -82,6 +82,7 @@ export class RouteScheduler {
         queue.insert(startVertex);
         let pathLength = Infinity;
         routeSet.graph.reset();
+        startVertex.isVisited = true;
 
         while (queue.array.length > 0) {
             let v: Vertex = queue.extractMin();
