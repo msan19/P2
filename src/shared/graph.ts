@@ -255,6 +255,20 @@ export class Vertex {
         }
     }
 
+    getScheduleItemIndex(time: number) {
+        let i = 0, j = this.scheduleItems.length - 1;
+
+        while (j - i > 1) {
+            let a = Math.round((i + j) / 2);
+            if (this.scheduleItems[a].arrivalTimeCurrentVertex > a) {
+                j = a;
+            } else {
+                i = a;
+            }
+        }
+        return i;
+    }
+
 }
 
 
