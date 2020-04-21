@@ -46,9 +46,9 @@ Uge 14-17:    Programmering
 
     Uge 17: Mapf og front end
       Mandag:  kollision
-      Tirsdag: kollision og a* på et routeset
-      Onsdag:  a* på et routeset
-      Torsdag: priority search
+      Tirsdag: binary search og insert af scheduleitems
+      Onsdag:  kollision og a* på et routeset
+      Torsdag: a* på et routeset
       Fredag:  priority search
 
 Uge 18:       Bufferperiode
