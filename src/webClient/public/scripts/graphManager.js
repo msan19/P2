@@ -53,7 +53,7 @@ function parseIncomingData(data) {
 // add error handling
 // NOTE: changes vertices from object to array
 function cloneIncomingData(data) {
-    let forkliftSpeed = data.forkliftSpeed;
+    let forkliftSpeed = data.maxForkliftSpeed;
     let vertices = [];
     for (let verticeKey in data["graph"]["vertices"]) {
         let adjacentVertexIds = [];
