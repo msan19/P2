@@ -255,7 +255,12 @@ export class Vertex {
         }
     }
 
-    getScheduleItemIndex(time: number) {
+    /**
+     * Uses a binary search to find the index of a scheduleitem in the list of scheduleitems based on the parameter time
+     * @param time A point in time for which the corresponding array index is found
+     * @returns An index corresponding to the time
+     */
+    getScheduleItemIndex(time: number): number {
         let i = 0, j = this.scheduleItems.length - 1;
 
         while (j - i > 1) {
