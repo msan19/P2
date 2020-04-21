@@ -136,6 +136,9 @@ export class Vertex {
     /** A boolean specifying if the {@link Vertex} has been looked at by the route planning algorithm */
     isVisited: boolean;
 
+    /** The time, in Unix epoch time in ms, where a forklift is on a vertex when the route is being planned */
+    visitTime: number;
+
     constructor(id: string, position: Vector2, label?: string) {
         this.id = id;
         this.position = position;
@@ -144,6 +147,7 @@ export class Vertex {
         this.scheduleItems = [];
         this.previousVertex = null;
         this.isVisited = false;
+        this.visitTime = 0;
     }
 
     /**
@@ -261,17 +265,28 @@ export class Vertex {
      * @returns An index corresponding to the time
      */
     getScheduleItemIndex(time: number): number {
-        let i = 0, j = this.scheduleItems.length - 1;
+        let i = 0, j = this.scheduleItems.length;
 
         while (j - i > 1) {
             let a = Math.round((i + j) / 2);
-            if (this.scheduleItems[a].arrivalTimeCurrentVertex > a) {
+            if (this.scheduleItems[a].arrivalTimeCurrentVertex > time) {
                 j = a;
             } else {
                 i = a;
             }
         }
-        return i;
+
+        if (this.scheduleItems[i].arrivalTimeCurrentVertex > time) {
+            return j - 1;
+        } else {
+            return j;
+        }
+    }
+
+    insertScheduleItem(time: number, scheduleItem: ScheduleItem) {
+        let index = this.getScheduleItemIndex(time);
+        this.scheduleItems.splice(index, 0, scheduleItem);
+        return index;
     }
 
 }
