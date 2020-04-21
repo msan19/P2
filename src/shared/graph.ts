@@ -266,17 +266,36 @@ export class ScheduleItem {
     /** An identification string for the forklift */
     forkliftId: string;
 
-    /** A number representing the epoch time in ms */
-    time: number;
+    /** 
+     * The time when the forklift arrives at the current vertex. 
+     * The time is represented as epoch time in ms 
+     */
+    arrivalTimeCurrentVertex: number;
 
-    /** An identification string for the vertex to which the forklift is moving,
-     *  or if the forklift is stopped the id of the vertex it is placed on */
+    /** 
+     * An identification string for the vertex to which the forklift is moving,
+     *  or if the forklift is stopped the id of the vertex it is placed on 
+     */
     nextVertexId: string;
 
-    constructor(forkliftId: string, time: number, nextVertexId: string) {
+    /**
+     * The time when the forklift arrives at the next vertex.
+     * The time is represented as epoch time in ms
+     */
+    arrivalTimeNextVertex: number;
+
+    /**
+     * An identificaiton string for the vertex that the forklift was on before 
+     * moving to the vertex that this ScheduleItem is on
+     */
+    previousVertexId: string;
+
+    constructor(forkliftId: string, arrivalTimeCurrentVertex: number, nextVertexId: string, arrivalTimeNextVertex: number, previousVertexId: string) {
         this.forkliftId = forkliftId;
-        this.time = time;
+        this.arrivalTimeCurrentVertex = arrivalTimeCurrentVertex;
         this.nextVertexId = nextVertexId;
+        this.arrivalTimeNextVertex = arrivalTimeNextVertex;
+        this.previousVertexId = previousVertexId;
     }
 
     /**
@@ -288,10 +307,12 @@ export class ScheduleItem {
         // Check all necessary fields
         if (typeof (item) !== "object" || item === null) return null;
         if (typeof (item.forkliftId) !== "string" || item.nextVertexId.length < 1) return null;
-        if (typeof (item.time) !== "number") return null;
+        if (typeof (item.arrivalTimeCurrentVertex) !== "number") return null;
         if (typeof (item.nextVertexId) !== "string" || item.nextVertexId.length < 1) return null;
+        if (typeof (item.arrivalTimeNextVertex) !== "number") return null;
+        if (typeof (item.previousVertexId) !== "string" || item.previousVertexId.length < 1) return null;
 
-        return new ScheduleItem(item.forkliftId, item.time, item.nextVertexId);
+        return new ScheduleItem(item.forkliftId, item.time, item.nextVertexId, item.arrivalTimeNextVertex, item.previousVertexId);
     }
 
     /**
@@ -299,7 +320,7 @@ export class ScheduleItem {
      * @returns A new {@link ScheduleItem}
      */
     clone(): ScheduleItem {
-        return new ScheduleItem(this.forkliftId, this.time, this.nextVertexId);
+        return new ScheduleItem(this.forkliftId, this.arrivalTimeCurrentVertex, this.nextVertexId, this.arrivalTimeNextVertex, this.previousVertexId);
     }
 
 }

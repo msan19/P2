@@ -70,7 +70,7 @@ function testScheduleItem(): void {
         });
 
         it(`${Object.keys(item)[1]} should be 12382`, () => {
-            expect(item.time).to.equal(12382);
+            expect(item.arrivalTimeCurrentVertex).to.equal(12382);
         });
 
         it(`${Object.keys(item)[2]} should be "N23"`, () => {
