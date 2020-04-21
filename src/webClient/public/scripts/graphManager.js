@@ -88,7 +88,9 @@ function cloneIncomingData(data) {
 }
 
 window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
-    mainGraph = new Graph('sigmaContainer', parseIncomingData(cloneIncomingData(warehouse)).graph);
+    let data = parseIncomingData(cloneIncomingData(warehouse)).graph;
+    mainGraph = new Graph('sigmaContainer', data);
+    console.log("qwe")
 });
 
 window.socketManager.on(PackageTypes.warehouse, (warehouse) => {

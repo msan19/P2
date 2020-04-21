@@ -22,7 +22,6 @@ class Graph {
 
 
         this.sigmaGraph = new sigma({
-            graph: graph,
             renderer: {
                 container: container,
                 type: 'canvas'
@@ -34,10 +33,11 @@ class Graph {
                 maxNodeSize: 0
             }
         });
+        if (graph != null)
+            this.sigmaGraph.graph.read(graph);
         this.addOriginalColorToElements();
         this.bindEvents();
         this.sigmaGraph.refresh();
-
     }
 
     // EVENT SECTION
@@ -103,6 +103,7 @@ class Graph {
 
         for (let key in forkliftData) {
             this.updateForkliftOnGraph(forkliftData[key]);
+            console.log(key)
         }
         this.sigmaGraph.refresh();
     }
