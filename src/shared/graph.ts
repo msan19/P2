@@ -275,7 +275,10 @@ export class Vertex {
                 i = a;
             }
         }
-        return i;
+    insertScheduleItem(time: number, scheduleItem: ScheduleItem) {
+        let index = this.getScheduleItemIndex(time);
+        this.scheduleItems.splice(index, 0, scheduleItem);
+        return index;
     }
 
 }
