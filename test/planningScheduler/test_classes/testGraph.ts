@@ -173,6 +173,58 @@ function testVertex(): void {
             });
         });
     });
+
+    describe('Test of getScheduleItemIndex', () => {
+        describe("Getting existing ScheduleItem", () => {
+            let vertex = new Vertex("P23", new Vector2(3, 4));
+            let scheduleItemList = [
+                new ScheduleItem("F22", 10000, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10100, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10200, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10300, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10400, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10500, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10600, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10700, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10800, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10900, "F23", 0, "N30")
+            ];
+            vertex.scheduleItems = scheduleItemList;
+            let expected: number = 5;
+            let time: number = 10400;
+            let result: number = vertex.getScheduleItemIndex(time);
+
+            it(`Should be ${expected}`, () => {
+                expect(result).to.equal(expected);
+            });
+        });
+
+        describe("Getting existing ScheduleItem", () => {
+            let vertex = new Vertex("P23", new Vector2(3, 4));
+            let scheduleItemList = [
+                new ScheduleItem("F22", 10000, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10100, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10200, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10300, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10400, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10500, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10600, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10700, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10800, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10900, "F23", 0, "N30")
+            ];
+
+            vertex.scheduleItems = scheduleItemList;
+            let expected: number = 5;
+            let time: number = 10415;
+            let result: number = vertex.getScheduleItemIndex(time);
+
+            it(`Should be ${expected}`, () => {
+                expect(result).to.equal(expected);
+            });
+
+        });
+    });
 }
 
 /**
