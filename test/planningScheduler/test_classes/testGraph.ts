@@ -225,6 +225,91 @@ function testVertex(): void {
 
         });
     });
+
+
+    describe('Test of insertScheduleItem', () => {
+        describe("Insertion of ScheduleItem", () => {
+            let vertex = new Vertex("P23", new Vector2(3, 4));
+            let scheduleItemList = [
+                new ScheduleItem("F22", 10000, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10100, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10200, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10300, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10400, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10500, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10600, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10700, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10800, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10900, "F23", 0, "N30")
+            ];
+            vertex.scheduleItems = scheduleItemList;
+            let newScheduleItem: ScheduleItem = new ScheduleItem("F22", 10340, "F23", 0, "N30");
+            let time = 10340;
+            vertex.insertScheduleItem(time, newScheduleItem);
+
+            let expected: number = time;
+            let result: number = vertex.scheduleItems[4].arrivalTimeCurrentVertex;
+
+            it(`Should be ${expected}`, () => {
+                expect(result).to.equal(expected);
+            });
+        });
+
+        describe("Insertion of ScheduleItem before current times", () => {
+            let vertex = new Vertex("P23", new Vector2(3, 4));
+            let scheduleItemList = [
+                new ScheduleItem("F22", 10000, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10100, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10200, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10300, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10400, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10500, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10600, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10700, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10800, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10900, "F23", 0, "N30")
+            ];
+            vertex.scheduleItems = scheduleItemList;
+            let newScheduleItem: ScheduleItem = new ScheduleItem("F22", 4000, "F23", 0, "N30");
+            let time = 4000;
+            console.log(vertex.insertScheduleItem(time, newScheduleItem));
+
+            let expected: number = time;
+            let result: number = vertex.scheduleItems[0].arrivalTimeCurrentVertex;
+
+            it(`Should be ${expected}`, () => {
+                expect(result).to.equal(expected);
+            });
+        });
+
+        describe("Insertion of ScheduleItem after current times", () => {
+            let vertex = new Vertex("P23", new Vector2(3, 4));
+            let scheduleItemList = [
+                new ScheduleItem("F22", 10000, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10100, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10200, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10300, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10400, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10500, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10600, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10700, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10800, "F23", 0, "N30"),
+                new ScheduleItem("F22", 10900, "F23", 0, "N30")
+            ];
+            vertex.scheduleItems = scheduleItemList;
+            let newScheduleItem: ScheduleItem = new ScheduleItem("F22", 20000, "F23", 0, "N30");
+            let time = 20000;
+            console.log(vertex.insertScheduleItem(time, newScheduleItem));
+
+            let expected: number = time;
+            let result: number = vertex.scheduleItems[10].arrivalTimeCurrentVertex;
+
+            it(`Should be ${expected}`, () => {
+                expect(result).to.equal(expected);
+            });
+        });
+
+    });
 }
 
 /**
