@@ -45,7 +45,7 @@ export class WebClientHandler {
     }
 
     controllers: { [key: string]: IController; } = {
-        home: {
+        "": {
             GET: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
                 response.writeHead(200, `ok`);
 

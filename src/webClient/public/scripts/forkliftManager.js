@@ -242,13 +242,14 @@ function parseForklifts(data) {
 }
 // END --- DATA HANDLING
 
-function forkliftSelection(event) {
+function selectForklift(event) {
     selectedForklift = event.toElement.value;
     updateForkliftFocus(selectedForklift);
 }
 
 function updateForkliftFocus(forklift) {
     document.querySelector("#currentForklift").innerHTML = `<h3>${forklift}</h3>`;
+    document.querySelector("#forklift-list").value = forklift;
 }
 
 function addForkliftToUi(forkliftInfo) {
@@ -261,6 +262,7 @@ window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
         addTestDataToForklifts();
         handleForkliftMovement();
+        updateForkliftFocus(selectedForklift);
 
         mainGraph.updateForkliftsOnGraph();
     }
@@ -289,10 +291,10 @@ window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
     addForkliftToUi(forklift);
 });
 
-var selectForklift = document.querySelector("form .form-group");
-console.log(selectForklift);
-selectForklift.onclick = (e) => {
-    forkliftSelection(e);
+var forkliftForm = document.querySelector("form .form-group#forklift-form");
+console.log(document.querySelectorAll("#forkliftSelect option"));
+forkliftForm.onclick = (e) => {
+    selectForklift(e);
 };
 
 
