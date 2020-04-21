@@ -19,8 +19,8 @@ import { Vector2 } from '../../../src/shared/vector2';
  */
 function checkWarehouse(result: any, expected: Warehouse | null): void {
     if (expected !== null) {
-        it(`Speed should be ${expected.forkliftSpeed}`, () => {
-            expect(result.forkliftSpeed).to.equal(expected.forkliftSpeed);
+        it(`Speed should be ${expected.maxForkliftSpeed}`, () => {
+            expect(result.forkliftSpeed).to.equal(expected.maxForkliftSpeed);
         });
         checkArray(Object.keys(result.graph.vertices), Object.keys(expected.graph.vertices));
     } else {
@@ -60,7 +60,7 @@ function testWarehouse(): void {
     let expectedSpeed: number = 20;
 
     it(`ForkliftSpeed should be ${expectedSpeed}`, () => {
-        expect(warehouse.forkliftSpeed).to.equal(expectedSpeed);
+        expect(warehouse.maxForkliftSpeed).to.equal(expectedSpeed);
     });
 
     checkArray(Object.keys(warehouse.graph.vertices), expectedArray);
@@ -98,7 +98,7 @@ function testParse(): void {
 
     describe(`Invalid forkliftSpeed from warehouse`, () => {
         let warehouse: Warehouse = new Warehouse(graph, 20);
-        warehouse.forkliftSpeed = null;
+        warehouse.maxForkliftSpeed = null;
 
         let expected: Warehouse | null = null;
         let result: Warehouse | null = Warehouse.parse(warehouse);

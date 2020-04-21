@@ -17,6 +17,7 @@ import { RouteScheduler } from '../../src/planningScheduler/routeScheduler';
 import { DataContainer } from '../../src/planningScheduler/classes/dataContainer';
 import { RouteSet } from '../../src/shared/route';
 import { Data } from 'ws';
+import { Warehouse } from '../../src/shared/warehouse';
 
 /**
  * Checks wether two lengths are equal
@@ -309,9 +310,13 @@ function testAStar(): void {
     describe(`Test of A* with Graph from createGraph input`, () => {
         let graph: Graph = createGraph();
         let routeSet: RouteSet = new RouteSet([], graph);
+        let warehouse = new Warehouse(graph, 15);
         let data: DataContainer = new DataContainer();
+        data.warehouse = warehouse;
         let routeScheduler: RouteScheduler = new RouteScheduler(data);
         let order: Order = new Order("O0", Order.types.moveForklift, "F23", "P23", "N1-2", "N8-9");
+        order.timeType = Order.timeTypes.start;
+        order.time = 134513;
         let expectedRouteLength: number = 14;
 
         routeScheduler.planOptimalRoute(routeSet, order);

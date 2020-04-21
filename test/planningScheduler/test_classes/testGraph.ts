@@ -63,18 +63,26 @@ function checkArray(result: string[], expected: string[]) {
 function testScheduleItem(): void {
     // forkliftId: string, time: number, nextVertexId: string
     describe(`Test of one random ScheduleItem`, () => {
-        let item: ScheduleItem = new ScheduleItem("TF25", 12382, "N23");
+        let item: ScheduleItem = new ScheduleItem("TF25", 12382, "N23", 17000, "N22");
 
         it(`${Object.keys(item)[0]} should be "TF25"`, () => {
             expect(item.forkliftId).to.equal("TF25");
         });
 
         it(`${Object.keys(item)[1]} should be 12382`, () => {
-            expect(item.time).to.equal(12382);
+            expect(item.arrivalTimeCurrentVertex).to.equal(12382);
         });
 
         it(`${Object.keys(item)[2]} should be "N23"`, () => {
             expect(item.nextVertexId).to.equal("N23");
+        });
+
+        it(`${Object.keys(item)[3]} should be 17000`, () => {
+            expect(item.arrivalTimeNextVertex).to.equal(17000);
+        });
+
+        it(`${Object.keys(item)[4]} should be N22`, () => {
+            expect(item.previousVertexId).to.equal("N22");
         });
     });
 }
@@ -416,7 +424,7 @@ function testGraph() {
         let vertex2: Vertex = graph.vertices["N27"];
 
         let result: Graph = graph.clone();
-        graph.vertices["N23"].scheduleItems.push(new ScheduleItem("F29", 10923029, "N23"));
+        graph.vertices["N23"].scheduleItems.push(new ScheduleItem("F29", 10923029, "N23", 17000, "N22"));
 
         it(`${result} and ${graph}`, () => {
             expect(result).to.not.equal(graph);
