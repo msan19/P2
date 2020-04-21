@@ -30,7 +30,11 @@ class Graph {
                 minEdgeSize: 0,
                 maxEdgeSize: 0,
                 minNodeSize: 0,
-                maxNodeSize: 0
+                maxNodeSize: 0,
+                hideEdgesOnMove: true,
+                labelThreshold: 16,
+                // how much to zoom on double click
+                doubleClickZoomingRatio: 1
             }
         });
         if (graph != null)
@@ -42,7 +46,7 @@ class Graph {
 
     // EVENT SECTION
     bindEvents() {
-        this.sigmaGraph.bind('clickStage', function (element) {
+        this.sigmaGraph.bind('doubleClickStage', function (element) {
             mainGraph.onStageClick();
         });
         this.sigmaGraph.bind('clickNode', function (element) {
@@ -103,7 +107,6 @@ class Graph {
 
         for (let key in forkliftData) {
             this.updateForkliftOnGraph(forkliftData[key]);
-            console.log(key)
         }
         this.sigmaGraph.refresh();
     }

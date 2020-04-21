@@ -260,7 +260,7 @@ function addForkliftToUi(forkliftInfo) {
 
 window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
-        //addTestDataToForklifts();
+        addTestDataToForklifts();
         handleForkliftMovement();
         //updateForkliftFocus(selectedForklift);
 
