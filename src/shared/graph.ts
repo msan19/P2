@@ -136,6 +136,9 @@ export class Vertex {
     /** A boolean specifying if the {@link Vertex} has been looked at by the route planning algorithm */
     isVisited: boolean;
 
+    /** The time, in Unix epoch time in ms, where a forklift is on a vertex when the route is being planned */
+    visitTime: number;
+
     constructor(id: string, position: Vector2, label?: string) {
         this.id = id;
         this.position = position;
@@ -144,6 +147,7 @@ export class Vertex {
         this.scheduleItems = [];
         this.previousVertex = null;
         this.isVisited = false;
+        this.visitTime = 0;
     }
 
     /**
