@@ -105,7 +105,6 @@ function addTestDataToForklifts() {
 
     }
 }
-
 // END --- ETC --- END
 
 
@@ -258,16 +257,15 @@ function addForkliftToUi(forkliftInfo) {
         item.innerHTML += `<option value=${forkliftInfo.id}>${forkliftInfo.id}</option>`;
     });
 }
+
 window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
         addTestDataToForklifts();
         handleForkliftMovement();
-        updateForkliftFocus(selectedForklift);
+        //updateForkliftFocus(selectedForklift);
 
         mainGraph.updateForkliftsOnGraph();
     }
-
-
 }, 1000 / frameRate);
 
 window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
@@ -296,8 +294,3 @@ console.log(document.querySelectorAll("#forkliftSelect option"));
 forkliftForm.onclick = (e) => {
     selectForklift(e);
 };
-
-
-
-
-

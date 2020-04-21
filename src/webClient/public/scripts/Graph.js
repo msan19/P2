@@ -22,7 +22,6 @@ class Graph {
 
 
         this.sigmaGraph = new sigma({
-            graph: graph,
             renderer: {
                 container: container,
                 type: 'canvas'
@@ -31,18 +30,23 @@ class Graph {
                 minEdgeSize: 0,
                 maxEdgeSize: 0,
                 minNodeSize: 0,
-                maxNodeSize: 0
+                maxNodeSize: 0,
+                hideEdgesOnMove: true,
+                labelThreshold: 16,
+                // how much to zoom on double click
+                doubleClickZoomingRatio: 1
             }
         });
+        if (graph != null)
+            this.sigmaGraph.graph.read(graph);
         this.addOriginalColorToElements();
         this.bindEvents();
         this.sigmaGraph.refresh();
-
     }
 
     // EVENT SECTION
     bindEvents() {
-        this.sigmaGraph.bind('clickStage', function (element) {
+        this.sigmaGraph.bind('doubleClickStage', function (element) {
             mainGraph.onStageClick();
         });
         this.sigmaGraph.bind('clickNode', function (element) {
