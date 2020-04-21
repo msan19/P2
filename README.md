@@ -45,8 +45,8 @@ Uge 14-17:    Programmering
       Fredag:  Dokumentation
 
     Uge 17: Mapf og front end
-      Mandag:  collision
-      Tirsdag: collision og a* på et routeset
+      Mandag:  kollision
+      Tirsdag: kollision og a* på et routeset
       Onsdag:  a* på et routeset
       Torsdag: priority search
       Fredag:  priority search
