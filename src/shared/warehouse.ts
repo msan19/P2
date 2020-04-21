@@ -6,17 +6,17 @@
 
 import { Graph } from "./graph";
 
-/** A Warehouse containing a graph and the general forkliftspeed */
+/** A Warehouse containing a graph and the maximum forkliftspeed */
 export class Warehouse {
     /** The layout of the warehouse */
     graph: Graph;
 
     /** The general speed of forklifts in the warehouse in m/s */
-    forkliftSpeed: number;
+    maxForkliftSpeed: number;
 
     constructor(graph: Graph, forkliftSpeed: number) {
         this.graph = graph;
-        this.forkliftSpeed = forkliftSpeed;
+        this.maxForkliftSpeed = forkliftSpeed;
     }
 
     /** 
@@ -28,8 +28,8 @@ export class Warehouse {
         let parsedGraph: Graph | null = Graph.parse(obj.graph);
         if (parsedGraph === null) return null;
 
-        if (typeof (obj.forkliftSpeed) !== "number") return null;
+        if (typeof (obj.maxForkliftSpeed) !== "number") return null;
 
-        return new Warehouse(parsedGraph, obj.forkliftSpeed);
+        return new Warehouse(parsedGraph, obj.maxForkliftSpeed);
     }
 }
