@@ -265,16 +265,24 @@ export class Vertex {
      * @returns An index corresponding to the time
      */
     getScheduleItemIndex(time: number): number {
-        let i = 0, j = this.scheduleItems.length - 1;
+        let i = 0, j = this.scheduleItems.length;
 
         while (j - i > 1) {
             let a = Math.round((i + j) / 2);
-            if (this.scheduleItems[a].arrivalTimeCurrentVertex > a) {
+            if (this.scheduleItems[a].arrivalTimeCurrentVertex > time) {
                 j = a;
             } else {
                 i = a;
             }
         }
+
+        if (this.scheduleItems[i].arrivalTimeCurrentVertex > time) {
+            return j - 1;
+        } else {
+            return j;
+        }
+    }
+
     insertScheduleItem(time: number, scheduleItem: ScheduleItem) {
         let index = this.getScheduleItemIndex(time);
         this.scheduleItems.splice(index, 0, scheduleItem);
