@@ -78,6 +78,7 @@
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_src_shared_webutilities_.html#jsontryparse" class="tsd-kind-icon">Json<wbr>Try<wbr>Parse</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_src_shared_webutilities_.html#getcontentshtml" class="tsd-kind-icon">get<wbr>ContentsHTML</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_src_shared_webutilities_.html#getentirestring" class="tsd-kind-icon">get<wbr>Entire<wbr>String</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_src_shared_webutilities_.html#getjson" class="tsd-kind-icon">get<wbr>Json</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_src_shared_webutilities_.html#getstaticfile" class="tsd-kind-icon">get<wbr>Static<wbr>File</a></li>
@@ -105,16 +106,51 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/webUtilities.ts#L23">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/webUtilities.ts#L33">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:33</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Json parser inside try-catch block</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>str: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>String to be parsed</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4>
+							<p>Json object if possible else null</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="getcontentshtml" class="tsd-anchor"></a>
+					<h3>get<wbr>ContentsHTML</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>ContentsHTML<span class="tsd-signature-symbol">(</span>folder<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, file<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/webUtilities.ts#L154">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:154</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>str: <span class="tsd-signature-type">string</span></h5>
+									<h5>folder: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>file: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -128,16 +164,25 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/webUtilities.ts#L11">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/webUtilities.ts#L16">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:16</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets data out of a buffer-callback</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>incomingMessage: <span class="tsd-signature-type">IncomingMessage</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Type http.IncomingMessage</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>Promise with data as a string</p>
 						</li>
 					</ul>
 				</section>
@@ -151,9 +196,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/webUtilities.ts#L33">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/webUtilities.ts#L48">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:48</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets data out of buffer-callback and returns as JSON</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -161,6 +211,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>Promise with data object if possible else empty reject</p>
 						</li>
 					</ul>
 				</section>
@@ -174,19 +225,31 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/webUtilities.ts#L78">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:78</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/webUtilities.ts#L135">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:135</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Reads a static file from <code>publicPath/requestPath</code> as a promise</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>publicPath: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>String</p>
+									</div>
 								</li>
 								<li>
 									<h5>requestPath: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>String</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>Promise with the fileData as a string or empty reject</p>
 						</li>
 					</ul>
 				</section>
@@ -200,16 +263,25 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/webUtilities.ts#L44">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/webUtilities.ts#L64">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:64</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Checks if an id is valid</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>str: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The id</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4>
+							<p>The id if valid else null</p>
 						</li>
 					</ul>
 				</section>
@@ -223,13 +295,21 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/webUtilities.ts#L60">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/webUtilities.ts#L97">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:97</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Makes a http 402 response with &quot;Invalid Json&quot; message</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>response: <span class="tsd-signature-type">ServerResponse</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Type http.ServerResponse</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -246,16 +326,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/webUtilities.ts#L68">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:68</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/webUtilities.ts#L115">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:115</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Makes a http 200 response with a Json as message</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>response: <span class="tsd-signature-type">ServerResponse</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Type http.ServerResponse</p>
+									</div>
 								</li>
 								<li>
 									<h5>obj: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Object to be sent as string</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -272,16 +363,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/webUtilities.ts#L57">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:57</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/webUtilities.ts#L89">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:89</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Makes http 404 response with url as message</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>request: <span class="tsd-signature-type">IncomingMessage</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Type http.IncomingMessage</p>
+									</div>
 								</li>
 								<li>
 									<h5>response: <span class="tsd-signature-type">ServerResponse</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Type http.ServerResponse</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -298,19 +400,33 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/webUtilities.ts#L52">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:52</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/webUtilities.ts#L78">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:78</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Makes a http response</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>response: <span class="tsd-signature-type">ServerResponse</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Type http.ServerResponse</p>
+									</div>
 								</li>
 								<li>
 									<h5>status: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>http status-code as number</p>
+									</div>
 								</li>
 								<li>
 									<h5>message: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>message to be sent</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -327,13 +443,21 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/webUtilities.ts#L64">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:64</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/webUtilities.ts#L105">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:105</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Makes a http 200 response with &quot;Success&quot; message</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>response: <span class="tsd-signature-type">ServerResponse</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Type http.ServerResponse</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -350,19 +474,31 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/webUtilities.ts#L74">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/webUtilities.ts#L126">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/webUtilities.ts:126</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sanitize a path of illegal characters</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>publicPath: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>String</p>
+									</div>
 								</li>
 								<li>
 									<h5>requestPath: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>String</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>a sanitized path as a string</p>
 						</li>
 					</ul>
 				</section>
@@ -383,6 +519,9 @@
 				<ul class="before-current">
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="_src_shared_webutilities_.html#jsontryparse" class="tsd-kind-icon">Json<wbr>Try<wbr>Parse</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_src_shared_webutilities_.html#getcontentshtml" class="tsd-kind-icon">get<wbr>ContentsHTML</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="_src_shared_webutilities_.html#getentirestring" class="tsd-kind-icon">get<wbr>Entire<wbr>String</a>

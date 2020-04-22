@@ -97,9 +97,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_graph_.scheduleitem.html#arrivaltimecurrentvertex" class="tsd-kind-icon">arrival<wbr>Time<wbr>Current<wbr>Vertex</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_graph_.scheduleitem.html#currentvertexid" class="tsd-kind-icon">current<wbr>Vertex<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_graph_.scheduleitem.html#forkliftid" class="tsd-kind-icon">forklift<wbr>Id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_graph_.scheduleitem.html#nextvertexid" class="tsd-kind-icon">next<wbr>Vertex<wbr>Id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_graph_.scheduleitem.html#time" class="tsd-kind-icon">time</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_graph_.scheduleitem.html#nextscheduleitem" class="tsd-kind-icon">next<wbr>Schedule<wbr>Item</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_graph_.scheduleitem.html#previousscheduleitem" class="tsd-kind-icon">previous<wbr>Schedule<wbr>Item</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -118,13 +120,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Schedule<wbr>Item<span class="tsd-signature-symbol">(</span>forkliftId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, time<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, nextVertexId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_shared_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Schedule<wbr>Item<span class="tsd-signature-symbol">(</span>forkliftId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, arrivalTimeCurrentVertex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, currentVertexId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_shared_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/graph.ts#L274">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/graph.ts:274</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/graph.ts#L315">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/graph.ts:315</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -133,10 +135,10 @@
 									<h5>forkliftId: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>time: <span class="tsd-signature-type">number</span></h5>
+									<h5>arrivalTimeCurrentVertex: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>nextVertexId: <span class="tsd-signature-type">string</span></h5>
+									<h5>currentVertexId: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_src_shared_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a></h4>
@@ -147,12 +149,38 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="arrivaltimecurrentvertex" class="tsd-anchor"></a>
+					<h3>arrival<wbr>Time<wbr>Current<wbr>Vertex</h3>
+					<div class="tsd-signature tsd-kind-icon">arrival<wbr>Time<wbr>Current<wbr>Vertex<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/graph.ts#L307">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/graph.ts:307</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The time when the forklift arrives at the current vertex.
+							The time is represented as epoch time in ms</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="currentvertexid" class="tsd-anchor"></a>
+					<h3>current<wbr>Vertex<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">current<wbr>Vertex<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/graph.ts#L309">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/graph.ts:309</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="forkliftid" class="tsd-anchor"></a>
 					<h3>forklift<wbr>Id</h3>
 					<div class="tsd-signature tsd-kind-icon">forklift<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/graph.ts#L267">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/graph.ts:267</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/graph.ts#L301">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/graph.ts:301</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -162,33 +190,32 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="nextvertexid" class="tsd-anchor"></a>
-					<h3>next<wbr>Vertex<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">next<wbr>Vertex<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="nextscheduleitem" class="tsd-anchor"></a>
+					<h3>next<wbr>Schedule<wbr>Item</h3>
+					<div class="tsd-signature tsd-kind-icon">next<wbr>Schedule<wbr>Item<span class="tsd-signature-symbol">:</span> <a href="_src_shared_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/graph.ts#L274">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/graph.ts:274</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/graph.ts#L315">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/graph.ts:315</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>An identification string for the vertex to which the forklift is moving,
-							or if the forklift is stopped the id of the vertex it is placed on</p>
+							<p>A reference to the scheduleItem on the next vertex</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="time" class="tsd-anchor"></a>
-					<h3>time</h3>
-					<div class="tsd-signature tsd-kind-icon">time<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="previousscheduleitem" class="tsd-anchor"></a>
+					<h3>previous<wbr>Schedule<wbr>Item</h3>
+					<div class="tsd-signature tsd-kind-icon">previous<wbr>Schedule<wbr>Item<span class="tsd-signature-symbol">:</span> <a href="_src_shared_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/graph.ts#L270">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/graph.ts:270</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/graph.ts#L312">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/graph.ts:312</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A number representing the epoch time in ms</p>
+							<p>A reference to the scheduleItem on the previous vertex</p>
 						</div>
 					</div>
 				</section>
@@ -205,7 +232,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/graph.ts#L301">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/graph.ts:301</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/graph.ts#L344">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/graph.ts:344</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -228,7 +255,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/2ec9d08/src/shared/graph.ts#L287">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/graph.ts:287</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/247fead/src/shared/graph.ts#L330">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/graph.ts:330</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -277,13 +304,19 @@
 								<a href="_src_shared_graph_.scheduleitem.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_src_shared_graph_.scheduleitem.html#arrivaltimecurrentvertex" class="tsd-kind-icon">arrival<wbr>Time<wbr>Current<wbr>Vertex</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_src_shared_graph_.scheduleitem.html#currentvertexid" class="tsd-kind-icon">current<wbr>Vertex<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_src_shared_graph_.scheduleitem.html#forkliftid" class="tsd-kind-icon">forklift<wbr>Id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_shared_graph_.scheduleitem.html#nextvertexid" class="tsd-kind-icon">next<wbr>Vertex<wbr>Id</a>
+								<a href="_src_shared_graph_.scheduleitem.html#nextscheduleitem" class="tsd-kind-icon">next<wbr>Schedule<wbr>Item</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_shared_graph_.scheduleitem.html#time" class="tsd-kind-icon">time</a>
+								<a href="_src_shared_graph_.scheduleitem.html#previousscheduleitem" class="tsd-kind-icon">previous<wbr>Schedule<wbr>Item</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_src_shared_graph_.scheduleitem.html#clone" class="tsd-kind-icon">clone</a>
