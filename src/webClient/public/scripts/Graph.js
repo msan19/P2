@@ -70,12 +70,15 @@ class Graph {
 
     // FORKLIFT
     selectForklift(id) {
-        selectedForklift = id;
-        if (typeof (forkliftData[selectedForklift]["route"]) != "undefined" && typeof (forkliftData[selectedForklift]["route"]["instructions"]) != "undefined") {
-            let path = intepretInstructions(forkliftData[selectedForklift]["route"]["instructions"]);
-            this.displayPath(path);
+        if (typeof (id) != "undefined") {
+            selectedForklift = id;
+            if (typeof (forkliftData[selectedForklift]["route"]) != "undefined" && typeof (forkliftData[selectedForklift]["route"]["instructions"]) != "undefined") {
+                let path = intepretInstructions(forkliftData[selectedForklift]["route"]["instructions"]);
+                this.displayPath(path);
+            }
+            updateForkliftFocus(selectedForklift);
         }
-        updateForkliftFocus(selectedForklift);
+
     }
 
     addForkliftToGraph(forklift) {
