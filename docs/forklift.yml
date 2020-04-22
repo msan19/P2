@@ -81,7 +81,7 @@ definitions:
     format: "Miliseconds since 1970-01-01 00:00:00 UTC"
     example: "1584965558174"
 
-  Node:
+  Vertex:
     type: "object"
     required:
       - "id"
@@ -131,7 +131,7 @@ definitions:
     type: "object"
     required:
       - "type"
-      - "node"
+      - "vertex"
       - "startTime"
       - "duration"
     properties:
@@ -142,8 +142,8 @@ definitions:
           - "unloadPallet"
           - "loadPallet"
           - "charge"
-      node:
-        $ref: "#/definitions/Node"
+      vertex:
+        $ref: "#/definitions/Vertex"
       palletId:
         type: "string"
       

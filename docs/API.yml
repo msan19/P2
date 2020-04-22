@@ -240,6 +240,12 @@ definitions:
         example: "Delivery"
       position:
         $ref: "#/definitions/Vector2"
+      adjacentVertexIds: 
+        type: "array"
+        format: "Vertex {guid}"
+        items: 
+          type: "string"
+        example: "['N1-1', 'N1-3']"
   Edge:
     type: "object"
     required:
@@ -318,6 +324,7 @@ definitions:
           - "idle"
           - "hasOrder"
           - "charging"
+          - "initiating"
       palletId:
         type: "string"
         description: "The ID of the pallet currently on the fork"
@@ -374,14 +381,26 @@ definitions:
   Order:
     type: "object"
     required:
-      - "orderType"
+      - "id"
+      - "type"
+      - "time"
+      - "timeType"
     properties:
-      orderType:
+      id: 
+        type: "string"
+      type:
         type: "string"
         enum:
           - "movePallet"
           - "moveForklift"
           - "charge"
+      time: 
+        $ref: "#/definitions/Date"
+      timeType: 
+        type: "string"
+        enum: 
+          - "start"
+          - "end"
       forkliftId:
         type: "string"
       palletId:
