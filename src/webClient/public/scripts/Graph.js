@@ -62,17 +62,22 @@ class Graph {
 
     onNodeClick(element) {
         if (element.data.node.id[0] == "F") {
-            selectedForklift = element.data.node.id;
-            if (typeof (forkliftData[selectedForklift]["route"]) != "undefined" && typeof (forkliftData[selectedForklift]["route"]["instructions"]) != "undefined") {
-                let path = intepretInstructions(forkliftData[selectedForklift]["route"]["instructions"]);
-                this.displayPath(path);
-            }
+            this.selectForklift(element.data.node.id);
         }
     }
 
     // END -- EVENT SECTION -- END
 
     // FORKLIFT
+    selectForklift(id) {
+        selectedForklift = id;
+        if (typeof (forkliftData[selectedForklift]["route"]) != "undefined" && typeof (forkliftData[selectedForklift]["route"]["instructions"]) != "undefined") {
+            let path = intepretInstructions(forkliftData[selectedForklift]["route"]["instructions"]);
+            this.displayPath(path);
+        }
+        updateForkliftFocus(selectedForklift);
+    }
+
     addForkliftToGraph(forklift) {
         if (getIfForkliftHasPosition(forklift)) {
             this.sigmaGraph.graph.addNode({

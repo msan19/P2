@@ -244,11 +244,6 @@ function parseForklifts(data) {
 }
 // END --- DATA HANDLING
 
-function selectForklift(event) {
-    selectedForklift = event.toElement.value;
-    updateForkliftFocus(selectedForklift);
-}
-
 function updateForkliftFocus(forklift) {
     document.querySelector("#currentForklift").innerHTML = `<h3>${forklift}</h3>`;
     document.querySelector("#forklift-list").value = forklift;
@@ -280,11 +275,13 @@ window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
         addForkliftToUi(forklifts[key]);
     }
 
+    // This code doesn't seem to do anything? The function forkliftSelection doesn't exist, right?
+    /*
     for (let i = 0; i < forklifts.length; i++) {
         let element = document.querySelector("#forklift-list").children[i];
         element.addEventListener("click", forkliftSelection);
     }
-
+*/
     parseForklifts(forklifts);
 });
 
@@ -295,5 +292,5 @@ window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
 var forkliftForm = document.querySelector("form .form-group#forklift-form");
 console.log(document.querySelectorAll("#forkliftSelect option"));
 forkliftForm.onclick = (e) => {
-    selectForklift(e);
+    mainGraph.selectForklift(e.toElement.value);
 };
