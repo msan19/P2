@@ -1,5 +1,5 @@
 class Forklifts {
-    selectedForklift = "F0";
+    selectedForklift = "";
     constructor(forklifts) {
 
         this.forklifts = forklifts;
