@@ -293,7 +293,10 @@ export class Vertex {
 
 
 /**
- * A point in time located at a vertex specifying which forklift moved through the vertex, when it did and where it moved to
+ * A point in time located at a vertex specifying which forklift 
+ * moved through the vertex, when it did, which vertex it visited before
+ * and which vertex it visited after. 
+ * It can be viewed as a node in a linked list.
  */
 export class ScheduleItem {
 
@@ -306,30 +309,21 @@ export class ScheduleItem {
      */
     arrivalTimeCurrentVertex: number;
 
-    /** 
-     * An identification string for the vertex to which the forklift is moving,
-     *  or if the forklift is stopped the id of the vertex it is placed on 
-     */
-    nextVertexId: string;
+    /** An identification string for the vertex that this ScheduleItem is attached to */
+    currentVertexId: string;
 
-    /**
-     * The time when the forklift arrives at the next vertex.
-     * The time is represented as epoch time in ms
-     */
-    arrivalTimeNextVertex: number;
+    /** A reference to the scheduleItem on the previous vertex */
+    previousScheduleItem: ScheduleItem;
 
-    /**
-     * An identificaiton string for the vertex that the forklift was on before 
-     * moving to the vertex that this ScheduleItem is on
-     */
-    previousVertexId: string;
+    /** A reference to the scheduleItem on the next vertex */
+    nextScheduleItem: ScheduleItem;
 
-    constructor(forkliftId: string, arrivalTimeCurrentVertex: number, nextVertexId: string, arrivalTimeNextVertex: number, previousVertexId: string) {
+    constructor(forkliftId: string, arrivalTimeCurrentVertex: number, currentVertexId: string) {
         this.forkliftId = forkliftId;
         this.arrivalTimeCurrentVertex = arrivalTimeCurrentVertex;
-        this.nextVertexId = nextVertexId;
-        this.arrivalTimeNextVertex = arrivalTimeNextVertex;
-        this.previousVertexId = previousVertexId;
+        this.currentVertexId = currentVertexId;
+        this.previousScheduleItem = null;
+        this.nextScheduleItem = null;
     }
 
     /**
@@ -342,11 +336,9 @@ export class ScheduleItem {
         if (typeof (item) !== "object" || item === null) return null;
         if (typeof (item.forkliftId) !== "string" || item.nextVertexId.length < 1) return null;
         if (typeof (item.arrivalTimeCurrentVertex) !== "number") return null;
-        if (typeof (item.nextVertexId) !== "string" || item.nextVertexId.length < 1) return null;
-        if (typeof (item.arrivalTimeNextVertex) !== "number") return null;
-        if (typeof (item.previousVertexId) !== "string" || item.previousVertexId.length < 1) return null;
+        if (typeof (item.currentVertexId) !== "string" || item.nextVertexId.length < 1) return null;
 
-        return new ScheduleItem(item.forkliftId, item.time, item.nextVertexId, item.arrivalTimeNextVertex, item.previousVertexId);
+        return new ScheduleItem(item.forkliftId, item.time, item.nextVertexId);
     }
 
     /**
@@ -354,7 +346,7 @@ export class ScheduleItem {
      * @returns A new {@link ScheduleItem}
      */
     clone(): ScheduleItem {
-        return new ScheduleItem(this.forkliftId, this.arrivalTimeCurrentVertex, this.nextVertexId, this.arrivalTimeNextVertex, this.previousVertexId);
+        return new ScheduleItem(this.forkliftId, this.arrivalTimeCurrentVertex, this.currentVertexId);
     }
 
 }

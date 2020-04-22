@@ -68,12 +68,15 @@ function generateRoute(route, node, length) {
     //console.log(route)
     let num = Math.floor(Math.random() * Object.keys(nodes).length);
 
+    let attempts = 0;
     // Remove if forklifts from neighbors
-
     if (route.instructions.length > 1) {
         while (Object.keys(nodes).splice(num, 1)[0] == route.instructions[route.instructions.length - 2].nodeId || Object.keys(nodes).splice(num, 1)[0][0] == "F") {
             num = Math.floor(Math.random() * Object.keys(nodes).length);
             delete Object.keys(nodes).splice(num, 1)[0];
+            attempts++;
+            if (attempts > 20)
+                break;
         }
     }
 
@@ -98,7 +101,7 @@ function addTestDataToForklifts() {
             };
             let nodes = mainGraph.sigmaGraph.graph.nodes();
             let currentNode = forkliftData[key].currentNode;
-            generateRoute(route, (typeof (currentNode) == "undefined") ? nodes[Math.floor(Math.random() * nodes.length)].id : currentNode, 15);
+            generateRoute(route, (typeof (currentNode) == "undefined") ? nodes[Math.floor(Math.random() * nodes.length)].id : currentNode, Math.round(Math.random() * 20));
             if (route.instructions.length != 0)
                 forkliftData[key].route = route;
             if (key == selectedForklift)
@@ -272,15 +275,14 @@ window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
         nForklifts.selectForklift(e);
     };
 
-    /* Pretty sure this does nothing
+    // This code doesn't seem to do anything? The function forkliftSelection doesn't exist, right?
+    /*
     for (let i = 0; i < forklifts.length; i++) {
         let element = document.querySelector("#forklift-list").children[i];
         element.addEventListener("click", forkliftSelection);
-    }*/
-
-    forkliftData = nForklifts.parseForklifts(forklifts);
-
-    console.log(forklifts);
+    }
+*/
+    parseForklifts(forklifts);
 });
 
 window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {

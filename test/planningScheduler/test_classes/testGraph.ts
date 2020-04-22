@@ -61,9 +61,16 @@ function checkArray(result: string[], expected: string[]) {
  * @returns Mocha handles the appropriate responses
  */
 function testScheduleItem(): void {
-    // forkliftId: string, time: number, nextVertexId: string
+    // ScheduleItem attributes:
+    //   forkliftId: string, arrivalTimeCurrentVertex: number, 
+    //   previousScheduleItem: ScheduleItem, nextScheduleItem: ScheduleItem
     describe(`Test of one random ScheduleItem`, () => {
-        let item: ScheduleItem = new ScheduleItem("TF25", 12382, "N23", 17000, "N22");
+        let previousItem: ScheduleItem = new ScheduleItem("TF24", 10000, "N22");
+        let item: ScheduleItem = new ScheduleItem("TF25", 12382, "N23");
+        let nextItem: ScheduleItem = new ScheduleItem("TF26", 15000, "N24");
+
+        item.previousScheduleItem = previousItem;
+        item.nextScheduleItem = nextItem;
 
         it(`${Object.keys(item)[0]} should be "TF25"`, () => {
             expect(item.forkliftId).to.equal("TF25");
@@ -74,15 +81,33 @@ function testScheduleItem(): void {
         });
 
         it(`${Object.keys(item)[2]} should be "N23"`, () => {
-            expect(item.nextVertexId).to.equal("N23");
+            expect(item.currentVertexId).to.equal("N23");
         });
 
-        it(`${Object.keys(item)[3]} should be 17000`, () => {
-            expect(item.arrivalTimeNextVertex).to.equal(17000);
+        // test previousScheduleItem
+        it(`${Object.keys(item)[3][0]} should be "TF24"`, () => {
+            expect(item.previousScheduleItem.forkliftId).to.equal("TF24");
         });
 
-        it(`${Object.keys(item)[4]} should be N22`, () => {
-            expect(item.previousVertexId).to.equal("N22");
+        it(`${Object.keys(item)[3][0]} should be 10000`, () => {
+            expect(item.previousScheduleItem.arrivalTimeCurrentVertex).to.equal(10000);
+        });
+
+        it(`${Object.keys(item)[3][0]} should be N22`, () => {
+            expect(item.previousScheduleItem.currentVertexId).to.equal("N22");
+        });
+
+        // test nextScheduleItem
+        it(`${Object.keys(item)[4][0]} should be "TF26"`, () => {
+            expect(item.nextScheduleItem.forkliftId).to.equal("TF26");
+        });
+
+        it(`${Object.keys(item)[4][0]} should be 15000`, () => {
+            expect(item.nextScheduleItem.arrivalTimeCurrentVertex).to.equal(15000);
+        });
+
+        it(`${Object.keys(item)[4][0]} should be N24`, () => {
+            expect(item.nextScheduleItem.currentVertexId).to.equal("N24");
         });
     });
 }
@@ -178,16 +203,16 @@ function testVertex(): void {
         describe("Getting existing ScheduleItem", () => {
             let vertex = new Vertex("P23", new Vector2(3, 4));
             let scheduleItemList = [
-                new ScheduleItem("F22", 10000, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10100, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10200, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10300, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10400, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10500, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10600, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10700, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10800, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10900, "F23", 0, "N30")
+                new ScheduleItem("F22", 10000, "F23"),
+                new ScheduleItem("F22", 10100, "F23"),
+                new ScheduleItem("F22", 10200, "F23"),
+                new ScheduleItem("F22", 10300, "F23"),
+                new ScheduleItem("F22", 10400, "F23"),
+                new ScheduleItem("F22", 10500, "F23"),
+                new ScheduleItem("F22", 10600, "F23"),
+                new ScheduleItem("F22", 10700, "F23"),
+                new ScheduleItem("F22", 10800, "F23"),
+                new ScheduleItem("F22", 10900, "F23")
             ];
             vertex.scheduleItems = scheduleItemList;
             let expected: number = 5;
@@ -202,16 +227,16 @@ function testVertex(): void {
         describe("Getting existing ScheduleItem", () => {
             let vertex = new Vertex("P23", new Vector2(3, 4));
             let scheduleItemList = [
-                new ScheduleItem("F22", 10000, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10100, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10200, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10300, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10400, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10500, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10600, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10700, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10800, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10900, "F23", 0, "N30")
+                new ScheduleItem("F22", 10000, "F23"),
+                new ScheduleItem("F22", 10100, "F23"),
+                new ScheduleItem("F22", 10200, "F23"),
+                new ScheduleItem("F22", 10300, "F23"),
+                new ScheduleItem("F22", 10400, "F23"),
+                new ScheduleItem("F22", 10500, "F23"),
+                new ScheduleItem("F22", 10600, "F23"),
+                new ScheduleItem("F22", 10700, "F23"),
+                new ScheduleItem("F22", 10800, "F23"),
+                new ScheduleItem("F22", 10900, "F23")
             ];
 
             vertex.scheduleItems = scheduleItemList;
@@ -231,19 +256,19 @@ function testVertex(): void {
         describe("Insertion of ScheduleItem", () => {
             let vertex = new Vertex("P23", new Vector2(3, 4));
             let scheduleItemList = [
-                new ScheduleItem("F22", 10000, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10100, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10200, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10300, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10400, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10500, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10600, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10700, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10800, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10900, "F23", 0, "N30")
+                new ScheduleItem("F22", 10000, "F23"),
+                new ScheduleItem("F22", 10100, "F23"),
+                new ScheduleItem("F22", 10200, "F23"),
+                new ScheduleItem("F22", 10300, "F23"),
+                new ScheduleItem("F22", 10400, "F23"),
+                new ScheduleItem("F22", 10500, "F23"),
+                new ScheduleItem("F22", 10600, "F23"),
+                new ScheduleItem("F22", 10700, "F23"),
+                new ScheduleItem("F22", 10800, "F23"),
+                new ScheduleItem("F22", 10900, "F23")
             ];
             vertex.scheduleItems = scheduleItemList;
-            let newScheduleItem: ScheduleItem = new ScheduleItem("F22", 10340, "F23", 0, "N30");
+            let newScheduleItem: ScheduleItem = new ScheduleItem("F22", 10340, "F23");
             let time = 10340;
             vertex.insertScheduleItem(time, newScheduleItem);
 
@@ -258,19 +283,19 @@ function testVertex(): void {
         describe("Insertion of ScheduleItem before current times", () => {
             let vertex = new Vertex("P23", new Vector2(3, 4));
             let scheduleItemList = [
-                new ScheduleItem("F22", 10000, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10100, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10200, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10300, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10400, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10500, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10600, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10700, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10800, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10900, "F23", 0, "N30")
+                new ScheduleItem("F22", 10000, "F23"),
+                new ScheduleItem("F22", 10100, "F23"),
+                new ScheduleItem("F22", 10200, "F23"),
+                new ScheduleItem("F22", 10300, "F23"),
+                new ScheduleItem("F22", 10400, "F23"),
+                new ScheduleItem("F22", 10500, "F23"),
+                new ScheduleItem("F22", 10600, "F23"),
+                new ScheduleItem("F22", 10700, "F23"),
+                new ScheduleItem("F22", 10800, "F23"),
+                new ScheduleItem("F22", 10900, "F23")
             ];
             vertex.scheduleItems = scheduleItemList;
-            let newScheduleItem: ScheduleItem = new ScheduleItem("F22", 4000, "F23", 0, "N30");
+            let newScheduleItem: ScheduleItem = new ScheduleItem("F22", 4000, "F23");
             let time = 4000;
             console.log(vertex.insertScheduleItem(time, newScheduleItem));
 
@@ -285,19 +310,19 @@ function testVertex(): void {
         describe("Insertion of ScheduleItem after current times", () => {
             let vertex = new Vertex("P23", new Vector2(3, 4));
             let scheduleItemList = [
-                new ScheduleItem("F22", 10000, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10100, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10200, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10300, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10400, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10500, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10600, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10700, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10800, "F23", 0, "N30"),
-                new ScheduleItem("F22", 10900, "F23", 0, "N30")
+                new ScheduleItem("F22", 10000, "F23"),
+                new ScheduleItem("F22", 10100, "F23"),
+                new ScheduleItem("F22", 10200, "F23"),
+                new ScheduleItem("F22", 10300, "F23"),
+                new ScheduleItem("F22", 10400, "F23"),
+                new ScheduleItem("F22", 10500, "F23"),
+                new ScheduleItem("F22", 10600, "F23"),
+                new ScheduleItem("F22", 10700, "F23"),
+                new ScheduleItem("F22", 10800, "F23"),
+                new ScheduleItem("F22", 10900, "F23")
             ];
             vertex.scheduleItems = scheduleItemList;
-            let newScheduleItem: ScheduleItem = new ScheduleItem("F22", 20000, "F23", 0, "N30");
+            let newScheduleItem: ScheduleItem = new ScheduleItem("F22", 20000, "F23");
             let time = 20000;
             console.log(vertex.insertScheduleItem(time, newScheduleItem));
 
@@ -561,7 +586,7 @@ function testGraph() {
         let vertex2: Vertex = graph.vertices["N27"];
 
         let result: Graph = graph.clone();
-        graph.vertices["N23"].scheduleItems.push(new ScheduleItem("F29", 10923029, "N23", 17000, "N22"));
+        graph.vertices["N23"].scheduleItems.push(new ScheduleItem("F29", 10923029, "N23"));
 
         it(`${result} and ${graph}`, () => {
             expect(result).to.not.equal(graph);
