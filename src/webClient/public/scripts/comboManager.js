@@ -39,7 +39,6 @@ function updateForkliftFocus(forklift) {
 window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
     let data = Graph.parseIncomingData(Graph.cloneIncomingData(warehouse)).graph;
     mainGraph = new Graph('sigmaContainer', data, nForklifts);
-    console.log("qwe");
 });
 
 window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
