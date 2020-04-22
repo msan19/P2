@@ -61,7 +61,9 @@ function checkArray(result: string[], expected: string[]) {
  * @returns Mocha handles the appropriate responses
  */
 function testScheduleItem(): void {
-    // forkliftId: string, time: number, nextVertexId: string
+    // ScheduleItem attributes:
+    //   forkliftId: string, arrivalTimeCurrentVertex: number, 
+    //   previousScheduleItem: ScheduleItem, nextScheduleItem: ScheduleItem
     describe(`Test of one random ScheduleItem`, () => {
         let previousItem: ScheduleItem = new ScheduleItem("TF24", 10000, "N22");
         let item: ScheduleItem = new ScheduleItem("TF25", 12382, "N23");
@@ -82,6 +84,7 @@ function testScheduleItem(): void {
             expect(item.currentVertexId).to.equal("N23");
         });
 
+        // test previousScheduleItem
         it(`${Object.keys(item)[3][0]} should be "TF24"`, () => {
             expect(item.previousScheduleItem.forkliftId).to.equal("TF24");
         });
@@ -94,6 +97,7 @@ function testScheduleItem(): void {
             expect(item.previousScheduleItem.currentVertexId).to.equal("N22");
         });
 
+        // test nextScheduleItem
         it(`${Object.keys(item)[4][0]} should be "TF26"`, () => {
             expect(item.nextScheduleItem.forkliftId).to.equal("TF26");
         });
