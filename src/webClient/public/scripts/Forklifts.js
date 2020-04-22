@@ -1,7 +1,7 @@
 class Forklifts {
     selectedForklift = "F0";
     constructor(document, forklifts) {
-        this.document = document;
+
         this.forklifts = forklifts;
     }
 
@@ -10,21 +10,22 @@ class Forklifts {
 
     addForkliftToUi(forkliftInfo) {
         //document.querySelector("#forklift-list").innerHTML += `<a class="dropdown-item" value="${forkliftInfo.id}">${forkliftInfo.id}</a>`;
+
         document.querySelectorAll('.select-forklift').forEach((item) => {
             item.innerHTML += `<option value=${forkliftInfo.id}>${forkliftInfo.id}</option>`;
         });
     }
 
     selectForklift(event) {
-        this.selectedForklift = event.toElement.value;
-        updateForkliftFocus(selectedForklift);
-    }
+        if (event.toElement.value != "")
+            this.selectedForklift = event.toElement.value;
+        else {
+            this.selectedForklift = "";
+            mainGraph.revertColorsToOriginal();
+        }
 
-    updateForkliftFocus(forklift) {
-        document.querySelector("#currentForklift").innerHTML = `<h3>${forklift}</h3>`;
-        document.querySelector("#forklift-list").value = forklift;
+        updateForkliftFocus(this.selectedForklift);
     }
-
 
     parseForklifts(data) {
         let forklifts = [];
@@ -47,7 +48,7 @@ class Forklifts {
                 };
             }
         }
-        forkliftData = forklifts;
+        return forklifts;
     }
 
     getIfForkliftHasPosition(forklift) {

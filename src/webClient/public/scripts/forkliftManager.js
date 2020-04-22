@@ -9,6 +9,8 @@ window.forkliftSpeed;
     ForkliftStates[ForkliftStates["initiating"] = 4] = "initiating";
 })(ForkliftStates || (ForkliftStates = {}));
 
+
+
 // ETC
 function getDistanceBetweenPoints(x, y, targetX, targetY) {
     let xDiff = targetX - x;
@@ -241,56 +243,57 @@ function parseForklifts(data) {
 }
 // END --- DATA HANDLING
 
-function selectForklift(event) {
+/*function selectForklift(event) {
     selectedForklift = event.toElement.value;
     updateForkliftFocus(selectedForklift);
-}
+}*/
 
 function updateForkliftFocus(forklift) {
+    selectedForklift = forklift;
     document.querySelector("#currentForklift").innerHTML = `<h3>${forklift}</h3>`;
     document.querySelector("#forklift-list").value = forklift;
 }
 
-function addForkliftToUi(forkliftInfo) {
-    //document.querySelector("#forklift-list").innerHTML += `<a class="dropdown-item" value="${forkliftInfo.id}">${forkliftInfo.id}</a>`;
+
+
+window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
+    let nForklifts = new Forklifts(document, forklifts);
     document.querySelectorAll('.select-forklift').forEach((item) => {
-        item.innerHTML += `<option value=${forkliftInfo.id}>${forkliftInfo.id}</option>`;
+        item.innerHTML = "";
     });
-}
+
+    document.querySelector("#forklift-list").innerHTML = `<option value=${""}>${""}</option>`;
+    for (let key in forklifts) {
+        nForklifts.addForkliftToUi(forklifts[key]);
+    }
+    //document.querySelector('.select-forklift#forklift-list').innerHTML += `<option value=${"none"}>${"none"}</option>`;
+
+    document.querySelector("form .form-group#forklift-form").onclick = (e) => {
+        nForklifts.selectForklift(e);
+    };
+
+    /* Pretty sure this does nothing
+    for (let i = 0; i < forklifts.length; i++) {
+        let element = document.querySelector("#forklift-list").children[i];
+        element.addEventListener("click", forkliftSelection);
+    }*/
+
+    forkliftData = nForklifts.parseForklifts(forklifts);
+
+    console.log(forklifts);
+});
+
+window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
+    nForklifts.addForkliftToUi(forklift);
+});
 
 window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
         addTestDataToForklifts();
         handleForkliftMovement();
-        //updateForkliftFocus(selectedForklift);
+        updateForkliftFocus(selectedForklift);
 
         mainGraph.updateForkliftsOnGraph();
     }
 }, 1000 / frameRate);
 
-window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
-    document.querySelectorAll('.select-forklift').forEach((item) => {
-        item.innerHTML = "";
-    });
-    document.querySelector("#forklift-list").innerHTML = "";
-    for (let key in forklifts) {
-        addForkliftToUi(forklifts[key]);
-    }
-
-    for (let i = 0; i < forklifts.length; i++) {
-        let element = document.querySelector("#forklift-list").children[i];
-        element.addEventListener("click", forkliftSelection);
-    }
-
-    parseForklifts(forklifts);
-});
-
-window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
-    addForkliftToUi(forklift);
-});
-
-var forkliftForm = document.querySelector("form .form-group#forklift-form");
-console.log(document.querySelectorAll("#forkliftSelect option"));
-forkliftForm.onclick = (e) => {
-    selectForklift(e);
-};
