@@ -52,8 +52,8 @@ class Forklifts {
     }
 
     static getIfForkliftHasPosition(forklift) {
-        if (typeof (forklift["position"]) === "undefined" || typeof (forklift["position"]["x"]) === "undefined"
-            || typeof (forklift["position"]["y"]) === "undefined")
+        if (typeof (forklift["position"]) === "undefined" || typeof (forklift["position"]["x"]) === "undefined" ||
+            typeof (forklift["position"]["y"]) === "undefined")
             return false;
         else
             return true;
@@ -105,18 +105,20 @@ class Forklifts {
     handleForkliftMovement() {
         for (let key in forkliftData) {
             // find forklifts with active route
-            if (typeof (forkliftData[key]["route"]) != "undefined" && typeof (forkliftData[key]["route"].instructions) != "undefined"
-                && typeof (forkliftData[key]["route"].instructions[0]) != "undefined") {
+            if (typeof (forkliftData[key]["route"]) != "undefined" && typeof (forkliftData[key]["route"].instructions) != "undefined" &&
+                typeof (forkliftData[key]["route"].instructions[0]) != "undefined") {
                 // set position to beginning of route if it doesn't have one
                 // REMOVE WHEN NOT NEEDED FOR TESTING
                 if (typeof (forkliftData[key]["position"]) == "undefined" ||
                     typeof (forkliftData[key]["position"]["x"]) == "undefined" ||
                     typeof (forkliftData[key]["position"]["y"]) == "undefined") {
-                    let node = mainGraph.sigmaGraph.graph.nodes(forkliftData[key].route.instructions[0].nodeId);
-                    forkliftData[key]["position"] = {
-                        x: node["x"],
-                        y: node["y"]
-                    };
+                    if (typeof (forkliftData[key].route.instructions[0].nodeId) != "undefined") {
+                        let node = mainGraph.sigmaGraph.graph.nodes(forkliftData[key].route.instructions[0].nodeId);
+                        forkliftData[key]["position"] = {
+                            x: node["x"],
+                            y: node["y"]
+                        };
+                    }
                 } else {
                     this.calculateForkliftPosition(forkliftData[key], forkliftSpeed / frameRate);
                 }
@@ -217,13 +219,16 @@ class Forklifts {
         //console.log(route)
         let num = Math.floor(Math.random() * Object.keys(nodes).length);
 
+        let attempts = 0;
         // Remove if forklifts from neighbors
-
         if (route.instructions.length > 1) {
-            while (Object.keys(nodes).splice(num, 1)[0] == route.instructions[route.instructions.length - 2].nodeId
-                || Object.keys(nodes).splice(num, 1)[0][0] == "F") {
+            while (Object.keys(nodes).splice(num, 1)[0] == route.instructions[route.instructions.length - 2].nodeId ||
+                Object.keys(nodes).splice(num, 1)[0][0] == "F") {
                 num = Math.floor(Math.random() * Object.keys(nodes).length);
                 delete Object.keys(nodes).splice(num, 1)[0];
+                attempts++;
+                if (attempts > 20)
+                    break;
             }
         }
 
@@ -247,7 +252,7 @@ class Forklifts {
                 };
                 let nodes = mainGraph.sigmaGraph.graph.nodes();
                 let currentNode = forkliftData[key].currentNode;
-                this.generateRoute(route, (typeof (currentNode) == "undefined") ? nodes[Math.floor(Math.random() * nodes.length)].id : currentNode, 15);
+                this.generateRoute(route, (typeof (currentNode) == "undefined") ? nodes[Math.floor(Math.random() * nodes.length)].id : currentNode, Math.round(Math.random() * 20));
                 if (route.instructions.length != 0)
                     forkliftData[key].route = route;
                 if (key == selectedForklift)
