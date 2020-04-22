@@ -293,7 +293,10 @@ export class Vertex {
 
 
 /**
- * A point in time located at a vertex specifying which forklift moved through the vertex, when it did and where it moved to
+ * A point in time located at a vertex specifying which forklift 
+ * moved through the vertex, when it did, which vertex it visited before
+ * and which vertex it visited after. 
+ * It can be viewed as a node in a linked list.
  */
 export class ScheduleItem {
 
@@ -306,6 +309,7 @@ export class ScheduleItem {
      */
     arrivalTimeCurrentVertex: number;
 
+    /** An identification string for the vertex that this ScheduleItem is attached to */
     currentVertexId: string;
 
     /** A reference to the scheduleItem on the previous vertex */
