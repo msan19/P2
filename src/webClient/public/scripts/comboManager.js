@@ -7,9 +7,27 @@ var forkliftData;
 var ForkliftStates;
 
 
-window.selectedForklift = "";
 window.forkliftSpeed;
 
+function updateSelectedForkliftInformationOnUI() {
+    if (typeof (nForklifts.selectedForklift) == "string" && nForklifts.selectedForklift.length > 0) {
+        let xPos = document.querySelector("#selectedForkliftXPosition");
+        let yPos = document.querySelector("#selectedForkliftYPosition");
+        xPos.innerHTML = (forkliftData[nForklifts.selectedForklift].position.x).toFixed(2);
+        yPos.innerHTML = (forkliftData[nForklifts.selectedForklift].position.y).toFixed(2);
+
+        let state = document.querySelector("#selectedForkliftState");
+        state.innerHTML = forkliftData[nForklifts.selectedForklift].state;
+    } else {
+        let xPos = document.querySelector("#selectedForkliftXPosition");
+        let yPos = document.querySelector("#selectedForkliftYPosition");
+        xPos.innerHTML = "...";
+        yPos.innerHTML = "...";
+        let state = document.querySelector("#selectedForkliftState");
+        state.innerHTML = "...";
+    }
+
+}
 
 function updateForkliftFocus(forklift) {
     selectedForklift = forklift;
@@ -39,7 +57,6 @@ window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
 // Forklift events
 window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
     nForklifts.forklifts = forklifts;
-    console.log(window.mainGraph);
     document.querySelectorAll('.select-forklift').forEach((item) => {
         item.innerHTML = "";
     });
@@ -50,7 +67,7 @@ window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
     }
 
     document.querySelector("form .form-group#forklift-form").onclick = (e) => {
-        nForklifts.selectForklift(e);
+        mainGraph.selectForklift(e.toElement.value);
     };
 
     forkliftData = nForklifts.parseForklifts(forklifts);
@@ -65,7 +82,7 @@ window.setInterval(function () {
         nForklifts.addTestDataToForklifts();
         nForklifts.handleForkliftMovement();
         updateForkliftFocus(nForklifts.selectedForklift);
-
+        updateSelectedForkliftInformationOnUI();
         mainGraph.updateForkliftsOnGraph();
     }
 }, 1000 / frameRate);

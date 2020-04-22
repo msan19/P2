@@ -16,17 +16,6 @@ class Forklifts {
         });
     }
 
-    selectForklift(event) {
-        if (event.toElement.value != "")
-            this.selectedForklift = event.toElement.value;
-        else {
-            this.selectedForklift = "";
-            mainGraph.revertColorsToOriginal();
-        }
-
-        updateForkliftFocus(this.selectedForklift);
-    }
-
     parseForklifts(data) {
         let forklifts = [];
         for (let key in data) {
@@ -255,7 +244,7 @@ class Forklifts {
                 this.generateRoute(route, (typeof (currentNode) == "undefined") ? nodes[Math.floor(Math.random() * nodes.length)].id : currentNode, Math.round(Math.random() * 20));
                 if (route.instructions.length != 0)
                     forkliftData[key].route = route;
-                if (key == selectedForklift)
+                if (key == this.selectedForklift)
                     mainGraph.displaySelectedForkliftPath();
             }
 

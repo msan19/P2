@@ -53,20 +53,14 @@ class Graph {
     }
 
     onStageClick() {
-        window.selectedForklift = "";
+        nForklifts.selectedForklift = "";
         this.revertColorsToOriginal();
         this.sigmaGraph.refresh();
     }
 
     onNodeClick(element) {
         if (element.data.node.id[0] == "F") {
-            selectedForklift = element.data.node.id;
-            nForklifts.selectedForklift = element.data.node.id;
-            if (typeof (forkliftData[selectedForklift]["route"]) != "undefined"
-                && typeof (forkliftData[selectedForklift]["route"]["instructions"]) != "undefined") {
-                let path = this.intepretInstructions(forkliftData[selectedForklift]["route"]["instructions"]);
-                this.displayPath(path);
-            }
+            this.selectForklift(element.data.node.id);
         }
     }
 
@@ -176,13 +170,14 @@ class Graph {
 
     // FORKLIFT
     selectForklift(id) {
-        if (typeof (id) != "undefined") {
-            selectedForklift = id;
-            if (typeof (forkliftData[selectedForklift]["route"]) != "undefined" && typeof (forkliftData[selectedForklift]["route"]["instructions"]) != "undefined") {
-                let path = intepretInstructions(forkliftData[selectedForklift]["route"]["instructions"]);
+        if (typeof (id) != "undefined" && id.length > 0) {
+            nForklifts.selectedForklift = id;
+            if (typeof (forkliftData[nForklifts.selectedForklift]["route"]) != "undefined" && typeof (forkliftData[nForklifts.selectedForklift]["route"]["instructions"]) != "undefined") {
+                let path = this.intepretInstructions(forkliftData[nForklifts.selectedForklift]["route"]["instructions"]);
                 this.displayPath(path);
             }
-            updateForkliftFocus(selectedForklift);
+            updateSelectedForkliftInformationOnUI();
+            updateForkliftFocus(nForklifts.selectedForklift);
         }
 
     }
@@ -237,13 +232,13 @@ class Graph {
     }
 
     addForkliftHighlightToNextNode() {
-        if (typeof (selectedForklift) == "string" && selectedForklift.length > 0 &&
-            typeof (this.sigmaGraph.graph.nodes(selectedForklift)) != "undefined" && typeof (forkliftData[selectedForklift].route.instructions[0]) != "undefined" &&
-            typeof (forkliftData[selectedForklift].route.instructions[0].nodeId) != "undefined") {
+        if (typeof (nForklifts.selectedForklift) == "string" && nForklifts.selectedForklift.length > 0 &&
+            typeof (this.sigmaGraph.graph.nodes(nForklifts.selectedForklift)) != "undefined" && typeof (forkliftData[nForklifts.selectedForklift].route.instructions[0]) != "undefined" &&
+            typeof (forkliftData[nForklifts.selectedForklift].route.instructions[0].nodeId) != "undefined") {
             this.sigmaGraph.graph.addEdge({
                 id: forkliftHighlightEdgePathPiece,
-                source: selectedForklift,
-                target: forkliftData[selectedForklift].route.instructions[0].nodeId,
+                source: nForklifts.selectedForklift,
+                target: forkliftData[nForklifts.selectedForklift].route.instructions[0].nodeId,
                 size: 4,
                 color: hightlightcolor
             });
@@ -256,7 +251,7 @@ class Graph {
     }
 
     displaySelectedForkliftPath() {
-        this.displayPath(this.intepretInstructions(forkliftData[selectedForklift].route.instructions));
+        this.displayPath(this.intepretInstructions(forkliftData[nForklifts.selectedForklift].route.instructions));
     }
 
     displayPath(path) {
@@ -268,7 +263,7 @@ class Graph {
 
     hightlightPath(path) {
         this.sigmaGraph.graph.nodes().forEach((element) => {
-            if (element.id != selectedForklift)
+            if (element.id != nForklifts.selectedForklift)
                 element.color = unFocusColor;
             else
                 element.color = element.originalColor;
