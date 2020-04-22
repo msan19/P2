@@ -178,11 +178,14 @@ function handleForkliftMovement() {
             if (typeof (forkliftData[key]["position"]) == "undefined" ||
                 typeof (forkliftData[key]["position"]["x"]) == "undefined" ||
                 typeof (forkliftData[key]["position"]["y"]) == "undefined") {
-                let node = mainGraph.sigmaGraph.graph.nodes(forkliftData[key].route.instructions[0].nodeId);
-                forkliftData[key]["position"] = {
-                    x: node["x"],
-                    y: node["y"]
-                };
+                if (typeof (forkliftData[key].route.instructions[0].nodeId) != "undefined") {
+                    let node = mainGraph.sigmaGraph.graph.nodes(forkliftData[key].route.instructions[0].nodeId);
+                    forkliftData[key]["position"] = {
+                        x: node["x"],
+                        y: node["y"]
+                    };
+                }
+
             } else {
                 calculateForkliftPosition(forkliftData[key], forkliftSpeed / frameRate);
             }
@@ -258,6 +261,19 @@ function updateForkliftFocus(forklift) {
 }
 
 
+function updateSelectedForkliftInformationOnUI() {
+    if (typeof (selectedForklift) == "string" && selectedForklift.length > 0) {
+        let xPos = document.querySelector("#selectedForkliftXPosition");
+        let yPos = document.querySelector("#selectedForkliftYPosition");
+        xPos.innerHTML = (forkliftData[selectedForklift].position.x).toFixed(2);
+        yPos.innerHTML = (forkliftData[selectedForklift].position.y).toFixed(2);
+
+        let state = document.querySelector("#selectedForkliftState");
+        state.innerHTML = forkliftData[selectedForklift].state;
+    }
+
+}
+
 window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
         addTestDataToForklifts();
@@ -265,6 +281,7 @@ window.setInterval(function () {
         //updateForkliftFocus(selectedForklift);
 
         mainGraph.updateForkliftsOnGraph();
+        updateSelectedForkliftInformationOnUI();
     }
 }, 1000 / frameRate);
 
@@ -292,6 +309,7 @@ window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
     }
 */
     parseForklifts(forklifts);
+    console.log(forkliftData)
 });
 
 window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
