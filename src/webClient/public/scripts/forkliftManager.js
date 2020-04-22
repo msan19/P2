@@ -9,8 +9,6 @@ window.forkliftSpeed;
     ForkliftStates[ForkliftStates["initiating"] = 4] = "initiating";
 })(ForkliftStates || (ForkliftStates = {}));
 
-
-
 // ETC
 function getDistanceBetweenPoints(x, y, targetX, targetY) {
     let xDiff = targetX - x;
@@ -249,17 +247,17 @@ function parseForklifts(data) {
 }
 // END --- DATA HANDLING
 
-/*function selectForklift(event) {
-    selectedForklift = event.toElement.value;
-    updateForkliftFocus(selectedForklift);
-}*/
-
 function updateForkliftFocus(forklift) {
-    selectedForklift = forklift;
     document.querySelector("#currentForklift").innerHTML = `<h3>${forklift}</h3>`;
     document.querySelector("#forklift-list").value = forklift;
 }
 
+function addForkliftToUi(forkliftInfo) {
+    //document.querySelector("#forklift-list").innerHTML += `<a class="dropdown-item" value="${forkliftInfo.id}">${forkliftInfo.id}</a>`;
+    document.querySelectorAll('.select-forklift').forEach((item) => {
+        item.innerHTML += `<option value=${forkliftInfo.id}>${forkliftInfo.id}</option>`;
+    });
+}
 
 function updateSelectedForkliftInformationOnUI() {
     if (typeof (selectedForklift) == "string" && selectedForklift.length > 0) {
@@ -286,20 +284,13 @@ window.setInterval(function () {
 }, 1000 / frameRate);
 
 window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
-    let nForklifts = new Forklifts(document, forklifts);
     document.querySelectorAll('.select-forklift').forEach((item) => {
         item.innerHTML = "";
     });
-
-    document.querySelector("#forklift-list").innerHTML = `<option value=${""}>${""}</option>`;
+    document.querySelector("#forklift-list").innerHTML = "";
     for (let key in forklifts) {
-        nForklifts.addForkliftToUi(forklifts[key]);
+        addForkliftToUi(forklifts[key]);
     }
-    //document.querySelector('.select-forklift#forklift-list').innerHTML += `<option value=${"none"}>${"none"}</option>`;
-
-    document.querySelector("form .form-group#forklift-form").onclick = (e) => {
-        nForklifts.selectForklift(e);
-    };
 
     // This code doesn't seem to do anything? The function forkliftSelection doesn't exist, right?
     /*
@@ -313,15 +304,11 @@ window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
 });
 
 window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
-    nForklifts.addForkliftToUi(forklift);
+    addForkliftToUi(forklift);
 });
 
-window.setInterval(function () {
-    if (typeof (mainGraph) != "undefined") {
-        addTestDataToForklifts();
-        handleForkliftMovement();
-        updateForkliftFocus(selectedForklift);
-
-        mainGraph.updateForkliftsOnGraph();
-    }
-}, 1000 / frameRate);
+var forkliftForm = document.querySelector("form .form-group#forklift-form");
+console.log(document.querySelectorAll("#forkliftSelect option"));
+forkliftForm.onclick = (e) => {
+    mainGraph.selectForklift(e.toElement.value);
+};
