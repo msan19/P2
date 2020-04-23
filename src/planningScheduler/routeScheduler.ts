@@ -38,7 +38,7 @@ export class RouteScheduler {
         this.data = data;
         this.routeSets = [];
         this.bestRouteSet = null;
-        this.heuristic = (v1: Vertex, v2: Vertex) => { return v1.getDistanceDirect(v2); };
+        this.heuristic = (v1: Vertex, v2: Vertex) => { return v1.getDistanceDirect(v2) / this.data.warehouse.maxForkliftSpeed * 1000; };
     }
 
     getRoute(orderId: string): Route {
