@@ -64,7 +64,11 @@ export class Forklift extends ForkliftInfo {
 
     sendStatus() {
         this.socket.send(JSON.stringify({
-            "id": this.id
+            "id": this.id,
+            "batteryStatus": this.batteryStatus,
+            "palletId": this.palletId,
+            "state": this.state,
+            "position": this.position
         }));
     }
 
