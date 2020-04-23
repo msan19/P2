@@ -367,10 +367,10 @@ function testAStar(): void {
         let results: number[] = [];
         let expecteds: number[] = [];
 
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 0, 30000));
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 401, 30000));
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 30401, 30000));
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 62481, 30000));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 0));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 401));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 30401));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 62481));
 
         expecteds.push(Infinity);
         expecteds.push(30400 + 30000 / 2);
