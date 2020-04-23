@@ -38,7 +38,7 @@ export class RouteScheduler {
         this.data = data;
         this.routeSets = [];
         this.bestRouteSet = null;
-        this.heuristic = (v1: Vertex, v2: Vertex) => { return v1.getDistanceDirect(v2); };
+        this.heuristic = (v1: Vertex, v2: Vertex) => { return v1.getDistanceDirect(v2) / this.data.warehouse.maxForkliftSpeed * 1000; };
     }
 
     getRoute(orderId: string): Route {
@@ -143,26 +143,27 @@ export class RouteScheduler {
         let endVertex: Vertex = routeSet.graph.vertices[order.endVertexId];
         let startVertex: Vertex = routeSet.graph.vertices[order.startVertexId];
         let f = (currentVertex: Vertex): number => {
-            return this.heuristic(currentVertex, endVertex) + routeSet.graph.vertices[currentVertex.id].g(order.startVertexId);
+            return this.heuristic(currentVertex, endVertex) + routeSet.graph.vertices[currentVertex.id].visitTime;
         };
 
         let queue = new MinPriorityQueue(f);
         queue.insert(startVertex);
-        let pathLength = Infinity;
+        let arrivalTimeEndVertex = Infinity;
         routeSet.graph.reset();
         startVertex.isVisited = true;
+        startVertex.visitTime = order.time;
 
         while (queue.array.length > 0) {
             let v: Vertex = queue.extractMin();
             for (let u = 0; u < v.adjacentVertexIds.length; u++) {
                 let currentVertex: Vertex = routeSet.graph.vertices[v.adjacentVertexIds[u]];
                 if (currentVertex.id === endVertex.id) {
-                    pathLength = f(currentVertex);
+                    arrivalTimeEndVertex = f(currentVertex);
                     currentVertex.isVisited = true;
                     currentVertex.previousVertex = v;
                 } else if (!currentVertex.isVisited) {
                     let tempLength: number = f(currentVertex);
-                    if (tempLength < pathLength) {
+                    if (tempLength < arrivalTimeEndVertex) {
                         queue.insert(currentVertex);
                         currentVertex.isVisited = true;
                         currentVertex.previousVertex = v;
