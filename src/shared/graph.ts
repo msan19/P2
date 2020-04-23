@@ -268,11 +268,11 @@ export class Vertex {
         let i = 0, j = this.scheduleItems.length;
 
         while (j - i > 1) {
-            let a = Math.round((i + j) / 2);
-            if (this.scheduleItems[a].arrivalTimeCurrentVertex >= time) {
-                j = a;
+            let pivotPoint = Math.round((i + j) / 2);
+            if (this.scheduleItems[pivotPoint].arrivalTimeCurrentVertex >= time) {
+                j = pivotPoint;
             } else {
-                i = a;
+                i = pivotPoint;
             }
         }
 
