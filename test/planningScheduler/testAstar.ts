@@ -334,7 +334,7 @@ function testAStar(): void {
         order.time = 134513;
         let expectedRouteLength: number = 14;
 
-        routeScheduler.planOptimalRoute(routeSet, order);
+        routeScheduler.planOptimalRoute(routeSet, order, "F0");
 
         checkLength(graph.vertices[order.endVertexId].g(order.startVertexId), expectedRouteLength);
     });
@@ -391,10 +391,10 @@ function testAStar(): void {
         let results: number[] = [];
         let expecteds: number[] = [];
 
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 0, 30000));
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 401, 30000));
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 30401, 30000));
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 62481, 30000));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 0));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 401));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 30401));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 62481));
 
         expecteds.push(Infinity);
         expecteds.push(30400 + 30000 / 2);
