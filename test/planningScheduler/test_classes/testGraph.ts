@@ -215,7 +215,31 @@ function testVertex(): void {
                 new ScheduleItem("F22", 10900, "F23")
             ];
             vertex.scheduleItems = scheduleItemList;
-            let expected: number = 5;
+            let expected: number = 0;
+            let time: number = 0;
+            let result: number = vertex.getScheduleItemIndex(time);
+
+            it(`Should be ${expected}`, () => {
+                expect(result).to.equal(expected);
+            });
+        });
+
+        describe("Getting existing ScheduleItem", () => {
+            let vertex = new Vertex("P23", new Vector2(3, 4));
+            let scheduleItemList = [
+                new ScheduleItem("F22", 10000, "F23"),
+                new ScheduleItem("F22", 10100, "F23"),
+                new ScheduleItem("F22", 10200, "F23"),
+                new ScheduleItem("F22", 10300, "F23"),
+                new ScheduleItem("F22", 10400, "F23"),
+                new ScheduleItem("F22", 10500, "F23"),
+                new ScheduleItem("F22", 10600, "F23"),
+                new ScheduleItem("F22", 10700, "F23"),
+                new ScheduleItem("F22", 10800, "F23"),
+                new ScheduleItem("F22", 10900, "F23")
+            ];
+            vertex.scheduleItems = scheduleItemList;
+            let expected: number = 4;
             let time: number = 10400;
             let result: number = vertex.getScheduleItemIndex(time);
 
@@ -298,6 +322,7 @@ function testVertex(): void {
             let newScheduleItem: ScheduleItem = new ScheduleItem("F22", 4000, "F23");
             let time = 4000;
             console.log(vertex.insertScheduleItem(time, newScheduleItem));
+            console.log(scheduleItemList);
 
             let expected: number = time;
             let result: number = vertex.scheduleItems[0].arrivalTimeCurrentVertex;
