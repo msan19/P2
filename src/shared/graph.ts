@@ -276,7 +276,7 @@ export class Vertex {
             }
         }
 
-        if (this.scheduleItems[i].arrivalTimeCurrentVertex > time) {
+        if (this.scheduleItems.length !== 0 && this.scheduleItems[i].arrivalTimeCurrentVertex > time) {
             return j - 1;
         } else {
             return j;
