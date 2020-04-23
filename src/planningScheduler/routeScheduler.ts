@@ -91,7 +91,7 @@ export class RouteScheduler {
         for (i = currentVertex.getScheduleItemIndex(currentTime); i >= 0 && previousVertexId !== destinationVertex.id && nextVertexId !== destinationVertex.id; i--) {
             if (currentVertex.scheduleItems[i].previousScheduleItem !== null) {
                 previousVertexId = currentVertex.scheduleItems[i].previousScheduleItem.currentVertexId;
-        }
+            }
             if (currentVertex.scheduleItems[i].nextScheduleItem !== null) {
                 nextVertexId = currentVertex.scheduleItems[i].nextScheduleItem.currentVertexId;
             }
@@ -121,9 +121,11 @@ export class RouteScheduler {
         return destinationVertex.scheduleItems[i - 1].arrivalTimeCurrentVertex + (timeIntervalMinimumSize / 2);
     }
 
-    // TO DO
-    computeMaxWarp(v1: Vertex, v2: Vertex, time: number): number {
-        return 0;
+    /**
+     * Computes the earliest possible time for when the forklift can arrive at destinationVertex
+     */
+    computeMaxWarp(currentVertex: Vertex, destinationVertex: Vertex, time: number): number {
+        return (currentVertex.getDistanceDirect(destinationVertex) / this.data.warehouse.maxForkliftSpeed) + time;
     }
 
     /**
@@ -163,13 +165,14 @@ export class RouteScheduler {
             }
         }
 
-        if (order.timeType === Order.timeTypes.start) {
-            this.upStacking(endVertex, order, "", this.data.warehouse.maxForkliftSpeed);
-            // Recursively stacking up
-        } else if (order.timeType === Order.timeTypes.end) {
-            this.downStacking(endVertex, order, order.time, "", this.data.warehouse.maxForkliftSpeed);
-            // Recursively stacking down
-        }
+        /// TO DO
+        // if (order.timeType === Order.timeTypes.start) {
+        //     this.upStacking(endVertex, order, "", this.data.warehouse.maxForkliftSpeed);
+        //     // Recursively stacking up
+        // } else if (order.timeType === Order.timeTypes.end) {
+        //     this.downStacking(endVertex, order, order.time, "", this.data.warehouse.maxForkliftSpeed);
+        //     // Recursively stacking down
+        // }
 
         this.printRoute(startVertex, endVertex);
         console.log("\n");
@@ -182,6 +185,7 @@ export class RouteScheduler {
         console.log(endVertex.scheduleItems);
     }
 
+    /// TO DO
     /**
      * Adds scheduleItems to all vertices the sorting algorithm pathed through.
      * As start time is known it goes from the end element to the start element,
@@ -202,10 +206,11 @@ export class RouteScheduler {
         let time: number = (vertex.id === order.startVertexId)
             ? order.time
             : fulfillTime + this.upStacking(vertex.previousVertex, order, vertex.id, forkliftSpeed);
-        vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId));
+        //vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId, /* missing */, vertex.previousVertex)); 
         return time;
     }
 
+    /// TO DO
     /** 
      * Adds scheduleItems to all vertices the sorting algorithm pathed through.
      * As end time is known the algorithm appends from the last element (end vertex)
@@ -221,7 +226,7 @@ export class RouteScheduler {
         let fulfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / forkliftSpeed;
         let timeOnPrev: number = time - fulfillTime;
 
-        vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId));
+        //vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId));
         if (vertex.id !== order.startVertexId) {
             this.downStacking(vertex.previousVertex, order, timeOnPrev, vertex.id, forkliftSpeed);
         }
