@@ -179,13 +179,13 @@ export class RouteScheduler {
         }
 
         /// TO DO
-        // if (order.timeType === Order.timeTypes.start) {
-        //     this.upStacking(endVertex, order, "", this.data.warehouse.maxForkliftSpeed);
-        //     // Recursively stacking up
-        // } else if (order.timeType === Order.timeTypes.end) {
-        //     this.downStacking(endVertex, order, order.time, "", this.data.warehouse.maxForkliftSpeed);
-        //     // Recursively stacking down
-        // }
+        if (order.timeType === Order.timeTypes.start) {
+            this.upStacking(endVertex, order, forkliftId, null);
+            // Recursively stacking up
+        } else if (order.timeType === Order.timeTypes.end) {
+            // this.downStacking(endVertex, order, order.time, "", this.data.warehouse.maxForkliftSpeed);
+            // Recursively stacking down
+        }
 
         //this.printRoute(startVertex, endVertex);
         //console.log("\n");
