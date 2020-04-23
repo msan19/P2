@@ -145,6 +145,7 @@ export class RouteScheduler {
         let arrivalTimeEndVertex = Infinity;
         routeSet.graph.reset();
         startVertex.isVisited = true;
+        startVertex.visitTime = order.time;
 
         while (queue.array.length > 0) {
             let v: Vertex = queue.extractMin();
