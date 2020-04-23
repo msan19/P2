@@ -67,11 +67,11 @@ export class RouteScheduler {
     }
 
     isCollisionInevitable(startVertexId: string, scheduleItem: ScheduleItem, maxWarp: number, currentTime: number): boolean {
-        if (scheduleItem.nextScheduleItem.currentVertexId === startVertexId) {
+        if (scheduleItem.nextScheduleItem !== null && scheduleItem.nextScheduleItem.currentVertexId === startVertexId) {
             if (scheduleItem.arrivalTimeCurrentVertex > maxWarp || scheduleItem.nextScheduleItem.arrivalTimeCurrentVertex > currentTime) {
                 return true;
             }
-        } else if (scheduleItem.previousScheduleItem.currentVertexId === startVertexId) {
+        } else if (scheduleItem.previousScheduleItem !== null && scheduleItem.previousScheduleItem.currentVertexId === startVertexId) {
             if (scheduleItem.previousScheduleItem.arrivalTimeCurrentVertex > currentTime) {
                 return true;
             }
