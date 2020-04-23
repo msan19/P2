@@ -11,13 +11,20 @@ window.forkliftSpeed;
 
 function updateSelectedForkliftInformationOnUI() {
     if (typeof (nForklifts.selectedForklift) == "string" && nForklifts.selectedForklift.length > 0) {
-        let xPos = document.querySelector("#selectedForkliftXPosition");
-        let yPos = document.querySelector("#selectedForkliftYPosition");
-        xPos.innerHTML = (forkliftData[nForklifts.selectedForklift].position.x).toFixed(2);
-        yPos.innerHTML = (forkliftData[nForklifts.selectedForklift].position.y).toFixed(2);
+        if (typeof (forkliftData[nForklifts.selectedForklift].position) != "undefined" &&
+            typeof (forkliftData[nForklifts.selectedForklift].position.x) != "undefined" &&
+            typeof (forkliftData[nForklifts.selectedForklift].position.y) != "undefined") {
+            let xPos = document.querySelector("#selectedForkliftXPosition");
+            let yPos = document.querySelector("#selectedForkliftYPosition");
+            xPos.innerHTML = (forkliftData[nForklifts.selectedForklift].position.x).toFixed(2);
+            yPos.innerHTML = (forkliftData[nForklifts.selectedForklift].position.y).toFixed(2);
+        }
+        if (typeof (forkliftData[nForklifts.selectedForklift].state) != "undefined") {
+            let state = document.querySelector("#selectedForkliftState");
+            state.innerHTML = forkliftData[nForklifts.selectedForklift].state;
+        }
 
-        let state = document.querySelector("#selectedForkliftState");
-        state.innerHTML = forkliftData[nForklifts.selectedForklift].state;
+
     } else {
         let xPos = document.querySelector("#selectedForkliftXPosition");
         let yPos = document.querySelector("#selectedForkliftYPosition");
