@@ -214,13 +214,12 @@ export class RouteScheduler {
      * @returns The time at which the vertex's scheduleItem was calculated.
      *          Only used by the recursion.
      */
-    upStacking(vertex: Vertex, order: Order, nextVertexId: string, forkliftSpeed: number): number {
-        let fulfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / forkliftSpeed;
-        let time: number = (vertex.id === order.startVertexId)
-            ? order.time
-            : fulfillTime + this.upStacking(vertex.previousVertex, order, vertex.id, forkliftSpeed);
-        //vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId, /* missing */, vertex.previousVertex)); 
-        return time;
+    upStacking(vertex: Vertex, order: Order, forkliftId: string, nextItem: ScheduleItem | null): void {
+        let i = vertex.insertScheduleItem(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
+        if (nextItem !== null) nextItem.linkPrevious(vertex.scheduleItems[i]);
+        if (vertex.previousVertex.id !== order.startVertexId) {
+            this.upStacking(vertex.previousVertex, order, forkliftId, vertex.scheduleItems[i]);
+        }
     }
 
     /// TO DO
