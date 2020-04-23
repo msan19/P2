@@ -171,6 +171,7 @@ class Forklifts {
             // update displayed path if the it is the current forklift
             if (this.selectedForklift == forklift["id"]) {
                 mainGraph.displaySelectedForkliftPath();
+                removeElementFromSelectedForkliftRoute(forklift.currentNode);
             }
             // if forklift has reached last node, set position to last node
             // this just makes it easier to calculate, can be made better i suspect
@@ -240,10 +241,15 @@ class Forklifts {
                 let nodes = mainGraph.sigmaGraph.graph.nodes();
                 let currentNode = forkliftData[key].currentNode;
                 this.generateRoute(route, (typeof (currentNode) == "undefined") ? nodes[Math.floor(Math.random() * nodes.length)].id : currentNode, Math.round(Math.random() * 20));
-                if (route.instructions.length != 0)
+                if (route.instructions.length != 0) {
                     forkliftData[key].route = route;
-                if (key == this.selectedForklift)
-                    mainGraph.displaySelectedForkliftPath();
+                    if (key == this.selectedForklift) {
+                        mainGraph.displaySelectedForkliftPath();
+                        initiateSelectedForkliftRouteOnUI(forkliftData[nForklifts.selectedForklift]);
+                    }
+                }
+
+
             }
 
         }

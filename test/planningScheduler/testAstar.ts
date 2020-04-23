@@ -334,9 +334,39 @@ function testAStar(): void {
         order.time = 134513;
         let expectedRouteLength: number = 14;
 
-        routeScheduler.planOptimalRoute(routeSet, order);
+        routeScheduler.planOptimalRoute(routeSet, order, "F0");
 
         checkLength(graph.vertices[order.endVertexId].g(order.startVertexId), expectedRouteLength);
+    });
+
+    describe(`Make A* great again!`, () => {
+        // Creating necessary objects
+        let graph: Graph = createGraph();
+        let routeSet: RouteSet = new RouteSet([], graph);
+        let warehouse = new Warehouse(graph, 15);
+        let data: DataContainer = new DataContainer();
+        data.warehouse = warehouse;
+        let routeScheduler: RouteScheduler = new RouteScheduler(data);
+
+        // Orders and such
+        let order: Order = new Order("O0", Order.types.moveForklift, "F23", "P23", "N1-2", "N8-9");
+        order.timeType = Order.timeTypes.start;
+        order.time = 400;
+
+        let orderAnnoying: Order = new Order("O1", Order.types.moveForklift, "F24", "P24", "N0-3", "N5-8");
+        orderAnnoying.timeType = Order.timeTypes.start;
+        orderAnnoying.time = 400;
+
+        routeScheduler.planOptimalRoute(routeSet, order, "F23");
+        routeScheduler.planOptimalRoute(routeSet, orderAnnoying, "F24");
+
+        for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                if (routeSet.graph.vertices[`N${i}-${j}`].scheduleItems.length > 0 && routeSet.graph.vertices[`N${i}-${j}`].scheduleItems[0].forkliftId === "F24") {
+                    console.log(routeSet.graph.vertices[`N${i}-${j}`].scheduleItems);
+                }
+            }
+        }
     });
 
     describe(`Test arrival time`, () => {
@@ -367,10 +397,10 @@ function testAStar(): void {
         let results: number[] = [];
         let expecteds: number[] = [];
 
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 0, 30000));
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 401, 30000));
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 30401, 30000));
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 62481, 30000));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 0));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 401));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 30401));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 62481));
 
         expecteds.push(Infinity);
         expecteds.push(30400 + 30000 / 2);
