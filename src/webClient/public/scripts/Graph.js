@@ -178,6 +178,9 @@ class Graph {
             }
             updateSelectedForkliftInformationOnUI();
             updateForkliftFocus(nForklifts.selectedForklift);
+        } else if (id === "") {
+            nForklifts.selectedForklift = "";
+            this.revertColorsToOriginal();
         }
 
     }

@@ -37,7 +37,7 @@ function updateSelectedForkliftInformationOnUI() {
 }
 
 function updateForkliftFocus(forklift) {
-    selectedForklift = forklift;
+    nForklifts.selectedForklift = forklift;
     document.querySelector("#currentForklift").innerHTML = `<h3>${forklift}</h3>`;
     document.querySelector("#forklift-list").value = forklift;
 }
