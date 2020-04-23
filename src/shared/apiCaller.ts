@@ -20,15 +20,12 @@ async function baseGetJson(path): Promise<any> {
 }
 
 export class ApiCaller {
-    hostname: string;
-    port: number;
-    constructor(hostname: string, port: number) {
-        this.hostname = hostname;
-        this.port = port;
-    }
+    basePath: string;
+    constructor(basePath: string) {
+        // Strip a following slash
+        if (basePath[basePath.length - 1] === "/") basePath = basePath.substring(0, basePath.length - 1);
 
-    get basePath() {
-        return `http://${this.hostname}:${this.port}`;
+        this.basePath = basePath;
     }
 
     async getWarehouse(): Promise<Warehouse> {

@@ -269,7 +269,7 @@ export class Vertex {
 
         while (j - i > 1) {
             let a = Math.round((i + j) / 2);
-            if (this.scheduleItems[a].arrivalTimeCurrentVertex > time) {
+            if (this.scheduleItems[a].arrivalTimeCurrentVertex >= time) {
                 j = a;
             } else {
                 i = a;
@@ -283,7 +283,7 @@ export class Vertex {
         }
     }
 
-    insertScheduleItem(time: number, scheduleItem: ScheduleItem) {
+    insertScheduleItem(time: number, scheduleItem: ScheduleItem): number {
         let index = this.getScheduleItemIndex(time);
         this.scheduleItems.splice(index, 0, scheduleItem);
         return index;
@@ -312,10 +312,10 @@ export class ScheduleItem {
     /** An identification string for the vertex that this ScheduleItem is attached to */
     currentVertexId: string;
 
-    /** A reference to the scheduleItem on the previous vertex */
+    /** A reference to the scheduleItem on the previous vertex that the forklift was on */
     previousScheduleItem: ScheduleItem;
 
-    /** A reference to the scheduleItem on the next vertex */
+    /** A reference to the scheduleItem on the next vertex that the forklift was on */
     nextScheduleItem: ScheduleItem;
 
     constructor(forkliftId: string, arrivalTimeCurrentVertex: number, currentVertexId: string) {
@@ -339,6 +339,16 @@ export class ScheduleItem {
         if (typeof (item.currentVertexId) !== "string" || item.nextVertexId.length < 1) return null;
 
         return new ScheduleItem(item.forkliftId, item.time, item.nextVertexId);
+    }
+
+    linkPrevious(scheduleItem: ScheduleItem) {
+        this.previousScheduleItem = scheduleItem;
+        scheduleItem.nextScheduleItem = this;
+    }
+
+    linkNext(scheduleItem: ScheduleItem) {
+        this.nextScheduleItem = scheduleItem;
+        scheduleItem.previousScheduleItem = this;
     }
 
     /**

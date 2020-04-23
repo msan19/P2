@@ -67,11 +67,11 @@ export class RouteScheduler {
     }
 
     isCollisionInevitable(startVertexId: string, scheduleItem: ScheduleItem, maxWarp: number, currentTime: number): boolean {
-        if (scheduleItem.nextScheduleItem.currentVertexId === startVertexId) {
+        if (scheduleItem.nextScheduleItem !== null && scheduleItem.nextScheduleItem.currentVertexId === startVertexId) {
             if (scheduleItem.arrivalTimeCurrentVertex > maxWarp || scheduleItem.nextScheduleItem.arrivalTimeCurrentVertex > currentTime) {
                 return true;
             }
-        } else if (scheduleItem.previousScheduleItem.currentVertexId === startVertexId) {
+        } else if (scheduleItem.previousScheduleItem !== null && scheduleItem.previousScheduleItem.currentVertexId === startVertexId) {
             if (scheduleItem.previousScheduleItem.arrivalTimeCurrentVertex > currentTime) {
                 return true;
             }
@@ -79,46 +79,59 @@ export class RouteScheduler {
         return false;
     }
 
-    getArrivalTime(v1: Vertex, v2: Vertex, currentTime: number, timeIntervalMinimumSize: number): number {
-        let id1: string = "";
-        let id2: string = "";
+    getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number, timeIntervalMinimumSize: number): number {
+        let previousVertexId: string = "";
+        let nextVertexId: string = "";
         let i: number;
         let time: number;
         let interval: number;
         let maxWarp: number;
 
-        for (i = v1.getScheduleItemIndex(currentTime); i >= 0 && id1 !== v2.id && id2 !== v2.id; i--) {
-            id1 = v1.scheduleItems[i].previousScheduleItem.currentVertexId;
-            id2 = v1.scheduleItems[i].nextScheduleItem.currentVertexId;
+        /** Find earliest possible reference to destinationVertex */
+        for (i = currentVertex.getScheduleItemIndex(currentTime); i >= 0
+            && i < currentVertex.scheduleItems.length
+            && previousVertexId !== destinationVertex.id
+            && nextVertexId !== destinationVertex.id; i--) {
+            if (currentVertex.scheduleItems[i].previousScheduleItem !== null) {
+                previousVertexId = currentVertex.scheduleItems[i].previousScheduleItem.currentVertexId;
+            }
+            if (currentVertex.scheduleItems[i].nextScheduleItem !== null) {
+                nextVertexId = currentVertex.scheduleItems[i].nextScheduleItem.currentVertexId;
+            }
         }
-
+        i = i === -1 ? 0 : i;
         ////////////////////////////
-        if (id1 === v2.id) {
-            time = v1.scheduleItems[i].previousScheduleItem.arrivalTimeCurrentVertex;
-        } else if (id2 === v2.id) {
-            time = v1.scheduleItems[i].nextScheduleItem.arrivalTimeCurrentVertex;
+        if (previousVertexId === destinationVertex.id && currentVertex.scheduleItems[i].previousScheduleItem !== null) {
+            time = currentVertex.scheduleItems[i].previousScheduleItem.arrivalTimeCurrentVertex;
+        } else if (nextVertexId === destinationVertex.id && currentVertex.scheduleItems[i].nextScheduleItem !== null) {
+            time = currentVertex.scheduleItems[i].nextScheduleItem.arrivalTimeCurrentVertex;
         } else {
             time = 0;
         }
-        i = v2.getScheduleItemIndex(time);
+        i = destinationVertex.getScheduleItemIndex(time);
+        time = 0;
         ////////////////////////////
 
         interval = 0;
-        maxWarp = this.computeMaxWarp(v1, v2, currentTime);
-        while (interval < timeIntervalMinimumSize && time < maxWarp && i < v2.scheduleItems.length) {
-            if (this.isCollisionInevitable(v1.id, v2.scheduleItems[i], maxWarp, currentTime)) {
+        maxWarp = this.computeMaxWarp(currentVertex, destinationVertex, currentTime);
+        while ((interval < timeIntervalMinimumSize || time <= maxWarp) && i < destinationVertex.scheduleItems.length) {
+            if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[i], maxWarp, currentTime)) {
                 return Infinity;
             }
-            interval = v2.scheduleItems[i + 1].arrivalTimeCurrentVertex - v2.scheduleItems[i].arrivalTimeCurrentVertex;
+            interval = i + 1 >= destinationVertex.scheduleItems.length ? Infinity
+                : destinationVertex.scheduleItems[i + 1].arrivalTimeCurrentVertex - destinationVertex.scheduleItems[i].arrivalTimeCurrentVertex;
+            time = currentVertex.scheduleItems[i].arrivalTimeCurrentVertex;
             i++;
         }
 
-        return v2.scheduleItems[i - 1].arrivalTimeCurrentVertex + (timeIntervalMinimumSize / 2);
+        return destinationVertex.scheduleItems[i - 1].arrivalTimeCurrentVertex + (timeIntervalMinimumSize / 2);
     }
 
-    // TO DO
-    computeMaxWarp(v1: Vertex, v2: Vertex, time: number): number {
-        return 0;
+    /**
+     * Computes the earliest possible time for when the forklift can arrive at destinationVertex
+     */
+    computeMaxWarp(currentVertex: Vertex, destinationVertex: Vertex, time: number): number {
+        return (1000 * currentVertex.getDistanceDirect(destinationVertex) / this.data.warehouse.maxForkliftSpeed) + time;
     }
 
     /**
@@ -158,16 +171,17 @@ export class RouteScheduler {
             }
         }
 
-        if (order.timeType === Order.timeTypes.start) {
-            this.upStacking(endVertex, order, "", this.data.warehouse.maxForkliftSpeed);
-            // Recursively stacking up
-        } else if (order.timeType === Order.timeTypes.end) {
-            this.downStacking(endVertex, order, order.time, "", this.data.warehouse.maxForkliftSpeed);
-            // Recursively stacking down
-        }
+        /// TO DO
+        // if (order.timeType === Order.timeTypes.start) {
+        //     this.upStacking(endVertex, order, "", this.data.warehouse.maxForkliftSpeed);
+        //     // Recursively stacking up
+        // } else if (order.timeType === Order.timeTypes.end) {
+        //     this.downStacking(endVertex, order, order.time, "", this.data.warehouse.maxForkliftSpeed);
+        //     // Recursively stacking down
+        // }
 
-        this.printRoute(startVertex, endVertex);
-        console.log("\n");
+        //this.printRoute(startVertex, endVertex);
+        //console.log("\n");
     }
 
     printRoute(startVertex: Vertex, endVertex: Vertex) {
@@ -177,6 +191,7 @@ export class RouteScheduler {
         console.log(endVertex.scheduleItems);
     }
 
+    /// TO DO
     /**
      * Adds scheduleItems to all vertices the sorting algorithm pathed through.
      * As start time is known it goes from the end element to the start element,
@@ -197,10 +212,11 @@ export class RouteScheduler {
         let time: number = (vertex.id === order.startVertexId)
             ? order.time
             : fulfillTime + this.upStacking(vertex.previousVertex, order, vertex.id, forkliftSpeed);
-        vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId));
+        //vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId, /* missing */, vertex.previousVertex)); 
         return time;
     }
 
+    /// TO DO
     /** 
      * Adds scheduleItems to all vertices the sorting algorithm pathed through.
      * As end time is known the algorithm appends from the last element (end vertex)
@@ -216,7 +232,7 @@ export class RouteScheduler {
         let fulfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / forkliftSpeed;
         let timeOnPrev: number = time - fulfillTime;
 
-        vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId));
+        //vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId));
         if (vertex.id !== order.startVertexId) {
             this.downStacking(vertex.previousVertex, order, timeOnPrev, vertex.id, forkliftSpeed);
         }
