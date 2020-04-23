@@ -5,9 +5,8 @@
  */
 
 import { Vector2 } from "./vector2";
-import { Route } from "./route";
 
-enum ForkliftStates {
+export enum ForkliftStates {
     idle = 1,
     hasOrder,
     charging,
