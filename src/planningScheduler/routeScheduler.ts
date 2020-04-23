@@ -154,19 +154,20 @@ export class RouteScheduler {
         startVertex.visitTime = order.time;
 
         while (queue.array.length > 0) {
-            let v: Vertex = queue.extractMin();
-            for (let u = 0; u < v.adjacentVertexIds.length; u++) {
-                let currentVertex: Vertex = routeSet.graph.vertices[v.adjacentVertexIds[u]];
-                if (currentVertex.id === endVertex.id) {
-                    arrivalTimeEndVertex = f(currentVertex);
-                    currentVertex.isVisited = true;
-                    currentVertex.previousVertex = v;
-                } else if (!currentVertex.isVisited) {
-                    let tempLength: number = f(currentVertex);
-                    if (tempLength < arrivalTimeEndVertex) {
-                        queue.insert(currentVertex);
-                        currentVertex.isVisited = true;
-                        currentVertex.previousVertex = v;
+            let currentVertex: Vertex = queue.extractMin();
+            for (let u = 0; u < currentVertex.adjacentVertexIds.length; u++) {
+                let adjacentVertex: Vertex = routeSet.graph.vertices[currentVertex.adjacentVertexIds[u]];
+                if (adjacentVertex.id === endVertex.id) {
+                    arrivalTimeEndVertex = getEstimate(adjacentVertex);
+                    adjacentVertex.isVisited = true;
+                    adjacentVertex.previousVertex = currentVertex;
+                } else if (!adjacentVertex.isVisited) {
+                    let estimatedArrivalTime: number = getEstimate(adjacentVertex);
+                    if (estimatedArrivalTime < arrivalTimeEndVertex) {
+                        adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
+                        queue.insert(adjacentVertex);
+                        adjacentVertex.isVisited = true;
+                        adjacentVertex.previousVertex = currentVertex;
                     }
                 }
             }
