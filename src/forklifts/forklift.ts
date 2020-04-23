@@ -7,8 +7,9 @@
 
 import * as WebSocket from "ws";
 import { Route, Instruction } from "../shared/route";
-import { ForkliftInfo } from "./../shared/forkliftInfo";
+import { ForkliftInfo, ForkliftStates } from "./../shared/forkliftInfo";
 import { JsonTryParse } from "../shared/webUtilities";
+import { Vector2 } from "../shared/vector2";
 
 enum ForkliftMessageType {
     getInfo = "getInfo",
@@ -29,9 +30,12 @@ export class Forklift extends ForkliftInfo {
     currentRoute: Route;
     routes: Route[];
 
-    constructor(id: string, hostname: string, port: number) {
+    constructor(id: string, hostname: string, port: number, batteryStatus: number, state: ForkliftStates, position: Vector2) {
         super();
         this.id = id;
+        this.batteryStatus = batteryStatus;
+        this.state = state;
+        this.position = position;
 
         this.connect(hostname, port);
     }
