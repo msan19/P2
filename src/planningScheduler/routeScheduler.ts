@@ -137,7 +137,7 @@ export class RouteScheduler {
         let endVertex: Vertex = routeSet.graph.vertices[order.endVertexId];
         let startVertex: Vertex = routeSet.graph.vertices[order.startVertexId];
         let f = (currentVertex: Vertex): number => {
-            return this.heuristic(currentVertex, endVertex) + routeSet.graph.vertices[currentVertex.id].g(order.startVertexId);
+            return this.heuristic(currentVertex, endVertex) + routeSet.graph.vertices[currentVertex.id].visitTime;
         };
 
         let queue = new MinPriorityQueue(f);
