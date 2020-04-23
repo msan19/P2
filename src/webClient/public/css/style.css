@@ -15,9 +15,19 @@
     min-height: calc(100vh - 56px);
     width: 100%;
 }
+
 .full-width-container {
     margin-left: 15px;
     margin-right: 15px;
+}
+
+.list-group {
+    overflow-y: scroll;
+
+}
+
+#selectedForkliftRoute {
+    max-height: 160px;
 }
 
 /* #topMenu {

@@ -88,7 +88,10 @@ export class RouteScheduler {
         let maxWarp: number;
 
         /** Find earliest possible reference to destinationVertex */
-        for (i = currentVertex.getScheduleItemIndex(currentTime); i >= 0 && previousVertexId !== destinationVertex.id && nextVertexId !== destinationVertex.id; i--) {
+        for (i = currentVertex.getScheduleItemIndex(currentTime); i >= 0
+            && i < currentVertex.scheduleItems.length
+            && previousVertexId !== destinationVertex.id
+            && nextVertexId !== destinationVertex.id; i--) {
             if (currentVertex.scheduleItems[i].previousScheduleItem !== null) {
                 previousVertexId = currentVertex.scheduleItems[i].previousScheduleItem.currentVertexId;
             }
@@ -96,7 +99,7 @@ export class RouteScheduler {
                 nextVertexId = currentVertex.scheduleItems[i].nextScheduleItem.currentVertexId;
             }
         }
-
+        i = i === -1 ? 0 : i;
         ////////////////////////////
         if (previousVertexId === destinationVertex.id && currentVertex.scheduleItems[i].previousScheduleItem !== null) {
             time = currentVertex.scheduleItems[i].previousScheduleItem.arrivalTimeCurrentVertex;
@@ -106,15 +109,18 @@ export class RouteScheduler {
             time = 0;
         }
         i = destinationVertex.getScheduleItemIndex(time);
+        time = 0;
         ////////////////////////////
 
         interval = 0;
         maxWarp = this.computeMaxWarp(currentVertex, destinationVertex, currentTime);
-        while (interval < timeIntervalMinimumSize && time < maxWarp && i < destinationVertex.scheduleItems.length) {
+        while ((interval < timeIntervalMinimumSize || time <= maxWarp) && i < destinationVertex.scheduleItems.length) {
             if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[i], maxWarp, currentTime)) {
                 return Infinity;
             }
-            interval = destinationVertex.scheduleItems[i + 1].arrivalTimeCurrentVertex - destinationVertex.scheduleItems[i].arrivalTimeCurrentVertex;
+            interval = i + 1 >= destinationVertex.scheduleItems.length ? Infinity
+                : destinationVertex.scheduleItems[i + 1].arrivalTimeCurrentVertex - destinationVertex.scheduleItems[i].arrivalTimeCurrentVertex;
+            time = currentVertex.scheduleItems[i].arrivalTimeCurrentVertex;
             i++;
         }
 
@@ -125,7 +131,7 @@ export class RouteScheduler {
      * Computes the earliest possible time for when the forklift can arrive at destinationVertex
      */
     computeMaxWarp(currentVertex: Vertex, destinationVertex: Vertex, time: number): number {
-        return (currentVertex.getDistanceDirect(destinationVertex) / this.data.warehouse.maxForkliftSpeed) + time;
+        return (1000 * currentVertex.getDistanceDirect(destinationVertex) / this.data.warehouse.maxForkliftSpeed) + time;
     }
 
     /**
@@ -175,8 +181,8 @@ export class RouteScheduler {
         //     // Recursively stacking down
         // }
 
-        this.printRoute(startVertex, endVertex);
-        console.log("\n");
+        //this.printRoute(startVertex, endVertex);
+        //console.log("\n");
     }
 
     printRoute(startVertex: Vertex, endVertex: Vertex) {

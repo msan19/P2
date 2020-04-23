@@ -9,7 +9,7 @@ import { expect } from 'chai';
 import 'mocha';
 
 import { MinPriorityQueue } from '../../src/planningScheduler/classes/minPriorityQueue';
-import { Vertex, Graph } from '../../src/shared/graph';
+import { Vertex, Graph, ScheduleItem } from '../../src/shared/graph';
 import { Vector2 } from '../../src/shared/vector2';
 import { createGraph } from '../../src/blackBox/warehouse';
 import { Order } from '../../src/shared/order';
@@ -42,6 +42,21 @@ function checkVector(vector: Vector2, expected: Vector2): void {
         expect(vector.x).to.equal(expected.x);
         expect(vector.y).to.equal(expected.y);
     });
+}
+
+/**
+ * Checks whether two arrays contains same values
+ * @param result The array that is to be checked
+ * @param expected The array containing the expected values
+ * @returns Mocha handles the appropriate responses
+ */
+function checkArray(result: number[], expected: number[]) {
+    let length: number = Math.max(result.length, expected.length);
+    for (let i = 0; i < length; i++) {
+        it(`${result[i]} should be ${expected[i]}`, () => {
+            expect(result[i]).to.equal(expected[i]);
+        });
+    }
 }
 
 /**
@@ -322,6 +337,48 @@ function testAStar(): void {
         routeScheduler.planOptimalRoute(routeSet, order);
 
         checkLength(graph.vertices[order.endVertexId].g(order.startVertexId), expectedRouteLength);
+    });
+
+    describe(`Test arrival time`, () => {
+        let graph: Graph = createGraph();
+        let routeSet: RouteSet = new RouteSet([], graph);
+        let warehouse = new Warehouse(graph, 15);
+        let data: DataContainer = new DataContainer();
+        data.warehouse = warehouse;
+        let routeScheduler: RouteScheduler = new RouteScheduler(data);
+
+        // Init scheduleItems
+        let vertex1: Vertex = routeScheduler.data.warehouse.graph.vertices["N0-0"];
+        let vertex2: Vertex = routeScheduler.data.warehouse.graph.vertices["N0-1"];
+
+        vertex1.scheduleItems.push(new ScheduleItem("F0", 400, vertex1.id));
+        vertex1.scheduleItems.push(new ScheduleItem("F1", 30400, vertex1.id));
+        vertex1.scheduleItems.push(new ScheduleItem("F2", 62480, vertex1.id));
+
+        vertex2.scheduleItems.push(new ScheduleItem("F4", 400, vertex2.id));
+        vertex2.scheduleItems.push(new ScheduleItem("F0", 30400, vertex2.id));
+        vertex2.scheduleItems.push(new ScheduleItem("F1", 70400, vertex2.id));
+
+        // Link shit
+        vertex1.scheduleItems[0].linkNext(vertex2.scheduleItems[1]);
+        vertex1.scheduleItems[1].linkNext(vertex2.scheduleItems[2]);
+
+        // Test the shit
+        let results: number[] = [];
+        let expecteds: number[] = [];
+
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 0, 30000));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 401, 30000));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 30401, 30000));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 62481, 30000));
+
+        expecteds.push(Infinity);
+        expecteds.push(30400 + 30000 / 2);
+        expecteds.push(70400 + 30000 / 2);
+        expecteds.push(70400 + 30000 / 2);
+
+        checkArray(results, expecteds);
+
     });
 }
 
