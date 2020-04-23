@@ -9,22 +9,68 @@ var ForkliftStates;
 
 window.forkliftSpeed;
 
+// ROUTE IN SELECTED FORKLIFT ON UI
+function updateSelectedForkliftSelectedElementInRoute(e) {
+    let routeList = document.querySelector("#selectedForkliftRoute");
+    let routeElements = routeList.children;
+    for (let i = 0; i < routeElements.length; i++) {
+        if (routeElements[i].classList.contains("active")) {
+            routeElements[i].classList.remove("active");
+        }
+    }
+    e.target.classList.toggle("active")
+}
+
+function addElementToSelectedForkliftRoute(nodeId) {
+    let routeList = document.querySelector("#selectedForkliftRoute");
+    let newElement = document.createElement("button");
+    newElement.classList.add("list-group-item");
+    newElement.classList.add("list-group-item-action");
+    newElement.innerHTML = nodeId;
+    newElement.onclick = updateSelectedForkliftSelectedElementInRoute;
+    routeList.appendChild(newElement);
+}
+
+function initiateSelectedForkliftRouteOnUI(forklift) {
+    let routeList = document.querySelector("#selectedForkliftRoute");
+    routeList.innerHTML = "";
+    for (let key in forklift.route.instructions) {
+        addElementToSelectedForkliftRoute(forklift.route.instructions[key].nodeId);
+    }
+}
+
+function removeElementFromSelectedForkliftRoute(nodeId) {
+    let routeList = document.querySelector("#selectedForkliftRoute");
+    let routeElements = routeList.children;
+    for (let i = 0; i < routeElements.length; i++) {
+        if (routeElements[i].innerHTML == nodeId) {
+            routeList.removeChild(routeElements[i]);
+            break;
+        }
+    }
+}
+
+function removeSelectedForkliftRouteOnUI() {
+    let routeList = document.querySelector("#selectedForkliftRoute");
+    routeList.innerHTML = "";
+}
+// END ---  ROUTE IN SELECTED FORKLIFT ON UI --- END
+
 function updateSelectedForkliftInformationOnUI() {
     if (typeof (nForklifts.selectedForklift) == "string" && nForklifts.selectedForklift.length > 0) {
-        if (typeof (forkliftData[nForklifts.selectedForklift].position) != "undefined" &&
-            typeof (forkliftData[nForklifts.selectedForklift].position.x) != "undefined" &&
-            typeof (forkliftData[nForklifts.selectedForklift].position.y) != "undefined") {
+        let forklift = forkliftData[nForklifts.selectedForklift];
+        if (typeof (forklift.position) != "undefined" &&
+            typeof (forklift.position.x) != "undefined" &&
+            typeof (forklift.position.y) != "undefined") {
             let xPos = document.querySelector("#selectedForkliftXPosition");
             let yPos = document.querySelector("#selectedForkliftYPosition");
-            xPos.innerHTML = (forkliftData[nForklifts.selectedForklift].position.x).toFixed(2);
-            yPos.innerHTML = (forkliftData[nForklifts.selectedForklift].position.y).toFixed(2);
+            xPos.innerHTML = (forklift.position.x).toFixed(2);
+            yPos.innerHTML = (forklift.position.y).toFixed(2);
         }
         if (typeof (forkliftData[nForklifts.selectedForklift].state) != "undefined") {
             let state = document.querySelector("#selectedForkliftState");
-            state.innerHTML = forkliftData[nForklifts.selectedForklift].state;
+            state.innerHTML = forklift.state;
         }
-
-
     } else {
         let xPos = document.querySelector("#selectedForkliftXPosition");
         let yPos = document.querySelector("#selectedForkliftYPosition");

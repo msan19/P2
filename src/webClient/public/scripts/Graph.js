@@ -56,6 +56,10 @@ class Graph {
         nForklifts.selectedForklift = "";
         this.revertColorsToOriginal();
         this.sigmaGraph.refresh();
+
+        // Ui related
+        removeSelectedForkliftRouteOnUI();
+
     }
 
     onNodeClick(element) {
@@ -178,6 +182,7 @@ class Graph {
             }
             updateSelectedForkliftInformationOnUI();
             updateForkliftFocus(nForklifts.selectedForklift);
+            initiateSelectedForkliftRouteOnUI(forkliftData[nForklifts.selectedForklift]);
         } else if (id === "") {
             nForklifts.selectedForklift = "";
             this.revertColorsToOriginal();
@@ -199,7 +204,6 @@ class Graph {
                 originalColor: "#ffff00",
                 size: 14
             });
-
         }
     }
 

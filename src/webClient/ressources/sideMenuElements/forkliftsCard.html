@@ -23,9 +23,7 @@
             <!-- Information about selected forklift -->
             <div class="container">
                 <!-- Information about state -->
-                <div class="row">
-                    State:
-                </div>
+                <label for="selectedForkliftState">State</label>
                 <div class="row">
                     <div class="card card-body bg-light" id="selectedForkliftState">
                         ...
@@ -34,10 +32,10 @@
                 <!-- Information about position -->
                 <div class="row">
                     <div class="col-sm-6">
-                        x:
+                        <label for="selectedForkliftXPosition">x</label>
                     </div>
                     <div class="col-sm-6">
-                        y:
+                        <label for="selectedForkliftYPosition">y</label>
                     </div>
                 </div>
                 <div class="row">
@@ -52,24 +50,10 @@
                         </div>
                     </div>
                 </div>
-
-
-
+                <!-- Information about route -->
+                <label for="selectedForkliftRoute">Route</label>
+                <div class="list-group" id="selectedForkliftRoute" role="tablist"></div>
             </div>
-            <!--
-                <div class="row">
-                    <div class="col-sm-6">
-                        <p>x=1</p>
-                    </div>
-                    <div class="col-sm-6">
-                        <p>y=2</p>
-                    </div>
-                </div>
-            -->
-
-
-
-
         </div>
     </div>
 </div>
