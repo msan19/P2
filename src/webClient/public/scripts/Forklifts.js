@@ -241,12 +241,14 @@ class Forklifts {
                 let nodes = mainGraph.sigmaGraph.graph.nodes();
                 let currentNode = forkliftData[key].currentNode;
                 this.generateRoute(route, (typeof (currentNode) == "undefined") ? nodes[Math.floor(Math.random() * nodes.length)].id : currentNode, Math.round(Math.random() * 20));
-                if (route.instructions.length != 0)
+                if (route.instructions.length != 0) {
                     forkliftData[key].route = route;
-                if (key == this.selectedForklift) {
-                    mainGraph.displaySelectedForkliftPath();
-                    initiateSelectedForkliftRouteOnUI(forkliftData[nForklifts.selectedForklift]);
+                    if (key == this.selectedForklift) {
+                        mainGraph.displaySelectedForkliftPath();
+                        initiateSelectedForkliftRouteOnUI(forkliftData[nForklifts.selectedForklift]);
+                    }
                 }
+
 
             }
 
