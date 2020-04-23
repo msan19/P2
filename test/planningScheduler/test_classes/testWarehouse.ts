@@ -20,7 +20,7 @@ import { Vector2 } from '../../../src/shared/vector2';
 function checkWarehouse(result: any, expected: Warehouse | null): void {
     if (expected !== null) {
         it(`Speed should be ${expected.maxForkliftSpeed}`, () => {
-            expect(result.forkliftSpeed).to.equal(expected.maxForkliftSpeed);
+            expect(result.maxForkliftSpeed).to.equal(expected.maxForkliftSpeed);
         });
         checkArray(Object.keys(result.graph.vertices), Object.keys(expected.graph.vertices));
     } else {
