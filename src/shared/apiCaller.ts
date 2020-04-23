@@ -10,15 +10,6 @@ import { Route } from "./route";
 import { Order } from "./order";
 import { ForkliftInfo } from "./forkliftInfo";
 
-async function baseGetJson(path): Promise<any> {
-    let response = await fetch(this.basePath + path);
-    let obj = await response.json();
-
-    return new Promise((resolve: (obj: any) => any) => {
-        resolve(obj);
-    });
-}
-
 export class ApiCaller {
     basePath: string;
     constructor(basePath: string) {
@@ -28,8 +19,17 @@ export class ApiCaller {
         this.basePath = basePath;
     }
 
+    private async baseGetJson(path): Promise<any> {
+        let response = await fetch(this.basePath + path);
+        let obj = await response.json();
+
+        return new Promise((resolve: (obj: any) => any) => {
+            resolve(obj);
+        });
+    }
+
     async getWarehouse(): Promise<Warehouse> {
-        let obj = await baseGetJson("/warehouse");
+        let obj = await this.baseGetJson("/warehouse");
         return new Promise((resolve: (warehouse: Warehouse) => any, reject: () => any) => {
             let warehouse = Warehouse.parse(obj);
             if (warehouse !== null) resolve(warehouse);
@@ -45,7 +45,7 @@ export class ApiCaller {
     }
 
     async getRoutes(): Promise<Route[]> {
-        let obj = await baseGetJson("/routes");
+        let obj = await this.baseGetJson("/routes");
         return new Promise((resolve: (routes: Route[]) => any, reject: () => any) => {
             if (obj !== null) resolve(<Route[]>obj);
             else reject();
@@ -53,7 +53,7 @@ export class ApiCaller {
     }
 
     async getOrders(): Promise<Order[]> {
-        let obj = await baseGetJson("/orders");
+        let obj = await this.baseGetJson("/orders");
         return new Promise((resolve: (orders: Order[]) => any, reject: () => any) => {
             if (obj !== null) resolve(<Order[]>obj);
             else reject();
@@ -61,7 +61,7 @@ export class ApiCaller {
     }
 
     async getOrder(id: string): Promise<Order> {
-        let obj = await baseGetJson("/orders/" + encodeURIComponent(id));
+        let obj = await this.baseGetJson("/orders/" + encodeURIComponent(id));
         return new Promise((resolve: (order: Order) => any, reject: () => any) => {
             if (obj !== null) resolve(<Order>obj);
             else reject();
@@ -76,7 +76,7 @@ export class ApiCaller {
     }
 
     async getForklifts(): Promise<ForkliftInfo[]> {
-        let obj = await baseGetJson("/forklifts");
+        let obj = await this.baseGetJson("/forklifts");
         return new Promise((resolve: (forkliftInfos: ForkliftInfo[]) => any, reject: () => any) => {
             if (obj !== null) resolve(<ForkliftInfo[]>obj);
             else reject();
@@ -84,7 +84,7 @@ export class ApiCaller {
     }
 
     async getForklift(id: string): Promise<ForkliftInfo> {
-        let obj = await baseGetJson("/forklifts/" + encodeURIComponent(id));
+        let obj = await this.baseGetJson("/forklifts/" + encodeURIComponent(id));
         return new Promise((resolve: (forkliftInfo: ForkliftInfo) => any, reject: () => any) => {
             if (obj !== null) resolve(<ForkliftInfo>obj);
             else reject();
