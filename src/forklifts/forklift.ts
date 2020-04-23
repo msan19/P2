@@ -52,7 +52,7 @@ export class Forklift extends ForkliftInfo {
                         this.sendStatus();
                         break;
                     case ForkliftMessage.Types.addRoute:
-                        this.routes.push(obj["body"]);
+                        this.addRoute(obj["body"]);
                         break;
                     case ForkliftMessage.Types.getRoutes:
                         this.sendRoutes();
