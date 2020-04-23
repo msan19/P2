@@ -104,7 +104,7 @@ function updateSelectedForkliftInformationOnUI() {
         yPos.innerHTML = "...";
         let state = document.querySelector("#selectedForkliftState");
         state.innerHTML = "...";
-        onDeselectElementInRouteInSelectedForklift();
+        removeSelectedForkliftRouteOnUI();
     }
 
 }
@@ -114,6 +114,15 @@ function updateForkliftFocus(forklift) {
     document.querySelector("#currentForklift").innerHTML = `<h3>${forklift}</h3>`;
     document.querySelector("#forklift-list").value = forklift;
 }
+
+// Set dateInput to correct format
+$(function () {
+    $('#sendOrderDateTimePicker').datetimepicker({
+        locale: 'da'
+    });
+});
+
+
 
 // Graph events
 window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
