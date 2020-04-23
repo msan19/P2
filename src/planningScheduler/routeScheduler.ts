@@ -142,7 +142,7 @@ export class RouteScheduler {
 
         let queue = new MinPriorityQueue(f);
         queue.insert(startVertex);
-        let pathLength = Infinity;
+        let arrivalTimeEndVertex = Infinity;
         routeSet.graph.reset();
         startVertex.isVisited = true;
 
@@ -151,12 +151,12 @@ export class RouteScheduler {
             for (let u = 0; u < v.adjacentVertexIds.length; u++) {
                 let currentVertex: Vertex = routeSet.graph.vertices[v.adjacentVertexIds[u]];
                 if (currentVertex.id === endVertex.id) {
-                    pathLength = f(currentVertex);
+                    arrivalTimeEndVertex = f(currentVertex);
                     currentVertex.isVisited = true;
                     currentVertex.previousVertex = v;
                 } else if (!currentVertex.isVisited) {
                     let tempLength: number = f(currentVertex);
-                    if (tempLength < pathLength) {
+                    if (tempLength < arrivalTimeEndVertex) {
                         queue.insert(currentVertex);
                         currentVertex.isVisited = true;
                         currentVertex.previousVertex = v;
