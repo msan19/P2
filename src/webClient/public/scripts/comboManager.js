@@ -117,7 +117,9 @@ function updateForkliftFocus(forklift) {
 
 // Set dateInput to correct format
 $(function () {
-    $('#sendOrderDateTimePicker').datetimepicker();
+    $('#sendOrderDateTimePicker').datetimepicker({
+        locale: 'da'
+    });
 });
 
 
