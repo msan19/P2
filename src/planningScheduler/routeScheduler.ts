@@ -142,11 +142,11 @@ export class RouteScheduler {
     planOptimalRoute(routeSet: RouteSet, order: Order): void {
         let endVertex: Vertex = routeSet.graph.vertices[order.endVertexId];
         let startVertex: Vertex = routeSet.graph.vertices[order.startVertexId];
-        let f = (currentVertex: Vertex): number => {
+        let getEstimate = (currentVertex: Vertex): number => {
             return this.heuristic(currentVertex, endVertex) + routeSet.graph.vertices[currentVertex.id].visitTime;
         };
 
-        let queue = new MinPriorityQueue(f);
+        let queue = new MinPriorityQueue(getEstimate);
         queue.insert(startVertex);
         let arrivalTimeEndVertex = Infinity;
         routeSet.graph.reset();
