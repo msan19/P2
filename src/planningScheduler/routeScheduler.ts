@@ -27,6 +27,8 @@ export class RouteScheduler {
     /** Heuristic function for A* implementation */
     heuristic: (v1: Vertex, v2: Vertex) => number;
 
+    timeIntervalMinimumSize: number;
+
     /**
      * Constructor for the object.
      * Contains description of heuristic function, 
@@ -39,6 +41,7 @@ export class RouteScheduler {
         this.routeSets = [];
         this.bestRouteSet = null;
         this.heuristic = (v1: Vertex, v2: Vertex) => { return v1.getDistanceDirect(v2) / this.data.warehouse.maxForkliftSpeed * 1000; };
+        this.timeIntervalMinimumSize = 30000;
     }
 
     getRoute(orderId: string): Route {
@@ -79,13 +82,17 @@ export class RouteScheduler {
         return false;
     }
 
-    getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number, timeIntervalMinimumSize: number): number {
+    getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number): number {
         let previousVertexId: string = "";
         let nextVertexId: string = "";
         let i: number;
         let time: number;
         let interval: number;
         let maxWarp: number;
+
+        if (destinationVertex.scheduleItems.length <= 0) {
+            return this.computeMaxWarp(currentVertex, destinationVertex, currentTime);
+        }
 
         /** Find earliest possible reference to destinationVertex */
         for (i = currentVertex.getScheduleItemIndex(currentTime); i >= 0
@@ -114,17 +121,17 @@ export class RouteScheduler {
 
         interval = 0;
         maxWarp = this.computeMaxWarp(currentVertex, destinationVertex, currentTime);
-        while ((interval < timeIntervalMinimumSize || time <= maxWarp) && i < destinationVertex.scheduleItems.length) {
+        while ((interval < this.timeIntervalMinimumSize || time <= maxWarp) && i < destinationVertex.scheduleItems.length) {
             if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[i], maxWarp, currentTime)) {
                 return Infinity;
             }
+            time = destinationVertex.scheduleItems[i].arrivalTimeCurrentVertex;
             interval = i + 1 >= destinationVertex.scheduleItems.length ? Infinity
-                : destinationVertex.scheduleItems[i + 1].arrivalTimeCurrentVertex - destinationVertex.scheduleItems[i].arrivalTimeCurrentVertex;
-            time = currentVertex.scheduleItems[i].arrivalTimeCurrentVertex;
+                : destinationVertex.scheduleItems[i + 1].arrivalTimeCurrentVertex - time;
             i++;
         }
 
-        return destinationVertex.scheduleItems[i - 1].arrivalTimeCurrentVertex + (timeIntervalMinimumSize / 2);
+        return destinationVertex.scheduleItems[i - 1].arrivalTimeCurrentVertex + (this.timeIntervalMinimumSize / 2);
     }
 
     /**
@@ -139,14 +146,14 @@ export class RouteScheduler {
      * @param routeSet Routeset where route is added. Assumes RouteSet.graph is full
      * @param order Order to be calculated route for
      */
-    planOptimalRoute(routeSet: RouteSet, order: Order): void {
+    planOptimalRoute(routeSet: RouteSet, order: Order, forkliftId: string): void {
         let endVertex: Vertex = routeSet.graph.vertices[order.endVertexId];
         let startVertex: Vertex = routeSet.graph.vertices[order.startVertexId];
-        let f = (currentVertex: Vertex): number => {
+        let getEstimate = (currentVertex: Vertex): number => {
             return this.heuristic(currentVertex, endVertex) + routeSet.graph.vertices[currentVertex.id].visitTime;
         };
 
-        let queue = new MinPriorityQueue(f);
+        let queue = new MinPriorityQueue(getEstimate);
         queue.insert(startVertex);
         let arrivalTimeEndVertex = Infinity;
         routeSet.graph.reset();
@@ -154,32 +161,35 @@ export class RouteScheduler {
         startVertex.visitTime = order.time;
 
         while (queue.array.length > 0) {
-            let v: Vertex = queue.extractMin();
-            for (let u = 0; u < v.adjacentVertexIds.length; u++) {
-                let currentVertex: Vertex = routeSet.graph.vertices[v.adjacentVertexIds[u]];
-                if (currentVertex.id === endVertex.id) {
-                    arrivalTimeEndVertex = f(currentVertex);
-                    currentVertex.isVisited = true;
-                    currentVertex.previousVertex = v;
-                } else if (!currentVertex.isVisited) {
-                    let tempLength: number = f(currentVertex);
-                    if (tempLength < arrivalTimeEndVertex) {
-                        queue.insert(currentVertex);
-                        currentVertex.isVisited = true;
-                        currentVertex.previousVertex = v;
+            let currentVertex: Vertex = queue.extractMin();
+            for (let u = 0; u < currentVertex.adjacentVertexIds.length; u++) {
+                let adjacentVertex: Vertex = routeSet.graph.vertices[currentVertex.adjacentVertexIds[u]];
+                if (adjacentVertex.id === endVertex.id) {
+                    arrivalTimeEndVertex = getEstimate(adjacentVertex);
+                    adjacentVertex.isVisited = true;
+                    adjacentVertex.previousVertex = currentVertex;
+                } else if (!adjacentVertex.isVisited) {
+                    let estimatedArrivalTime: number = getEstimate(adjacentVertex);
+                    if (estimatedArrivalTime < arrivalTimeEndVertex) {
+                        adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
+                        if (adjacentVertex.visitTime < Infinity) {
+                            queue.insert(adjacentVertex);
+                            adjacentVertex.isVisited = true;
+                            adjacentVertex.previousVertex = currentVertex;
+                        }
                     }
                 }
             }
         }
 
         /// TO DO
-        // if (order.timeType === Order.timeTypes.start) {
-        //     this.upStacking(endVertex, order, "", this.data.warehouse.maxForkliftSpeed);
-        //     // Recursively stacking up
-        // } else if (order.timeType === Order.timeTypes.end) {
-        //     this.downStacking(endVertex, order, order.time, "", this.data.warehouse.maxForkliftSpeed);
-        //     // Recursively stacking down
-        // }
+        if (order.timeType === Order.timeTypes.start) {
+            this.upStacking(endVertex, order, forkliftId, null);
+            // Recursively stacking up
+        } else if (order.timeType === Order.timeTypes.end) {
+            // this.downStacking(endVertex, order, order.time, "", this.data.warehouse.maxForkliftSpeed);
+            // Recursively stacking down
+        }
 
         //this.printRoute(startVertex, endVertex);
         //console.log("\n");
@@ -192,29 +202,19 @@ export class RouteScheduler {
         console.log(endVertex.scheduleItems);
     }
 
-    /// TO DO
     /**
-     * Adds scheduleItems to all vertices the sorting algorithm pathed through.
-     * As start time is known it goes from the end element to the start element,
-     * whereafter, as it resolves the stack, it appends the scheduleItem,
-     * using the time from the vertex before it (in the stack), ending at the end vertex
-     * @param vertex Initially the end vertex, later in the recursion it will be the vertices,
-     *               which were added to the path (using Vertex.previousVertex) 
-     * @param order The order the route was planned for. Used for start/end time,
-     *              as well as start and end vertex
-     * @param nextVertexId Used to point to the next vertex in the path,
-     *                     as only previous is part of the object,
-     *                     and the recursion requires pointer to next object as well.
-     * @returns The time at which the vertex's scheduleItem was calculated.
-     *          Only used by the recursion.
+     * Used in the situation where the orders has a start time
+     * @param vertex 
+     * @param order 
+     * @param forkliftId 
+     * @param nextItem 
      */
-    upStacking(vertex: Vertex, order: Order, nextVertexId: string, forkliftSpeed: number): number {
-        let fulfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / forkliftSpeed;
-        let time: number = (vertex.id === order.startVertexId)
-            ? order.time
-            : fulfillTime + this.upStacking(vertex.previousVertex, order, vertex.id, forkliftSpeed);
-        //vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId, /* missing */, vertex.previousVertex)); 
-        return time;
+    upStacking(vertex: Vertex, order: Order, forkliftId: string, nextItem: ScheduleItem | null): void {
+        let i = vertex.insertScheduleItem(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
+        if (nextItem !== null) nextItem.linkPrevious(vertex.scheduleItems[i]);
+        if (vertex.previousVertex.id !== order.startVertexId) {
+            this.upStacking(vertex.previousVertex, order, forkliftId, vertex.scheduleItems[i]);
+        }
     }
 
     /// TO DO

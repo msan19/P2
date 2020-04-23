@@ -268,23 +268,23 @@ export class Vertex {
         let i = 0, j = this.scheduleItems.length;
 
         while (j - i > 1) {
-            let a = Math.round((i + j) / 2);
-            if (this.scheduleItems[a].arrivalTimeCurrentVertex >= time) {
-                j = a;
+            let pivotPoint = Math.round((i + j) / 2);
+            if (this.scheduleItems[pivotPoint].arrivalTimeCurrentVertex >= time) {
+                j = pivotPoint;
             } else {
-                i = a;
+                i = pivotPoint;
             }
         }
 
-        if (this.scheduleItems[i].arrivalTimeCurrentVertex > time) {
+        if (this.scheduleItems.length !== 0 && this.scheduleItems[i].arrivalTimeCurrentVertex > time) {
             return j - 1;
         } else {
             return j;
         }
     }
 
-    insertScheduleItem(time: number, scheduleItem: ScheduleItem): number {
-        let index = this.getScheduleItemIndex(time);
+    insertScheduleItem(scheduleItem: ScheduleItem): number {
+        let index = this.getScheduleItemIndex(scheduleItem.arrivalTimeCurrentVertex);
         this.scheduleItems.splice(index, 0, scheduleItem);
         return index;
     }

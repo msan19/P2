@@ -294,7 +294,7 @@ function testVertex(): void {
             vertex.scheduleItems = scheduleItemList;
             let newScheduleItem: ScheduleItem = new ScheduleItem("F22", 10340, "F23");
             let time = 10340;
-            vertex.insertScheduleItem(time, newScheduleItem);
+            vertex.insertScheduleItem(newScheduleItem);
 
             let expected: number = time;
             let result: number = vertex.scheduleItems[4].arrivalTimeCurrentVertex;
@@ -321,7 +321,7 @@ function testVertex(): void {
             vertex.scheduleItems = scheduleItemList;
             let newScheduleItem: ScheduleItem = new ScheduleItem("F22", 4000, "F23");
             let time = 4000;
-            console.log(vertex.insertScheduleItem(time, newScheduleItem));
+            console.log(vertex.insertScheduleItem(newScheduleItem));
             console.log(scheduleItemList);
 
             let expected: number = time;
@@ -349,7 +349,7 @@ function testVertex(): void {
             vertex.scheduleItems = scheduleItemList;
             let newScheduleItem: ScheduleItem = new ScheduleItem("F22", 20000, "F23");
             let time = 20000;
-            console.log(vertex.insertScheduleItem(time, newScheduleItem));
+            console.log(vertex.insertScheduleItem(newScheduleItem));
 
             let expected: number = time;
             let result: number = vertex.scheduleItems[10].arrivalTimeCurrentVertex;
