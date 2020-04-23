@@ -312,10 +312,10 @@ export class ScheduleItem {
     /** An identification string for the vertex that this ScheduleItem is attached to */
     currentVertexId: string;
 
-    /** A reference to the scheduleItem on the previous vertex */
+    /** A reference to the scheduleItem on the previous vertex that the forklift was on */
     previousScheduleItem: ScheduleItem;
 
-    /** A reference to the scheduleItem on the next vertex */
+    /** A reference to the scheduleItem on the next vertex that the forklift was on */
     nextScheduleItem: ScheduleItem;
 
     constructor(forkliftId: string, arrivalTimeCurrentVertex: number, currentVertexId: string) {
