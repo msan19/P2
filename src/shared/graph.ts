@@ -283,8 +283,8 @@ export class Vertex {
         }
     }
 
-    insertScheduleItem(time: number, scheduleItem: ScheduleItem): number {
-        let index = this.getScheduleItemIndex(time);
+    insertScheduleItem(scheduleItem: ScheduleItem): number {
+        let index = this.getScheduleItemIndex(scheduleItem.arrivalTimeCurrentVertex);
         this.scheduleItems.splice(index, 0, scheduleItem);
         return index;
     }
