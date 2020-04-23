@@ -142,7 +142,7 @@ export class RouteScheduler {
      * @param routeSet Routeset where route is added. Assumes RouteSet.graph is full
      * @param order Order to be calculated route for
      */
-    planOptimalRoute(routeSet: RouteSet, order: Order): void {
+    planOptimalRoute(routeSet: RouteSet, order: Order, forkliftId: string): void {
         let endVertex: Vertex = routeSet.graph.vertices[order.endVertexId];
         let startVertex: Vertex = routeSet.graph.vertices[order.startVertexId];
         let getEstimate = (currentVertex: Vertex): number => {
