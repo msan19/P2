@@ -357,8 +357,8 @@ function testAStar(): void {
         orderAnnoying.timeType = Order.timeTypes.start;
         orderAnnoying.time = 400;
 
-        routeScheduler.planOptimalRoute(routeSet, order);
-        routeScheduler.planOptimalRoute(routeSet, orderAnnoying);
+        routeScheduler.planOptimalRoute(routeSet, order, "F23");
+        routeScheduler.planOptimalRoute(routeSet, orderAnnoying, "F24");
 
         console.log(routeScheduler);
     });
