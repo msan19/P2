@@ -27,6 +27,8 @@ export class RouteScheduler {
     /** Heuristic function for A* implementation */
     heuristic: (v1: Vertex, v2: Vertex) => number;
 
+    timeIntervalMinimumSize: number;
+
     /**
      * Constructor for the object.
      * Contains description of heuristic function, 
@@ -39,6 +41,7 @@ export class RouteScheduler {
         this.routeSets = [];
         this.bestRouteSet = null;
         this.heuristic = (v1: Vertex, v2: Vertex) => { return v1.getDistanceDirect(v2) / this.data.warehouse.maxForkliftSpeed * 1000; };
+        this.timeIntervalMinimumSize = 30000;
     }
 
     getRoute(orderId: string): Route {
@@ -79,7 +82,7 @@ export class RouteScheduler {
         return false;
     }
 
-    getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number, timeIntervalMinimumSize: number): number {
+    getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number): number {
         let previousVertexId: string = "";
         let nextVertexId: string = "";
         let i: number;
@@ -114,7 +117,7 @@ export class RouteScheduler {
 
         interval = 0;
         maxWarp = this.computeMaxWarp(currentVertex, destinationVertex, currentTime);
-        while ((interval < timeIntervalMinimumSize || time <= maxWarp) && i < destinationVertex.scheduleItems.length) {
+        while ((interval < this.timeIntervalMinimumSize || time <= maxWarp) && i < destinationVertex.scheduleItems.length) {
             if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[i], maxWarp, currentTime)) {
                 return Infinity;
             }
@@ -124,7 +127,7 @@ export class RouteScheduler {
             i++;
         }
 
-        return destinationVertex.scheduleItems[i - 1].arrivalTimeCurrentVertex + (timeIntervalMinimumSize / 2);
+        return destinationVertex.scheduleItems[i - 1].arrivalTimeCurrentVertex + (this.timeIntervalMinimumSize / 2);
     }
 
     /**
