@@ -90,6 +90,10 @@ export class RouteScheduler {
         let interval: number;
         let maxWarp: number;
 
+        if (destinationVertex.scheduleItems.length <= 0) {
+            return this.computeMaxWarp(currentVertex, destinationVertex, currentTime);
+        }
+
         /** Find earliest possible reference to destinationVertex */
         for (i = currentVertex.getScheduleItemIndex(currentTime); i >= 0
             && i < currentVertex.scheduleItems.length
@@ -121,13 +125,13 @@ export class RouteScheduler {
             if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[i], maxWarp, currentTime)) {
                 return Infinity;
             }
+            time = destinationVertex.scheduleItems[i].arrivalTimeCurrentVertex;
             interval = i + 1 >= destinationVertex.scheduleItems.length ? Infinity
-                : destinationVertex.scheduleItems[i + 1].arrivalTimeCurrentVertex - destinationVertex.scheduleItems[i].arrivalTimeCurrentVertex;
-            time = currentVertex.scheduleItems[i].arrivalTimeCurrentVertex;
+                : destinationVertex.scheduleItems[i + 1].arrivalTimeCurrentVertex - time;
             i++;
         }
 
-        return i !== 0 ? destinationVertex.scheduleItems[i - 1].arrivalTimeCurrentVertex + (this.timeIntervalMinimumSize / 2) : maxWarp;
+        return destinationVertex.scheduleItems[i - 1].arrivalTimeCurrentVertex + (this.timeIntervalMinimumSize / 2);
     }
 
     /**
@@ -169,13 +173,13 @@ export class RouteScheduler {
                     if (estimatedArrivalTime < arrivalTimeEndVertex) {
                         adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
                         if (adjacentVertex.visitTime < Infinity) {
-                        queue.insert(adjacentVertex);
-                        adjacentVertex.isVisited = true;
-                        adjacentVertex.previousVertex = currentVertex;
+                            queue.insert(adjacentVertex);
+                            adjacentVertex.isVisited = true;
+                            adjacentVertex.previousVertex = currentVertex;
+                        }
                     }
                 }
             }
-        }
         }
 
         /// TO DO
@@ -198,21 +202,12 @@ export class RouteScheduler {
         console.log(endVertex.scheduleItems);
     }
 
-    /// TO DO
     /**
-     * Adds scheduleItems to all vertices the sorting algorithm pathed through.
-     * As start time is known it goes from the end element to the start element,
-     * whereafter, as it resolves the stack, it appends the scheduleItem,
-     * using the time from the vertex before it (in the stack), ending at the end vertex
-     * @param vertex Initially the end vertex, later in the recursion it will be the vertices,
-     *               which were added to the path (using Vertex.previousVertex) 
-     * @param order The order the route was planned for. Used for start/end time,
-     *              as well as start and end vertex
-     * @param nextVertexId Used to point to the next vertex in the path,
-     *                     as only previous is part of the object,
-     *                     and the recursion requires pointer to next object as well.
-     * @returns The time at which the vertex's scheduleItem was calculated.
-     *          Only used by the recursion.
+     * Used in the situation where the orders has a start time
+     * @param vertex 
+     * @param order 
+     * @param forkliftId 
+     * @param nextItem 
      */
     upStacking(vertex: Vertex, order: Order, forkliftId: string, nextItem: ScheduleItem | null): void {
         let i = vertex.insertScheduleItem(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
