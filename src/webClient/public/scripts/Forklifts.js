@@ -205,7 +205,6 @@ class Forklifts {
         if (length == 0)
             return;
         let nodes = mainGraph.sigmaGraph.graph.neighbors(node);
-        //console.log(route)
         let num = Math.floor(Math.random() * Object.keys(nodes).length);
 
         let attempts = 0;
@@ -223,7 +222,6 @@ class Forklifts {
 
         node = Object.keys(nodes).splice(num, 1)[0];
 
-        //console.log(node + "," + Object.keys(nodes)[num])
         route.instructions.push({
             nodeId: node,
             startTime: date.getTime(),
