@@ -87,7 +87,7 @@ export class RouteScheduler {
         let interval: number;
         let maxWarp: number;
 
-        /** Find earlist possible reference to destinationVertex */
+        /** Find earliest possible reference to destinationVertex */
         for (i = currentVertex.getScheduleItemIndex(currentTime); i >= 0
             && i < currentVertex.scheduleItems.length
             && previousVertexId !== destinationVertex.id
