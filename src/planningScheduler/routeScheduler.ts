@@ -127,7 +127,7 @@ export class RouteScheduler {
             i++;
         }
 
-        return destinationVertex.scheduleItems[i - 1].arrivalTimeCurrentVertex + (this.timeIntervalMinimumSize / 2);
+        return i !== 0 ? destinationVertex.scheduleItems[i - 1].arrivalTimeCurrentVertex + (this.timeIntervalMinimumSize / 2) : maxWarp;
     }
 
     /**
