@@ -168,12 +168,14 @@ export class RouteScheduler {
                     let estimatedArrivalTime: number = getEstimate(adjacentVertex);
                     if (estimatedArrivalTime < arrivalTimeEndVertex) {
                         adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
+                        if (adjacentVertex.visitTime < Infinity) {
                         queue.insert(adjacentVertex);
                         adjacentVertex.isVisited = true;
                         adjacentVertex.previousVertex = currentVertex;
                     }
                 }
             }
+        }
         }
 
         /// TO DO
