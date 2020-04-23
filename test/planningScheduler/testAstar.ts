@@ -334,7 +334,7 @@ function testAStar(): void {
         order.time = 134513;
         let expectedRouteLength: number = 14;
 
-        routeScheduler.planOptimalRoute(routeSet, order);
+        routeScheduler.planOptimalRoute(routeSet, order, "F0");
 
         checkLength(graph.vertices[order.endVertexId].g(order.startVertexId), expectedRouteLength);
     });
