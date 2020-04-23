@@ -341,6 +341,16 @@ export class ScheduleItem {
         return new ScheduleItem(item.forkliftId, item.time, item.nextVertexId);
     }
 
+    linkPrevious(scheduleItem: ScheduleItem) {
+        this.previousScheduleItem = scheduleItem;
+        scheduleItem.nextScheduleItem = this;
+    }
+
+    linkNext(scheduleItem: ScheduleItem) {
+        this.nextScheduleItem = scheduleItem;
+        scheduleItem.previousScheduleItem = this;
+    }
+
     /**
      * Creates a {@link ScheduleItem} with the content of the {@link ScheduleItem} the function is called on
      * @returns A new {@link ScheduleItem}
