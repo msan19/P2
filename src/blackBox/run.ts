@@ -14,7 +14,7 @@ let warehouse = new Warehouse(createGraph(), 0.417);
 let graph = JSON.stringify(warehouse, null, 4);
 //fs.writeFileSync("./src/blackBox/graph.json", graph);
 
-let api = new ApiCaller("localhost", 3000);
+let api = new ApiCaller("http://localhost:3000");
 
 setTimeout(() => {
     api.sendWarehouse(warehouse).then((response: Response) => {
