@@ -339,6 +339,30 @@ function testAStar(): void {
         checkLength(graph.vertices[order.endVertexId].g(order.startVertexId), expectedRouteLength);
     });
 
+    describe(`Make A* great again!`, () => {
+        // Creating necessary objects
+        let graph: Graph = createGraph();
+        let routeSet: RouteSet = new RouteSet([], graph);
+        let warehouse = new Warehouse(graph, 15);
+        let data: DataContainer = new DataContainer();
+        data.warehouse = warehouse;
+        let routeScheduler: RouteScheduler = new RouteScheduler(data);
+
+        // Orders and such
+        let order: Order = new Order("O0", Order.types.moveForklift, "F23", "P23", "N1-2", "N8-9");
+        order.timeType = Order.timeTypes.start;
+        order.time = 400;
+
+        let orderAnnoying: Order = new Order("O1", Order.types.moveForklift, "F24", "P24", "N0-3", "N5-8");
+        orderAnnoying.timeType = Order.timeTypes.start;
+        orderAnnoying.time = 400;
+
+        routeScheduler.planOptimalRoute(routeSet, order);
+        routeScheduler.planOptimalRoute(routeSet, orderAnnoying);
+
+        console.log(routeScheduler);
+    });
+
     describe(`Test arrival time`, () => {
         let graph: Graph = createGraph();
         let routeSet: RouteSet = new RouteSet([], graph);
