@@ -79,41 +79,46 @@ export class RouteScheduler {
         return false;
     }
 
-    getArrivalTime(v1: Vertex, v2: Vertex, currentTime: number, timeIntervalMinimumSize: number): number {
-        let id1: string = "";
-        let id2: string = "";
+    getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number, timeIntervalMinimumSize: number): number {
+        let previousVertexId: string = "";
+        let nextVertexId: string = "";
         let i: number;
         let time: number;
         let interval: number;
         let maxWarp: number;
 
-        for (i = v1.getScheduleItemIndex(currentTime); i >= 0 && id1 !== v2.id && id2 !== v2.id; i--) {
-            id1 = v1.scheduleItems[i].previousScheduleItem.currentVertexId;
-            id2 = v1.scheduleItems[i].nextScheduleItem.currentVertexId;
+        /** Find earlist possible reference to destinationVertex */
+        for (i = currentVertex.getScheduleItemIndex(currentTime); i >= 0 && previousVertexId !== destinationVertex.id && nextVertexId !== destinationVertex.id; i--) {
+            if (currentVertex.scheduleItems[i].previousScheduleItem !== null) {
+                previousVertexId = currentVertex.scheduleItems[i].previousScheduleItem.currentVertexId;
+        }
+            if (currentVertex.scheduleItems[i].nextScheduleItem !== null) {
+                nextVertexId = currentVertex.scheduleItems[i].nextScheduleItem.currentVertexId;
+            }
         }
 
         ////////////////////////////
-        if (id1 === v2.id) {
-            time = v1.scheduleItems[i].previousScheduleItem.arrivalTimeCurrentVertex;
-        } else if (id2 === v2.id) {
-            time = v1.scheduleItems[i].nextScheduleItem.arrivalTimeCurrentVertex;
+        if (previousVertexId === destinationVertex.id && currentVertex.scheduleItems[i].previousScheduleItem !== null) {
+            time = currentVertex.scheduleItems[i].previousScheduleItem.arrivalTimeCurrentVertex;
+        } else if (nextVertexId === destinationVertex.id && currentVertex.scheduleItems[i].nextScheduleItem !== null) {
+            time = currentVertex.scheduleItems[i].nextScheduleItem.arrivalTimeCurrentVertex;
         } else {
             time = 0;
         }
-        i = v2.getScheduleItemIndex(time);
+        i = destinationVertex.getScheduleItemIndex(time);
         ////////////////////////////
 
         interval = 0;
-        maxWarp = this.computeMaxWarp(v1, v2, currentTime);
-        while (interval < timeIntervalMinimumSize && time < maxWarp && i < v2.scheduleItems.length) {
-            if (this.isCollisionInevitable(v1.id, v2.scheduleItems[i], maxWarp, currentTime)) {
+        maxWarp = this.computeMaxWarp(currentVertex, destinationVertex, currentTime);
+        while (interval < timeIntervalMinimumSize && time < maxWarp && i < destinationVertex.scheduleItems.length) {
+            if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[i], maxWarp, currentTime)) {
                 return Infinity;
             }
-            interval = v2.scheduleItems[i + 1].arrivalTimeCurrentVertex - v2.scheduleItems[i].arrivalTimeCurrentVertex;
+            interval = destinationVertex.scheduleItems[i + 1].arrivalTimeCurrentVertex - destinationVertex.scheduleItems[i].arrivalTimeCurrentVertex;
             i++;
         }
 
-        return v2.scheduleItems[i - 1].arrivalTimeCurrentVertex + (timeIntervalMinimumSize / 2);
+        return destinationVertex.scheduleItems[i - 1].arrivalTimeCurrentVertex + (timeIntervalMinimumSize / 2);
     }
 
     // TO DO
