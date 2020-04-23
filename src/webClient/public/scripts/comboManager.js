@@ -10,6 +10,29 @@ var ForkliftStates;
 window.forkliftSpeed;
 
 // ROUTE IN SELECTED FORKLIFT ON UI
+function onSelectElementInRouteInSelectedForklift(nodeId) {
+    for (let key in forkliftData[nForklifts.selectedForklift].route.instructions) {
+        let instruciton = forkliftData[nForklifts.selectedForklift].route.instructions[key];
+        if (instruciton.nodeId == nodeId) {
+            if (typeof (instruciton.startTime) != "undefined") {
+                let selectedNodeStartTime = document.querySelector("#selectedNodeStartTime");
+                selectedNodeStartTime.innerHTML = new Date(instruciton.startTime).toLocaleString();
+            } else if (typeof (instruciton.endTime) != "undefined") {
+                let selectedNodeEndTime = document.querySelector("#selectedNodeEndTime");
+                selectedNodeEndTime.innerHTML = new Date(instruciton.endTime).toLocaleString();
+            }
+            break;
+        }
+    }
+}
+
+function onDeselectElementInRouteInSelectedForklift() {
+    let selectedNodeStartTime = document.querySelector("#selectedNodeStartTime");
+    selectedNodeStartTime.innerHTML = "...";
+    let selectedNodeEndTime = document.querySelector("#selectedNodeEndTime");
+    selectedNodeEndTime.innerHTML = "...";
+}
+
 function updateSelectedForkliftSelectedElementInRoute(e) {
     let routeList = document.querySelector("#selectedForkliftRoute");
     let routeElements = routeList.children;
@@ -19,6 +42,7 @@ function updateSelectedForkliftSelectedElementInRoute(e) {
         }
     }
     e.target.classList.toggle("active")
+    onSelectElementInRouteInSelectedForklift(e.target.innerHTML);
 }
 
 function addElementToSelectedForkliftRoute(nodeId) {
@@ -44,6 +68,8 @@ function removeElementFromSelectedForkliftRoute(nodeId) {
     let routeElements = routeList.children;
     for (let i = 0; i < routeElements.length; i++) {
         if (routeElements[i].innerHTML == nodeId) {
+            if (routeElements[i].classList.contains("active"))
+                onDeselectElementInRouteInSelectedForklift();
             routeList.removeChild(routeElements[i]);
             break;
         }
@@ -78,6 +104,7 @@ function updateSelectedForkliftInformationOnUI() {
         yPos.innerHTML = "...";
         let state = document.querySelector("#selectedForkliftState");
         state.innerHTML = "...";
+        onDeselectElementInRouteInSelectedForklift();
     }
 
 }
