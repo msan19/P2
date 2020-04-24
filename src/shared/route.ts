@@ -189,7 +189,7 @@ export class RouteSet {
         if (!previousScheduleItem) {
             console.log(scheduleItem.forkliftId, `Vertex: ${scheduleItem.currentVertexId}`, `Time: ${scheduleItem.arrivalTimeCurrentVertex}`);
         } else {
-            console.log(scheduleItem.forkliftId, `Vertex: ${scheduleItem.currentVertexId}`, `Time: ${scheduleItem.arrivalTimeCurrentVertex - previousScheduleItem.arrivalTimeCurrentVertex}`);
+            console.log(scheduleItem.forkliftId, `Vertex: ${scheduleItem.currentVertexId}`, `ΔTime: ${scheduleItem.arrivalTimeCurrentVertex - previousScheduleItem.arrivalTimeCurrentVertex}`);
         }
         if (scheduleItem.nextScheduleItem) {
             this.printRoute(scheduleItem.nextScheduleItem, scheduleItem);
