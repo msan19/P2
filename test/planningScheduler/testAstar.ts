@@ -322,7 +322,7 @@ function testMinPriorityQueue(): void {
  * @returns Mocha handles the appropriate responses
  */
 function testAStar(): void {
-    describe(`Test of A* with Graph from createGraph input`, () => {
+    /*describe(`Test of A* with Graph from createGraph input`, () => {
         let graph: Graph = createGraph();
         let routeSet: RouteSet = new RouteSet([], graph);
         let warehouse = new Warehouse(graph, 15);
@@ -337,13 +337,13 @@ function testAStar(): void {
         routeScheduler.planOptimalRoute(routeSet, order, "F0");
 
         checkLength(graph.vertices[order.endVertexId].g(order.startVertexId), expectedRouteLength);
-    });
+    });*/
 
     describe(`Make A* great again!`, () => {
         // Creating necessary objects
         let graph: Graph = createGraph();
         let routeSet: RouteSet = new RouteSet([], graph);
-        let warehouse = new Warehouse(graph, 15);
+        let warehouse = new Warehouse(graph, 0.01);
         let data: DataContainer = new DataContainer();
         data.warehouse = warehouse;
         let routeScheduler: RouteScheduler = new RouteScheduler(data);
@@ -360,13 +360,8 @@ function testAStar(): void {
         routeScheduler.planOptimalRoute(routeSet, order, "F23");
         routeScheduler.planOptimalRoute(routeSet, orderAnnoying, "F24");
 
-        for (let i = 0; i < 10; i++) {
-            for (let j = 0; j < 10; j++) {
-                if (routeSet.graph.vertices[`N${i}-${j}`].scheduleItems.length > 0 && routeSet.graph.vertices[`N${i}-${j}`].scheduleItems[0].forkliftId === "F24") {
-                    console.log(routeSet.graph.vertices[`N${i}-${j}`].scheduleItems);
-                }
-            }
-        }
+        console.log(`\n\n Length Red:  ${graph.vertices[order.endVertexId].g(order.startVertexId)}`);
+        console.log(`\n\n Length Blue: ${graph.vertices[orderAnnoying.endVertexId].g(orderAnnoying.startVertexId)}`);
     });
 
     describe(`Test arrival time`, () => {
