@@ -174,6 +174,7 @@ class Graph {
 
     // FORKLIFT
     selectForklift(id) {
+        console.log("selecting forklift", id)
         if (typeof (id) != "undefined" && id.length > 0) {
             nForklifts.selectedForklift = id;
             if (typeof (forkliftData[nForklifts.selectedForklift]["route"]) != "undefined" && typeof (forkliftData[nForklifts.selectedForklift]["route"]["instructions"]) != "undefined") {

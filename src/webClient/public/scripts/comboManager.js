@@ -3,7 +3,7 @@ window.mainGraph;
 
 window.frameRate = 60;
 
-var forkliftData;
+var forkliftData = [];
 var ForkliftStates;
 
 
@@ -115,20 +115,19 @@ function updateForkliftFocus(forklift) {
     document.querySelector("#forklift-list").value = forklift;
 }
 
-// Set dateInput to correct format
-$(function () {
-    $('#sendOrderDateTimePicker').datetimepicker({
-        locale: 'da'
+
+initializeUI();
+//Initialize UI
+function initializeUI() {
+    // Set dateInput to correct format
+    $(function () {
+        $('#sendOrderDateTimePicker').datetimepicker({
+            locale: 'da'
+        });
     });
-});
-
-
-
-// Graph events
-window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
-    let data = Graph.parseIncomingData(Graph.cloneIncomingData(warehouse)).graph;
-    mainGraph = new Graph('sigmaContainer', data, nForklifts);
-});
+    // add blank forklift to select forklfit
+    document.querySelector("#forklift-list").innerHTML = `<option value=${""}>${""}</option>`;
+}
 
 window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
     document.querySelectorAll('.select-vertex').forEach((item) => {
@@ -140,31 +139,31 @@ window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
             item.innerHTML += `<option value="${vertexId}">${vertexId}</option>`;
         });
     }
+    let data = Graph.parseIncomingData(Graph.cloneIncomingData(warehouse)).graph;
+    mainGraph = new Graph('sigmaContainer', data, nForklifts);
 });
 
 // Forklift events
-window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
-    nForklifts.forklifts = forklifts;
-    document.querySelectorAll('.select-forklift').forEach((item) => {
-        item.innerHTML = "";
-    });
-
-    document.querySelector("#forklift-list").innerHTML = `<option value=${""}>${""}</option>`;
-    for (let key in forklifts) {
-        nForklifts.addForkliftToUi(forklifts[key]);
+function onReceiveForklift(forklift) {
+    if (typeof (forklift.id) != "undefined") {
+        if (typeof (forkliftData[forklift.id]) == "undefined")
+            nForklifts.addForklift(forklift);
+        else
+            nForklifts.updateForklift(forklift);
     }
+}
 
-    document.querySelector("form .form-group#forklift-form").onclick = (e) => {
-        mainGraph.selectForklift(e.toElement.value);
-    };
-
-    forkliftData = nForklifts.parseForklifts(forklifts);
+window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
+    for (let key in forklifts) {
+        onReceiveForklift(forklifts[key]);
+    }
 });
 
 window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
-    nForklifts.addForkliftToUi(forklift);
+    onReceiveForklift(forklift);
 });
 
+// Event loop
 window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
         nForklifts.addTestDataToForklifts();
