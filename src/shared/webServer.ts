@@ -8,6 +8,7 @@ import * as http from "http";
 import * as WebSocket from "ws";
 import * as net from "net";
 import { getStaticFile } from "./webUtilities";
+import * as mime from "mime-types";
 
 export class WebServer {
     server: http.Server;
@@ -51,7 +52,12 @@ export class WebServer {
                 if (path === "" || path === "/") path = "index.html";
                 getStaticFile("src/webClient/public", path)
                     .then((fileContents) => {
-                        response.writeHead(200, `ok`);
+                        let headers = {};
+                        let mimeType = mime.lookup(path);
+                        if (mimeType) headers["Content-Type"] = mimeType;
+
+                        response.writeHead(200, `ok`, headers);
+
                         response.write(fileContents);
                     })
                     .catch(() => {
