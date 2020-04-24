@@ -49,10 +49,59 @@ export class RouteScheduler {
         return null;
     }
 
-    calculateRoutes(data: DataContainer): RouteSet[] {
-        // TO DO
-        return null;
+    calculateRoutes(data: DataContainer, routeSet: RouteSet): void {
+        for (let orderId of routeSet.priorities) {
+            let order: Order = data.orders[orderId];
+            let assignableForklifts: string[] = order.forkliftId == "" ? this.assignForklift(data, routeSet, order) : [order.forkliftId];
+            let assignedForklift: string = assignableForklifts[0];  // (WIP)
+            this.planOptimalRoute(routeSet, order, assignedForklift);
+        }
     }
+
+    assignForklift(data: DataContainer, routeSet: RouteSet, order: Order): string[] {
+        let inactiveForklifts: string[] = [];
+        let nullScheduleItems: ScheduleItem[] = [];
+
+        // Get all inactive forklifts scheduleItems
+        for (let vertexId in routeSet.graph.vertices) {
+            for (let scheduleItem of routeSet.graph.vertices[vertexId].scheduleItems) {
+                if (scheduleItem.nextScheduleItem === null) {
+                    nullScheduleItems.push(scheduleItem);
+                }
+            }
+        }
+
+        // Sort the forklifts
+        nullScheduleItems.sort((ele1: ScheduleItem, ele2: ScheduleItem) => {
+            let ele1Time = order.time - (ele1.arrivalTimeCurrentVertex +
+                2 * this.heuristic(routeSet.graph.vertices[ele1.currentVertexId], routeSet.graph.vertices[order.startVertexId]));
+            let ele2Time = order.time - (ele2.arrivalTimeCurrentVertex +
+                2 * this.heuristic(routeSet.graph.vertices[ele2.currentVertexId], routeSet.graph.vertices[order.startVertexId]));
+
+            /*
+            Tabel:          ele1Time >= 0    ele1Time < 0
+            ele2Time >= 0     se (E1)             1              
+            ele2Time < 0        -1             se (E2)
+
+            (E1) ele2Time > ele1Time = -1   else 1
+            (E2) ele2Time > ele1Time = 1    else -1
+            */
+
+            if ((ele1Time >= 0 && ele2Time < 0) ||
+                (ele1Time >= 0 && ele2Time >= 0 && ele2Time > ele1Time) ||
+                (ele1Time < 0 && ele2Time < 0 && ele1Time > ele2Time)) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }).forEach((scheduleItem) => {
+            inactiveForklifts.push(scheduleItem.forkliftId);
+        });
+
+
+        return inactiveForklifts;
+    }
+
 
     getBestRouteSet(routeSets: RouteSet[]): RouteSet {
         // TO DO
@@ -155,28 +204,26 @@ export class RouteScheduler {
 
         let queue = new MinPriorityQueue(getEstimate);
         queue.insert(startVertex);
-        let arrivalTimeEndVertex = Infinity;
         routeSet.graph.reset();
         startVertex.isVisited = true;
         startVertex.visitTime = order.time;
+        let flag: boolean = false;
 
-        while (queue.array.length > 0) {
+        while (queue.array.length > 0 && !flag) {
             let currentVertex: Vertex = queue.extractMin();
             for (let u = 0; u < currentVertex.adjacentVertexIds.length; u++) {
                 let adjacentVertex: Vertex = routeSet.graph.vertices[currentVertex.adjacentVertexIds[u]];
                 if (adjacentVertex.id === endVertex.id) {
-                    arrivalTimeEndVertex = getEstimate(adjacentVertex);
+                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
                     adjacentVertex.isVisited = true;
                     adjacentVertex.previousVertex = currentVertex;
+                    flag = true;
                 } else if (!adjacentVertex.isVisited) {
-                    let estimatedArrivalTime: number = getEstimate(adjacentVertex);
-                    if (estimatedArrivalTime < arrivalTimeEndVertex) {
-                        adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
-                        if (adjacentVertex.visitTime < Infinity) {
-                            queue.insert(adjacentVertex);
-                            adjacentVertex.isVisited = true;
-                            adjacentVertex.previousVertex = currentVertex;
-                        }
+                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
+                    if (adjacentVertex.visitTime < Infinity) {
+                        queue.insert(adjacentVertex);
+                        adjacentVertex.isVisited = true;
+                        adjacentVertex.previousVertex = currentVertex;
                     }
                 }
             }
@@ -191,15 +238,19 @@ export class RouteScheduler {
             // Recursively stacking down
         }
 
-        //this.printRoute(startVertex, endVertex);
-        //console.log("\n");
+        this.printRoute(startVertex, endVertex);
+        console.log("\n");
     }
 
     printRoute(startVertex: Vertex, endVertex: Vertex) {
         if (endVertex !== startVertex && endVertex !== null) {
             this.printRoute(startVertex, endVertex.previousVertex);
         }
-        console.log(endVertex.scheduleItems);
+        endVertex.scheduleItems.forEach((scheduleItem) => {
+            console.log(`Forklift: ${scheduleItem.forkliftId}`);
+            console.log(`Vertex:   ${scheduleItem.currentVertexId}`);
+            console.log(`Time:     ${scheduleItem.arrivalTimeCurrentVertex}\n`);
+        });
     }
 
     /**
