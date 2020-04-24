@@ -360,7 +360,13 @@ function testAStar(): void {
         routeScheduler.planOptimalRoute(routeSet, order, "F23");
         routeScheduler.planOptimalRoute(routeSet, orderAnnoying, "F24");
 
-        console.log(routeScheduler);
+        for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                if (routeSet.graph.vertices[`N${i}-${j}`].scheduleItems.length > 0 && routeSet.graph.vertices[`N${i}-${j}`].scheduleItems[0].forkliftId === "F24") {
+                    console.log(routeSet.graph.vertices[`N${i}-${j}`].scheduleItems);
+                }
+            }
+        }
     });
 
     describe(`Test arrival time`, () => {

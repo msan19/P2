@@ -212,7 +212,7 @@ export class RouteScheduler {
     upStacking(vertex: Vertex, order: Order, forkliftId: string, nextItem: ScheduleItem | null): void {
         let i = vertex.insertScheduleItem(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
         if (nextItem !== null) nextItem.linkPrevious(vertex.scheduleItems[i]);
-        if (vertex.previousVertex.id !== order.startVertexId) {
+        if (vertex.id !== order.startVertexId) {
             this.upStacking(vertex.previousVertex, order, forkliftId, vertex.scheduleItems[i]);
         }
     }

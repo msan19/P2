@@ -7,8 +7,9 @@
 
 import * as WebSocket from "ws";
 import { Route, Instruction } from "../shared/route";
-import { ForkliftInfo } from "./../shared/forkliftInfo";
+import { ForkliftInfo, ForkliftStates } from "./../shared/forkliftInfo";
 import { JsonTryParse } from "../shared/webUtilities";
+import { Vector2 } from "../shared/vector2";
 
 enum ForkliftMessageType {
     getInfo = "getInfo",
@@ -29,9 +30,12 @@ export class Forklift extends ForkliftInfo {
     currentRoute: Route;
     routes: Route[];
 
-    constructor(id: string, hostname: string, port: number) {
+    constructor(id: string, hostname: string, port: number, batteryStatus: number, state: ForkliftStates, position: Vector2) {
         super();
         this.id = id;
+        this.batteryStatus = batteryStatus;
+        this.state = state;
+        this.position = position;
 
         this.connect(hostname, port);
     }
@@ -48,7 +52,7 @@ export class Forklift extends ForkliftInfo {
                         this.sendStatus();
                         break;
                     case ForkliftMessage.Types.addRoute:
-                        this.routes.push(obj["body"]);
+                        this.addRoute(obj["body"]);
                         break;
                     case ForkliftMessage.Types.getRoutes:
                         this.sendRoutes();
@@ -64,7 +68,11 @@ export class Forklift extends ForkliftInfo {
 
     sendStatus() {
         this.socket.send(JSON.stringify({
-            "id": this.id
+            "id": this.id,
+            "batteryStatus": this.batteryStatus,
+            "palletId": this.palletId,
+            "state": this.state,
+            "position": this.position
         }));
     }
 
@@ -78,7 +86,7 @@ export class Forklift extends ForkliftInfo {
         this.socket.send(JSON.stringify(this.routes));
     }
 
-    getNextInstruction() {
+    unshiftFirstInstruction() {
         // Current route has instructions to process
         if (this.currentRoute && this.currentRoute.instructions.length > 0) {
             return this.currentRoute.instructions.shift();
@@ -86,16 +94,24 @@ export class Forklift extends ForkliftInfo {
         // No instructions in current route, try next route
         else if (this.routes.length > 0) {
             this.currentRoute = this.routes.shift();
-            return this.getNextInstruction();
+            return this.unshiftFirstInstruction();
         }
         // No more routes to try, return null
         else {
             return null;
         }
     }
+    getNextInstruction() {
+        for (let route of this.routes) {
+            for (let instruction of route.instructions) {
+                return instruction;
+            }
+        }
+        return null;
+    }
 
     processRoutes() {
-        let nextInstruction = this.getNextInstruction();
+        let nextInstruction = this.unshiftFirstInstruction();
         if (nextInstruction !== null) {
             this.processInstruction(nextInstruction)
                 .then(this.processRoutes);
@@ -113,6 +129,7 @@ export class Forklift extends ForkliftInfo {
                 case Instruction.types.move:
                     break;
                 case Instruction.types.sendFeedback:
+                    this.sendStatus();
                     break;
                 case Instruction.types.unloadPallet:
                     break;
@@ -125,7 +142,11 @@ export class Forklift extends ForkliftInfo {
     }
 
     estimateInstructionDuration(instruction: Instruction) {
-        return 2000;
+        let next = this.getNextInstruction();
+        if (next !== null) {
+            return next.startTime - instruction.startTime;
+        }
+        else return 0;
     }
 }
 
