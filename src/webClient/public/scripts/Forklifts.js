@@ -1,43 +1,56 @@
 class Forklifts {
     selectedForklift = "";
-    constructor(forklifts) {
 
-        this.forklifts = forklifts;
+
+
+
+
+    addForklift(forklift) {
+        this.addForkliftToUi(forklift);
+        forkliftData[forklift.id] = this.parseForklift(forklift);
     }
 
-
-
+    updateForklift(forklift) {
+        let parsedForklift = this.parseForklift(forklift);
+        if (typeof (parsedForklift.state) != "undefined")
+            forkliftData[forklift.id].state = parsedForklift.state;
+        if (typeof (parsedForklift.position) != "undefined") {
+            if (typeof (parsedForklift.position.x) != "undefined")
+                forkliftData[forklift.id].position.x = parsedForklift.position.x;
+            if (typeof (parsedForklift.position.y) != "undefined")
+                forkliftData[forklift.id].position.y = parsedForklift.position.y;
+        }
+    }
 
     addForkliftToUi(forkliftInfo) {
         //document.querySelector("#forklift-list").innerHTML += `<a class="dropdown-item" value="${forkliftInfo.id}">${forkliftInfo.id}</a>`;
 
         document.querySelectorAll('.select-forklift').forEach((item) => {
             item.innerHTML += `<option value=${forkliftInfo.id}>${forkliftInfo.id}</option>`;
+            item.onclick = (e) => {
+                mainGraph.selectForklift(e.toElement.value);
+            }
         });
     }
 
-    parseForklifts(data) {
-        let forklifts = [];
-        for (let key in data) {
-            if (typeof (data[key]["id"]) == "undefined")
-                continue;
-            else if (Forklifts.getIfForkliftHasPosition(data[key])) {
-                forklifts[data[key]["id"]] = {
-                    id: data[key]["id"],
-                    state: data[key]["state"]
-                };
-            } else {
-                forklifts[data[key]["id"]] = {
-                    id: data[key]["id"],
-                    position: {
-                        x: data[key]["x"],
-                        y: data[key]["y"]
-                    },
-                    state: data[key]["state"]
-                };
-            }
+    parseForklift(data) {
+        let forklift;
+        if (Forklifts.getIfForkliftHasPosition(data)) {
+            forklift = {
+                id: data["id"],
+                state: data["state"]
+            };
+        } else {
+            forklift = {
+                id: data["id"],
+                position: {
+                    x: data["x"],
+                    y: data["y"]
+                },
+                state: data["state"]
+            };
         }
-        return forklifts;
+        return forklift;
     }
 
     static getIfForkliftHasPosition(forklift) {
