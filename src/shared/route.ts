@@ -4,7 +4,7 @@
  * @category Shared
  */
 
-import { Vertex, Graph } from "./graph";
+import { Vertex, Graph, ScheduleItem } from "./graph";
 
 /** An enum of possible states used to describe a route */
 enum RouteStatus {
@@ -171,5 +171,28 @@ export class RouteSet {
         if (typeof (Vertex.parseMultiple(routeSet.graphVertices)) !== "object") return null;
 
         return new RouteSet(routeSet.priorities, routeSet.graphVertices);
+    }
+
+
+    getFirstScheduleItemForForklift(forkliftId: string) {
+        for (let verticeId in this.graph.vertices) {
+            for (let scheduleItem of this.graph.vertices[verticeId].scheduleItems) {
+                if (scheduleItem.forkliftId === forkliftId) {
+                    while (scheduleItem.previousScheduleItem) scheduleItem = scheduleItem.previousScheduleItem;
+                    return scheduleItem;
+                }
+            }
+        }
+    }
+
+    printRoute(scheduleItem: ScheduleItem, previousScheduleItem?: ScheduleItem) {
+        if (!previousScheduleItem) {
+            console.log(scheduleItem.forkliftId, `Vertex: ${scheduleItem.currentVertexId}`, `Time: ${scheduleItem.arrivalTimeCurrentVertex}`);
+        } else {
+            console.log(scheduleItem.forkliftId, `Vertex: ${scheduleItem.currentVertexId}`, `Time: ${scheduleItem.arrivalTimeCurrentVertex - previousScheduleItem.arrivalTimeCurrentVertex}`);
+        }
+        if (scheduleItem.nextScheduleItem) {
+            this.printRoute(scheduleItem.nextScheduleItem, scheduleItem);
+        }
     }
 }
