@@ -59,7 +59,7 @@ class Graph {
 
         // Ui related
         removeSelectedForkliftRouteOnUI();
-
+        updateForkliftFocus(nForklifts.selectedForklift);
     }
 
     onNodeClick(element) {
@@ -174,7 +174,6 @@ class Graph {
 
     // FORKLIFT
     selectForklift(id) {
-        console.log("selecting forklift", id)
         if (typeof (id) != "undefined" && id.length > 0) {
             nForklifts.selectedForklift = id;
             if (typeof (forkliftData[nForklifts.selectedForklift]["route"]) != "undefined" && typeof (forkliftData[nForklifts.selectedForklift]["route"]["instructions"]) != "undefined") {
@@ -225,7 +224,7 @@ class Graph {
         for (let key in forkliftData) {
             this.updateForkliftOnGraph(forkliftData[key]);
         }
-        this.sigmaGraph.refresh();
+
     }
     // END --- FORKLIFT --- END
 

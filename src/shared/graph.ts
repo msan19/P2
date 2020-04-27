@@ -346,14 +346,14 @@ export class ScheduleItem {
         return new ScheduleItem(item.forkliftId, item.time, item.nextVertexId);
     }
 
-    linkPrevious(scheduleItem: ScheduleItem) {
-        this.previousScheduleItem = scheduleItem;
-        scheduleItem.nextScheduleItem = this;
+    linkPrevious(previousScheduleItem: ScheduleItem) {
+        this.previousScheduleItem = previousScheduleItem;
+        previousScheduleItem.nextScheduleItem = this;
     }
 
-    linkNext(scheduleItem: ScheduleItem) {
-        this.nextScheduleItem = scheduleItem;
-        scheduleItem.previousScheduleItem = this;
+    linkNext(nextScheduleItem: ScheduleItem) {
+        this.nextScheduleItem = nextScheduleItem;
+        nextScheduleItem.previousScheduleItem = this;
     }
 
     /**

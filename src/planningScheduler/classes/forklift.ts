@@ -7,12 +7,22 @@
 import { WebSocket } from "../../shared/webSocket";
 import { Route } from "../../shared/route";
 import { Vector2 } from "../../shared/vector2";
-import { ForkliftInfo } from "../../shared/forkliftInfo";
+import { ForkliftInfo, ForkliftStates } from "../../shared/forkliftInfo";
+import { EventEmitter } from "events";
+import { applyMixins } from "../../shared/utilities";
+
+
+enum events {
+    initiated = "initiated",
+    updated = "updated"
+}
+export interface Forklift extends EventEmitter, ForkliftInfo { };
 
 /**
  * A {@link Forklift} object representing a real forklift and used for communication with it
  */
 export class Forklift extends ForkliftInfo {
+    static Events = events;
 
     /** An array of {@link Route} assigned to the {@link Forklift} */
     routes: Route[];
@@ -22,6 +32,15 @@ export class Forklift extends ForkliftInfo {
         this.id = id;
         this.routes = [];
         this.state = Forklift.states.initiating;
+
+        this.setSocket(socket);
+        this.on(WebSocket.packageTypes.forkliftInfo, (forkliftInfo: ForkliftInfo) => {
+            let initated = this.state === ForkliftStates.initiating;
+            let data = Forklift.parse(forkliftInfo);
+            for (let key in data) this[key] = data[key];
+            if (initated) this.emit(Forklift.Events.initiated, this);
+            this.emit(Forklift.Events.updated, this);
+        });
     }
 
     /**
@@ -37,14 +56,15 @@ export class Forklift extends ForkliftInfo {
      * Sets the {@link WebSocket} of the {@link Forklift} by redefining {@link Forklift.getSocket}
      * @param socket A {@link WebSocket} to be set
      */
-    setSocket(socket: WebSocket): void {
+    setSocket(socket: WebSocket | null): void {
         if (this.hasSocket()) this.getSocket().close();
-
         this.getSocket = () => { return socket; };
 
-        socket.on(WebSocket.packageTypes.forkliftInfo, (forkliftInfo: ForkliftInfo) => {
-            console.log(forkliftInfo);
-        });
+        if (socket !== null) {
+            socket.on(WebSocket.packageTypes.forkliftInfo, (info) => {
+                this.emit(WebSocket.packageTypes.forkliftInfo, info);
+            });
+        }
     }
 
     /**
@@ -114,3 +134,4 @@ export class Forklift extends ForkliftInfo {
         return "succes";
     }
 }
+applyMixins(Forklift, [EventEmitter, ForkliftInfo]);

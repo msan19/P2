@@ -28,7 +28,13 @@ class Forklifts {
         document.querySelectorAll('.select-forklift').forEach((item) => {
             item.innerHTML += `<option value=${forkliftInfo.id}>${forkliftInfo.id}</option>`;
             item.onclick = (e) => {
-                mainGraph.selectForklift(e.toElement.value);
+                let tempNewSelectedForklift = e.target.innerHTML;
+
+                if (tempNewSelectedForklift[0] == 'F')
+                    mainGraph.selectForklift(tempNewSelectedForklift);
+                else if (tempNewSelectedForklift.length == 0)
+                    mainGraph.selectForklift("");
+
             }
         });
     }
@@ -131,21 +137,21 @@ class Forklifts {
 
     checkIfReachedNode(calculatedForkliftPosition, directionVector, instructions) {
         // check y direction
-        if (directionVector["y"] > 0) {
-            if (calculatedForkliftPosition["y"] > mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).y) {
+        if (directionVector.y > 0) {
+            if (calculatedForkliftPosition.y > mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).y) {
                 return true;
             }
-        } else if (directionVector["y" < 0]) {
-            if (calculatedForkliftPosition["y"] < mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).y) {
+        } else if (directionVector.y < 0) {
+            if (calculatedForkliftPosition.y < mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).y) {
                 return true;
             }
         }
-        if (directionVector["x"] > 0) {
-            if (calculatedForkliftPosition["x"] > mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).x) {
+        if (directionVector.x > 0) {
+            if (calculatedForkliftPosition.x > mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).x) {
                 return true;
             }
-        } else if (directionVector["x"] < 0) {
-            if (calculatedForkliftPosition["x"] < mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).x) {
+        } else if (directionVector.x < 0) {
+            if (calculatedForkliftPosition.x < mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).x) {
                 return true;
             }
         }
@@ -182,15 +188,15 @@ class Forklifts {
             forklift.currentNode = instructions[0].nodeId;
             instructions.splice(0, 1);
             // update displayed path if the it is the current forklift
-            if (this.selectedForklift == forklift["id"]) {
+            if (this.selectedForklift == forklift.id) {
                 mainGraph.displaySelectedForkliftPath();
                 removeElementFromSelectedForkliftRoute(forklift.currentNode);
             }
             // if forklift has reached last node, set position to last node
             // this just makes it easier to calculate, can be made better i suspect
-            forklift["position"] = {
-                x: targetNode["x"],
-                y: targetNode["y"]
+            forklift.position = {
+                x: targetNode.x,
+                y: targetNode.y
             };
             if (instructions.length == 0 || typeof (instructions[0]) == "undefined") {
                 delete forklift.route.instructions;
@@ -206,7 +212,10 @@ class Forklifts {
 
 
         } else {
-            forklift["position"] = newPosition;
+            forklift.position = newPosition;
+            if (newPosition.y < 0) {
+                console.log(forklift.route.instructions)
+            }
         }
     }
 
