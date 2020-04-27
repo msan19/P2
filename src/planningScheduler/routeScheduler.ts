@@ -90,8 +90,9 @@ export class RouteScheduler {
      * @param order 
      * @param graph 
      */
-    private createMovePalletInstructions(currentScheduleItem: ScheduleItem, forkliftId: string, instructions: Instruction[]): void {
+    private createMovePalletInstructions(currentScheduleItem: ScheduleItem, forkliftId: string, instructions: Instruction[]): Instruction[] {
         /// TO DO
+        return;
     }
 
     private createMoveForkliftInstructions(order: Order): Instruction[] {
