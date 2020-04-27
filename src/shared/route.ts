@@ -151,9 +151,16 @@ export class RouteSet {
     priorities: string[];
     graph: Graph;
 
+    /** 
+     * Is a dictionary of orderId's and forkliftId's
+     * Key is orderId and value is forkliftId
+     */
+    assignedForklift: { [key: string]: string; };
+
     constructor(priorities: string[], graph: Graph) {
         this.priorities = priorities;
         this.graph = graph;
+        this.assignedForklift = {};
     }
 
     /** 
