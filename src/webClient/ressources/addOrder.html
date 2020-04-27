@@ -23,6 +23,16 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <div class="input-group date" id="sendOrderDateTimePicker" data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input"
+                                data-target="#sendOrderDateTimePicker" />
+                            <div class="input-group-append" data-target="#sendOrderDateTimePicker"
+                                data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="type">Order Type</label>
                         <select name="type" class="form-control">
                             <option value="1">movePallet</option>

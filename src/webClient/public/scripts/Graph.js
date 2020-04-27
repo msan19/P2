@@ -224,7 +224,7 @@ class Graph {
         for (let key in forkliftData) {
             this.updateForkliftOnGraph(forkliftData[key]);
         }
-        this.sigmaGraph.refresh();
+
     }
     // END --- FORKLIFT --- END
 

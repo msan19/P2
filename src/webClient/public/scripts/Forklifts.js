@@ -1,43 +1,62 @@
 class Forklifts {
     selectedForklift = "";
-    constructor(forklifts) {
 
-        this.forklifts = forklifts;
+
+
+
+
+    addForklift(forklift) {
+        this.addForkliftToUi(forklift);
+        forkliftData[forklift.id] = this.parseForklift(forklift);
     }
 
-
-
+    updateForklift(forklift) {
+        let parsedForklift = this.parseForklift(forklift);
+        if (typeof (parsedForklift.state) != "undefined")
+            forkliftData[forklift.id].state = parsedForklift.state;
+        if (typeof (parsedForklift.position) != "undefined") {
+            if (typeof (parsedForklift.position.x) != "undefined")
+                forkliftData[forklift.id].position.x = parsedForklift.position.x;
+            if (typeof (parsedForklift.position.y) != "undefined")
+                forkliftData[forklift.id].position.y = parsedForklift.position.y;
+        }
+    }
 
     addForkliftToUi(forkliftInfo) {
         //document.querySelector("#forklift-list").innerHTML += `<a class="dropdown-item" value="${forkliftInfo.id}">${forkliftInfo.id}</a>`;
 
         document.querySelectorAll('.select-forklift').forEach((item) => {
             item.innerHTML += `<option value=${forkliftInfo.id}>${forkliftInfo.id}</option>`;
+            item.onclick = (e) => {
+                let tempNewSelectedForklift = e.target.innerHTML;
+
+                if (tempNewSelectedForklift[0] == 'F')
+                    mainGraph.selectForklift(tempNewSelectedForklift);
+                else if (tempNewSelectedForklift.length == 0)
+                    mainGraph.selectForklift("");
+
+            }
         });
     }
 
-    parseForklifts(data) {
-        let forklifts = [];
-        for (let key in data) {
-            if (typeof (data[key]["id"]) == "undefined")
-                continue;
-            else if (Forklifts.getIfForkliftHasPosition(data[key])) {
-                forklifts[data[key]["id"]] = {
-                    id: data[key]["id"],
-                    state: data[key]["state"]
-                };
-            } else {
-                forklifts[data[key]["id"]] = {
-                    id: data[key]["id"],
-                    position: {
-                        x: data[key]["x"],
-                        y: data[key]["y"]
-                    },
-                    state: data[key]["state"]
-                };
-            }
+    parseForklift(data) {
+        let forklift;
+        if (Forklifts.getIfForkliftHasPosition(data)) {
+            forklift = {
+                id: data["id"],
+                state: data["state"]
+            };
+        } else {
+            forklift = {
+                id: data["id"],
+                position: {
+                    x: data["x"],
+                    y: data["y"]
+                },
+                state: data["state"]
+            };
         }
-        return forklifts;
+        return forklift;
     }
 
     static getIfForkliftHasPosition(forklift) {
@@ -118,21 +137,21 @@ class Forklifts {
 
     checkIfReachedNode(calculatedForkliftPosition, directionVector, instructions) {
         // check y direction
-        if (directionVector["y"] > 0) {
-            if (calculatedForkliftPosition["y"] > mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).y) {
+        if (directionVector.y > 0) {
+            if (calculatedForkliftPosition.y > mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).y) {
                 return true;
             }
-        } else if (directionVector["y" < 0]) {
-            if (calculatedForkliftPosition["y"] < mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).y) {
+        } else if (directionVector.y < 0) {
+            if (calculatedForkliftPosition.y < mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).y) {
                 return true;
             }
         }
-        if (directionVector["x"] > 0) {
-            if (calculatedForkliftPosition["x"] > mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).x) {
+        if (directionVector.x > 0) {
+            if (calculatedForkliftPosition.x > mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).x) {
                 return true;
             }
-        } else if (directionVector["x"] < 0) {
-            if (calculatedForkliftPosition["x"] < mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).x) {
+        } else if (directionVector.x < 0) {
+            if (calculatedForkliftPosition.x < mainGraph.sigmaGraph.graph.nodes(instructions[0].nodeId).x) {
                 return true;
             }
         }
@@ -169,15 +188,15 @@ class Forklifts {
             forklift.currentNode = instructions[0].nodeId;
             instructions.splice(0, 1);
             // update displayed path if the it is the current forklift
-            if (this.selectedForklift == forklift["id"]) {
+            if (this.selectedForklift == forklift.id) {
                 mainGraph.displaySelectedForkliftPath();
                 removeElementFromSelectedForkliftRoute(forklift.currentNode);
             }
             // if forklift has reached last node, set position to last node
             // this just makes it easier to calculate, can be made better i suspect
-            forklift["position"] = {
-                x: targetNode["x"],
-                y: targetNode["y"]
+            forklift.position = {
+                x: targetNode.x,
+                y: targetNode.y
             };
             if (instructions.length == 0 || typeof (instructions[0]) == "undefined") {
                 delete forklift.route.instructions;
@@ -193,7 +212,10 @@ class Forklifts {
 
 
         } else {
-            forklift["position"] = newPosition;
+            forklift.position = newPosition;
+            if (newPosition.y < 0) {
+                console.log(forklift.route.instructions)
+            }
         }
     }
 
@@ -241,12 +263,14 @@ class Forklifts {
                 let nodes = mainGraph.sigmaGraph.graph.nodes();
                 let currentNode = forkliftData[key].currentNode;
                 this.generateRoute(route, (typeof (currentNode) == "undefined") ? nodes[Math.floor(Math.random() * nodes.length)].id : currentNode, Math.round(Math.random() * 20));
-                if (route.instructions.length != 0)
+                if (route.instructions.length != 0) {
                     forkliftData[key].route = route;
-                if (key == this.selectedForklift) {
-                    mainGraph.displaySelectedForkliftPath();
-                    initiateSelectedForkliftRouteOnUI(forkliftData[nForklifts.selectedForklift]);
+                    if (key == this.selectedForklift) {
+                        mainGraph.displaySelectedForkliftPath();
+                        initiateSelectedForkliftRouteOnUI(forkliftData[nForklifts.selectedForklift]);
+                    }
                 }
+
 
             }
 
