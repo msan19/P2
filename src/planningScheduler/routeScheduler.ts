@@ -49,30 +49,59 @@ export class RouteScheduler {
         return null;
     }
 
-    calculateRoutes(data: DataContainer, routeSet: RouteSet): void {
+    calculateRoutes(data: DataContainer, routeSet: RouteSet): boolean {
         for (let orderId of routeSet.priorities) {
             let order: Order = data.orders[orderId];
-            let assignableForklifts: string[] = order.forkliftId == "" ? this.assignForklift(data, routeSet, order) : [order.forkliftId];
-            let assignedForklift: string = assignableForklifts[0];  // (WIP)
-            this.planOptimalRoute(routeSet, order, assignedForklift);
-        }
-    }
+            let assignableForklifts: { vertex: string, forklift: string; }[] = [];
+            let currentRouteTime: number = Infinity;
+            let forkliftId: string = order.forkliftId || "";
 
-    assignForklift(data: DataContainer, routeSet: RouteSet, order: Order): string[] {
-        let inactiveForklifts: string[] = [];
-        let nullScheduleItems: ScheduleItem[] = [];
+            // Handle all order cases     
+            if (order.type === Order.types.movePallet) {
+                assignableForklifts = this.assignForklift(routeSet, order);
+                for (let i = 0; i < assignableForklifts.length && currentRouteTime === Infinity; i++) {
+                    currentRouteTime = this.planOptimalRoute(routeSet, assignableForklifts[i].vertex, order.startVertexId,
+                        order.time, assignableForklifts[i].forklift);
+                    if (currentRouteTime != Infinity) {
+                        currentRouteTime += this.planOptimalRoute(routeSet, order.startVertexId, order.endVertexId,
+                            order.time, assignableForklifts[i].forklift);
 
-        // Get all inactive forklifts scheduleItems
-        for (let vertexId in routeSet.graph.vertices) {
-            for (let scheduleItem of routeSet.graph.vertices[vertexId].scheduleItems) {
-                if (scheduleItem.nextScheduleItem === null) {
-                    nullScheduleItems.push(scheduleItem);
+                        forkliftId = assignableForklifts[i].forklift;
+                    }
                 }
             }
-        }
 
-        // Sort the forklifts
-        nullScheduleItems.sort((ele1: ScheduleItem, ele2: ScheduleItem) => {
+            // Comment
+            if (order.type === Order.types.moveForklift) {
+                currentRouteTime = this.planOptimalRoute(routeSet, routeSet.graph.idlePositions[order.forkliftId].currentVertexId,
+                    order.endVertexId, order.time, order.forkliftId);
+            }
+
+            // Comment
+            if (order.type === Order.types.charge) {
+                currentRouteTime = this.planOptimalRoute(routeSet, routeSet.graph.idlePositions[order.forkliftId].currentVertexId,
+                    order.endVertexId, order.time, order.forkliftId);
+            }
+
+            if (currentRouteTime != Infinity) {
+                if (order.timeType === Order.timeTypes.start) {
+                    this.upStacking(routeSet.graph.vertices[order.endVertexId], order, forkliftId, null);
+                    // Recursively stacking up
+                }
+                routeSet.duration.push(currentRouteTime);
+                routeSet.graph.idlePositions[forkliftId] = routeSet.graph.vertices[order.endVertexId].getScheduleItem(order.time + currentRouteTime);
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    assignForklift(routeSet: RouteSet, order: Order): { vertex: string, forklift: string; }[] {
+        let inactiveForklifts: { vertex: string, forklift: string; }[] = [];
+        let idleItems: ScheduleItem[] = Object.values(routeSet.graph.idlePositions);
+
+        idleItems.sort((ele1: ScheduleItem, ele2: ScheduleItem) => {
             let ele1Time = order.time - (ele1.arrivalTimeCurrentVertex +
                 2 * this.heuristic(routeSet.graph.vertices[ele1.currentVertexId], routeSet.graph.vertices[order.startVertexId]));
             let ele2Time = order.time - (ele2.arrivalTimeCurrentVertex +
@@ -94,10 +123,9 @@ export class RouteScheduler {
             } else {
                 return 1;
             }
-        }).forEach((scheduleItem) => {
-            inactiveForklifts.push(scheduleItem.forkliftId);
+        }).forEach((scheduleItem: ScheduleItem) => {
+            inactiveForklifts.push({ vertex: scheduleItem.currentVertexId, forklift: scheduleItem.forkliftId });
         });
-
 
         return inactiveForklifts;
     }
