@@ -10,9 +10,11 @@ import { Vector2 } from "./vector2";
 export class Graph {
     /** A dictionary of vertices contained in the {@link Graph} */
     vertices: { [key: string]: Vertex; };
+    idlePositions: { [forkliftId: string]: ScheduleItem; };
 
     constructor(vertices: { [key: string]: Vertex; }) {
         this.vertices = vertices || {};
+        this.idlePositions = {};
     }
 
     /**
@@ -108,7 +110,6 @@ export class Graph {
             this.vertices[keys[i]].isVisited = false;
         }
     }
-
 }
 
 /**
@@ -281,6 +282,10 @@ export class Vertex {
         } else {
             return j;
         }
+    }
+
+    getScheduleItem(time: number): ScheduleItem {
+        return this.scheduleItems[this.getScheduleItemIndex(time)];
     }
 
     insertScheduleItem(scheduleItem: ScheduleItem): number {
