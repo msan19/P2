@@ -5,9 +5,9 @@
  */
 
 import { DataContainer } from "./classes/dataContainer";
-import { Route, RouteSet } from "../shared/route";
+import { Route, RouteSet, Instruction } from "../shared/route";
 import { Order } from "../shared/order";
-import { Vertex, ScheduleItem } from "../shared/graph";
+import { Vertex, ScheduleItem, Graph } from "../shared/graph";
 import { MinPriorityQueue } from "./classes/minPriorityQueue";
 
 /**
@@ -44,8 +44,76 @@ export class RouteScheduler {
         this.timeIntervalMinimumSize = 30000;
     }
 
+    /**
+     * Looks at the best routeSet and finds a route that matches the orderId.
+     * Converts scheduleItems to a route
+     * @note Each order Id is unique
+     * @param orderId A string that uniquely identifies the given order
+     */
     getRoute(orderId: string): Route {
-        // TO DO
+        let order = this.data.orders[orderId];
+        console.log(order);
+
+        let routeId = orderId.replace("O", "R");
+        let instructions = this.createInstructions(order);
+        let routeStatus = 1; // queued
+        console.log(routeStatus);
+        console.log(routeId);
+        //let route = ;
+
+        // return route;
+
+        return null /* new Route(routeId, orderId, routeStatus, instructions) */;
+    }
+
+    private createInstructions(order: Order): Instruction[] {
+        let instructions: Instruction[];
+
+        if (order.type === Order.types.movePallet) {
+            let forkliftId = this.bestRouteSet.assignedForklift[order.id];
+            let endVertex = this.findVertex(order.endVertexId);
+            let lastScheduleItem = this.findSchduleItem(endVertex.scheduleItems, forkliftId);
+            console.log(lastScheduleItem);
+            instructions = this.createMovePalletInstructions(lastScheduleItem, forkliftId, instructions);
+        } else if (order.type === Order.types.moveForklift) {
+            /// TO DO
+            instructions = this.createMoveForkliftInstructions(order);
+        } else {
+            /// TO DO
+            instructions = this.createChargeInstructions(order);
+        }
+
+        return instructions;
+    }
+
+    /**
+     * @param order 
+     * @param graph 
+     */
+    private createMovePalletInstructions(currentScheduleItem: ScheduleItem, forkliftId: string, instructions: Instruction[]): void {
+        /// TO DO
+    }
+
+    private createMoveForkliftInstructions(order: Order): Instruction[] {
+        /// TO DO
+        return;
+    }
+
+    private createChargeInstructions(order: Order): Instruction[] {
+        /// TO DO
+        return;
+    }
+
+    private findVertex(vertexId: string) {
+        return this.bestRouteSet.graph.vertices[vertexId];
+    }
+
+    private findSchduleItem(scheduleItems: ScheduleItem[], forkliftId: string): ScheduleItem {
+        for (let i = 0; i < scheduleItems.length; i++) {
+            if (forkliftId === scheduleItems[i].forkliftId) {
+                return scheduleItems[i];
+            }
+        }
         return null;
     }
 
