@@ -171,5 +171,6 @@ window.setInterval(function () {
         updateForkliftFocus(nForklifts.selectedForklift);
         updateSelectedForkliftInformationOnUI();
         mainGraph.updateForkliftsOnGraph();
+        mainGraph.sigmaGraph.refresh();
     }
 }, 1000 / frameRate);
