@@ -29,9 +29,10 @@ class Forklifts {
             item.innerHTML += `<option value=${forkliftInfo.id}>${forkliftInfo.id}</option>`;
             item.onclick = (e) => {
                 let tempNewSelectedForklift = e.target.innerHTML;
+
                 if (tempNewSelectedForklift[0] == 'F')
                     mainGraph.selectForklift(tempNewSelectedForklift);
-                else
+                else if (tempNewSelectedForklift.length == 0)
                     mainGraph.selectForklift("");
 
             }
