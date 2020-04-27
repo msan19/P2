@@ -168,7 +168,6 @@ window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
         nForklifts.addTestDataToForklifts();
         nForklifts.handleForkliftMovement();
-        updateForkliftFocus(nForklifts.selectedForklift);
         updateSelectedForkliftInformationOnUI();
         mainGraph.updateForkliftsOnGraph();
         mainGraph.sigmaGraph.refresh();
