@@ -59,7 +59,7 @@ class Graph {
 
         // Ui related
         removeSelectedForkliftRouteOnUI();
-
+        updateForkliftFocus(nForklifts.selectedForklift);
     }
 
     onNodeClick(element) {
