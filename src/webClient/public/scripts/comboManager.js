@@ -58,8 +58,10 @@ function addElementToSelectedForkliftRoute(nodeId) {
 function initiateSelectedForkliftRouteOnUI(forklift) {
     let routeList = document.querySelector("#selectedForkliftRoute");
     routeList.innerHTML = "";
-    for (let key in forklift.route.instructions) {
-        addElementToSelectedForkliftRoute(forklift.route.instructions[key].nodeId);
+    if (typeof (forklift.route) != "undefined") {
+        for (let key in forklift.route.instructions) {
+            addElementToSelectedForkliftRoute(forklift.route.instructions[key].nodeId);
+        }
     }
 }
 
@@ -168,8 +170,8 @@ window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
         nForklifts.addTestDataToForklifts();
         nForklifts.handleForkliftMovement();
-        updateForkliftFocus(nForklifts.selectedForklift);
         updateSelectedForkliftInformationOnUI();
         mainGraph.updateForkliftsOnGraph();
+        mainGraph.sigmaGraph.refresh();
     }
 }, 1000 / frameRate);
