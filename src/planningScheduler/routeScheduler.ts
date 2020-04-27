@@ -223,9 +223,9 @@ export class RouteScheduler {
      * @param routeSet Routeset where route is added. Assumes RouteSet.graph is full
      * @param order Order to be calculated route for
      */
-    planOptimalRoute(routeSet: RouteSet, order: Order, forkliftId: string): void {
-        let endVertex: Vertex = routeSet.graph.vertices[order.endVertexId];
-        let startVertex: Vertex = routeSet.graph.vertices[order.startVertexId];
+    planOptimalRoute(routeSet: RouteSet, startVertexId: string, endVertexId: string, orderTime: number, forkliftId: string): number {
+        let endVertex: Vertex = routeSet.graph.vertices[endVertexId];
+        let startVertex: Vertex = routeSet.graph.vertices[startVertexId];
         let getEstimate = (currentVertex: Vertex): number => {
             return this.heuristic(currentVertex, endVertex) + routeSet.graph.vertices[currentVertex.id].visitTime;
         };
@@ -234,7 +234,7 @@ export class RouteScheduler {
         queue.insert(startVertex);
         routeSet.graph.reset();
         startVertex.isVisited = true;
-        startVertex.visitTime = order.time;
+        startVertex.visitTime = orderTime;
         let flag: boolean = false;
 
         while (queue.array.length > 0 && !flag) {
@@ -266,8 +266,7 @@ export class RouteScheduler {
             // Recursively stacking down
         }
 
-        this.printRoute(startVertex, endVertex);
-        console.log("\n");
+        return endVertex.visitTime - orderTime;
     }
 
     printRoute(startVertex: Vertex, endVertex: Vertex) {
