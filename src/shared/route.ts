@@ -150,10 +150,12 @@ export class Route {
 export class RouteSet {
     priorities: string[];
     graph: Graph;
+    duration: number[];
 
     constructor(priorities: string[], graph: Graph) {
         this.priorities = priorities;
         this.graph = graph;
+        this.duration = [];
     }
 
     /** 
@@ -173,7 +175,7 @@ export class RouteSet {
         return new RouteSet(routeSet.priorities, routeSet.graphVertices);
     }
 
-
+    // O(nm + m) 
     getFirstScheduleItemForForklift(forkliftId: string) {
         for (let verticeId in this.graph.vertices) {
             for (let scheduleItem of this.graph.vertices[verticeId].scheduleItems) {
