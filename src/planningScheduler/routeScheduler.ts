@@ -211,6 +211,26 @@ export class RouteScheduler {
         return null;
     }
 
+    setBestRouteSet(): void {
+        let numOfRouteSets = this.routeSets.length;
+        for (let i = 0; i < numOfRouteSets; i++) {
+            let oldScore = RouteScheduler.evalRouteSet(this.bestRouteSet);
+            let newScore = RouteScheduler.evalRouteSet(this.routeSets[i]);
+            if (newScore < oldScore) {
+                this.bestRouteSet = this.routeSets[i];
+            }
+        }
+    }
+
+    static evalRouteSet(routeSet: RouteSet): number {
+        let sum = 0;
+        let length: number = routeSet.duration.length;
+        for (let i = 0; i < length; i++) {
+            sum += routeSet.duration[i];
+        }
+        return sum;
+    }
+
     getLastPos(forkliftId: string, routeSet: RouteSet): string {
         //TODO
         return null;
