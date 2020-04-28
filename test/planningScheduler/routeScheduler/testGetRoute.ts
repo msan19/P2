@@ -43,6 +43,10 @@ function testGetRoute(): void {
             "N6-0", "N7-0", "N7-1", "N7-2"
         ];
 
+        let startTime = 30100;
+        routeScheduler.bestRouteSet.duration[0] = getDuration(startTime, vertexIdFirstRoute);
+        console.log(routeScheduler.bestRouteSet.duration[0]);
+
         createScheduleItems(routeScheduler.bestRouteSet, vertexIdFirstRoute, firstForkliftId);
         createScheduleItems(routeScheduler.bestRouteSet, vertexIdSecondRoute, secondForkliftId);
         createScheduleItems(routeScheduler.bestRouteSet, vertexIdThirdRoute, thirdForkliftId);
@@ -63,7 +67,15 @@ function testGetRoute(): void {
         // give routeScheduler access to the data (it needs access to Orders[])
         routeScheduler.data = data;
 
-        let route = routeScheduler.getRoute(firstOrderId);
+        let resultingRoute = routeScheduler.getRoute(firstOrderId);
+
+        //let movePalletInstruction = createMovePalletInstructions();
+        //new Route("R1", firstOrderId, Instruction.types.move, movePalletInstruction);
+        // let expectedRoute
+
+        console.log(resultingRoute);
+
+        // testRoute(route);
 
         let result = "dummy";
         let expected = "dummy";
@@ -78,6 +90,14 @@ function testGetRoute(): void {
     // });
 }
 
+function getDuration(startTime: number, vertexIds: string[]): number {
+    let duration = 0;
+    for (let i = 0; i < vertexIds.length; i++) {
+        duration += 100;
+    }
+    return duration;
+}
+
 /**
  * 
  * @note The route is added the the firs element in scheduleItems[]. This means that there are
@@ -86,7 +106,7 @@ function testGetRoute(): void {
  * @param verticeList 
  * @param forkliftId
  */
-function createScheduleItems(routeSet: RouteSet, verticeIdList: string[], forkliftId: string) {
+function createScheduleItems(routeSet: RouteSet, verticeIdList: string[], forkliftId: string): void {
     const timeBuffer = 30000;
 
     // create current scheduleItem
@@ -118,6 +138,7 @@ function linkScheduleItems(routeSet: RouteSet, verticeIdList: string[]): void { 
         }
     }
 }
+
 
 function printScheduleItem(routeSet: RouteSet, verticeIdList: string[]): void {
     for (let i = 0; i < verticeIdList.length; i++) {
