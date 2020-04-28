@@ -372,8 +372,8 @@ function testAStar(): void {
         routeScheduler.planOptimalRoute(routeSet, order.startVertexId, order.endVertexId, order.time, "F23");
         routeScheduler.planOptimalRoute(routeSet, orderAnnoying.startVertexId, orderAnnoying.endVertexId, orderAnnoying.time, "F24");
 
-        console.log(`\n\n Length Red:  ${routeSet.graph.vertices[order.endVertexId].g(order.startVertexId)}`);
-        console.log(`\n\n Length Blue: ${routeSet.graph.vertices[orderAnnoying.endVertexId].g(orderAnnoying.startVertexId)}`);
+        //console.log(`\n\n Length Red:  ${routeSet.graph.vertices[order.endVertexId].g(order.startVertexId)}`);
+        //console.log(`\n\n Length Blue: ${routeSet.graph.vertices[orderAnnoying.endVertexId].g(orderAnnoying.startVertexId)}`);
     });
 
     describe(`Test arrival time`, () => {
