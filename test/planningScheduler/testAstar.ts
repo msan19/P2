@@ -16,8 +16,8 @@ import { Order } from '../../src/shared/order';
 import { RouteScheduler } from '../../src/planningScheduler/routeScheduler';
 import { DataContainer } from '../../src/planningScheduler/classes/dataContainer';
 import { RouteSet } from '../../src/shared/route';
-import { Data } from 'ws';
 import { Warehouse } from '../../src/shared/warehouse';
+
 
 /**
  * Checks wether two lengths are equal
@@ -56,6 +56,22 @@ function checkArray(result: number[], expected: number[]) {
         it(`${result[i]} should be ${expected[i]}`, () => {
             expect(result[i]).to.equal(expected[i]);
         });
+    }
+}
+
+function checkScheduleItem(result: ScheduleItem, expected: ScheduleItem) {
+    let keys: string[] = Object.keys(expected);
+    for (let key of keys) {
+        it(`${key}: ${result[key]} should be ${result[key]}`, () => {
+            expect(result[key]).to.equal(expected[key]);
+        });
+    }
+}
+
+function checkScheduleItems(result: ScheduleItem[], expected: ScheduleItem[]) {
+    let length: number = Math.max(result.length, expected.length);
+    for (let i = 0; i < length; i++) {
+        checkScheduleItem(result[i], expected[i]);
     }
 }
 
@@ -341,12 +357,8 @@ function testAStar(): void {
 
     describe(`Make A* great again!`, () => {
         // Creating necessary objects
-        let graph: Graph = createGraph();
-        let routeSet: RouteSet = new RouteSet([], graph);
-        let warehouse = new Warehouse(graph, 0.01);
-        let data: DataContainer = new DataContainer();
-        data.warehouse = warehouse;
-        let routeScheduler: RouteScheduler = new RouteScheduler(data);
+        let routeSet: RouteSet = initRouteSet();
+        let routeScheduler: RouteScheduler = initRouteScheduler();
 
         // Orders and such
         let order: Order = new Order("O0", Order.types.moveForklift, "F23", "P23", "N1-2", "N8-9");
@@ -360,17 +372,13 @@ function testAStar(): void {
         routeScheduler.planOptimalRoute(routeSet, order.startVertexId, order.endVertexId, order.time, "F23");
         routeScheduler.planOptimalRoute(routeSet, orderAnnoying.startVertexId, orderAnnoying.endVertexId, orderAnnoying.time, "F24");
 
-        console.log(`\n\n Length Red:  ${graph.vertices[order.endVertexId].g(order.startVertexId)}`);
-        console.log(`\n\n Length Blue: ${graph.vertices[orderAnnoying.endVertexId].g(orderAnnoying.startVertexId)}`);
+        console.log(`\n\n Length Red:  ${routeSet.graph.vertices[order.endVertexId].g(order.startVertexId)}`);
+        console.log(`\n\n Length Blue: ${routeSet.graph.vertices[orderAnnoying.endVertexId].g(orderAnnoying.startVertexId)}`);
     });
 
     describe(`Test arrival time`, () => {
-        let graph: Graph = createGraph();
-        let routeSet: RouteSet = new RouteSet([], graph);
-        let warehouse = new Warehouse(graph, 15);
-        let data: DataContainer = new DataContainer();
-        data.warehouse = warehouse;
-        let routeScheduler: RouteScheduler = new RouteScheduler(data);
+        let routeSet: RouteSet = initRouteSet();
+        let routeScheduler: RouteScheduler = initRouteScheduler();
 
         // Init scheduleItems
         let vertex1: Vertex = routeScheduler.data.warehouse.graph.vertices["N0-0"];
@@ -407,5 +415,75 @@ function testAStar(): void {
     });
 }
 
+function initRouteSet() {
+    let graph: Graph = createGraph();
+    return new RouteSet([], graph);
+}
+
+function initRouteScheduler() {
+    let graph: Graph = createGraph();
+    let warehouse = new Warehouse(graph, 15);
+    let data: DataContainer = new DataContainer();
+    data.warehouse = warehouse;
+    return new RouteScheduler(data);
+}
+
+function testRouteScheduler(): void {
+    // Test for assignForklift
+    describe(`Test for method assignForklift from object RouteScheduler`, () => {
+        // No assignable forklifts
+        describe(`Test with no assignable forklifts`, () => {
+            let routeSet: RouteSet = initRouteSet();
+            let routeScheduler: RouteScheduler = initRouteScheduler();
+
+            let order: Order = new Order("O0", Order.types.moveForklift, "F23", "P23", "N1-2", "N8-9");
+            order.timeType = Order.timeTypes.start;
+            order.time = 400;
+
+            let expected = [];
+            let result = routeScheduler.assignForklift(routeSet, order);
+
+            // Empty arrays have length 0
+            it(`Expected is ${expected.length} and the result is ${result.length}`, () => {
+                expect(result.length).to.equal(expected.length);
+            });
+        });
+
+        // All assignable forklifts
+        describe(`Test with all assignable forklifts`, () => {
+            let routeSet: RouteSet = initRouteSet();
+            let routeScheduler: RouteScheduler = initRouteScheduler();
+
+            let order: Order = new Order("O0", Order.types.moveForklift, "", "P23", "N1-2", "N8-9");
+            order.timeType = Order.timeTypes.start;
+            order.time = 100000;
+
+            // Set idlePositions of routeSet made of a dict of forkliftId : ScheduleItems pairs
+            routeSet.graph.idlePositions["F23"] = new ScheduleItem("F23", 1400, "N0-0");
+            console.log(routeSet.graph.idlePositions);
+            let expected = [];
+            expected.push(new ScheduleItem("F23", 1400, "N0-0"));
+            let result = routeScheduler.assignForklift(routeSet, order);
+
+            // Empty arrays have length 0
+            checkScheduleItems(result, expected);
+        });
+
+        // Mix of assignable and non-assignable forklifts
+        describe(``, () => {
+
+        });
+
+        // Test of the sorting
+        describe(``, () => {
+
+        });
+
+
+    });
+
+}
+
 //describe(`Test of object "MinPriorityQueue"`, testMinPriorityQueue);
 describe(`Test of A* algorithm`, testAStar);
+describe(`Test of object RouteScheduler`, testRouteScheduler);
