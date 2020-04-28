@@ -49,9 +49,14 @@ Uge 14-17:    Programmering
       Tirsdag: binary search og insert af scheduleitems
       Onsdag:  kollision og a* på et routeset
       Torsdag: a* på et routeset
-      Fredag:  priority search
+      Fredag:  a* på et routeset
 
-Uge 18:       Bufferperiode
+Uge 18:       Bufferperiode (mapf og rapportskrivning)
+  Mandag: Planlægge hele af routeset
+  Tirsdag: Teste routeset planlægning og måske priority searching
+  Onsdag:  priority searching
+  Torsdag: ?
+  Fredag:  ?
 
 Uge 19:       Test
 
