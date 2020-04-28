@@ -142,7 +142,7 @@ export class RouteScheduler {
                         currentRouteTime = Infinity;
                     }
                     if (currentRouteTime != Infinity) {
-                        currentRouteTime += this.planOptimalRoute(routeSet, order.startVertexId, order.endVertexId,
+                        currentRouteTime = this.planOptimalRoute(routeSet, order.startVertexId, order.endVertexId,
                             order.time, assignableForklifts[i].forkliftId);
 
                         forkliftId = assignableForklifts[i].forkliftId;
