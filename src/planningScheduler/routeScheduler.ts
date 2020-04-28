@@ -310,9 +310,8 @@ export class RouteScheduler {
         routeSet.graph.reset();
         startVertex.isVisited = true;
         startVertex.visitTime = orderTime;
-        let flag: boolean = false;
 
-        while (queue.array.length > 0 && !flag) {
+        while (queue.array.length > 0) {
             let currentVertex: Vertex = queue.extractMin();
             for (let u = 0; u < currentVertex.adjacentVertexIds.length; u++) {
                 let adjacentVertex: Vertex = routeSet.graph.vertices[currentVertex.adjacentVertexIds[u]];
@@ -320,7 +319,7 @@ export class RouteScheduler {
                     adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
                     adjacentVertex.isVisited = true;
                     adjacentVertex.previousVertex = currentVertex;
-                    flag = true;
+                    return endVertex.visitTime - orderTime;
                 } else if (!adjacentVertex.isVisited) {
                     adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
                     if (adjacentVertex.visitTime < Infinity) {
@@ -331,12 +330,7 @@ export class RouteScheduler {
                 }
             }
         }
-
-        if (!flag) {
-            return Infinity;
-        }
-
-        return endVertex.visitTime - orderTime;
+        return Infinity;
     }
 
     printRoute(startVertex: Vertex, endVertex: Vertex) {
