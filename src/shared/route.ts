@@ -148,8 +148,12 @@ export class Route {
 
 /** A set of Routes containing priorities and a graph */
 export class RouteSet {
-    priorities: string[];
     graph: Graph;
+
+    /** 
+     * priorities and duration are associative arrays
+     */
+    priorities: string[];
     duration: number[];
 
     /** 
