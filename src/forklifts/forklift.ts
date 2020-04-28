@@ -11,19 +11,6 @@ import { ForkliftInfo, ForkliftStates } from "./../shared/forkliftInfo";
 import { Vector2 } from "../shared/vector2";
 import { WebSocket } from "../shared/webSocket";
 
-enum ForkliftMessageType {
-    getInfo = "getInfo",
-    getRoutes = "getRoutes",
-    addRoute = "addRoute"
-}
-
-export class ForkliftMessage {
-    static Types = ForkliftMessageType;
-    type: ForkliftMessageType;
-
-    body: ForkliftInfo | Route | null;
-}
-
 
 export class Forklift extends ForkliftInfo {
     socket: WebSocket;

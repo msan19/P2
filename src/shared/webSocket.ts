@@ -43,16 +43,31 @@ export class WebSocket extends EventEmitter {
         socket.on("error", () => this.emit("close"));
         socket.on("close", () => this.emit("close"));
         socket.on("message", (msg) => {
+            // Parse as JSON
             let data = JsonTryParse(String(msg));
             if (data === null) {
-                this.emit(WebSocket.packageTypes.other);
+                // If body isn't valid json, emit as other
+                this.emitAndExpectListeners(WebSocket.packageTypes.other, msg);
                 return;
             }
 
             let type = WebSocket.packageTypes[data["type"]];
-            if (type !== null) this.emit(type, data["body"]);
-            else this.emit(WebSocket.packageTypes.json);
+            if (type !== null) {
+                // If known type, emit that with body
+                this.emitAndExpectListeners(type, data["body"]);
+            } else {
+                // If invalid package, emit as generic json
+                this.emitAndExpectListeners(WebSocket.packageTypes.json, data);
+            }
         });
+    }
+
+    private emitAndExpectListeners(type: PackageTypes, data: any) {
+        if (!this.emit(type, data)) {
+            // Emit returns true if any listeners were found.
+            // Throw error if there were no listeners.
+            console.error(`WebSocket: No listeners found for package-type '${type}'`);
+        }
     }
 
     /**
