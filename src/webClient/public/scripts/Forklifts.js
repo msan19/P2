@@ -213,10 +213,43 @@ class Forklifts {
 
         } else {
             forklift.position = newPosition;
-            if (newPosition.y < 0) {
-                console.log(forklift.route.instructions)
-            }
         }
+    }
+
+    calculateRouteTimes(instructions, currentTime, currentInstruction, currentPosition) {
+        if (instructions.length == currentInstruction + 1)
+            return;
+        let targetPosition = {
+            x: mainGraph.sigmaGraph.graph.nodes(instructions[currentInstruction + 1].nodeId).x,
+            y: mainGraph.sigmaGraph.graph.nodes(instructions[currentInstruction + 1].nodeId).y
+        };
+        let dDistance = this.getDistanceBetweenPoints(
+            currentPosition.x,
+            currentPosition.y,
+            targetPosition.x,
+            targetPosition.y
+        );
+        if (dDistance < forkliftSpeed) {
+            instructions[currentInstruction + 1].startTime = currentTime + dDistance / forkliftSpeed * 1000;
+            this.calculateRouteTimes(instructions, instructions[currentInstruction + 1].startTime, currentInstruction + 1, targetPosition);
+        } else if (dDistance > forkliftSpeed) {
+            let directionVector = this.getDirectionVector(
+                dDistance,
+                currentPosition.x,
+                currentPosition.y,
+                targetPosition.x,
+                targetPosition.y
+            );
+            let newPosition = {
+                x: currentPosition.x + forkliftSpeed * directionVector.x,
+                y: currentPosition.y + forkliftSpeed * directionVector.y
+            };
+            this.calculateRouteTimes(instructions, currentTime + 1000, currentInstruction, newPosition);
+        } else {
+            instructions[currentInstruction + 1].startTime = currentTime + 1000;
+            this.calculateRouteTimes(instructions, instructions[currentInstruction + 1].startTime, currentInstruction + 1, targetPosition);
+        }
+
     }
 
     generateRoute(route, node, length) {
@@ -265,16 +298,16 @@ class Forklifts {
                 this.generateRoute(route, (typeof (currentNode) == "undefined") ? nodes[Math.floor(Math.random() * nodes.length)].id : currentNode, Math.round(Math.random() * 20));
                 if (route.instructions.length != 0) {
                     forkliftData[key].route = route;
+                    this.calculateRouteTimes(route.instructions, route.instructions[0].startTime, 0, {
+                        x: mainGraph.sigmaGraph.graph.nodes(route.instructions[0].nodeId).x,
+                        y: mainGraph.sigmaGraph.graph.nodes(route.instructions[0].nodeId).y
+                    });
                     if (key == this.selectedForklift) {
                         mainGraph.displaySelectedForkliftPath();
                         initiateSelectedForkliftRouteOnUI(forkliftData[nForklifts.selectedForklift]);
                     }
                 }
-
-
             }
-
         }
     }
-
 }

@@ -16,10 +16,10 @@ function onSelectElementInRouteInSelectedForklift(nodeId) {
         if (instruciton.nodeId == nodeId) {
             if (typeof (instruciton.startTime) != "undefined") {
                 let selectedNodeStartTime = document.querySelector("#selectedNodeStartTime");
-                selectedNodeStartTime.innerHTML = new Date(instruciton.startTime).toLocaleString();
+                selectedNodeStartTime.innerHTML = moment(instruciton.startTime).format('MMM Do HH:mm:ss');
             } else if (typeof (instruciton.endTime) != "undefined") {
                 let selectedNodeEndTime = document.querySelector("#selectedNodeEndTime");
-                selectedNodeEndTime.innerHTML = new Date(instruciton.endTime).toLocaleString();
+                selectedNodeEndTime.innerHTML = new Date(instruciton.startTime).toLocaleTimeString("da-dk")
             }
             break;
         }
@@ -124,7 +124,7 @@ function initializeUI() {
     // Set dateInput to correct format
     $(function () {
         $('#sendOrderDateTimePicker').datetimepicker({
-            locale: 'da'
+            format: 'YYYY MMM Do HH:mm:ss'
         });
     });
     // add blank forklift to select forklfit
