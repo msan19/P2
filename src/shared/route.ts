@@ -150,6 +150,7 @@ export class Route {
 export class RouteSet {
     priorities: string[];
     graph: Graph;
+    duration: number[];
 
     /** 
      * Is a dictionary of orderId's and forkliftId's
@@ -160,6 +161,7 @@ export class RouteSet {
     constructor(priorities: string[], graph: Graph) {
         this.priorities = priorities;
         this.graph = graph;
+        this.duration = [];
         this.assignedForklift = {};
     }
 
@@ -180,7 +182,7 @@ export class RouteSet {
         return new RouteSet(routeSet.priorities, routeSet.graphVertices);
     }
 
-
+    // O(nm + m) 
     getFirstScheduleItemForForklift(forkliftId: string) {
         for (let verticeId in this.graph.vertices) {
             for (let scheduleItem of this.graph.vertices[verticeId].scheduleItems) {

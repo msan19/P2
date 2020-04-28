@@ -24,3 +24,17 @@ export function randomValue(set: Object | any[]) {
 export function randomIntegerInRange(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+/**
+ * Used for extending from multiple classes
+ * Source: https://www.typescriptlang.org/docs/handbook/mixins.html
+ * @param derivedCtor Class that should inherit from baseCtors
+ * @param baseCtors An array of classes, that will be inherited into derivedCtor
+ */
+export function applyMixins(derivedCtor: any, baseCtors: any[]) {
+    baseCtors.forEach(baseCtor => {
+        Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+            Object.defineProperty(derivedCtor.prototype, name, Object.getOwnPropertyDescriptor(baseCtor.prototype, name));
+        });
+    });
+}

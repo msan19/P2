@@ -5,11 +5,11 @@
  * @category Forklifts
  */
 
-import * as WebSocket from "ws";
+import * as ws from "ws";
 import { Route, Instruction } from "../shared/route";
 import { ForkliftInfo, ForkliftStates } from "./../shared/forkliftInfo";
-import { JsonTryParse } from "../shared/webUtilities";
 import { Vector2 } from "../shared/vector2";
+import { WebSocket } from "../shared/webSocket";
 
 enum ForkliftMessageType {
     getInfo = "getInfo",
@@ -41,39 +41,22 @@ export class Forklift extends ForkliftInfo {
     }
 
     connect(hostname: string, port: number) {
-        this.socket = new WebSocket(`ws://${hostname}:${port}/forklifts/${this.id}/initiate`);
-        this.socket.on("open", () => { this.sendStatus(); });
-        this.socket.on("message", (data) => {
-            /// TODO: Handle incoming messages
-            let obj = JsonTryParse(String(data));
-            if (obj !== null) {
-                switch (obj["type"]) {
-                    case ForkliftMessage.Types.getInfo:
-                        this.sendStatus();
-                        break;
-                    case ForkliftMessage.Types.addRoute:
-                        this.addRoute(obj["body"]);
-                        break;
-                    case ForkliftMessage.Types.getRoutes:
-                        this.sendRoutes();
-                        break;
-                    default:
-                        console.error("Invalid package");
-                        break;
-                }
-            }
+        let baseSocket = new ws(`ws://${hostname}:${port}/forklifts/${this.id}/initiate`);
+        this.socket = new WebSocket(baseSocket);
+        baseSocket.on("open", () => {
+            this.sendStatus();
+        });
 
+        this.socket.on(WebSocket.packageTypes.route, (route: Route) => {
+            this.addRoute(route);
+        });
+        this.socket.on(WebSocket.packageTypes.routes, (routes: Route[]) => {
+            for (let route of routes) this.addRoute(route);
         });
     }
 
     sendStatus() {
-        this.socket.send(JSON.stringify({
-            "id": this.id,
-            "batteryStatus": this.batteryStatus,
-            "palletId": this.palletId,
-            "state": this.state,
-            "position": this.position
-        }));
+        this.socket.sendForkliftInfo(this);
     }
 
     addRoute(route: Route) {
@@ -81,9 +64,6 @@ export class Forklift extends ForkliftInfo {
         if (this.currentRoute === null) {
             this.processRoutes();
         }
-    }
-    sendRoutes() {
-        this.socket.send(JSON.stringify(this.routes));
     }
 
     unshiftFirstInstruction() {
