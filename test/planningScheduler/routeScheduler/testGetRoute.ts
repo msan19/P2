@@ -90,6 +90,35 @@ function testGetRoute(): void {
     // });
 }
 
+function checkRoute(result: Route, expected: Route) {
+    let keys: string[] = Object.keys(expected);
+    for (let key of keys) {
+        if (key == "instructions") {
+            checkInstructions(result[key], expected[key]);
+        } else {
+            it(`${key}: ${result[key]} should be ${result[key]}`, () => {
+                expect(result[key]).to.equal(expected[key]);
+            });
+        }
+    }
+}
+
+function checkInstructions(result: Instruction[], expected: Instruction[]) {
+    let length: number = Math.max(result.length, expected.length);
+    for (let i = 0; i < length; i++) {
+        checkInstruction(result[i], expected[i]);
+    }
+}
+
+function checkInstruction(result: Instruction, expected: Instruction) {
+    let keys: string[] = Object.keys(expected);
+    for (let key of keys) {
+        it(`${key}: ${result[key]} should be ${result[key]}`, () => {
+            expect(result[key]).to.equal(expected[key]);
+        });
+    }
+}
+
 function getDuration(startTime: number, vertexIds: string[]): number {
     let duration = 0;
     for (let i = 0; i < vertexIds.length; i++) {

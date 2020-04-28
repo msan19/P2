@@ -142,7 +142,7 @@ export class RouteScheduler {
                         currentRouteTime = Infinity;
                     }
                     if (currentRouteTime != Infinity) {
-                        currentRouteTime += this.planOptimalRoute(routeSet, order.startVertexId, order.endVertexId,
+                        currentRouteTime = this.planOptimalRoute(routeSet, order.startVertexId, order.endVertexId,
                             order.time, assignableForklifts[i].forkliftId);
 
                         forkliftId = assignableForklifts[i].forkliftId;
@@ -209,6 +209,26 @@ export class RouteScheduler {
     getBestRouteSet(routeSets: RouteSet[]): RouteSet {
         // TO DO
         return null;
+    }
+
+    setBestRouteSet(): void {
+        let numOfRouteSets = this.routeSets.length;
+        for (let i = 0; i < numOfRouteSets; i++) {
+            let oldScore = RouteScheduler.evalRouteSet(this.bestRouteSet);
+            let newScore = RouteScheduler.evalRouteSet(this.routeSets[i]);
+            if (newScore < oldScore) {
+                this.bestRouteSet = this.routeSets[i];
+            }
+        }
+    }
+
+    static evalRouteSet(routeSet: RouteSet): number {
+        let sum = 0;
+        let length: number = routeSet.duration.length;
+        for (let i = 0; i < length; i++) {
+            sum += routeSet.duration[i];
+        }
+        return sum;
     }
 
     getLastPos(forkliftId: string, routeSet: RouteSet): string {
@@ -310,9 +330,8 @@ export class RouteScheduler {
         routeSet.graph.reset();
         startVertex.isVisited = true;
         startVertex.visitTime = orderTime;
-        let flag: boolean = false;
 
-        while (queue.array.length > 0 && !flag) {
+        while (queue.array.length > 0) {
             let currentVertex: Vertex = queue.extractMin();
             for (let u = 0; u < currentVertex.adjacentVertexIds.length; u++) {
                 let adjacentVertex: Vertex = routeSet.graph.vertices[currentVertex.adjacentVertexIds[u]];
@@ -320,7 +339,7 @@ export class RouteScheduler {
                     adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
                     adjacentVertex.isVisited = true;
                     adjacentVertex.previousVertex = currentVertex;
-                    flag = true;
+                    return endVertex.visitTime - orderTime;
                 } else if (!adjacentVertex.isVisited) {
                     adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
                     if (adjacentVertex.visitTime < Infinity) {
@@ -331,12 +350,7 @@ export class RouteScheduler {
                 }
             }
         }
-
-        if (!flag) {
-            return Infinity;
-        }
-
-        return endVertex.visitTime - orderTime;
+        return Infinity;
     }
 
     printRoute(startVertex: Vertex, endVertex: Vertex) {
