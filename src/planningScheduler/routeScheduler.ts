@@ -9,7 +9,6 @@ import { Route, RouteSet, Instruction } from "../shared/route";
 import { Order } from "../shared/order";
 import { Vertex, ScheduleItem, Graph } from "../shared/graph";
 import { MinPriorityQueue } from "./classes/minPriorityQueue";
-import { Cipher } from "crypto";
 
 /**
  * Object to handle routes.
