@@ -9,6 +9,7 @@ import { Route, RouteSet, Instruction } from "../shared/route";
 import { Order } from "../shared/order";
 import { Vertex, ScheduleItem, Graph } from "../shared/graph";
 import { MinPriorityQueue } from "./classes/minPriorityQueue";
+import { Cipher } from "crypto";
 
 /**
  * Object to handle routes.
@@ -128,7 +129,7 @@ export class RouteScheduler {
     calculateRoutes(data: DataContainer, routeSet: RouteSet): boolean {
         for (let orderId of routeSet.priorities) {
             let order: Order = data.orders[orderId];
-            let assignableForklifts: { vertex: string, forklift: string; }[] = [];
+            let assignableForklifts: ScheduleItem[] = [];
             let currentRouteTime: number = Infinity;
             let forkliftId: string = order.forkliftId || "";
 
@@ -136,13 +137,16 @@ export class RouteScheduler {
             if (order.type === Order.types.movePallet) {
                 assignableForklifts = this.assignForklift(routeSet, order);
                 for (let i = 0; i < assignableForklifts.length && currentRouteTime === Infinity; i++) {
-                    currentRouteTime = this.planOptimalRoute(routeSet, assignableForklifts[i].vertex, order.startVertexId,
-                        order.time, assignableForklifts[i].forklift);
+                    currentRouteTime = this.planOptimalRoute(routeSet, assignableForklifts[i].currentVertexId, order.startVertexId,
+                        assignableForklifts[i].arrivalTimeCurrentVertex, assignableForklifts[i].forkliftId);
+                    if (assignableForklifts[i].arrivalTimeCurrentVertex + currentRouteTime > order.time) {
+                        currentRouteTime = Infinity;
+                    }
                     if (currentRouteTime != Infinity) {
-                        currentRouteTime += this.planOptimalRoute(routeSet, order.startVertexId, order.endVertexId,
-                            order.time, assignableForklifts[i].forklift);
+                        currentRouteTime = this.planOptimalRoute(routeSet, order.startVertexId, order.endVertexId,
+                            order.time, assignableForklifts[i].forkliftId);
 
-                        forkliftId = assignableForklifts[i].forklift;
+                        forkliftId = assignableForklifts[i].forkliftId;
                     }
                 }
             }
@@ -173,11 +177,11 @@ export class RouteScheduler {
         return true;
     }
 
-    assignForklift(routeSet: RouteSet, order: Order): { vertex: string, forklift: string; }[] {
+    assignForklift(routeSet: RouteSet, order: Order): ScheduleItem[] {
         let inactiveForklifts: { vertex: string, forklift: string; }[] = [];
         let idleItems: ScheduleItem[] = Object.values(routeSet.graph.idlePositions);
 
-        idleItems.sort((ele1: ScheduleItem, ele2: ScheduleItem) => {
+        return idleItems.sort((ele1: ScheduleItem, ele2: ScheduleItem) => {
             let ele1Time = order.time - (ele1.arrivalTimeCurrentVertex +
                 2 * this.heuristic(routeSet.graph.vertices[ele1.currentVertexId], routeSet.graph.vertices[order.startVertexId]));
             let ele2Time = order.time - (ele2.arrivalTimeCurrentVertex +
@@ -199,17 +203,33 @@ export class RouteScheduler {
             } else {
                 return 1;
             }
-        }).forEach((scheduleItem: ScheduleItem) => {
-            inactiveForklifts.push({ vertex: scheduleItem.currentVertexId, forklift: scheduleItem.forkliftId });
         });
-
-        return inactiveForklifts;
     }
 
 
     getBestRouteSet(routeSets: RouteSet[]): RouteSet {
         // TO DO
         return null;
+    }
+
+    setBestRouteSet(): void {
+        let numOfRouteSets = this.routeSets.length;
+        for (let i = 0; i < numOfRouteSets; i++) {
+            let oldScore = RouteScheduler.evalRouteSet(this.bestRouteSet);
+            let newScore = RouteScheduler.evalRouteSet(this.routeSets[i]);
+            if (newScore < oldScore) {
+                this.bestRouteSet = this.routeSets[i];
+            }
+        }
+    }
+
+    static evalRouteSet(routeSet: RouteSet): number {
+        let sum = 0;
+        let length: number = routeSet.duration.length;
+        for (let i = 0; i < length; i++) {
+            sum += routeSet.duration[i];
+        }
+        return sum;
     }
 
     getLastPos(forkliftId: string, routeSet: RouteSet): string {
@@ -311,9 +331,8 @@ export class RouteScheduler {
         routeSet.graph.reset();
         startVertex.isVisited = true;
         startVertex.visitTime = orderTime;
-        let flag: boolean = false;
 
-        while (queue.array.length > 0 && !flag) {
+        while (queue.array.length > 0) {
             let currentVertex: Vertex = queue.extractMin();
             for (let u = 0; u < currentVertex.adjacentVertexIds.length; u++) {
                 let adjacentVertex: Vertex = routeSet.graph.vertices[currentVertex.adjacentVertexIds[u]];
@@ -321,7 +340,7 @@ export class RouteScheduler {
                     adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
                     adjacentVertex.isVisited = true;
                     adjacentVertex.previousVertex = currentVertex;
-                    flag = true;
+                    return endVertex.visitTime - orderTime;
                 } else if (!adjacentVertex.isVisited) {
                     adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
                     if (adjacentVertex.visitTime < Infinity) {
@@ -332,12 +351,7 @@ export class RouteScheduler {
                 }
             }
         }
-
-        if (!flag) {
-            return Infinity;
-        }
-
-        return endVertex.visitTime - orderTime;
+        return Infinity;
     }
 
     printRoute(startVertex: Vertex, endVertex: Vertex) {

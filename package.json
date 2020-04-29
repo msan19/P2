@@ -36,7 +36,8 @@
         "test-graph": "mocha --require ts-node/register test/planningScheduler/**/testGraph.ts",
         "test-warehouse": "mocha --require ts-node/register test/planningScheduler/**/testWarehouse.ts",
         "test-order": "mocha --require ts-node/register test/planningScheduler/**/testOrder.ts",
-        "test-Astar": "mocha --require ts-node/register test/planningScheduler/**/testAstar.ts"
+        "test-Astar": "mocha --require ts-node/register test/planningScheduler/**/testAstar.ts",
+        "test-route": "mocha --require ts-node/register test/planningScheduler/**/testGetRoute.ts"
     },
     "repository": {
         "type": "git",

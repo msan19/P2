@@ -1,7 +1,7 @@
 window.nForklifts = new Forklifts(null);
 window.mainGraph;
 
-window.frameRate = 60;
+window.frameRate = 48;
 
 var forkliftData = [];
 var ForkliftStates;
@@ -10,18 +10,22 @@ var ForkliftStates;
 window.forkliftSpeed;
 
 // ROUTE IN SELECTED FORKLIFT ON UI
-function onSelectElementInRouteInSelectedForklift(nodeId) {
+function onSelectElementInRouteInSelectedForklift(nodeId, occurance) {
+    let counter = 0;
     for (let key in forkliftData[nForklifts.selectedForklift].route.instructions) {
         let instruciton = forkliftData[nForklifts.selectedForklift].route.instructions[key];
         if (instruciton.nodeId == nodeId) {
-            if (typeof (instruciton.startTime) != "undefined") {
-                let selectedNodeStartTime = document.querySelector("#selectedNodeStartTime");
-                selectedNodeStartTime.innerHTML = new Date(instruciton.startTime).toLocaleString();
-            } else if (typeof (instruciton.endTime) != "undefined") {
-                let selectedNodeEndTime = document.querySelector("#selectedNodeEndTime");
-                selectedNodeEndTime.innerHTML = new Date(instruciton.endTime).toLocaleString();
-            }
-            break;
+            if (counter == occurance) {
+                if (typeof (instruciton.startTime) != "undefined") {
+                    let selectedNodeStartTime = document.querySelector("#selectedNodeStartTime");
+                    selectedNodeStartTime.innerHTML = moment(instruciton.startTime).format('MMM Do HH:mm:ss');
+                } else if (typeof (instruciton.endTime) != "undefined") {
+                    let selectedNodeEndTime = document.querySelector("#selectedNodeEndTime");
+                    selectedNodeEndTime.innerHTML = new Date(instruciton.startTime).toLocaleTimeString("da-dk")
+                }
+                break;
+            } else
+                counter++;
         }
     }
 }
@@ -33,6 +37,18 @@ function onDeselectElementInRouteInSelectedForklift() {
     selectedNodeEndTime.innerHTML = "...";
 }
 
+function getOccuranceForClickedElement(target, routeElements) {
+    let counter = 0;
+    for (let key in routeElements) {
+        if (routeElements[key].innerHTML == target.innerHTML) {
+            if (routeElements[key] == target)
+                return counter;
+            else
+                counter++;
+        }
+    }
+}
+
 function updateSelectedForkliftSelectedElementInRoute(e) {
     let routeList = document.querySelector("#selectedForkliftRoute");
     let routeElements = routeList.children;
@@ -42,7 +58,7 @@ function updateSelectedForkliftSelectedElementInRoute(e) {
         }
     }
     e.target.classList.toggle("active")
-    onSelectElementInRouteInSelectedForklift(e.target.innerHTML);
+    onSelectElementInRouteInSelectedForklift(e.target.innerHTML, getOccuranceForClickedElement(e.target, routeElements));
 }
 
 function addElementToSelectedForkliftRoute(nodeId) {
@@ -124,7 +140,7 @@ function initializeUI() {
     // Set dateInput to correct format
     $(function () {
         $('#sendOrderDateTimePicker').datetimepicker({
-            locale: 'da'
+            format: 'YYYY MMM Do HH:mm:ss'
         });
     });
     // add blank forklift to select forklfit

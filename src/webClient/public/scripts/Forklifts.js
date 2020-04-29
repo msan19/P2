@@ -128,7 +128,7 @@ class Forklifts {
                         };
                     }
                 } else {
-                    this.calculateForkliftPosition(forkliftData[key], forkliftSpeed / frameRate);
+                    this.calculateForkliftPositionUsingTime(forkliftData[key], null);
                 }
 
             }
@@ -155,7 +155,7 @@ class Forklifts {
                 return true;
             }
         }
-        if (directionVector["y"] == 0 && directionVector["x"] == 0) {
+        if (directionVector.x == 0 && directionVector.y == 0) {
             return true;
         }
 
@@ -213,9 +213,112 @@ class Forklifts {
 
         } else {
             forklift.position = newPosition;
-            if (newPosition.y < 0) {
-                console.log(forklift.route.instructions)
+        }
+    }
+
+    calculateForkliftPositionUsingTime(forklift, tempDistance) {
+        let targetNode = mainGraph.sigmaGraph.graph.nodes(forklift.route.instructions[0].nodeId);
+        let distance = this.getDistanceBetweenPoints(
+            forklift.position.x,
+            forklift.position.y,
+            targetNode.x,
+            targetNode.y
+        );
+        let directionVector = this.getDirectionVector(
+            distance,
+            forklift.position.x,
+            forklift.position.y,
+            targetNode.x,
+            targetNode.y
+        );
+        if (typeof (forklift.route.instructions[0].movementLength) == "undefined") {
+            if (forklift.route.instructions.length == 1) {
+                if (typeof (forklift.currentNode) == "undefined")
+                    forklift.route.instructions[0].movementLength = 0;
+                else
+                    forklift.route.instructions[0].movementLength =
+                    distance / ((forklift.route.instructions[0].startTime - forklift.currentNode.startTime) / (1000 / frameRate));
+            } else
+                forklift.route.instructions[0].movementLength =
+                distance / ((forklift.route.instructions[1].startTime - forklift.route.instructions[0].startTime) / (1000 / frameRate));
+        }
+        let remainingMovementLength;
+        if (tempDistance == null)
+            remainingMovementLength = forklift.route.instructions[0].movementLength;
+        else
+            remainingMovementLength = tempDistance;
+        // gets new position based on the direction vector over the framerate
+        let newPosition = {
+            x: forklift.position.x + remainingMovementLength * directionVector.x,
+            y: forklift.position.y + remainingMovementLength * directionVector.y
+        };
+        if (this.checkIfReachedNode(newPosition, directionVector, forklift.route.instructions)) {
+            let instructions = forklift.route.instructions;
+            forklift.currentNode = instructions[0];
+            instructions.splice(0, 1);
+            // update displayed path if the it is the current forklift
+            if (this.selectedForklift == forklift.id) {
+                mainGraph.displaySelectedForkliftPath();
+                removeElementFromSelectedForkliftRoute(forklift.currentNode.nodeId);
             }
+            // if forklift has reached last node, set position to last node
+            // this just makes it easier to calculate, can be made better i suspect
+            forklift.position = {
+                x: targetNode.x,
+                y: targetNode.y
+            };
+            if (instructions.length == 0 || typeof (instructions[0]) == "undefined") {
+                delete forklift.route.instructions;
+                delete forklift.route;
+            } else {
+                // if through this movement it goes further than the distance to the node
+                // it will run it again with start position of the node
+                // i think.
+                // this should be tested more
+                if (remainingMovementLength > Math.abs(distance)) {
+                    this.calculateForkliftPositionUsingTime(forklift, remainingMovementLength - Math.abs(distance));
+                }
+
+            }
+
+
+        } else {
+            forklift.position = newPosition;
+        }
+    }
+
+    calculateRouteTimes(instructions, currentTime, currentInstruction, speed, currentPosition) {
+        if (instructions.length == currentInstruction + 1)
+            return;
+        let targetPosition = {
+            x: mainGraph.sigmaGraph.graph.nodes(instructions[currentInstruction + 1].nodeId).x,
+            y: mainGraph.sigmaGraph.graph.nodes(instructions[currentInstruction + 1].nodeId).y
+        };
+        let dDistance = Math.abs(this.getDistanceBetweenPoints(
+            currentPosition.x,
+            currentPosition.y,
+            targetPosition.x,
+            targetPosition.y
+        ));
+        if (dDistance < speed) {
+            instructions[currentInstruction + 1].startTime = currentTime + dDistance / speed * 1000;
+            this.calculateRouteTimes(instructions, instructions[currentInstruction + 1].startTime, currentInstruction + 1, speed, targetPosition);
+        } else if (dDistance > speed) {
+            let directionVector = this.getDirectionVector(
+                dDistance,
+                currentPosition.x,
+                currentPosition.y,
+                targetPosition.x,
+                targetPosition.y
+            );
+            let newPosition = {
+                x: currentPosition.x + speed * directionVector.x,
+                y: currentPosition.y + speed * directionVector.y
+            };
+            this.calculateRouteTimes(instructions, currentTime + 1000, currentInstruction, newPosition);
+        } else {
+            instructions[currentInstruction + 1].startTime = currentTime + 1000;
+            this.calculateRouteTimes(instructions, instructions[currentInstruction + 1].startTime, currentInstruction + 1, speed, targetPosition);
         }
     }
 
@@ -261,20 +364,25 @@ class Forklifts {
                     instructions: []
                 };
                 let nodes = mainGraph.sigmaGraph.graph.nodes();
-                let currentNode = forkliftData[key].currentNode;
-                this.generateRoute(route, (typeof (currentNode) == "undefined") ? nodes[Math.floor(Math.random() * nodes.length)].id : currentNode, Math.round(Math.random() * 20));
+                let currentNode;
+                if (typeof (forkliftData[key].currentNode) == "undefined" || typeof (forkliftData[key].currentNode.nodeId) == "undefined")
+                    currentNode = nodes[Math.floor(Math.random() * nodes.length)].id;
+                else
+                    currentNode = forkliftData[key].currentNode.nodeId;
+                this.generateRoute(route, currentNode, Math.round(30));
                 if (route.instructions.length != 0) {
                     forkliftData[key].route = route;
+                    let speed = Math.random() * 2 + 1;
+                    this.calculateRouteTimes(route.instructions, route.instructions[0].startTime, 0, speed, {
+                        x: mainGraph.sigmaGraph.graph.nodes(route.instructions[0].nodeId).x,
+                        y: mainGraph.sigmaGraph.graph.nodes(route.instructions[0].nodeId).y
+                    });
                     if (key == this.selectedForklift) {
                         mainGraph.displaySelectedForkliftPath();
                         initiateSelectedForkliftRouteOnUI(forkliftData[nForklifts.selectedForklift]);
                     }
                 }
-
-
             }
-
         }
     }
-
 }

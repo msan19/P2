@@ -37,7 +37,7 @@ function getWarehouse() {
 
 
 getWarehouse().then((warehouse: Warehouse) => {
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 1; i++) {
         forklifts.push(new Forklift("F" + i, SERVER_HOSTNAME, SERVER_PORT, randomIntegerInRange(5, 100), Forklift.states.idle, randomValue(warehouse.graph.vertices).position));
     }
 });
