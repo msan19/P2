@@ -53,9 +53,8 @@ export class RouteScheduler {
      */
     getRoute(orderId: string): Route {
         let order = this.data.orders[orderId];
-        console.log(order);
 
-        let routeId = orderId.replace("O", "R");
+        let routeId = "R" + orderId;
         let instructions = this.createInstructions(order);
         let routeStatus = 1; // queued
 
