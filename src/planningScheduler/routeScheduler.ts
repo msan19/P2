@@ -95,15 +95,15 @@ export class RouteScheduler {
             this.createMovePalletInstructions(instructions, order, scheduleItem.previousScheduleItem);
             if (scheduleItem.currentVertexId === order.endVertexId) {
                 instructionType = Instruction.types.unloadPallet;
-            } else if (scheduleItem.currentVertexId === order.startVertexId) {
-                instructionType = Instruction.types.loadPallet;
             } else {
                 instructionType = Instruction.types.move;
             }
+        } else if (scheduleItem.currentVertexId === order.startVertexId) {
+            instructionType = Instruction.types.loadPallet;
+        }
             let newInstruction = new Instruction(instructionType, scheduleItem.currentVertexId, order.palletId, scheduleItem.arrivalTimeCurrentVertex);
             instructions.push(newInstruction);
         }
-    }
 
     private createMoveForkliftInstructions(order: Order): Instruction[] {
         /// TO DO
