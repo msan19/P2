@@ -168,7 +168,6 @@ class Forklifts {
         if (forklift.route.instructions[0].startTime <= new Date().getTime()) {
             let instructions = forklift.route.instructions;
             forklift.currentNode = instructions[0];
-            console.log(new Date() - forklift.currentNode.startTime)
             instructions.splice(0, 1);
             // update displayed path if the it is the current forklift
             if (this.selectedForklift == forklift.id) {
