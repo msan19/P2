@@ -9,7 +9,8 @@ import { Route, RouteSet, Instruction } from "../shared/route";
 import { Order } from "../shared/order";
 import { Vertex, ScheduleItem, Graph } from "../shared/graph";
 import { MinPriorityQueue } from "./classes/minPriorityQueue";
-import { Cipher } from "crypto";
+import { randomIntegerInRange } from "../shared/utilities";
+
 
 /**
  * Object to handle routes.
@@ -19,9 +20,6 @@ export class RouteScheduler {
     /** Object for data storage */
     data: DataContainer;
 
-    /** List of objects to save calculations in */
-    routeSets: RouteSet[];
-
     /** Object containing best calculated routes */
     bestRouteSet: RouteSet;
 
@@ -29,6 +27,11 @@ export class RouteScheduler {
     heuristic: (v1: Vertex, v2: Vertex) => number;
 
     timeIntervalMinimumSize: number;
+
+    mutationCounter: number;
+
+    mutations: { index: number, newIndex: number, value: number; }[];
+
 
     /**
      * Constructor for the object.
@@ -39,10 +42,11 @@ export class RouteScheduler {
      */
     constructor(data: DataContainer) {
         this.data = data;
-        this.routeSets = [];
         this.bestRouteSet = null;
         this.heuristic = (v1: Vertex, v2: Vertex) => { return v1.getDistanceDirect(v2) / this.data.warehouse.maxForkliftSpeed * 1000; };
         this.timeIntervalMinimumSize = 30000;
+        this.mutationCounter = 0;
+        this.mutations = [];
     }
 
     /**
@@ -223,17 +227,92 @@ export class RouteScheduler {
         return null;
     }
 
-    setBestRouteSet(): void {
-        let numOfRouteSets = this.routeSets.length;
-        for (let i = 0; i < numOfRouteSets; i++) {
-            let oldScore = RouteScheduler.evalRouteSet(this.bestRouteSet);
-            let newScore = RouteScheduler.evalRouteSet(this.routeSets[i]);
-            if (newScore < oldScore) {
-                this.bestRouteSet = this.routeSets[i];
-            }
+    setBestRouteSet(newRouteSet): void {
+        if (RouteScheduler.evalRouteSet(newRouteSet) < RouteScheduler.evalRouteSet(this.bestRouteSet)) {
+            this.bestRouteSet = newRouteSet;
+            this.mutate();
         }
     }
 
+    mutate(): void {
+        let moveForkliftConstant = 2.0;
+        let chargeConstant = 2.0;
+        let mutationConstant = 2.0;
+        let values = [];
+        let mutations: { index: number, newIndex: number, value: number; }[] = [];
+
+        // Determine values for all routes in bestRouteSet
+        for (let i = 0; i < this.bestRouteSet.duration.length; i++) {
+            let order = this.data.orders[this.bestRouteSet.priorities[i]];
+            if (order.type === Order.types.movePallet) {
+                let startVertex = this.data.warehouse.graph.vertices[order.startVertexId];
+                let endVertex = this.data.warehouse.graph.vertices[order.endVertexId];
+                values.push(startVertex.getDistanceDirect(endVertex) / this.bestRouteSet.duration[i]);
+            } else if (order.type === Order.types.moveForklift) {
+                values.push(moveForkliftConstant);
+            } else if (order.type === Order.types.charge) {
+                values.push(chargeConstant);
+            }
+        }
+
+        // Create an array of mutated entries for problematic values (values < ?)
+        for (let i = 0; i < values.length; i++) {
+            let newIndex = i - 1;
+
+            while (newIndex >= 0 && (values[newIndex] + newIndex * mutationConstant) > (values[i] + i * mutationConstant)) {
+                newIndex--;
+            }
+            newIndex++;
+            // Produce a mutation
+            if (newIndex < i) {
+                // Potential error with newIndex: newIndex
+                mutations.push({ index: i, newIndex: newIndex, value: values[i] });
+            }
+        }
+
+        mutations.sort((mut1, mut2) => {
+            return mut1.value - mut2.value;
+        });
+
+        this.mutations = mutations;
+    }
+
+    generateChronologicalPriorities(): string[] {
+        let orders: Order[] = Object.values(this.data.orders);
+
+        orders.sort((order1, order2) => {
+            return order1.time - order2.time;
+        });
+
+        return orders.map((order) => { return order.id; });
+    }
+
+    generatePriorities(): string[] {
+        let priorities = [];
+
+        if (this.bestRouteSet !== null) {
+            // Clone of bestRouteSet.priorities
+            priorities = [...this.bestRouteSet.priorities];
+
+            // Handle the mutations
+            let priority = priorities.splice(this.mutations[this.mutationCounter].index, 1)[0];
+            priorities.splice(this.mutations[this.mutationCounter].newIndex, 0, priority);
+        } else {
+            priorities = this.generateChronologicalPriorities();
+
+            if (this.mutationCounter > 0) {
+                let ranIndex = randomIntegerInRange(0, priorities.length);
+                let ranNewIndex = randomIntegerInRange(0, priorities.length);
+                let priority = priorities.splice(ranIndex, 1)[0];
+                priorities.splice(ranNewIndex, 0, priority);
+            }
+        }
+
+        this.mutationCounter++;
+        return priorities;
+    }
+
+    // Lower value is better
     static evalRouteSet(routeSet: RouteSet): number {
         let sum = 0;
         let length: number = routeSet.duration.length;
@@ -241,16 +320,6 @@ export class RouteScheduler {
             sum += routeSet.duration[i];
         }
         return sum;
-    }
-
-    getLastPos(forkliftId: string, routeSet: RouteSet): string {
-        //TODO
-        return null;
-    }
-
-    assignForkliftToOrder(order: Order): string {
-        // TODO 
-        return null;
     }
 
     isCollisionInevitable(startVertexId: string, scheduleItem: ScheduleItem, maxWarp: number, currentTime: number): boolean {
@@ -414,8 +483,16 @@ export class RouteScheduler {
     }
 
     getStartTime(orderId: string): number {
-        // TO DO 
-        return null;
+        let order: Order = this.data.orders[orderId];
+        if (order.type === Order.types.movePallet) {
+            let startItem: ScheduleItem = this.bestRouteSet.graph.vertices[order.startVertexId].getScheduleItem(order.time);
+            while (startItem.previousScheduleItem !== null) {
+                startItem = startItem.previousScheduleItem;
+            }
+            return startItem.arrivalTimeCurrentVertex;
+        }
+
+        return order.time;
     }
 
     addRouteToGraph(route: Route): void {
@@ -423,7 +500,13 @@ export class RouteScheduler {
     }
 
     update(data: DataContainer): void {
-        // TO DO 
+        // Generate a new RouteSet
+        let priorities = this.generatePriorities();
+        let routeSet = new RouteSet(priorities, data.warehouse.graph.clone());
+        if (this.calculateRoutes(data, routeSet) === true) {
+            this.setBestRouteSet(routeSet);
+        }
+
     }
 
 }
