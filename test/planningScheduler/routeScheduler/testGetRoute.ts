@@ -43,13 +43,19 @@ function testGetRoute(): void {
             "N6-0", "N7-0", "N7-1", "N7-2"
         ];
 
-        let startTime = 30100;
-        routeScheduler.bestRouteSet.duration[0] = getDuration(startTime, vertexIdFirstRoute);
+        let startTime = 30000;
+        let durationFirstRoute = getDuration(startTime, vertexIdFirstRoute);
+        let durationSecondRoute = getDuration(startTime, vertexIdFirstRoute);
+        let durationThirdRoute = getDuration(startTime, vertexIdFirstRoute);
+        let duration = [durationFirstRoute, durationSecondRoute, durationThirdRoute];
+        routeScheduler.bestRouteSet.duration = duration;
+
         console.log(routeScheduler.bestRouteSet.duration[0]);
 
-        createScheduleItems(routeScheduler.bestRouteSet, vertexIdFirstRoute, firstForkliftId);
-        createScheduleItems(routeScheduler.bestRouteSet, vertexIdSecondRoute, secondForkliftId);
-        createScheduleItems(routeScheduler.bestRouteSet, vertexIdThirdRoute, thirdForkliftId);
+
+        createScheduleItems(routeScheduler.bestRouteSet, vertexIdFirstRoute, firstForkliftId, startTime);
+        createScheduleItems(routeScheduler.bestRouteSet, vertexIdSecondRoute, secondForkliftId, startTime);
+        createScheduleItems(routeScheduler.bestRouteSet, vertexIdThirdRoute, thirdForkliftId, startTime);
 
         // printScheduleItem(routeSet, vertexIdFirstRoute);
         // printScheduleItem(routeSet, vertexIdSecondRoute);
@@ -65,24 +71,38 @@ function testGetRoute(): void {
         // console.log(data.orders[thirdOrderId]);
 
         // give routeScheduler access to the data (it needs access to Orders[])
+        let firstOrder = routeScheduler.data.orders[firstOrderId];
+        firstOrder.time = startTime;
         routeScheduler.data = data;
 
         let resultingRoute = routeScheduler.getRoute(firstOrderId);
 
-        //let movePalletInstruction = createMovePalletInstructions();
-        //new Route("R1", firstOrderId, Instruction.types.move, movePalletInstruction);
-        // let expectedRoute
+        /** Creating expectedRoute */
+        let instructions: Instruction[] = [];
 
+        let currentVertex = routeScheduler.bestRouteSet.graph.vertices[vertexIdFirstRoute[0]];
+        let currentScheduleItem = currentVertex.scheduleItems[0];
+        for (let i = 0; i < vertexIdFirstRoute.length - 1; i++) {
+            let instructionType;
+            if (i === 0) {
+                instructionType = Instruction.types.loadPallet;
+            } else if (i === vertexIdFirstRoute.length) {
+                instructionType = Instruction.types.unloadPallet;
+            } else {
+                instructionType = Instruction.types.move;
+            }
+            let newInstruction = new Instruction(instructionType, vertexIdFirstRoute[i], "P1", currentScheduleItem.arrivalTimeCurrentVertex);
+            instructions.push(newInstruction);
+            currentScheduleItem = currentScheduleItem.nextScheduleItem;
+        }
+
+        let expectedRoute = new Route("R1", firstOrderId, 1, instructions);
+
+        console.log(expectedRoute);
         console.log(resultingRoute);
 
-        // testRoute(route);
 
-        let result = "dummy";
-        let expected = "dummy";
 
-        it(`${result} should be ${expected}`, () => {
-            expect(result).to.equal(expected);
-        });
     });
 
     // describe("Test getRoute when there are multiple scheduleItems at a vertex", () => {
@@ -98,6 +118,7 @@ function getDuration(startTime: number, vertexIds: string[]): number {
     return duration;
 }
 
+
 /**
  * 
  * @note The route is added the the firs element in scheduleItems[]. This means that there are
@@ -105,14 +126,13 @@ function getDuration(startTime: number, vertexIds: string[]): number {
  * @param routeSet List of verticeId's
  * @param verticeList 
  * @param forkliftId
+ * @param startTime 
  */
-function createScheduleItems(routeSet: RouteSet, verticeIdList: string[], forkliftId: string): void {
-    const timeBuffer = 30000;
-
+function createScheduleItems(routeSet: RouteSet, verticeIdList: string[], forkliftId: string, startTime: number): void {
     // create current scheduleItem
     for (let i = 0; i < verticeIdList.length; i++) {
         let currentVertex = routeSet.graph.vertices[verticeIdList[i]];
-        let scheduleItem = new ScheduleItem(forkliftId, timeBuffer + i * 100, verticeIdList[i]);
+        let scheduleItem = new ScheduleItem(forkliftId, startTime + (i + 1) * 100, verticeIdList[i]);
         currentVertex.scheduleItems[0] = scheduleItem;
         //console.log(i, "   \n   ", currentVertex.scheduleItems[0].currentVertexId);
     }
