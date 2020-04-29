@@ -1,7 +1,7 @@
 window.nForklifts = new Forklifts(null);
 window.mainGraph;
 
-window.frameRate = 48;
+window.frameRate = 120;
 
 var forkliftData = [];
 var ForkliftStates;
