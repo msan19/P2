@@ -65,19 +65,22 @@ export class RouteScheduler {
     private createInstructions(order: Order): Instruction[] {
         let instructions: Instruction[] = [];
 
-        if (order.type === Order.types.movePallet) {
             let endVertex = this.findVertex(order.endVertexId);
             let forkliftId = this.bestRouteSet.assignedForklift[order.id];
             let duration = this.findDuration(order.id);
             let lastScheduleItem = endVertex.getScheduleItem(order.time + duration);
+
+        if (order.type === Order.types.movePallet) {
             this.createMovePalletInstructions(instructions, order, lastScheduleItem);
-        } else if (order.type === Order.types.moveForklift) {
-            /// TO DO
-            instructions = this.createMoveForkliftInstructions(order);
-        } else {
-            /// TO DO
-            instructions = this.createChargeInstructions(order);
+        } else if (order.type === Order.types.moveForklift || order.type === Order.types.charge) {
+            let nextLastScheduleitem = lastScheduleItem.previousScheduleItem;
+            this.createMoveInstructions(instructions, order, nextLastScheduleitem);
+            if (order.type === Order.types.charge) {
+                instructions.push(new Instruction(Instruction.types.charge, endVertex.id, order.palletId, order.time + duration));
         }
+        }
+
+        instructions.push(new Instruction(Instruction.types.sendFeedback, endVertex.id, order.palletId, order.time + duration));
 
         return instructions;
     }
