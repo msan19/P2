@@ -165,7 +165,9 @@ class Forklifts {
         let targetNode = mainGraph.sigmaGraph.graph.nodes(forklift.route.instructions[0].nodeId);
         let currentNode = mainGraph.sigmaGraph.graph.nodes(forklift.currentNode.nodeId);
 
-        if (forklift.route.instructions[0].startTime <= new Date().getTime()) {
+        let remainingTime = forklift.route.instructions[0].startTime - new Date().getTime();
+
+        if (remainingTime <= 0) {
             let instructions = forklift.route.instructions;
             forklift.currentNode = instructions[0];
             instructions.splice(0, 1);
@@ -192,11 +194,6 @@ class Forklifts {
                 currentNode.y
             );
             let totalTime = forklift.route.instructions[0].startTime - forklift.currentNode.startTime;
-            let remainingTime = forklift.route.instructions[0].startTime - new Date().getTime();
-            if (remainingTime < 0) {
-                calculateForkliftPositionUsingTime(forklift);
-                return;
-            }
             let percentGoneBy = remainingTime / totalTime;
             let distanceTravelled = distance * percentGoneBy;
             let directionVector = this.getDirectionVector(

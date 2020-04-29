@@ -147,6 +147,7 @@ function initializeUI() {
     document.querySelector("#forklift-list").innerHTML = `<option value=${""}>${""}</option>`;
 }
 
+// WAREHOUSE
 window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
     document.querySelectorAll('.select-vertex').forEach((item) => {
         item.innerHTML = "";
@@ -160,8 +161,9 @@ window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
     let data = Graph.parseIncomingData(Graph.cloneIncomingData(warehouse)).graph;
     mainGraph = new Graph('sigmaContainer', data, nForklifts);
 });
+// END --- WAREHOUSE --- END
 
-// Forklift events
+// FORKLIFT
 function onReceiveForklift(forklift) {
     if (typeof (forklift.id) != "undefined") {
         if (typeof (forkliftData[forklift.id]) == "undefined")
@@ -180,11 +182,42 @@ window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
 window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
     onReceiveForklift(forklift);
 });
+// END --- FORKLIFTS --- END
+
+// ROUTE
+function parseRoute(route) {
+    let newRoute = {};
+    newRoute.id = route.id;
+    let instructions = [];
+    for (let key in route.instructions) {
+        instructions.push({
+            nodeId: route.instructions[key].vertexId,
+            startTime: route.instructions[key].startTime
+        })
+    }
+    newRoute.instructions = instructions;
+    return newRoute;
+}
+
+function onReceiveRoute(route) {
+    let parsedRoute = parseRoute(route);
+    forkliftData[parsedRoute.id].route = parsedRoute;
+}
+
+window.socketManager.on(PackageTypes.routes, (routes) => {
+    for (let key in routes) {
+        onReceiveRoute(routes[key]);
+    }
+})
+
+window.socketManager.on(PackageTypes.route, (route) => {
+    onReceiveRoute(route);
+})
+// END --- ROUTE --- END
 
 // Event loop
 window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
-        nForklifts.addTestDataToForklifts();
         nForklifts.handleForkliftMovement();
         updateSelectedForkliftInformationOnUI();
         mainGraph.updateForkliftsOnGraph();
