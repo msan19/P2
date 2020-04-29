@@ -68,7 +68,8 @@ export class RouteScheduler {
         if (order.type === Order.types.movePallet) {
             let endVertex = this.findVertex(order.endVertexId);
             let forkliftId = this.bestRouteSet.assignedForklift[order.id];
-            let lastScheduleItem = this.findSchduleItem(endVertex.scheduleItems, forkliftId);
+            let duration = this.findDuration(order.id);
+            let lastScheduleItem = endVertex.getScheduleItem(order.time + duration);
             this.createMovePalletInstructions(instructions, order, lastScheduleItem);
         } else if (order.type === Order.types.moveForklift) {
             /// TO DO
@@ -115,13 +116,13 @@ export class RouteScheduler {
         return this.bestRouteSet.graph.vertices[vertexId];
     }
 
-    private findSchduleItem(scheduleItems: ScheduleItem[], forkliftId: string): ScheduleItem {
-        for (let i = 0; i < scheduleItems.length; i++) {
-            if (forkliftId === scheduleItems[i].forkliftId) {
-                return scheduleItems[i];
+    private findDuration(orderId: string): number {
+        for (let i = 0; i < this.bestRouteSet.duration.length; i++) {
+            if (orderId === this.bestRouteSet.priorities[i]) {
+                return this.bestRouteSet.duration[i];
             }
         }
-        return null;
+        return Infinity;
     }
 
     calculateRoutes(data: DataContainer, routeSet: RouteSet): boolean {
