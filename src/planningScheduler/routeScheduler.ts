@@ -65,10 +65,10 @@ export class RouteScheduler {
     private createInstructions(order: Order): Instruction[] {
         let instructions: Instruction[] = [];
 
-            let endVertex = this.findVertex(order.endVertexId);
-            let forkliftId = this.bestRouteSet.assignedForklift[order.id];
-            let duration = this.findDuration(order.id);
-            let lastScheduleItem = endVertex.getScheduleItem(order.time + duration);
+        let endVertex = this.findVertex(order.endVertexId);
+        let forkliftId = this.bestRouteSet.assignedForklift[order.id];
+        let duration = this.findDuration(order.id);
+        let lastScheduleItem = endVertex.getScheduleItem(order.time + duration);
 
         if (order.type === Order.types.movePallet) {
             this.createMovePalletInstructions(instructions, order, lastScheduleItem);
@@ -77,7 +77,7 @@ export class RouteScheduler {
             this.createMoveInstructions(instructions, order, nextLastScheduleitem);
             if (order.type === Order.types.charge) {
                 instructions.push(new Instruction(Instruction.types.charge, endVertex.id, order.palletId, order.time + duration));
-        }
+            }
         }
 
         instructions.push(new Instruction(Instruction.types.sendFeedback, endVertex.id, order.palletId, order.time + duration));
@@ -101,18 +101,27 @@ export class RouteScheduler {
         } else if (scheduleItem.currentVertexId === order.startVertexId) {
             instructionType = Instruction.types.loadPallet;
         }
-            let newInstruction = new Instruction(instructionType, scheduleItem.currentVertexId, order.palletId, scheduleItem.arrivalTimeCurrentVertex);
-            instructions.push(newInstruction);
-        }
-
-    private createMoveForkliftInstructions(order: Order): Instruction[] {
-        /// TO DO
-        return;
+        let newInstruction = new Instruction(instructionType, scheduleItem.currentVertexId, order.palletId, scheduleItem.arrivalTimeCurrentVertex);
+        instructions.push(newInstruction);
     }
 
-    private createChargeInstructions(order: Order): Instruction[] {
-        /// TO DO
-        return;
+    /**
+     * Creates instructions for two different order types:
+     * - moveForklift
+     * - charge
+     * 
+     * @param instructions Is output parameter. The list of instruction objects
+     * @param order Is an order
+     * @param scheduleItem Is the scheduleItem right before the last scheduleItem
+     */
+    private createMoveInstructions(instructions: Instruction[], order: Order, scheduleItem: ScheduleItem | null): void {
+        let instructionType;
+        if (scheduleItem.previousScheduleItem !== null) {
+            this.createMovePalletInstructions(instructions, order, scheduleItem.previousScheduleItem);
+        }
+        instructionType = Instruction.types.move;
+        let newInstruction = new Instruction(instructionType, scheduleItem.currentVertexId, order.palletId, scheduleItem.arrivalTimeCurrentVertex);
+        instructions.push(newInstruction);
     }
 
     private findVertex(vertexId: string) {
