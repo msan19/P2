@@ -161,98 +161,13 @@ class Forklifts {
 
     }
 
-    calculateForkliftPosition(forklift, movementLength) {
-        // gets direction between forklift at the second point in instructions
-        let targetNode = mainGraph.sigmaGraph.graph.nodes(forklift.route.instructions[0].nodeId);
-        let distance = this.getDistanceBetweenPoints(
-            forklift["position"]["x"],
-            forklift["position"]["y"],
-            targetNode["x"],
-            targetNode["y"]
-        );
-        let directionVector = this.getDirectionVector(
-            distance,
-            forklift["position"]["x"],
-            forklift["position"]["y"],
-            targetNode["x"],
-            targetNode["y"]
-        );
-        // gets new position based on the direction vector over the framerate
-        let newPosition = {
-            x: forklift["position"]["x"] + movementLength * directionVector["x"],
-            y: forklift["position"]["y"] + movementLength * directionVector["y"]
-        };
-        // if the forklift reaches the next point in the graph; handle it
-        if (this.checkIfReachedNode(newPosition, directionVector, forklift.route.instructions)) {
-            let instructions = forklift.route.instructions;
-            forklift.currentNode = instructions[0].nodeId;
-            instructions.splice(0, 1);
-            // update displayed path if the it is the current forklift
-            if (this.selectedForklift == forklift.id) {
-                mainGraph.displaySelectedForkliftPath();
-                removeElementFromSelectedForkliftRoute(forklift.currentNode);
-            }
-            // if forklift has reached last node, set position to last node
-            // this just makes it easier to calculate, can be made better i suspect
-            forklift.position = {
-                x: targetNode.x,
-                y: targetNode.y
-            };
-            if (instructions.length == 0 || typeof (instructions[0]) == "undefined") {
-                delete forklift.route.instructions;
-                delete forklift.route;
-            } else {
-                // if through this movement it goes further than the distance to the node
-                // it will run it again with start position of the node
-                // i think.
-                // this should be tested more
-                if (movementLength > Math.abs(distance))
-                    this.calculateForkliftPosition(forklift, movementLength - Math.abs(distance));
-            }
-
-
-        } else {
-            forklift.position = newPosition;
-        }
-    }
-
     calculateForkliftPositionUsingTime(forklift, tempDistance) {
         let targetNode = mainGraph.sigmaGraph.graph.nodes(forklift.route.instructions[0].nodeId);
-        let distance = this.getDistanceBetweenPoints(
-            forklift.position.x,
-            forklift.position.y,
-            targetNode.x,
-            targetNode.y
-        );
-        let directionVector = this.getDirectionVector(
-            distance,
-            forklift.position.x,
-            forklift.position.y,
-            targetNode.x,
-            targetNode.y
-        );
-        if (typeof (forklift.route.instructions[0].movementLength) == "undefined") {
-            if (forklift.route.instructions.length == 1) {
-                if (typeof (forklift.currentNode) == "undefined")
-                    forklift.route.instructions[0].movementLength = 0;
-                else
-                    forklift.route.instructions[0].movementLength =
-                    distance / ((forklift.route.instructions[0].startTime - forklift.currentNode.startTime) / (1000 / frameRate));
-            } else
-                forklift.route.instructions[0].movementLength =
-                distance / ((forklift.route.instructions[1].startTime - forklift.route.instructions[0].startTime) / (1000 / frameRate));
-        }
-        let remainingMovementLength;
-        if (tempDistance == null)
-            remainingMovementLength = forklift.route.instructions[0].movementLength;
-        else
-            remainingMovementLength = tempDistance;
-        // gets new position based on the direction vector over the framerate
-        let newPosition = {
-            x: forklift.position.x + remainingMovementLength * directionVector.x,
-            y: forklift.position.y + remainingMovementLength * directionVector.y
-        };
-        if (this.checkIfReachedNode(newPosition, directionVector, forklift.route.instructions)) {
+        let currentNode = mainGraph.sigmaGraph.graph.nodes(forklift.currentNode.nodeId);
+
+        let remainingTime = forklift.route.instructions[0].startTime - new Date().getTime();
+
+        if (remainingTime <= 0) {
             let instructions = forklift.route.instructions;
             forklift.currentNode = instructions[0];
             instructions.splice(0, 1);
@@ -270,20 +185,28 @@ class Forklifts {
             if (instructions.length == 0 || typeof (instructions[0]) == "undefined") {
                 delete forklift.route.instructions;
                 delete forklift.route;
-            } else {
-                // if through this movement it goes further than the distance to the node
-                // it will run it again with start position of the node
-                // i think.
-                // this should be tested more
-                if (remainingMovementLength > Math.abs(distance)) {
-                    this.calculateForkliftPositionUsingTime(forklift, remainingMovementLength - Math.abs(distance));
-                }
-
             }
-
-
         } else {
-            forklift.position = newPosition;
+            let distance = this.getDistanceBetweenPoints(
+                targetNode.x,
+                targetNode.y,
+                currentNode.x,
+                currentNode.y
+            );
+            let totalTime = forklift.route.instructions[0].startTime - forklift.currentNode.startTime;
+            let percentGoneBy = remainingTime / totalTime;
+            let distanceTravelled = distance * percentGoneBy;
+            let directionVector = this.getDirectionVector(
+                distance,
+                targetNode.x,
+                targetNode.y,
+                currentNode.x,
+                currentNode.y
+            );
+            forklift.position = {
+                x: targetNode.x + distanceTravelled * directionVector.x,
+                y: targetNode.y + distanceTravelled * directionVector.y
+            };
         }
     }
 
@@ -372,6 +295,7 @@ class Forklifts {
                 this.generateRoute(route, currentNode, Math.round(30));
                 if (route.instructions.length != 0) {
                     forkliftData[key].route = route;
+                    forkliftData[key].currentNode = route.instructions[0];
                     let speed = Math.random() * 2 + 1;
                     this.calculateRouteTimes(route.instructions, route.instructions[0].startTime, 0, speed, {
                         x: mainGraph.sigmaGraph.graph.nodes(route.instructions[0].nodeId).x,
