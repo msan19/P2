@@ -30,6 +30,8 @@ export class DataContainer extends events.EventEmitter {
     /** Is a dictionary containing {@link Order} objects */
     orders: { [key: string]: Order; };
 
+    newOrders: string[];
+
     /** Is a dictionary containing {@link Route} objects */
     routes: { [key: string]: Route; };
 
