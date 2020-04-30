@@ -8,8 +8,11 @@ import { Vector2 } from "./vector2";
 
 /** A {@link Graph} cointaining interconnected vertices */
 export class Graph {
+
     /** A dictionary of vertices contained in the {@link Graph} */
     vertices: { [key: string]: Vertex; };
+
+    /** A dictionary of ScheduleItems specifying the time and location of idle forklifts */
     idlePositions: { [forkliftId: string]: ScheduleItem; };
 
     constructor(vertices: { [key: string]: Vertex; }) {
@@ -92,12 +95,19 @@ export class Graph {
      */
     clone(): Graph {
         let newVertices: { [key: string]: Vertex; } = {};
+        let newIdlePositions: { [forkliftId: string]: ScheduleItem; } = {};
+
+        for (let key in this.idlePositions) {
+            newIdlePositions[key] = this.idlePositions[key];
+        }
 
         for (let key in this.vertices) {
             newVertices[key] = this.vertices[key].clone();
         }
 
-        return new Graph(newVertices);
+        let graph = new Graph(newVertices);
+        graph.idlePositions = newIdlePositions;
+        return graph;
     }
 
     /**
@@ -224,7 +234,7 @@ export class Vertex {
 
         v.scheduleItems = [];
         for (let s in this.scheduleItems) {
-            v.scheduleItems.push(this.scheduleItems[s].clone());
+            v.scheduleItems.push(this.scheduleItems[s]);
         }
 
         return v;
