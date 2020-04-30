@@ -7,7 +7,7 @@
 import { DataContainer } from "./classes/dataContainer";
 import { Route, RouteSet, Instruction } from "../shared/route";
 import { Order } from "../shared/order";
-import { Vertex, ScheduleItem, Graph } from "../shared/graph";
+import { Vertex, ScheduleItem } from "../shared/graph";
 import { MinPriorityQueue } from "./classes/minPriorityQueue";
 import { randomIntegerInRange } from "../shared/utilities";
 
@@ -58,10 +58,31 @@ export class RouteScheduler {
     getRoute(orderId: string): Route {
         let order = this.data.orders[orderId];
 
+        // Create a route object for the route of an order on bestRouteSet
         let routeId = "R" + orderId;
         let instructions = this.createInstructions(order);
         let routeStatus = Route.Statuses.queued;
 
+        // Add the locked route on the graph on this.data.warehouse.graph
+        // endVertex and duration are from bestRouteSet
+        let endVertex = this.findVertex(order.endVertexId);
+        let duration = this.findDuration(order.id);
+        // At this point currentScheduleItem is the lastScheduleItem for the given order
+        let currentScheduleItem = endVertex.getScheduleItem(order.time + duration);
+
+        // Inserts all scheduleItems from route of order from bestRouteSet.graph to data.warehouse.graph
+        while (currentScheduleItem !== null) {
+            this.data.warehouse.graph.vertices[currentScheduleItem.currentVertexId].insertScheduleItem(currentScheduleItem);
+            currentScheduleItem = currentScheduleItem.previousScheduleItem;
+        }
+
+        // Splice order from priorities and duration
+        let indexOfOrder = this.bestRouteSet.priorities.indexOf(order.id);
+        this.bestRouteSet.priorities.splice(indexOfOrder, 1);
+        this.bestRouteSet.duration.splice(indexOfOrder, 1);
+
+        // Redo mutations
+        this.mutate();
 
         return new Route(routeId, orderId, routeStatus, instructions);
     }
@@ -70,7 +91,6 @@ export class RouteScheduler {
         let instructions: Instruction[] = [];
 
         let endVertex = this.findVertex(order.endVertexId);
-        let forkliftId = this.bestRouteSet.assignedForklift[order.id];
         let duration = this.findDuration(order.id);
         let lastScheduleItem = endVertex.getScheduleItem(order.time + duration);
 
@@ -275,6 +295,7 @@ export class RouteScheduler {
         });
 
         this.mutations = mutations;
+        this.mutationCounter = 0;
     }
 
     generateChronologicalPriorities(): string[] {
@@ -495,18 +516,33 @@ export class RouteScheduler {
         return order.time;
     }
 
-    addRouteToGraph(route: Route): void {
-        // TO DO 
-    }
+    update(): void {
+        // Find appropriate place in priorities and insert
+        if (this.bestRouteSet !== null) {
+            for (let newOrderId of this.data.newOrders) {
+                this.insertOrderInPrioritiesAppropriatedly(newOrderId);
+            }
+        }
 
-    update(data: DataContainer): void {
+        this.data.newOrders = [];
+
         // Generate a new RouteSet
         let priorities = this.generatePriorities();
-        let routeSet = new RouteSet(priorities, data.warehouse.graph.clone());
-        if (this.calculateRoutes(data, routeSet) === true) {
+        let routeSet = new RouteSet(priorities, this.data.warehouse.graph.clone());
+        if (this.calculateRoutes(this.data, routeSet) === true) {
             this.setBestRouteSet(routeSet);
         }
 
     }
 
+    insertOrderInPrioritiesAppropriatedly(orderId: string): void {
+        let indexForNewOrder = 0;
+
+        while (indexForNewOrder < this.bestRouteSet.priorities.length
+            && this.data.orders[orderId].time > this.data.orders[this.bestRouteSet.priorities[indexForNewOrder]].time) {
+            indexForNewOrder++;
+        }
+
+        this.bestRouteSet.priorities.splice(indexForNewOrder, 0, orderId);
+    }
 }
