@@ -60,7 +60,7 @@ export class RouteScheduler {
 
         let routeId = "R" + orderId;
         let instructions = this.createInstructions(order);
-        let routeStatus = 1; // queued
+        let routeStatus = Route.Statuses.queued;
 
 
         return new Route(routeId, orderId, routeStatus, instructions);

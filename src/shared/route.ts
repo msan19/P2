@@ -92,6 +92,7 @@ export class Instruction {
 
 /** A route containing an array of Instructions */
 export class Route {
+    static Statuses = RouteStatus;
     /** An id for the route */
     routeId: string;
 
