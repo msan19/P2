@@ -74,7 +74,7 @@ export class Order {
     static parse(obj: any, data: DataContainer): Order | null {
         // Check for types of necessary fields
         if (typeof (obj.id) !== "string") return null;
-        if (typeof (obj.forkliftId) !== "string") return null;
+        if (typeof (obj.forkliftId) !== "string" && obj.forkliftId !== null) return null;
         if (typeof (obj.palletId) !== "string") return null;
         if (typeof (obj.startVertexId) !== "string") return null;
         if (typeof (obj.endVertexId) !== "string") return null;
@@ -87,15 +87,15 @@ export class Order {
         if (!keysVertices.includes(obj.startVertexId) || !keysVertices.includes(obj.endVertexId)) return null;
 
         // Check for valid forkliftId
-        let present: boolean = false;
-        let keysForklifts: string[] = Object.keys(data.forklifts);
-        for (let i = 0; i < keysForklifts.length; i++) {
-            if (obj.forkliftId === data.forklifts[keysForklifts[i]].id) present = true;
+        if (obj.forkliftId !== null) {
+            let present: boolean = false;
+            let keysForklifts: string[] = Object.keys(data.forklifts);
+            for (let i = 0; i < keysForklifts.length; i++) {
+                if (obj.forkliftId === data.forklifts[keysForklifts[i]].id) present = true;
+            }
+            if (!present) return null;
         }
-        if (!present) return null;
-
         // Check for valid type
-        obj.type = Number(obj.type);
         if (typeof (Order.types[obj.type]) === "undefined") return null;
 
         // Check for valid timeType
@@ -103,9 +103,12 @@ export class Order {
         if (typeof (Order.timeTypes[obj.timeType]) === "undefined") return null;*/
 
         // Check for valid time abc
-        /*obj.time = Number(obj.time);
-        if (isNaN(obj.time)) return null;*/
+        obj.time = Number(obj.time);
+        if (isNaN(obj.time)) return null;
 
-        return new Order(obj.id, obj.type, obj.forkliftId, obj.palletId, obj.startVertexId, obj.endVertexId);
+        let newOrder = new Order(obj.id, obj.type, obj.forkliftId, obj.palletId, obj.startVertexId, obj.endVertexId);
+        newOrder.time = obj.time;
+        newOrder.timeType = obj.timeType;
+        return newOrder;
     }
 }

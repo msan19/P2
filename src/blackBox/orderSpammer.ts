@@ -3,7 +3,7 @@ import { WebSocket } from "./../shared/webSocket";
 import { ApiCaller } from "./../shared/apiCaller";
 import { Order } from "../shared/order";
 import { Warehouse } from "../shared/warehouse";
-import { randomValue } from "../shared/utilities";
+import { randomValue, randomIntegerInRange } from "../shared/utilities";
 
 
 export class OrderSpammer {
@@ -39,12 +39,14 @@ export class OrderSpammer {
     createRandomOrder() {
         let order = new Order(
             `${this.ordersSentCount}`,
-            randomValue(Order.types),
+            randomValue([Order.types.movePallet, Order.types.moveForklift, Order.types.charge]),
             null,
             `pallet-${this.ordersSentCount}`,
             randomValue(this.warehouse.graph.vertices).id,
             randomValue(this.warehouse.graph.vertices).id
         );
+        order.time = (new Date()).getTime() + randomIntegerInRange(100000, 1000000);
+        order.timeType = Order.timeTypes.start;
         this.ordersSentCount++;
         return order;
     }

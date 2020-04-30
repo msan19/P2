@@ -37,7 +37,7 @@ export class PlanningScheduler {
 
     update() {
         // Check if data.warehouse.graph is non-empty and data.orders is non-empty (length greater than 0)
-        if (this.data.warehouse.graph !== null && Object.keys(this.data.orders).length > 0) {
+        if (this.data !== null && this.data.warehouse !== null && this.data.warehouse.graph !== null && Object.keys(this.data.orders).length > 0) {
             // Get route(s)
             let currentTime = (new Date()).getTime(); // 1588233898230
             let timeOffset = 10000;
@@ -46,7 +46,7 @@ export class PlanningScheduler {
                 if (this.routeScheduler.bestRouteSet !== null) {
                     if (this.routeScheduler.bestRouteSet.priorities.indexOf(orderId) !== -1) {
                         if (this.routeScheduler.getStartTime(orderId) < currentTime + timeOffset) {
-                            this.data.lockRoute(this.routeScheduler.getRoute(orderId));
+                            //this.data.lockRoute(this.routeScheduler.getRoute(orderId));
                         }
                     }
                 } else if (this.data.orders[orderId].time < currentTime + timeOffset) {
@@ -57,7 +57,7 @@ export class PlanningScheduler {
 
 
             // Update routeScheduler
-            this.routeScheduler.update();
+            //this.routeScheduler.update();
         }
 
         // Appends itself to the event loop, but it does not block other events

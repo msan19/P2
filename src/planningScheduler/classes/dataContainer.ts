@@ -55,6 +55,7 @@ export class DataContainer extends events.EventEmitter {
     addOrder(order: Order): boolean {
         if (Object.keys(this.orders).includes(order.id)) return false;
         this.orders[order.id] = order;
+        this.newOrders.push(order.id);
         this.emit(DataContainer.events.addOrder, order);
         return true;
     }
