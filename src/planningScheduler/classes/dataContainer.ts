@@ -18,7 +18,9 @@ enum eventsEnum {
     addOrder = "addOrder",
     addForklift = "addForklift",
     setWarehouse = "setWarehouse",
-    lockRoute = "lockRoute"
+    lockRoute = "lockRoute",
+    forkliftInitiated = "forkliftInitiated",
+    forkliftUpdated = "forkliftUpdated"
 }
 
 export class DataContainer extends events.EventEmitter {
@@ -63,6 +65,12 @@ export class DataContainer extends events.EventEmitter {
     ///TODO: Add to diagrams
     addForklift(forklift: Forklift): void {
         this.forklifts[forklift.id] = forklift;
+        forklift.on(Forklift.Events.initiated, (forklift) => {
+            this.emit(DataContainer.events.forkliftInitiated, forklift);
+        });
+        forklift.on(Forklift.Events.updated, (forklift) => {
+            this.emit(DataContainer.events.forkliftUpdated, forklift);
+        });
         this.emit(DataContainer.events.addForklift, forklift);
     }
 

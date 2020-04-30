@@ -539,7 +539,7 @@ export class RouteScheduler {
         // Generate a new RouteSet
         let priorities = this.generatePriorities();
         let routeSet = new RouteSet(priorities, this.data.warehouse.graph.clone());
-        if (this.calculateRoutes(this.data, routeSet) === true) {
+        if (Object.keys(this.data.orders).length > 0 && this.calculateRoutes(this.data, routeSet) === true) {
             this.setBestRouteSet(routeSet);
         }
 

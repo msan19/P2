@@ -7,6 +7,7 @@
 import { DataContainer } from "./classes/dataContainer";
 import { WebServerPlanningScheduler } from "./classes/WebServer";
 import { RouteScheduler } from "./routeScheduler";
+import { ScheduleItem } from "../shared/graph";
 
 /**
  * Object to handle event loop of main server.
@@ -28,6 +29,20 @@ export class PlanningScheduler {
      */
     constructor(port: number, hostname: string) {
         this.data = new DataContainer();
+
+        this.data.on(DataContainer.events.forkliftInitiated, (forklift) => {
+            let acceptableDistance = 0.5;
+            for (let vertex in this.data.warehouse.graph.vertices) {
+                if (forklift.position !== undefined && this.data.warehouse.graph.vertices[vertex].position.subtract(forklift.position).getLength() < acceptableDistance) {
+                    this.data.warehouse.graph.idlePositions[forklift.id] =
+                        new ScheduleItem(forklift.id, (new Date()).getTime(), this.data.warehouse.graph.vertices[vertex].id);
+                    this.data.warehouse.graph.vertices[vertex].insertScheduleItem(this.data.warehouse.graph.idlePositions[forklift.id]);
+                    return;
+                }
+            }
+        });
+
+
         this.routeScheduler = new RouteScheduler(this.data);
         this.server = new WebServerPlanningScheduler(this.data, hostname, port);
         this.server.run();
@@ -46,7 +61,7 @@ export class PlanningScheduler {
                 if (this.routeScheduler.bestRouteSet !== null) {
                     if (this.routeScheduler.bestRouteSet.priorities.indexOf(orderId) !== -1) {
                         if (this.routeScheduler.getStartTime(orderId) < currentTime + timeOffset) {
-                            //this.data.lockRoute(this.routeScheduler.getRoute(orderId));
+                            this.data.lockRoute(this.routeScheduler.getRoute(orderId));
                         }
                     }
                 } else if (this.data.orders[orderId].time < currentTime + timeOffset) {
@@ -57,7 +72,7 @@ export class PlanningScheduler {
 
 
             // Update routeScheduler
-            //this.routeScheduler.update();
+            this.routeScheduler.update();
         }
 
         // Appends itself to the event loop, but it does not block other events
