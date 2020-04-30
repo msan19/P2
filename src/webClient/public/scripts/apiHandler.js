@@ -89,20 +89,12 @@ addOrderForm.onsubmit = function () {
     let data = {};
     for (let input of addOrderForm.querySelectorAll("input, select")) {
         if (input.name) {
-            switch (input.getAttribute("type")) {
-                case "date":
-                case "datetime":
-                case "time":
-                case "number":
-                    data[input.name] = input.valueAsNumber;
-                    break;
-                default:
-                    data[input.name] = input.value;
-            }
-
+            if (input.name == "time") {
+                date[input.name] = moment(input.value, "L LTS").unix()
+            } else
+                data[input.name] = input.value;
         }
     }
     apiCaller.sendOrder(data);
     return false;
 };
-
