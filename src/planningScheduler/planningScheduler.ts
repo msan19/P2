@@ -30,6 +30,7 @@ export class PlanningScheduler {
     constructor(port: number, hostname: string) {
         this.data = new DataContainer();
 
+
         this.data.on(DataContainer.events.forkliftInitiated, (forklift) => {
             let acceptableDistance = 0.5;
             for (let vertex in this.data.warehouse.graph.vertices) {
@@ -69,7 +70,6 @@ export class PlanningScheduler {
                 }
 
             }
-
 
             // Update routeScheduler
             this.routeScheduler.update();

@@ -46,6 +46,7 @@ export class DataContainer extends events.EventEmitter {
         this.orders = {};
         this.routes = {};
         this.warehouse = null;
+        this.newOrders = [];
     }
 
     /**

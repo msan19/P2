@@ -5,14 +5,19 @@ import { DataContainer } from "./../../../src/planningScheduler/classes/dataCont
 import { RouteScheduler } from "./../../../src/planningScheduler/routeScheduler";
 import { createGraph } from "./../../../src/blackBox/warehouse";
 import { RouteSet, Route, Instruction } from "./../../../src/shared/route";
-import { ScheduleItem } from '../../../src/shared/graph';
+import { ScheduleItem, Graph } from '../../../src/shared/graph';
 import { Order } from '../../../src/shared/order';
+import { Warehouse } from '../../../src/shared/warehouse';
 
 function testGetRoute(): void {
     describe("Test getRoute for movePallet order", () => {
-        let data = new DataContainer();
+        let graph: Graph = createGraph();
+        let warehouse = new Warehouse(graph, 15);
+        let data: DataContainer = new DataContainer();
+        data.warehouse = warehouse;
+
         let routeScheduler = new RouteScheduler(data);
-        let graph = createGraph();
+
 
         let firstOrderId = "O1";
         let secondOrderId = "O2";
