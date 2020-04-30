@@ -228,7 +228,7 @@ export class Vertex {
     clone(): Vertex {
         let v: Vertex = new Vertex(this.id, this.position.clone(), this.label);
 
-        for (let a in this.adjacentVertexIds) {
+        for (let a of this.adjacentVertexIds) {
             v.adjacentVertexIds.push(a);
         }
 

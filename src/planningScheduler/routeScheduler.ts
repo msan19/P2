@@ -248,7 +248,7 @@ export class RouteScheduler {
     }
 
     setBestRouteSet(newRouteSet): void {
-        if (RouteScheduler.evalRouteSet(newRouteSet) < RouteScheduler.evalRouteSet(this.bestRouteSet)) {
+        if (this.bestRouteSet === null || RouteScheduler.evalRouteSet(newRouteSet) < RouteScheduler.evalRouteSet(this.bestRouteSet)) {
             this.bestRouteSet = newRouteSet;
             this.mutate();
         }
@@ -317,8 +317,8 @@ export class RouteScheduler {
 
             // Handle mutationCounter greater than number of mutations
             if (this.mutationCounter >= this.mutations.length) {
-                let ranIndex = randomIntegerInRange(0, priorities.length);
-                let ranNewIndex = randomIntegerInRange(0, priorities.length);
+                let ranIndex = randomIntegerInRange(0, priorities.length - 1);
+                let ranNewIndex = randomIntegerInRange(0, priorities.length - 1);
                 let priority = priorities.splice(ranIndex, 1)[0];
                 priorities.splice(ranNewIndex, 0, priority);
             } else {
@@ -332,8 +332,8 @@ export class RouteScheduler {
             priorities = this.generateChronologicalPriorities();
 
             if (this.mutationCounter > 0) {
-                let ranIndex = randomIntegerInRange(0, priorities.length);
-                let ranNewIndex = randomIntegerInRange(0, priorities.length);
+                let ranIndex = randomIntegerInRange(0, priorities.length - 1);
+                let ranNewIndex = randomIntegerInRange(0, priorities.length - 1);
                 let priority = priorities.splice(ranIndex, 1)[0];
                 priorities.splice(ranNewIndex, 0, priority);
             }

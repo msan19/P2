@@ -36,9 +36,7 @@ export class Forklift extends ForkliftInfo {
         this.setSocket(socket);
         this.on(WebSocket.packageTypes.forkliftInfo, (forkliftInfo: ForkliftInfo) => {
             let initated = this.state === ForkliftStates.initiating;
-            let data = Forklift.parse(forkliftInfo);
-            if (data === null) return;
-            for (let key in data) this[key] = data[key];
+            if (!this.putData(forkliftInfo)) return;
             if (initated) this.emit(Forklift.Events.initiated, this);
             this.emit(Forklift.Events.updated, this);
         });
@@ -102,10 +100,10 @@ export class Forklift extends ForkliftInfo {
      * @returns A string with a message explaining whether the content of the parameter was accepted
      * or an explenation if it was not
      */
-    putData(obj: any): string {
+    putData(obj: any): boolean {
         // Valid object (not null and type object)
-        if (typeof (obj) !== "object" || obj === null) return "not an object";
-        if (typeof (obj.id) === "string" && obj.id !== this.id) return "not correct id";
+        if (typeof (obj) !== "object" || obj === null) return false;
+        if (typeof (obj.id) === "string" && obj.id !== this.id) return false;
 
         // Get all field names
         let keys: string[] = Object.keys(obj);
@@ -132,7 +130,7 @@ export class Forklift extends ForkliftInfo {
             this.routes = obj.routes;
         }
 
-        return "succes";
+        return true;
     }
 }
 applyMixins(Forklift, [EventEmitter, ForkliftInfo]);

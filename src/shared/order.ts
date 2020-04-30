@@ -98,6 +98,9 @@ export class Order {
         // Check for valid type
         if (typeof (Order.types[obj.type]) === "undefined") return null;
 
+        // Check for forkliftId when moveForklift or charge
+        if ((obj.type === Order.types.moveForklift || obj.type === Order.types.charge) && obj.forkliftId === null) return null;
+
         // Check for valid timeType
         /*obj.timeType = Number(obj.timeType);
         if (typeof (Order.timeTypes[obj.timeType]) === "undefined") return null;*/

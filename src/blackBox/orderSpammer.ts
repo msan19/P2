@@ -39,7 +39,7 @@ export class OrderSpammer {
     createRandomOrder() {
         let order = new Order(
             `${this.ordersSentCount}`,
-            randomValue([Order.types.movePallet, Order.types.moveForklift, Order.types.charge]),
+            randomValue([Order.types.movePallet]),
             null,
             `pallet-${this.ordersSentCount}`,
             randomValue(this.warehouse.graph.vertices).id,
