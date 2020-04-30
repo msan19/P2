@@ -87,8 +87,20 @@ window.apiCaller = new ApiCaller("localhost", 3000);
 var addOrderForm = document.querySelector("form#addOrder");
 addOrderForm.onsubmit = function () {
     let data = {};
-    for (const pair of new FormData(addOrderForm)) {
-        data[pair[0]] = pair[1];
+    for (let input of addOrderForm.querySelectorAll("input, select")) {
+        if (input.name) {
+            switch (input.getAttribute("type")) {
+                case "date":
+                case "datetime":
+                case "time":
+                case "number":
+                    data[input.name] = input.valueAsNumber;
+                    break;
+                default:
+                    data[input.name] = input.value;
+            }
+
+        }
     }
     apiCaller.sendOrder(data);
     return false;
