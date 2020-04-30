@@ -315,9 +315,19 @@ export class RouteScheduler {
             // Clone of bestRouteSet.priorities
             priorities = [...this.bestRouteSet.priorities];
 
-            // Handle the mutations
-            let priority = priorities.splice(this.mutations[this.mutationCounter].index, 1)[0];
-            priorities.splice(this.mutations[this.mutationCounter].newIndex, 0, priority);
+            // Handle mutationCounter greater than number of mutations
+            if (this.mutationCounter >= this.mutations.length) {
+                let ranIndex = randomIntegerInRange(0, priorities.length);
+                let ranNewIndex = randomIntegerInRange(0, priorities.length);
+                let priority = priorities.splice(ranIndex, 1)[0];
+                priorities.splice(ranNewIndex, 0, priority);
+            } else {
+                // Handle the mutations
+                let priority = priorities.splice(this.mutations[this.mutationCounter].index, 1)[0];
+                priorities.splice(this.mutations[this.mutationCounter].newIndex, 0, priority);
+            }
+
+
         } else {
             priorities = this.generateChronologicalPriorities();
 
