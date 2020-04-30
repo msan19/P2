@@ -37,6 +37,7 @@ export class Forklift extends ForkliftInfo {
         this.on(WebSocket.packageTypes.forkliftInfo, (forkliftInfo: ForkliftInfo) => {
             let initated = this.state === ForkliftStates.initiating;
             let data = Forklift.parse(forkliftInfo);
+            if (data === null) return;
             for (let key in data) this[key] = data[key];
             if (initated) this.emit(Forklift.Events.initiated, this);
             this.emit(Forklift.Events.updated, this);
