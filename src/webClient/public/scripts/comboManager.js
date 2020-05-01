@@ -1,7 +1,7 @@
 window.nForklifts = new Forklifts(null);
 window.mainGraph;
 
-window.frameRate = 1;
+window.frameRate = 60;
 
 var forkliftData = [];
 var ForkliftStates;
@@ -216,7 +216,7 @@ window.socketManager.on(PackageTypes.route, (route) => {
 // Event loop
 window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
-        nForklifts.addTestDataToForklifts();
+        nForklifts.addTestDataToForklifts()
         nForklifts.handleForkliftMovement();
         updateSelectedForkliftInformationOnUI();
         mainGraph.updateForkliftsOnGraph();

@@ -1,10 +1,6 @@
 class Forklifts {
     selectedForklift = "";
 
-
-
-
-
     addForklift(forklift) {
         this.addForkliftToUi(forklift);
         forkliftData[forklift.id] = this.parseForklift(forklift);
@@ -41,19 +37,19 @@ class Forklifts {
 
     parseForklift(data) {
         let forklift;
-        if (Forklifts.getIfForkliftHasPosition(data)) {
+        if (!Forklifts.getIfForkliftHasPosition(data)) {
             forklift = {
-                id: data["id"],
-                state: data["state"]
+                id: data.id,
+                state: data.state
             };
         } else {
             forklift = {
-                id: data["id"],
+                id: data.id,
                 position: {
-                    x: data["x"],
-                    y: data["y"]
+                    x: data.position.x,
+                    y: data.position.y
                 },
-                state: data["state"]
+                state: data.state
             };
         }
         return forklift;
