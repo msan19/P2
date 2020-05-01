@@ -1,10 +1,6 @@
 class Forklifts {
     selectedForklift = "";
 
-
-
-
-
     addForklift(forklift) {
         this.addForkliftToUi(forklift);
         forkliftData[forklift.id] = this.parseForklift(forklift);
@@ -41,19 +37,19 @@ class Forklifts {
 
     parseForklift(data) {
         let forklift;
-        if (Forklifts.getIfForkliftHasPosition(data)) {
+        if (!Forklifts.getIfForkliftHasPosition(data)) {
             forklift = {
-                id: data["id"],
-                state: data["state"]
+                id: data.id,
+                state: data.state
             };
         } else {
             forklift = {
-                id: data["id"],
+                id: data.id,
                 position: {
-                    x: data["x"],
-                    y: data["y"]
+                    x: data.position.x,
+                    y: data.position.y
                 },
-                state: data["state"]
+                state: data.state
             };
         }
         return forklift;
@@ -128,7 +124,7 @@ class Forklifts {
                         };
                     }
                 } else {
-                    this.calculateForkliftPositionUsingTime(forkliftData[key], null);
+                    this.calculateForkliftPositionUsingTime(forkliftData[key]);
                 }
 
             }
@@ -161,7 +157,7 @@ class Forklifts {
 
     }
 
-    calculateForkliftPositionUsingTime(forklift, tempDistance) {
+    calculateForkliftPositionUsingTime(forklift) {
         let targetNode = mainGraph.sigmaGraph.graph.nodes(forklift.route.instructions[0].nodeId);
         let currentNode = mainGraph.sigmaGraph.graph.nodes(forklift.currentNode.nodeId);
 
@@ -185,6 +181,8 @@ class Forklifts {
             if (instructions.length == 0 || typeof (instructions[0]) == "undefined") {
                 delete forklift.route.instructions;
                 delete forklift.route;
+            } else {
+                this.calculateForkliftPositionUsingTime(forklift);
             }
         } else {
             let distance = this.getDistanceBetweenPoints(

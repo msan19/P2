@@ -1,7 +1,7 @@
 window.nForklifts = new Forklifts(null);
 window.mainGraph;
 
-window.frameRate = 120;
+window.frameRate = 60;
 
 var forkliftData = [];
 var ForkliftStates;
@@ -139,7 +139,7 @@ initializeUI();
 function initializeUI() {
     // Set dateInput to correct format
     $('#sendOrderDateTimePicker').datetimepicker({
-        format: 'L LTS'
+        format: 'LLL'
     });
     // add blank forklift to select forklfit
     document.querySelector("#forklift-list").innerHTML = `<option value=${""}>${""}</option>`;
@@ -216,6 +216,7 @@ window.socketManager.on(PackageTypes.route, (route) => {
 // Event loop
 window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
+        nForklifts.addTestDataToForklifts()
         nForklifts.handleForkliftMovement();
         updateSelectedForkliftInformationOnUI();
         mainGraph.updateForkliftsOnGraph();

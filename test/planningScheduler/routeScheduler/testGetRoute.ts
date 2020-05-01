@@ -11,20 +11,20 @@ import { Warehouse } from '../../../src/shared/warehouse';
 
 function testGetRoute(): void {
     describe("Test getRoute for movePallet order", () => {
-        let graph: Graph = createGraph();
-        let warehouse = new Warehouse(graph, 15);
         let data: DataContainer = new DataContainer();
+        let warehouseGraph: Graph = createGraph();
+        let warehouse = new Warehouse(warehouseGraph, 15);
         data.warehouse = warehouse;
 
         let routeScheduler = new RouteScheduler(data);
-
+        let bestRouteSetgraph = createGraph();
 
         let firstOrderId = "O1";
         let secondOrderId = "O2";
         let thirdOrderId = "O3";
         let routePriorities = [firstOrderId, secondOrderId, thirdOrderId];
 
-        routeScheduler.bestRouteSet = new RouteSet(routePriorities, graph);
+        routeScheduler.bestRouteSet = new RouteSet(routePriorities, bestRouteSetgraph);
 
         let firstForkliftId = "F1";
         let secondForkliftId = "F2";

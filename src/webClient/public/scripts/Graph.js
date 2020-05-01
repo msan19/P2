@@ -141,28 +141,21 @@ class Graph {
     }
 
     static cloneIncomingData(data) {
-        let forkliftSpeed = data.maxForkliftSpeed;
         let vertices = [];
-        for (let verticeKey in data["graph"]["vertices"]) {
+        for (let verticeKey in data.graph.vertices) {
             let adjacentVertexIds = [];
-            for (let adjacentVertexKey in data["graph"]["vertices"][verticeKey]["adjacentVertexIds"]) {
-                adjacentVertexIds.push(data["graph"]["vertices"][verticeKey]["adjacentVertexIds"][adjacentVertexKey]);
+            for (let adjacentVertexKey in data.graph.vertices[verticeKey].adjacentVertexIds) {
+                adjacentVertexIds.push(data.graph.vertices[verticeKey].adjacentVertexIds[adjacentVertexKey]);
             }
-            let scheduleItems = [];
-            for (let scheduleItemsKey in data["graph"]["vertices"][verticeKey]["scheduleItems"])
-                position.push(data["graph"]["vertices"][verticeKey]["scheduleItems"][scheduleItemsKey]);
             vertices.push({
                 adjacentVertexIds: adjacentVertexIds,
-                id: data["graph"]["vertices"][verticeKey]["id"],
-                isVisited: data["graph"]["vertices"][verticeKey]["isVisited"],
-                label: data["graph"]["vertices"][verticeKey]["label"],
+                id: data.graph.vertices[verticeKey].id,
+                label: data.graph.vertices[verticeKey].label,
                 position: {
-                    x: data["graph"]["vertices"][verticeKey]["position"]["x"],
-                    y: data["graph"]["vertices"][verticeKey]["position"]["y"]
+                    x: data.graph.vertices[verticeKey].position.x,
+                    y: data.graph.vertices[verticeKey].position.y
 
-                },
-                previousVertex: data["graph"]["vertices"][verticeKey]["previousVertex"],
-                scheduleItems: scheduleItems
+                }
             });
         }
         let newData = {
@@ -170,7 +163,7 @@ class Graph {
             graph: {
                 vertices: vertices
             },
-            forkliftSpeed: forkliftSpeed
+            forkliftSpeed: data.maxForkliftSpeed
         };
         return newData;
     }
