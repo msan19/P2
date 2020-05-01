@@ -4,6 +4,7 @@ import { ApiCaller } from "./../shared/apiCaller";
 import { Order } from "../shared/order";
 import { Warehouse } from "../shared/warehouse";
 import { randomValue, randomIntegerInRange } from "../shared/utilities";
+import { ForkliftInfo } from "../shared/forkliftInfo";
 
 
 export class OrderSpammer {
@@ -12,6 +13,7 @@ export class OrderSpammer {
 
     ordersSentCount: number = 0;
     warehouse: Warehouse = null;
+    forkliftIds: { [key: string]: string; };
     interval: () => number;
 
     /**
@@ -26,6 +28,16 @@ export class OrderSpammer {
         this.socket.on(WebSocket.packageTypes.warehouse, (warehouse) => { this.warehouse = warehouse; });
         this.interval = interval;
         this.iterate();
+
+        this.socket.on(WebSocket.packageTypes.forkliftInfos, (forklifts: ForkliftInfo[]) => {
+            this.forkliftIds = {};
+            for (let forklift of forklifts) {
+                this.forkliftIds[forklift.id] = forklift.id;
+            }
+        });
+        this.socket.on(WebSocket.packageTypes.forkliftInfo, (forklift: ForkliftInfo) => {
+            this.forkliftIds[forklift.id] = forklift.id;
+        });
     }
 
     private iterate() {
@@ -40,7 +52,7 @@ export class OrderSpammer {
         let order = new Order(
             `${this.ordersSentCount}`,
             randomValue([Order.types.movePallet]),
-            null,
+            randomValue(this.forkliftIds),
             `pallet-${this.ordersSentCount}`,
             randomValue(this.warehouse.graph.vertices).id,
             randomValue(this.warehouse.graph.vertices).id
