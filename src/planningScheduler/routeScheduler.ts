@@ -73,6 +73,8 @@ export class RouteScheduler {
         // At this point currentScheduleItem is the lastScheduleItem for the given order
         let currentScheduleItem = endVertex.getScheduleItem(order.time + duration);
 
+        let forkliftId = currentScheduleItem.forkliftId;
+
         // Inserts all scheduleItems from route of order from bestRouteSet.graph to data.warehouse.graph
         while (currentScheduleItem !== null) {
             this.data.warehouse.graph.vertices[currentScheduleItem.currentVertexId].insertScheduleItem(currentScheduleItem);
@@ -87,7 +89,7 @@ export class RouteScheduler {
         // Redo mutations
         this.mutate();
 
-        return new Route(routeId, orderId, routeStatus, instructions);
+        return new Route(routeId, order.palletId, forkliftId, orderId, routeStatus, instructions);
     }
 
     private createInstructions(order: Order): Instruction[] {
@@ -103,11 +105,11 @@ export class RouteScheduler {
             let nextLastScheduleitem = lastScheduleItem.previousScheduleItem;
             this.createMoveInstructions(instructions, order, nextLastScheduleitem);
             if (order.type === Order.types.charge) {
-                instructions.push(new Instruction(Instruction.types.charge, endVertex.id, order.palletId, order.time + duration));
+                instructions.push(new Instruction(Instruction.types.charge, endVertex.id, order.time + duration));
             }
         }
 
-        instructions.push(new Instruction(Instruction.types.sendFeedback, endVertex.id, order.palletId, order.time + duration));
+        instructions.push(new Instruction(Instruction.types.sendFeedback, endVertex.id, order.time + duration));
 
         return instructions;
     }
@@ -128,7 +130,7 @@ export class RouteScheduler {
         } else if (scheduleItem.currentVertexId === order.startVertexId) {
             instructionType = Instruction.types.loadPallet;
         }
-        let newInstruction = new Instruction(instructionType, scheduleItem.currentVertexId, order.palletId, scheduleItem.arrivalTimeCurrentVertex);
+        let newInstruction = new Instruction(instructionType, scheduleItem.currentVertexId, scheduleItem.arrivalTimeCurrentVertex);
         instructions.push(newInstruction);
     }
 
@@ -147,7 +149,7 @@ export class RouteScheduler {
             this.createMovePalletInstructions(instructions, order, scheduleItem.previousScheduleItem);
         }
         instructionType = Instruction.types.move;
-        let newInstruction = new Instruction(instructionType, scheduleItem.currentVertexId, order.palletId, scheduleItem.arrivalTimeCurrentVertex);
+        let newInstruction = new Instruction(instructionType, scheduleItem.currentVertexId, scheduleItem.arrivalTimeCurrentVertex);
         instructions.push(newInstruction);
     }
 

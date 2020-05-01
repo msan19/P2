@@ -21,7 +21,7 @@ function onSelectElementInRouteInSelectedForklift(nodeId, occurance) {
                     selectedNodeStartTime.innerHTML = moment(instruciton.startTime).format('MMM Do HH:mm:ss');
                 } else if (typeof (instruciton.endTime) != "undefined") {
                     let selectedNodeEndTime = document.querySelector("#selectedNodeEndTime");
-                    selectedNodeEndTime.innerHTML = new Date(instruciton.startTime).toLocaleTimeString("da-dk")
+                    selectedNodeEndTime.innerHTML = new Date(instruciton.startTime).toLocaleTimeString("da-dk");
                 }
                 break;
             } else
@@ -57,7 +57,7 @@ function updateSelectedForkliftSelectedElementInRoute(e) {
             routeElements[i].classList.remove("active");
         }
     }
-    e.target.classList.toggle("active")
+    e.target.classList.toggle("active");
     onSelectElementInRouteInSelectedForklift(e.target.innerHTML, getOccuranceForClickedElement(e.target, routeElements));
 }
 
@@ -185,13 +185,13 @@ window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
 // ROUTE
 function parseRoute(route) {
     let newRoute = {};
-    newRoute.id = route.id;
+    newRoute.id = route.forkliftId;
     let instructions = [];
     for (let key in route.instructions) {
         instructions.push({
             nodeId: route.instructions[key].vertexId,
             startTime: route.instructions[key].startTime
-        })
+        });
     }
     newRoute.instructions = instructions;
     return newRoute;
@@ -206,17 +206,17 @@ window.socketManager.on(PackageTypes.routes, (routes) => {
     for (let key in routes) {
         onReceiveRoute(routes[key]);
     }
-})
+});
 
 window.socketManager.on(PackageTypes.route, (route) => {
     onReceiveRoute(route);
-})
+});
 // END --- ROUTE --- END
 
 // Event loop
 window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
-        nForklifts.addTestDataToForklifts()
+        nForklifts.addTestDataToForklifts();
         nForklifts.handleForkliftMovement();
         updateSelectedForkliftInformationOnUI();
         mainGraph.updateForkliftsOnGraph();
