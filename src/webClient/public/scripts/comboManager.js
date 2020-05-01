@@ -199,7 +199,8 @@ function parseRoute(route) {
 
 function onReceiveRoute(route) {
     let parsedRoute = parseRoute(route);
-    forkliftData[parsedRoute.id].route = parsedRoute;
+    if (typeof (forkliftData[parsedRoute.id]) != "undefined")
+        forkliftData[parsedRoute.id].route = parsedRoute;
 }
 
 window.socketManager.on(PackageTypes.routes, (routes) => {
@@ -216,7 +217,7 @@ window.socketManager.on(PackageTypes.route, (route) => {
 // Event loop
 window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
-        nForklifts.addTestDataToForklifts();
+        //nForklifts.addTestDataToForklifts();
         nForklifts.handleForkliftMovement();
         updateSelectedForkliftInformationOnUI();
         mainGraph.updateForkliftsOnGraph();

@@ -30,10 +30,6 @@ function testGetRoute(): void {
         let secondForkliftId = "F2";
         let thirdForkliftId = "F3";
 
-        routeScheduler.bestRouteSet.assignedForklift[firstOrderId] = firstForkliftId;
-        routeScheduler.bestRouteSet.assignedForklift[secondOrderId] = secondForkliftId;
-        routeScheduler.bestRouteSet.assignedForklift[thirdOrderId] = thirdForkliftId;
-
         let vertexIdFirstRoute = [
             "N0-0", "N0-1", "N0-2", "N0-3", "N0-4",
             "N0-5", "N0-6", "N0-7", "N0-8", "N0-9",
@@ -73,7 +69,7 @@ function testGetRoute(): void {
 
             let resultingRoute = routeScheduler.getRoute(firstOrderId);
 
-            let expectedRoute = createMovePalletRoute(routeScheduler, firstOrder, vertexIdFirstRoute, "RO1", "F42");
+            let expectedRoute = createMovePalletRoute(routeScheduler, firstOrder, vertexIdFirstRoute, "RO1", firstForkliftId);
 
             // console.log("Expected \n", expectedRoute);
             // console.log("Resulting \n", resultingRoute);
@@ -144,7 +140,7 @@ function checkRoute(result: Route, expected: Route): void {
         if (key == "instructions") {
             checkInstructions(result[key], expected[key]);
         } else {
-            it(`${key}: ${result[key]} should be ${result[key]}`, () => {
+            it(`${key}: ${result[key]} should be ${expected[key]}`, () => {
                 expect(result[key]).to.equal(expected[key]);
             });
         }
