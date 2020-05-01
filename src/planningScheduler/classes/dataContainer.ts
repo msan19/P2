@@ -10,7 +10,7 @@ import * as events from "events";
 
 import { Forklift } from "./forklift";
 import { Warehouse } from "../../shared/warehouse";
-import { Order } from "../../shared/order";
+import { Order } from "./order";
 import { Route } from "../../shared/route";
 
 
