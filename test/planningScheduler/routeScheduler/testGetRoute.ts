@@ -87,6 +87,26 @@ function testGetRoute(): void {
 
             checkRoute(resultingRoute, expectedRoute);
 
+
+            // check that the route given by vertexIdFirstRoute is saved to the graph in data.warehouse.graph
+            for (let i = 0; i < vertexIdFirstRoute.length; i++) {
+                let bestRouteVertex = routeScheduler.bestRouteSet.graph.vertices[vertexIdFirstRoute[i]];
+                let warehouseVertex = data.warehouse.graph.vertices[vertexIdFirstRoute[i]];
+
+                let routeSchedulteItem = bestRouteVertex.scheduleItems[0];
+                let warehouseScheduleItem = warehouseVertex.scheduleItems[0];
+
+                checkSchedulteItem(routeSchedulteItem, warehouseScheduleItem, vertexIdFirstRoute.length, i);
+            }
+
+            // check scheduleItem of vertex that is not in vertexIdFirstRoute
+            let warehouseVertex = data.warehouse.graph.vertices["N1-6"];
+            expect(warehouseVertex.scheduleItems.length).to.equal(0);
+
+            // check another scheduleItem of vertex that is not in vertexIdFirstRoute
+            warehouseVertex = data.warehouse.graph.vertices[vertexIdThirdRoute[4]];
+            expect(warehouseVertex.scheduleItems.length).to.equal(0);
+
         });
 
         // describe("Test getRoute when there are multiple scheduleItems at a vertex", () => {
@@ -101,7 +121,24 @@ function testGetRoute(): void {
     });
 };
 
-function checkRoute(result: Route, expected: Route) {
+function checkSchedulteItem(firstScheduleItem: ScheduleItem, secondScheduleitem: ScheduleItem, numberOfVertices: number, scheduleItemIndex: number): void {
+    expect(firstScheduleItem.arrivalTimeCurrentVertex).to.equal(secondScheduleitem.arrivalTimeCurrentVertex);
+    expect(firstScheduleItem.currentVertexId).to.equal(secondScheduleitem.currentVertexId);
+
+    if (scheduleItemIndex === 0) {
+        expect(firstScheduleItem.previousScheduleItem).to.equal(null);
+    } else {
+        expect(firstScheduleItem.previousScheduleItem.currentVertexId).to.equal(firstScheduleItem.previousScheduleItem.currentVertexId);
+    }
+
+    if (scheduleItemIndex === numberOfVertices - 1) {
+        expect(firstScheduleItem.nextScheduleItem).to.equal(null);
+    } else {
+        expect(firstScheduleItem.nextScheduleItem.currentVertexId).to.equal(secondScheduleitem.nextScheduleItem.currentVertexId);
+    }
+}
+
+function checkRoute(result: Route, expected: Route): void {
     let keys: string[] = Object.keys(expected);
     for (let key of keys) {
         if (key == "instructions") {
@@ -114,14 +151,14 @@ function checkRoute(result: Route, expected: Route) {
     }
 }
 
-function checkInstructions(result: Instruction[], expected: Instruction[]) {
+function checkInstructions(result: Instruction[], expected: Instruction[]): void {
     let length: number = Math.max(result.length, expected.length);
     for (let i = 0; i < length; i++) {
         checkInstruction(result[i], expected[i]);
     }
 }
 
-function checkInstruction(result: Instruction, expected: Instruction) {
+function checkInstruction(result: Instruction, expected: Instruction): void {
     let keys: string[] = Object.keys(expected);
     for (let key of keys) {
         it(`${key}: ${result[key]} should be ${result[key]}`, () => {
