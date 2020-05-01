@@ -73,7 +73,7 @@ function testGetRoute(): void {
 
             let resultingRoute = routeScheduler.getRoute(firstOrderId);
 
-            let expectedRoute = createMovePalletRoute(routeScheduler, firstOrder, vertexIdFirstRoute, "RO1", "F42");
+            let expectedRoute = createMovePalletRoute(routeScheduler, firstOrder, vertexIdFirstRoute, "RO1", firstForkliftId);
 
             // console.log("Expected \n", expectedRoute);
             // console.log("Resulting \n", resultingRoute);
@@ -107,7 +107,7 @@ function checkRoute(result: Route, expected: Route) {
         if (key == "instructions") {
             checkInstructions(result[key], expected[key]);
         } else {
-            it(`${key}: ${result[key]} should be ${result[key]}`, () => {
+            it(`${key}: ${result[key]} should be ${expected[key]}`, () => {
                 expect(result[key]).to.equal(expected[key]);
             });
         }
