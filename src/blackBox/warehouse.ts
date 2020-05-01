@@ -27,11 +27,12 @@ export function createGraph() {
  */
 function createVertices(xSize: number, ySize: number): { [key: string]: Vertex; } {
     let vertices = {};
+    let distanceOfEdges = 10;
 
     for (let x = 0; x < xSize; x++) {
         for (let y = 0; y < ySize; y++) {
             let id = `N${x}-${y}`;
-            vertices[id] = new Vertex(id, new Vector2(x, y), id);
+            vertices[id] = new Vertex(id, new Vector2(x * distanceOfEdges, y * distanceOfEdges), id);
             if (y > 0) {
                 let neighborId = `N${x}-${y - 1}`;
                 vertices[id].adjacentVertexIds.push(neighborId);

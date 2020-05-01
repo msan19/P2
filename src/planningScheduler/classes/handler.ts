@@ -12,7 +12,7 @@ import { WebSocket } from "../../shared/webSocket";
 import { Socket } from "net";
 import { Warehouse } from "../../shared/warehouse";
 import { Graph } from "../../shared/graph";
-import { Order } from "../../shared/order";
+import { Order } from "../classes/order";
 
 import { getJson, returnJson, returnNotFound, returnStatus, passId, returnInvalidJson, returnSuccess } from "../../shared/webUtilities";
 import { ForkliftInfo } from "../../shared/forkliftInfo";
