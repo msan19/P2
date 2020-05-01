@@ -118,7 +118,7 @@ export class Forklift extends ForkliftInfo {
             this.position = parsedPos;
         }
 
-        if (typeof (obj.state) === "number" && Object.keys(Forklift.states).includes(obj.type)) {
+        if (typeof (Forklift.states[obj.state]) !== "undefined") {
             this.state = obj.state;
         }
 
