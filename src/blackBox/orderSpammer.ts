@@ -31,8 +31,8 @@ export class OrderSpammer {
 
         this.socket.on(WebSocket.packageTypes.forkliftInfos, (forklifts: ForkliftInfo[]) => {
             this.forkliftIds = {};
-            for (let forklift of forklifts) {
-                this.forkliftIds[forklift.id] = forklift.id;
+            for (let key in forklifts) {
+                this.forkliftIds[forklifts[key].id] = forklifts[key].id;
             }
         });
         this.socket.on(WebSocket.packageTypes.forkliftInfo, (forklift: ForkliftInfo) => {
