@@ -32,6 +32,8 @@ export class RouteScheduler {
 
     mutations: { index: number, newIndex: number, value: number; }[];
 
+    unfinishedOrderIds: string[];
+
 
     /**
      * Constructor for the object.
@@ -47,6 +49,7 @@ export class RouteScheduler {
         this.timeIntervalMinimumSize = 30000;
         this.mutationCounter = 0;
         this.mutations = [];
+        this.unfinishedOrderIds = [];
     }
 
     /**
@@ -250,6 +253,7 @@ export class RouteScheduler {
     setBestRouteSet(newRouteSet): void {
         if (this.bestRouteSet === null || RouteScheduler.evalRouteSet(newRouteSet) < RouteScheduler.evalRouteSet(this.bestRouteSet)) {
             this.bestRouteSet = newRouteSet;
+            this.unfinishedOrderIds = this.bestRouteSet.priorities;
             this.mutate();
         }
     }
@@ -299,13 +303,13 @@ export class RouteScheduler {
     }
 
     generateChronologicalPriorities(): string[] {
-        let orders: Order[] = Object.values(this.data.orders);
+        let orders: string[] = [...this.unfinishedOrderIds];
 
         orders.sort((order1, order2) => {
-            return order1.time - order2.time;
+            return this.data.orders[order1].time - this.data.orders[order2].time;
         });
 
-        return orders.map((order) => { return order.id; });
+        return orders;
     }
 
     generatePriorities(): string[] {
@@ -367,9 +371,6 @@ export class RouteScheduler {
     }
 
     getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number): number {
-        let previousVertexId: string = "";
-        let nextVertexId: string = "";
-        let i: number;
         let time: number;
         let interval: number;
         let maxWarp: number;
@@ -379,10 +380,41 @@ export class RouteScheduler {
         }
 
         /** Find earliest possible reference to destinationVertex */
+        let indexOfDestinationVertex = this.findReferenceToVertex(currentVertex, destinationVertex, currentTime);
+        // 1588321483297 - 1588321468280
+        interval = 0;
+        time = 0;
+        maxWarp = this.computeMaxWarp(currentVertex, destinationVertex, currentTime);
+        while ((interval < this.timeIntervalMinimumSize || time <= maxWarp) && indexOfDestinationVertex < destinationVertex.scheduleItems.length) {
+            if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[indexOfDestinationVertex], maxWarp, currentTime)) {
+                return Infinity;
+            }
+            time = destinationVertex.scheduleItems[indexOfDestinationVertex].arrivalTimeCurrentVertex;
+            interval = indexOfDestinationVertex + 1 >= destinationVertex.scheduleItems.length ? Infinity
+                : destinationVertex.scheduleItems[indexOfDestinationVertex + 1].arrivalTimeCurrentVertex - time;
+            indexOfDestinationVertex++;
+        }
+
+        if (time < maxWarp) {
+            return maxWarp;
+        }
+
+        return destinationVertex.scheduleItems[indexOfDestinationVertex - 1].arrivalTimeCurrentVertex + (this.timeIntervalMinimumSize / 2);
+    }
+
+    findReferenceToVertex(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number) {
+        let previousVertexId: string = "";
+        let nextVertexId: string = "";
+        let i: number;
+        let time: number;
+
         for (i = currentVertex.getScheduleItemIndex(currentTime); i >= 0
-            && i < currentVertex.scheduleItems.length
             && previousVertexId !== destinationVertex.id
-            && nextVertexId !== destinationVertex.id; i--) {
+            && nextVertexId !== destinationVertex.id
+            && currentVertex.scheduleItems.length > 0; i--) {
+            if (i >= currentVertex.scheduleItems.length) {
+                i = currentVertex.scheduleItems.length - 1;
+            }
             if (currentVertex.scheduleItems[i].previousScheduleItem !== null) {
                 previousVertexId = currentVertex.scheduleItems[i].previousScheduleItem.currentVertexId;
             }
@@ -390,8 +422,8 @@ export class RouteScheduler {
                 nextVertexId = currentVertex.scheduleItems[i].nextScheduleItem.currentVertexId;
             }
         }
-        i = i === -1 ? 0 : i;
-        ////////////////////////////
+        if (i === -1) i = 0;
+
         if (previousVertexId === destinationVertex.id && currentVertex.scheduleItems[i].previousScheduleItem !== null) {
             time = currentVertex.scheduleItems[i].previousScheduleItem.arrivalTimeCurrentVertex;
         } else if (nextVertexId === destinationVertex.id && currentVertex.scheduleItems[i].nextScheduleItem !== null) {
@@ -399,23 +431,8 @@ export class RouteScheduler {
         } else {
             time = 0;
         }
-        i = destinationVertex.getScheduleItemIndex(time);
-        time = 0;
-        ////////////////////////////
 
-        interval = 0;
-        maxWarp = this.computeMaxWarp(currentVertex, destinationVertex, currentTime);
-        while ((interval < this.timeIntervalMinimumSize || time <= maxWarp) && i < destinationVertex.scheduleItems.length) {
-            if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[i], maxWarp, currentTime)) {
-                return Infinity;
-            }
-            time = destinationVertex.scheduleItems[i].arrivalTimeCurrentVertex;
-            interval = i + 1 >= destinationVertex.scheduleItems.length ? Infinity
-                : destinationVertex.scheduleItems[i + 1].arrivalTimeCurrentVertex - time;
-            i++;
-        }
-
-        return destinationVertex.scheduleItems[i - 1].arrivalTimeCurrentVertex + (this.timeIntervalMinimumSize / 2);
+        return destinationVertex.getScheduleItemIndex(time);
     }
 
     /**
@@ -453,6 +470,7 @@ export class RouteScheduler {
                     adjacentVertex.previousVertex = currentVertex;
                     return endVertex.visitTime - orderTime;
                 } else if (!adjacentVertex.isVisited) {
+                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
                     adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
                     if (adjacentVertex.visitTime < Infinity) {
                         queue.insert(adjacentVertex);
@@ -532,6 +550,10 @@ export class RouteScheduler {
             for (let newOrderId of this.data.newOrders) {
                 this.insertOrderInPrioritiesAppropriatedly(newOrderId);
             }
+        } else {
+            this.data.newOrders.forEach((newOrder) => {
+                this.unfinishedOrderIds.push(newOrder);
+            });
         }
 
         this.data.newOrders = [];
@@ -554,5 +576,6 @@ export class RouteScheduler {
         }
 
         this.bestRouteSet.priorities.splice(indexForNewOrder, 0, orderId);
+        this.bestRouteSet.duration.splice(indexForNewOrder, 0, Infinity);
     }
 }
