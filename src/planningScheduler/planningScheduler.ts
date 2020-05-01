@@ -20,6 +20,7 @@ export class PlanningScheduler {
     data: DataContainer;
     /**  */
     routeScheduler: RouteScheduler;
+    updater: NodeJS.Immediate;
 
     /**
      * Constructor for object.
@@ -47,7 +48,7 @@ export class PlanningScheduler {
         this.routeScheduler = new RouteScheduler(this.data);
         this.server = new WebServerPlanningScheduler(this.data, hostname, port);
         this.server.run();
-        this.update();
+        this.data.on(DataContainer.events.addOrder, (order) => { this.update(); });
     }
 
 
@@ -77,8 +78,10 @@ export class PlanningScheduler {
 
         // Appends itself to the event loop, but it does not block other events
         let self = this;
-        setImmediate(function () {
+        let updater = setImmediate(() => {
+            if (updater !== this.updater) return;
             self.update();
         });
+        this.updater = updater;
     }
 }
