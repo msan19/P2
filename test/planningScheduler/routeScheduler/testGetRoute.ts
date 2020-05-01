@@ -30,10 +30,6 @@ function testGetRoute(): void {
         let secondForkliftId = "F2";
         let thirdForkliftId = "F3";
 
-        routeScheduler.bestRouteSet.assignedForklift[firstOrderId] = firstForkliftId;
-        routeScheduler.bestRouteSet.assignedForklift[secondOrderId] = secondForkliftId;
-        routeScheduler.bestRouteSet.assignedForklift[thirdOrderId] = thirdForkliftId;
-
         let vertexIdFirstRoute = [
             "N0-0", "N0-1", "N0-2", "N0-3", "N0-4",
             "N0-5", "N0-6", "N0-7", "N0-8", "N0-9",
