@@ -4,17 +4,15 @@
  * @category Shared
  */
 
-import { DataContainer } from "../planningScheduler/classes/dataContainer";
-
 /** An enum of posible types of {@link Order} */
-enum OrderTypes {
+export enum OrderTypes {
     movePallet = 1,
     moveForklift,
     charge
 }
 
 /** An enum of posible types of time specification */
-enum TimeType {
+export enum TimeType {
     start = 1,
     end
 }
@@ -67,11 +65,11 @@ export class Order {
     /**
      * Creates an {@link Order} containing the content of the parameter object obj
      * @param obj An object to be parsed
-     * @param data A DataContainer used to verify the existance of object speficied 
+     * @param _ An unused parameter required to extend the class 
      * by identification strings in obj
      * @returns A new {@link Order} if the content of the parameter object is legal or null otherwise
      */
-    static parse(obj: any, data: DataContainer): Order | null {
+    static parse(obj: any, _?: any): Order | null {
         // Check for types of necessary fields
         if (typeof (obj.id) !== "string") return null;
         if (typeof (obj.forkliftId) !== "string" && obj.forkliftId !== null) return null;
@@ -81,20 +79,6 @@ export class Order {
 
         // Valid id (cannot exist previously)
 
-        // Check for valid vertixIds (If either is invalid, return null)
-        let keysVertices: string[] = Object.keys(data.warehouse.graph.vertices);
-
-        if (!keysVertices.includes(obj.startVertexId) || !keysVertices.includes(obj.endVertexId)) return null;
-
-        // Check for valid forkliftId
-        if (obj.forkliftId !== null) {
-            let present: boolean = false;
-            let keysForklifts: string[] = Object.keys(data.forklifts);
-            for (let i = 0; i < keysForklifts.length; i++) {
-                if (obj.forkliftId === data.forklifts[keysForklifts[i]].id) present = true;
-            }
-            if (!present) return null;
-        }
         // Check for valid type
         if (typeof (Order.types[obj.type]) === "undefined") return null;
 
