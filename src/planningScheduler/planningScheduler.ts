@@ -81,6 +81,10 @@ export class PlanningScheduler {
         let self = this;
         let updater = setImmediate(() => {
             if (updater !== this.updater) return;
+            if (this.routeScheduler.unfinishedOrderIds.length === 0) {
+                console.log("No unlocked routes - Suspending");
+                return;
+            }
             self.update();
         });
         this.updater = updater;
