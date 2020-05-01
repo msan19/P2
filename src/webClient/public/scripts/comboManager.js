@@ -217,6 +217,7 @@ window.socketManager.on(PackageTypes.route, (route) => {
 // Event loop
 window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
+        //nForklifts.addTestDataToForklifts();
         nForklifts.handleForkliftMovement();
         updateSelectedForkliftInformationOnUI();
         mainGraph.updateForkliftsOnGraph();
