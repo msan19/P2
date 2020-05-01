@@ -36,16 +36,13 @@ export class Instruction {
     /** The id of the end Vertex */
     vertexId: string;
 
-    /** The id of the pallet that the instruction may involve*/
-    palletId: string;
-
     /** The starting time of the instruction */
     startTime: number;
 
-    constructor(type: InstructionType, vertexId: string, palletId: string, startTime: number) {
+    constructor(type: InstructionType, vertexId: string, startTime: number) {
         this.type = type;
         this.vertexId = vertexId;
-        this.palletId = palletId;
+
         this.startTime = startTime;
     }
 
@@ -58,15 +55,11 @@ export class Instruction {
 
         if (typeof (Instruction.types[instruction.type]) === "undefined") return null;
 
-        if (instruction.type === Instruction.types.loadPallet) {
-            if (typeof (instruction.palletId) !== "string" || instruction.palletId.length === 0) return null;
-        }
-
         if (typeof (instruction.vertexId) !== "string" || instruction.vertexId.length === 0) return null;
 
         // Implement checking of valid ids?
         if (typeof (instruction.startTime) !== "number") return null;
-        return new Instruction(instruction.type, instruction.vertexId, instruction.palletId, instruction.startTime);
+        return new Instruction(instruction.type, instruction.vertexId, instruction.startTime);
     }
 
     /** 
@@ -96,6 +89,10 @@ export class Route {
     /** An id for the route */
     routeId: string;
 
+    palletId: string;
+
+    forkliftId: string;
+
     /** An id for the order */
     orderId: string;
 
@@ -105,8 +102,9 @@ export class Route {
     /** An array of instructions */
     instructions: Instruction[];
 
-    constructor(routeId: string, orderId: string, status: RouteStatus, instructions: Instruction[]) {
+    constructor(routeId: string, palletId: string, forkliftId: string, orderId: string, status: RouteStatus, instructions: Instruction[]) {
         this.routeId = routeId;
+        this.forkliftId = forkliftId;
         this.orderId = orderId;
         this.status = status;
         this.instructions = instructions;
@@ -119,12 +117,14 @@ export class Route {
      */
     static parse(route: any): Route | null {
         if (typeof (route.routeId) !== "string") return null;
+        if (typeof (route.palletId) !== "string") return null;
+        if (typeof (route.forkliftId) !== "string") return null;
         if (typeof (route.orderId) !== "string") return null;
         // Implement checking of valid ids?
         if (typeof (route.status) !== "number") return null;
         if (typeof (Instruction.parseMultiple(route.instructions)) !== "object") return null;
 
-        return new Route(route.routeId, route.orderId, route.RouteStatus, route.instructions);
+        return new Route(route.routeId, route.palletId, route.forkliftId, route.orderId, route.RouteStatus, route.instructions);
     }
 
     /** 
