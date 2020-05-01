@@ -73,7 +73,7 @@ function testGetRoute(): void {
 
             let resultingRoute = routeScheduler.getRoute(firstOrderId);
 
-            let expectedRoute = createMovePalletRoute(routeScheduler, firstOrder, vertexIdFirstRoute, "RO1");
+            let expectedRoute = createMovePalletRoute(routeScheduler, firstOrder, vertexIdFirstRoute, "RO1", "F42");
 
             // console.log("Expected \n", expectedRoute);
             // console.log("Resulting \n", resultingRoute);
@@ -182,7 +182,7 @@ function linkScheduleItems(routeSet: RouteSet, verticeIdList: string[]): void {
 /**
  * Works when scheduleItems are one scheduleItem in each scheduleItem list (TO DO: make it universal)
  */
-function createMovePalletRoute(routeScheduler: RouteScheduler, order: Order, vertexId: string[], routeId: string): Route {
+function createMovePalletRoute(routeScheduler: RouteScheduler, order: Order, vertexId: string[], routeId: string, forkliftId: string): Route {
     let instructions: Instruction[] = [];
 
     let currentVertex = routeScheduler.bestRouteSet.graph.vertices[vertexId[0]];
@@ -196,7 +196,7 @@ function createMovePalletRoute(routeScheduler: RouteScheduler, order: Order, ver
         } else {
             instructionType = Instruction.types.move;
         }
-        let newInstruction = new Instruction(instructionType, vertexId[i], "P1", currentScheduleItem.arrivalTimeCurrentVertex);
+        let newInstruction = new Instruction(instructionType, vertexId[i], currentScheduleItem.arrivalTimeCurrentVertex);
         instructions.push(newInstruction);
         currentScheduleItem = currentScheduleItem.nextScheduleItem;
     }
@@ -204,9 +204,9 @@ function createMovePalletRoute(routeScheduler: RouteScheduler, order: Order, ver
     let lastVertexId = vertexId[vertexId.length - 1];
     let lastVertex = routeScheduler.bestRouteSet.graph.vertices[vertexId[vertexId.length - 1]];
     let lastScheduleItem = lastVertex.scheduleItems[0];
-    instructions.push(new Instruction(Instruction.types.sendFeedback, lastVertexId, order.palletId, lastScheduleItem.arrivalTimeCurrentVertex));
+    instructions.push(new Instruction(Instruction.types.sendFeedback, lastVertexId, lastScheduleItem.arrivalTimeCurrentVertex));
 
-    return new Route(routeId, order.id, 1, instructions);
+    return new Route(routeId, order.palletId, forkliftId, order.id, 1, instructions);
 }
 
 function printScheduleItem(routeSet: RouteSet, verticeIdList: string[]): void {

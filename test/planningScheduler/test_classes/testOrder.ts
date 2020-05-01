@@ -26,12 +26,18 @@ function checkOrder(result: Order | null, expected: Order | null): void {
     /* First checks whether the expected order is different from null,
        as trying to access fields of null creates errors */
     if (expected !== null) {
-        let keys: string[] = Object.keys(result);
-        let length: number = keys.length;
-        /* Goes through all fields (keys is a list of field-names) and checks their values */
-        for (let i = 0; i < length; i++) {
-            it(`${result[keys[i]]} should be ${expected[keys[i]]}`, () => {
-                expect(result[keys[i]]).to.equal(expected[keys[i]]);
+        if (result !== null) {
+            let keys: string[] = Object.keys(result);
+            let length: number = keys.length;
+            /* Goes through all fields (keys is a list of field-names) and checks their values */
+            for (let i = 0; i < length; i++) {
+                it(`${result[keys[i]]} should be ${expected[keys[i]]}`, () => {
+                    expect(result[keys[i]]).to.equal(expected[keys[i]]);
+                });
+            }
+        } else {
+            it(`Result should be ${expected}, but is null`, () => {
+                expect(result).to.equal(expected);
             });
         }
     } else {
@@ -61,6 +67,8 @@ function testParse(): void {
 
     describe(`Test of valid order`, () => {
         let order: Order = new Order("O4", Order.types.moveForklift, "F2", "P4", "N23", "N29");
+        order.timeType = 1;
+        order.time = 100;
         let result: Order | null = Order.parse(order, data);
         let expected: Order = order;
 
