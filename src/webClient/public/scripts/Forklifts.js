@@ -114,7 +114,7 @@ class Forklifts {
                 // set position to beginning of route if it doesn't have one
                 // REMOVE WHEN NOT NEEDED FOR TESTING
                 if (typeof (forkliftData[key].currentNode) == "undefined")
-                    forkliftData[key].currentNode = forkliftData[key].route.instructions[0].nodeId;
+                    forkliftData[key].currentNode = forkliftData[key].route.instructions[0];
                 this.calculateForkliftPositionUsingTime(forkliftData[key]);
             }
         }
