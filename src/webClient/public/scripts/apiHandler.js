@@ -90,7 +90,9 @@ addOrderForm.onsubmit = function () {
     for (let input of addOrderForm.querySelectorAll("input, select")) {
         if (input.name) {
             if (input.name == "time") {
-                data[input.name] = moment(input.value, "L LTS").unix()
+                let date = moment(input.value, "LLL");
+                if (date.isValid())
+                    data[input.name] = date.unix()
             } else
                 data[input.name] = input.value;
         }

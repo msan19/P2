@@ -139,7 +139,7 @@ initializeUI();
 function initializeUI() {
     // Set dateInput to correct format
     $('#sendOrderDateTimePicker').datetimepicker({
-        format: 'L LTS'
+        format: 'LLL'
     });
     // add blank forklift to select forklfit
     document.querySelector("#forklift-list").innerHTML = `<option value=${""}>${""}</option>`;
