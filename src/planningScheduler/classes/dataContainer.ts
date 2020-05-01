@@ -79,7 +79,7 @@ export class DataContainer extends events.EventEmitter {
      * Sets this.warehouse to warehouse.
      * Is used in {@link Handler.controllers.warehouse.POST}. 
      * 
-     * The warehouse is sent as a POST request from {@link bĺackBox/run} 
+     * The warehouse is sent as a POST request from {@link blackBox/run} 
      * to {@link PlanningScheduler.server}. 
      * In {@link PlanningScheduler.server.handler.controllers.warehouse.POST} 
      * the warehouse is parsed and passed as a parameter to this method.
