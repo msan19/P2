@@ -128,7 +128,7 @@ class Forklifts {
                         };
                     }
                 } else {
-                    this.calculateForkliftPositionUsingTime(forkliftData[key], null);
+                    this.calculateForkliftPositionUsingTime(forkliftData[key]);
                 }
 
             }
@@ -161,7 +161,7 @@ class Forklifts {
 
     }
 
-    calculateForkliftPositionUsingTime(forklift, tempDistance) {
+    calculateForkliftPositionUsingTime(forklift) {
         let targetNode = mainGraph.sigmaGraph.graph.nodes(forklift.route.instructions[0].nodeId);
         let currentNode = mainGraph.sigmaGraph.graph.nodes(forklift.currentNode.nodeId);
 
@@ -185,6 +185,8 @@ class Forklifts {
             if (instructions.length == 0 || typeof (instructions[0]) == "undefined") {
                 delete forklift.route.instructions;
                 delete forklift.route;
+            } else {
+                this.calculateForkliftPositionUsingTime(forklift);
             }
         } else {
             let distance = this.getDistanceBetweenPoints(
