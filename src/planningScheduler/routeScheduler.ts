@@ -205,8 +205,13 @@ export class RouteScheduler {
 
             if (currentRouteTime != Infinity) {
                 if (order.timeType === Order.timeTypes.start) {
-                    this.upStacking(routeSet.graph.vertices[order.endVertexId], order, forkliftId, null);
-                    // Recursively stacking up
+                    if (order.type === Order.types.movePallet) {
+                        this.upStacking(routeSet.graph.vertices[order.endVertexId], order.startVertexId, forkliftId, null);
+                        // Recursively stacking up
+                    } else {
+                        let startVertexId = routeSet.graph.idlePositions[order.forkliftId].currentVertexId;
+                        this.upStacking(routeSet.graph.vertices[order.endVertexId], startVertexId, forkliftId, null);
+                    }
                 }
                 routeSet.duration.push(currentRouteTime);
                 routeSet.graph.idlePositions[forkliftId] = routeSet.graph.vertices[order.endVertexId].getScheduleItem(order.time + currentRouteTime);
@@ -503,11 +508,11 @@ export class RouteScheduler {
      * @param forkliftId 
      * @param nextItem 
      */
-    upStacking(vertex: Vertex, order: Order, forkliftId: string, nextItem: ScheduleItem | null): void {
+    upStacking(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null): void {
         let i = vertex.insertScheduleItem(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
         if (nextItem !== null) nextItem.linkPrevious(vertex.scheduleItems[i]);
-        if (vertex.id !== order.startVertexId) {
-            this.upStacking(vertex.previousVertex, order, forkliftId, vertex.scheduleItems[i]);
+        if (vertex.id !== startVertexId) {
+            this.upStacking(vertex.previousVertex, startVertexId, forkliftId, vertex.scheduleItems[i]);
         }
     }
 

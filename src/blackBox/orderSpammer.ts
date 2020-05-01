@@ -51,13 +51,13 @@ export class OrderSpammer {
     createRandomOrder() {
         let order = new Order(
             `${this.ordersSentCount}`,
-            randomValue([Order.types.movePallet]),
+            randomValue([Order.types.moveForklift]),
             randomValue(this.forkliftIds),
             `pallet-${this.ordersSentCount}`,
             randomValue(this.warehouse.graph.vertices).id,
             randomValue(this.warehouse.graph.vertices).id
         );
-        order.time = (new Date()).getTime() + randomIntegerInRange(100000, 1000000);
+        order.time = (new Date()).getTime() + randomIntegerInRange(20000, 21000);
         order.timeType = Order.timeTypes.start;
         this.ordersSentCount++;
         return order;
