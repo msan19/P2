@@ -26,7 +26,7 @@
 
 }
 
-#selectedForkliftRoute {
+.selectedRouteInstructionList {
     max-height: 160px;
 }
 

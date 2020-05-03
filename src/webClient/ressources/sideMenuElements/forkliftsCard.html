@@ -20,6 +20,35 @@
 
                 </div>
             </form>
+            <!--IDs-->
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="selectedForkliftForkliftId">Forklift ID</label>
+                </div>
+                <div class="col-sm-4">
+                    <label for="selectedForkliftOrderId">Order ID</label>
+                </div>
+                <div class="col-sm-4">
+                    <label for="selectedForkliftRouteId">Route ID</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="card card-body bg-light forkliftId" id="selectedForkliftForkliftId">
+                        ...
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card card-body bg-light orderId" id="selectedForkliftOrderId">
+                        ...
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card card-body bg-light routeId" id="selectedForkliftRouteId">
+                        ...
+                    </div>
+                </div>
+            </div>
             <!-- Information about selected forklift -->
             <div class="container">
                 <!-- Information about state -->
@@ -52,14 +81,14 @@
                 </div>
                 <!-- Information about route -->
                 <label for="selectedForkliftRoute">Route</label>
-                <div class="list-group" id="selectedForkliftRoute" role="tablist"></div>
+                <div class="list-group selectedRouteInstructionList" id="selectedForkliftRoute" role="tablist"></div>
                 <!-- Information about selected node-->
                 <label for="selectedNodeStartTime">Start Time</label>
-                <div class="card card-body bg-light" id="selectedNodeStartTime">
+                <div class="card card-body bg-light selectedRouteInstructionStartTime id=" selectedNodeStartTime">
                     ...
                 </div>
                 <label for="selectedNodeEndTime">End Time</label>
-                <div class="card card-body bg-light" id="selectedNodeEndTime">
+                <div class="card card-body bg-light selectedRouteInstructionEndTime" id="selectedNodeEndTime">
                     ...
                 </div>
             </div>

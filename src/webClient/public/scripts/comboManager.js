@@ -9,97 +9,6 @@ var ForkliftStates;
 
 window.forkliftSpeed;
 
-// ROUTE IN SELECTED FORKLIFT ON UI
-function onSelectElementInRouteInSelectedForklift(nodeId, occurance) {
-    let counter = 0;
-    for (let key in forkliftData[nForklifts.selectedForklift].route.instructions) {
-        let instruciton = forkliftData[nForklifts.selectedForklift].route.instructions[key];
-        if (instruciton.nodeId == nodeId) {
-            if (counter == occurance) {
-                if (typeof (instruciton.startTime) != "undefined") {
-                    let selectedNodeStartTime = document.querySelector("#selectedNodeStartTime");
-                    selectedNodeStartTime.innerHTML = moment(instruciton.startTime).format('MMM Do HH:mm:ss');
-                } else if (typeof (instruciton.endTime) != "undefined") {
-                    let selectedNodeEndTime = document.querySelector("#selectedNodeEndTime");
-                    selectedNodeEndTime.innerHTML = new Date(instruciton.startTime).toLocaleTimeString("da-dk");
-                }
-                break;
-            } else
-                counter++;
-        }
-    }
-}
-
-function onDeselectElementInRouteInSelectedForklift() {
-    let selectedNodeStartTime = document.querySelector("#selectedNodeStartTime");
-    selectedNodeStartTime.innerHTML = "...";
-    let selectedNodeEndTime = document.querySelector("#selectedNodeEndTime");
-    selectedNodeEndTime.innerHTML = "...";
-}
-
-function getOccuranceForClickedElement(target, routeElements) {
-    let counter = 0;
-    for (let key in routeElements) {
-        if (routeElements[key].innerHTML == target.innerHTML) {
-            if (routeElements[key] == target)
-                return counter;
-            else
-                counter++;
-        }
-    }
-}
-
-function updateSelectedForkliftSelectedElementInRoute(e) {
-    let routeList = document.querySelector("#selectedForkliftRoute");
-    let routeElements = routeList.children;
-    for (let i = 0; i < routeElements.length; i++) {
-        if (routeElements[i].classList.contains("active")) {
-            routeElements[i].classList.remove("active");
-        }
-    }
-    e.target.classList.toggle("active");
-    onSelectElementInRouteInSelectedForklift(e.target.innerHTML, getOccuranceForClickedElement(e.target, routeElements));
-}
-
-function addElementToSelectedForkliftRoute(nodeId) {
-    let routeList = document.querySelector("#selectedForkliftRoute");
-    let newElement = document.createElement("button");
-    newElement.classList.add("list-group-item");
-    newElement.classList.add("list-group-item-action");
-    newElement.innerHTML = nodeId;
-    newElement.onclick = updateSelectedForkliftSelectedElementInRoute;
-    routeList.appendChild(newElement);
-}
-
-function initiateSelectedForkliftRouteOnUI(forklift) {
-    let routeList = document.querySelector("#selectedForkliftRoute");
-    routeList.innerHTML = "";
-    if (typeof (forklift.route) != "undefined") {
-        for (let key in forklift.route.instructions) {
-            addElementToSelectedForkliftRoute(forklift.route.instructions[key].nodeId);
-        }
-    }
-}
-
-function removeElementFromSelectedForkliftRoute(nodeId) {
-    let routeList = document.querySelector("#selectedForkliftRoute");
-    let routeElements = routeList.children;
-    for (let i = 0; i < routeElements.length; i++) {
-        if (routeElements[i].innerHTML == nodeId) {
-            if (routeElements[i].classList.contains("active"))
-                onDeselectElementInRouteInSelectedForklift();
-            routeList.removeChild(routeElements[i]);
-            break;
-        }
-    }
-}
-
-function removeSelectedForkliftRouteOnUI() {
-    let routeList = document.querySelector("#selectedForkliftRoute");
-    routeList.innerHTML = "";
-}
-// END ---  ROUTE IN SELECTED FORKLIFT ON UI --- END
-
 function updateSelectedForkliftInformationOnUI() {
     if (typeof (nForklifts.selectedForklift) == "string" && nForklifts.selectedForklift.length > 0) {
         let forklift = forkliftData[nForklifts.selectedForklift];
@@ -122,7 +31,6 @@ function updateSelectedForkliftInformationOnUI() {
         yPos.innerHTML = "...";
         let state = document.querySelector("#selectedForkliftState");
         state.innerHTML = "...";
-        removeSelectedForkliftRouteOnUI();
     }
 
 }
@@ -142,6 +50,9 @@ function initializeUI() {
         format: 'LLL'
     });
     // add blank forklift to select forklfit
+    let routeList = document.querySelector("#route-list");
+    routeList.innerHTML = `<option value=${""}>${""}</option>`;
+    routeList.onclick = (e) => Route.chooseRoute(e.target.innerHTML);
     document.querySelector("#forklift-list").innerHTML = `<option value=${""}>${""}</option>`;
 }
 
@@ -181,36 +92,15 @@ window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
     onReceiveForklift(forklift);
 });
 // END --- FORKLIFTS --- END
-
 // ROUTE
-function parseRoute(route) {
-    let newRoute = {};
-    newRoute.id = route.forkliftId;
-    let instructions = [];
-    for (let key in route.instructions) {
-        instructions.push({
-            nodeId: route.instructions[key].vertexId,
-            startTime: route.instructions[key].startTime
-        });
-    }
-    newRoute.instructions = instructions;
-    return newRoute;
-}
-
-function onReceiveRoute(route) {
-    let parsedRoute = parseRoute(route);
-    if (typeof (forkliftData[parsedRoute.id]) != "undefined")
-        forkliftData[parsedRoute.id].route = parsedRoute;
-}
-
 window.socketManager.on(PackageTypes.routes, (routes) => {
     for (let key in routes) {
-        onReceiveRoute(routes[key]);
+        Route.onReceiveRoute(routes[key]);
     }
 });
 
 window.socketManager.on(PackageTypes.route, (route) => {
-    onReceiveRoute(route);
+    Route.onReceiveRoute(route);
 });
 // END --- ROUTE --- END
 
@@ -218,7 +108,7 @@ window.socketManager.on(PackageTypes.route, (route) => {
 window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
         //nForklifts.addTestDataToForklifts();
-        nForklifts.handleForkliftMovement();
+        //nForklifts.handleForkliftMovement();
         updateSelectedForkliftInformationOnUI();
         mainGraph.updateForkliftsOnGraph();
         mainGraph.sigmaGraph.refresh();

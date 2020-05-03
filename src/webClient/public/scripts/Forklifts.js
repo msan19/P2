@@ -168,10 +168,10 @@ class Forklifts {
                 y: targetNode.y
             };
             if (instructions.length == 0 || typeof (instructions[0]) == "undefined") {
-                delete forklift.route.instructions;
-                delete forklift.route;
+                forklift.route.onFinishRoute();
             } else {
                 this.calculateForkliftPositionUsingTime(forklift);
+                delete forklift.route;
             }
         } else {
             let distance = this.getDistanceBetweenPoints(

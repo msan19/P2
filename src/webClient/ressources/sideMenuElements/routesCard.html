@@ -9,6 +9,55 @@
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
         <div class="card-body" id="routes">
+            <form>
+                <div class="form-group" id="forklift-form">
+                    <label for="routeId">Route ID</label>
+                    <select name="routeId" class="form-control select-route" id="route-list"></select>
+                </div>
+            </form>
+            <!--IDs-->
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="selectedRouteForkliftId">Forklift ID</label>
+                </div>
+                <div class="col-sm-4">
+                    <label for="selectedRouteOrderId">Order ID</label>
+                </div>
+                <div class="col-sm-4">
+                    <label for="selectedRouteRouteId">Route ID</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="card card-body bg-light forkliftId" id="selectedRouteForkliftId">
+                        ...
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card card-body bg-light orderId" id="selectedRouteOrderId">
+                        ...
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card card-body bg-light routeId" id="selectedRouteRouteId">
+                        ...
+                    </div>
+                </div>
+            </div>
+            <!-- Information about route -->
+            <label for="selectedRoute">Route</label>
+            <div class="list-group selectedRouteInstructionList" id="selectedRoute" role="tablist"></div>
+            <!-- Information about selected node-->
+            <label for="selectedRouteSelectedNodeStartTime">Start Time</label>
+            <div class="card card-body bg-light selectedRouteInstructionStartTime"
+                id="selectedRouteSelectedNodeStartTime">
+                ...
+            </div>
+            <label for="selectedRouteSelectedNodeEndTime">End Time</label>
+            <div class="card card-body bg-light selectedRouteInstructionEndTime" id="selectedRouteSelectedNodeEndTime">
+                ...
+            </div>
+
         </div>
     </div>
 </div>

@@ -174,7 +174,8 @@ class Graph {
             // Ui related
             updateSelectedForkliftInformationOnUI();
             updateForkliftFocus(id);
-            initiateSelectedForkliftRouteOnUI(forkliftData[nForklifts.selectedForklift]);
+            forkliftData[id].route.selectRoute()
+            //initiateSelectedForkliftRouteOnUI(forkliftData[nForklifts.selectedForklift]);
 
             if (typeof (forkliftData[nForklifts.selectedForklift]["route"]) != "undefined" && typeof (forkliftData[nForklifts.selectedForklift]["route"]["instructions"]) != "undefined") {
                 let path = this.intepretInstructions(forkliftData[nForklifts.selectedForklift]["route"]["instructions"]);
