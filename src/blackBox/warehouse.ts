@@ -11,12 +11,7 @@ import { Vector2 } from "../shared/vector2";
  * Creates a graph object
  */
 export function createGraph() {
-    let vertices = createVertices(10, 10);
-    // vertices["n2-4"].id = null;   
-    let graph = new Graph(vertices);
-    let edges = graph.getEdges();
-
-    return graph;
+    return new Graph(createVertices(10, 10));
 }
 
 /**
