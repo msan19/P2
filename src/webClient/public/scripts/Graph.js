@@ -44,7 +44,7 @@ class Graph {
 
     // EVENT SECTION
     bindEvents() {
-        this.sigmaGraph.bind('doubleClickStage', function (element) {
+        this.sigmaGraph.bind('doubleClickStage', function () {
             mainGraph.onStageClick();
         });
         this.sigmaGraph.bind('clickNode', function (element) {
@@ -174,7 +174,7 @@ class Graph {
             // Ui related
             updateSelectedForkliftInformationOnUI();
             updateForkliftFocus(id);
-            forkliftData[id].route.selectRoute()
+            forkliftData[id].route.selectRoute();
             //initiateSelectedForkliftRouteOnUI(forkliftData[nForklifts.selectedForklift]);
 
             if (typeof (forkliftData[nForklifts.selectedForklift]["route"]) != "undefined" && typeof (forkliftData[nForklifts.selectedForklift]["route"]["instructions"]) != "undefined") {
