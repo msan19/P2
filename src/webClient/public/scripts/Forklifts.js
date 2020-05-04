@@ -203,6 +203,11 @@ class Forklifts {
                 x: targetNode.x + distanceTravelled * directionVector.x,
                 y: targetNode.y + distanceTravelled * directionVector.y
             };
+        } else {
+            forklift.position = {
+                x: currentNode.x,
+                y: currentNode.y
+            };
         }
     }
 }
