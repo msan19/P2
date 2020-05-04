@@ -44,7 +44,7 @@ class Graph {
 
     // EVENT SECTION
     bindEvents() {
-        this.sigmaGraph.bind('doubleClickStage', function (element) {
+        this.sigmaGraph.bind('doubleClickStage', function () {
             mainGraph.onStageClick();
         });
         this.sigmaGraph.bind('clickNode', function (element) {
@@ -53,13 +53,13 @@ class Graph {
     }
 
     onStageClick() {
-        //this.selectForklift("");
+        UiManager.chooseForklift("");
     }
 
     onNodeClick(element) {
-        /*if (element.data.node.id[0] == "F") {
-            this.selectForklift(element.data.node.id);
-        }*/
+        if (element.data.node.id[0] == "F") {
+            UiManager.chooseForklift(element.data.node.id);
+        }
     }
 
     // END -- EVENT SECTION -- END
@@ -227,7 +227,9 @@ class Graph {
     }
 
     displaySelectedForkliftPath() {
-        this.displayPath(this.intepretInstructions(forkliftData[nForklifts.selectedForklift].route.instructions));
+        let route = forkliftData[nForklifts.selectedForklift].route;
+        if (Route.checkIfValidRoute(route))
+            this.displayPath(this.intepretInstructions(route.instructions));
     }
 
     displayPath(path) {

@@ -18,6 +18,8 @@ class Route {
     }
 
     static checkIfValidRoute(route) {
+        if (typeof (route) == "undefined")
+            return false;
         if (typeof (route.forkliftId) == "undefined" ||
             typeof (forkliftData[route.forkliftId]) == "undefined")
             return false;
