@@ -126,6 +126,8 @@ export class Graph {
  * A {@link Vertex} which in compination with the vertices adjecent to it make up a {@link Graph}
  */
 export class Vertex {
+    jsonPublicKeys = ["id", "position", "label", "adjacentVertexIds"];
+
     /** A {@link Vertex} identification string */
     id: string;
 

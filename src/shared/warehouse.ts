@@ -14,6 +14,12 @@ export class Warehouse {
     /** The general speed of forklifts in the warehouse in m/s */
     maxForkliftSpeed: number;
 
+
+    jsonPublicKeys = [
+        "graph",
+        "maxForkliftSpeed"
+    ];
+
     constructor(graph: Graph, forkliftSpeed: number) {
         this.graph = graph;
         this.maxForkliftSpeed = forkliftSpeed;

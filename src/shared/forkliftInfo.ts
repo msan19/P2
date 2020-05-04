@@ -15,6 +15,8 @@ export enum ForkliftStates {
 
 export class ForkliftInfo {
     static states = ForkliftStates;
+    jsonPublicKeys = ["id", "batteryStatus", "position", "state", "palletId"];
+
     id: string;
     batteryStatus: number;
     position: Vector2;
