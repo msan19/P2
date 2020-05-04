@@ -5,7 +5,8 @@
  */
 
 import { DataContainer } from "./classes/dataContainer";
-import { Route, RouteSet, Instruction } from "../shared/route";
+import { Route, Instruction } from "../shared/route";
+import { RouteSet } from "./classes/routeSet";
 import { Order } from "./classes/order";
 import { Vertex, ScheduleItem } from "../shared/graph";
 import { MinPriorityQueue } from "./classes/minPriorityQueue";
