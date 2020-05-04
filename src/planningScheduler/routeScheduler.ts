@@ -115,8 +115,12 @@ export class RouteScheduler {
     }
 
     /**
-     * @param order 
-     * @param graph 
+     * Creates an array of instructions recursively by pushing an instruction-object to 
+     * the array of instructions passed in as first parameter 
+     * @param instructions Is outputparameter. Initially an empty array and after termination an array of instruction objects
+     * @param order Is a specific order which is retrieved from the array of orders in the following way: this.data.orders[orderId]
+     * @param scheduleItem Initially the last scheduleItem in the route, then scheduleItems predecessors are followed recursively until 
+     *                     first schedulteItem in route is reached 
      */
     private createMovePalletInstructions(instructions: Instruction[], order: Order, scheduleItem: ScheduleItem | null): void {
         let instructionType;
