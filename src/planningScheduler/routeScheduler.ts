@@ -122,7 +122,7 @@ export class RouteScheduler {
      * @param scheduleItem Initially the last scheduleItem in the route, then scheduleItems predecessors are followed recursively until 
      *                     first schedulteItem in route is reached 
      */
-    private createMovePalletInstructions(instructions: Instruction[], order: Order, scheduleItem: ScheduleItem | null): void {
+    private createMovePalletInstructions(instructions: Instruction[], order: Order, scheduleItem: ScheduleItem): void {
         let instructionType;
         if (scheduleItem.previousScheduleItem !== null) {
             this.createMovePalletInstructions(instructions, order, scheduleItem.previousScheduleItem);
@@ -143,9 +143,13 @@ export class RouteScheduler {
      * - moveForklift
      * - charge
      * 
-     * @param instructions Is output parameter. The list of instruction objects
-     * @param order Is an order
-     * @param scheduleItem Is the scheduleItem right before the last scheduleItem
+     * Follows same procedure as {@link createMovePalletInstructions}: Creates an array of instructions recursively by pushing an instruction-object to
+     * the array of instructions passed in as first parameter
+     * 
+     * @param instructions Is outputparameter. Initially an empty array and after termination an array of all instruction objects except the last instruction object  
+     * @param order Is a specific order which is retrieved from the array of orders in the following way: this.data.orders[orderId]
+     * @param scheduleItem Initially the next last scheduleItem in the route, then scheduleItems predecessors are followed recursively until
+     *                     first schedulteItem in route is reached
      */
     private createMoveInstructions(instructions: Instruction[], order: Order, scheduleItem: ScheduleItem | null): void {
         let instructionType;
