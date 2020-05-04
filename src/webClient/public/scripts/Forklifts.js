@@ -1,15 +1,13 @@
 class Forklifts {
     selectedForklift = "";
 
-    selectForklift(forkliftId) {
-        this.selectedForklift = forkliftId;
-    }
-
-    checkIfThereIsASelectedForklift() {
-        if (typeof (nForklifts.selectedForklift) == "string" && nForklifts.selectedForklift.length > 0)
-            return true;
-        else
-            return false;
+    onReceiveForklift(forklift) {
+        if (typeof (forklift.id) != "undefined") {
+            if (typeof (forkliftData[forklift.id]) == "undefined")
+                this.addForklift(forklift);
+            else
+                this.updateForklift(forklift);
+        }
     }
 
     addForklift(forklift) {
@@ -55,6 +53,17 @@ class Forklifts {
             };
         }
         return forklift;
+    }
+
+    selectForklift(forkliftId) {
+        this.selectedForklift = forkliftId;
+    }
+
+    checkIfThereIsASelectedForklift() {
+        if (typeof (nForklifts.selectedForklift) == "string" && nForklifts.selectedForklift.length > 0)
+            return true;
+        else
+            return false;
     }
 
     static getIfForkliftHasPosition(forklift) {

@@ -31,23 +31,14 @@ window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
 // END --- WAREHOUSE --- END
 
 // FORKLIFT
-function onReceiveForklift(forklift) {
-    if (typeof (forklift.id) != "undefined") {
-        if (typeof (forkliftData[forklift.id]) == "undefined")
-            nForklifts.addForklift(forklift);
-        else
-            nForklifts.updateForklift(forklift);
-    }
-}
-
 window.socketManager.on(PackageTypes.forkliftInfos, (forklifts) => {
     for (let key in forklifts) {
-        onReceiveForklift(forklifts[key]);
+        nForklifts.onReceiveForklift(forklifts[key]);
     }
 });
 
 window.socketManager.on(PackageTypes.forkliftInfo, (forklift) => {
-    onReceiveForklift(forklift);
+    nForklifts.onReceiveForklift(forklift);
 });
 // END --- FORKLIFTS --- END
 // ROUTE
