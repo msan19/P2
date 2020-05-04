@@ -50,6 +50,7 @@ class Route {
     }
 
     static onReceiveRoute(route) {
+        console.log(route)
         let parsedRoute = Route.parseIncomingData(route);
         if (!this.checkIfValidRoute(parsedRoute))
             return;
@@ -69,6 +70,19 @@ class Route {
 
     onFinishRoute() {
         this.removeRouteFromUi();
+    }
+
+    onInstructionDone() {
+        if (this.forkliftId == nForklifts.selectedForklift) {
+            document.querySelectorAll(".selectedRouteInstructionList").forEach((e) => {
+                let children = e.children;
+                for (let i = 0; i < children.length; i++)
+                    if (children[i].innerHTML == this.instructions[0].nodeId)
+                        e.removeChild(children[i])
+            });
+        }
+
+        this.instructions.splice(0, 1);
     }
 
     // UI

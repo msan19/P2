@@ -161,16 +161,18 @@ class Forklifts {
         let targetNode = mainGraph.sigmaGraph.graph.nodes(forklift.route.instructions[0].nodeId);
         let currentNode = mainGraph.sigmaGraph.graph.nodes(forklift.currentNode.nodeId);
 
+        if (forklift.route.instructions[0].nodeId == forklift.currentNode.nodeId)
+            forklift.route.onInstructionDone();
+
         let remainingTime = forklift.route.instructions[0].startTime - new Date().getTime();
 
         if (remainingTime <= 0) {
             let instructions = forklift.route.instructions;
             forklift.currentNode = instructions[0];
-            instructions.splice(0, 1);
+            forklift.route.onInstructionDone();
             // update displayed path if the it is the current forklift
             if (this.selectedForklift == forklift.id) {
                 mainGraph.displaySelectedForkliftPath();
-                removeElementFromSelectedForkliftRoute(forklift.currentNode.nodeId);
             }
             // if forklift has reached last node, set position to last node
             // this just makes it easier to calculate, can be made better i suspect
