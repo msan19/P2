@@ -161,9 +161,6 @@ class Forklifts {
         let targetNode = mainGraph.sigmaGraph.graph.nodes(forklift.route.instructions[0].nodeId);
         let currentNode = mainGraph.sigmaGraph.graph.nodes(forklift.currentNode.nodeId);
 
-        if (forklift.route.instructions[0].nodeId == forklift.currentNode.nodeId)
-            forklift.route.onInstructionDone();
-
         let remainingTime = forklift.route.instructions[0].startTime - new Date().getTime();
 
         if (remainingTime <= 0) {
@@ -184,9 +181,8 @@ class Forklifts {
                 forklift.route.onFinishRoute();
             } else {
                 this.calculateForkliftPositionUsingTime(forklift);
-                delete forklift.route;
             }
-        } else {
+        } else if (currentNode != targetNode) {
             let distance = this.getDistanceBetweenPoints(
                 targetNode.x,
                 targetNode.y,

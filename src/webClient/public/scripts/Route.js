@@ -50,17 +50,22 @@ class Route {
     }
 
     static onReceiveRoute(route) {
-        console.log(route)
         let parsedRoute = Route.parseIncomingData(route);
         if (!this.checkIfValidRoute(parsedRoute))
             return;
         let newRoute = new Route(parsedRoute);
+
+
         newRoute.addRouteToUi();
-        if (typeof (forkliftData[newRoute.forkliftId].route) == "undefined")
+        if (typeof (forkliftData[newRoute.forkliftId].route) == "undefined") {
             forkliftData[newRoute.forkliftId].route = newRoute;
-        else {
+            if (typeof (forkliftData[newRoute.forkliftId].currentNode) == "undefined")
+                forkliftData[newRoute.forkliftId].currentNode = newRoute.instructions[0];
+        } else {
             forkliftData[newRoute.forkliftId].route.onChangeRoute();
             forkliftData[newRoute.forkliftId].route = newRoute;
+            if (typeof (forkliftData[newRoute.forkliftId].currentNode) == "undefined")
+                forkliftData[newRoute.forkliftId].currentNode = newRoute.instructions[0];
         }
     }
 
@@ -146,6 +151,7 @@ class Route {
             if (typeof (activeRoutesOnList[key]) != "undefined") {
                 if (activeRoutesOnList[key].innerHTML == this.routeId) {
                     document.querySelector('.select-route').removeChild(activeRoutesOnList[key])
+                    break;
                 }
             }
         }
