@@ -92,6 +92,10 @@ export class RouteScheduler {
         return new Route(routeId, order.palletId, forkliftId, orderId, routeStatus, instructions);
     }
 
+    /**
+     * Creates an array of instruction objects
+     * @param order Is a specific order which is retrieved from the array of orders in the following way: this.data.orders[orderId]
+     */
     private createInstructions(order: Order): Instruction[] {
         let instructions: Instruction[] = [];
 
