@@ -60,18 +60,21 @@ export class PlanningScheduler {
             let timeOffset = 10000;
 
             for (let orderId in this.data.orders) {
-                if (this.routeScheduler.bestRouteSet !== null) {
-                    let indexOfOrderId = this.routeScheduler.bestRouteSet.priorities.indexOf(orderId);
-                    if (indexOfOrderId !== -1 && this.routeScheduler.bestRouteSet.duration[indexOfOrderId] < Infinity) {
-                        let timeItTakes = this.routeScheduler.getStartTime(orderId);
-                        if (this.routeScheduler.getStartTime(orderId) < currentTime + timeOffset) {
-                            this.data.lockRoute(this.routeScheduler.getRoute(orderId));
+                if (this.routeScheduler.unfinishedOrderIds.indexOf(orderId) !== -1) {
+                    if (this.routeScheduler.bestRouteSet !== null) {
+                        let indexOfOrderId = this.routeScheduler.bestRouteSet.priorities.indexOf(orderId);
+                        if (indexOfOrderId !== -1 && this.routeScheduler.bestRouteSet.duration[indexOfOrderId] < Infinity) {
+                            let timeItTakes = this.routeScheduler.getStartTime(orderId);
+                            if (this.routeScheduler.getStartTime(orderId) < currentTime + timeOffset) {
+                                this.data.lockRoute(this.routeScheduler.getRoute(orderId));
+                            }
                         }
+                    } else if (this.data.orders[orderId].time < currentTime + timeOffset) {
+                        // Throw error: order could not be planned in time
                     }
-                } else if (this.data.orders[orderId].time < currentTime + timeOffset) {
-                    // Throw error: order could not be planned in time
+                } else {
+                    // Handle forklift feedback for orders. If positive, remove
                 }
-
             }
 
             // Update routeScheduler

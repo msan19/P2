@@ -103,7 +103,9 @@ export class RouteScheduler {
             this.createMovePalletInstructions(instructions, order, lastScheduleItem);
         } else if (order.type === Order.types.moveForklift || order.type === Order.types.charge) {
             let nextLastScheduleitem = lastScheduleItem.previousScheduleItem;
-            this.createMoveInstructions(instructions, order, nextLastScheduleitem);
+            if (nextLastScheduleitem !== null) {
+                this.createMoveInstructions(instructions, order, nextLastScheduleitem);
+            }
             if (order.type === Order.types.charge) {
                 instructions.push(new Instruction(Instruction.types.charge, endVertex.id, order.time + duration));
             }
@@ -143,10 +145,10 @@ export class RouteScheduler {
      * @param order Is an order
      * @param scheduleItem Is the scheduleItem right before the last scheduleItem
      */
-    private createMoveInstructions(instructions: Instruction[], order: Order, scheduleItem: ScheduleItem | null): void {
+    private createMoveInstructions(instructions: Instruction[], order: Order, scheduleItem: ScheduleItem): void {
         let instructionType;
         if (scheduleItem.previousScheduleItem !== null) {
-            this.createMovePalletInstructions(instructions, order, scheduleItem.previousScheduleItem);
+            this.createMoveInstructions(instructions, order, scheduleItem.previousScheduleItem);
         }
         instructionType = Instruction.types.move;
         let newInstruction = new Instruction(instructionType, scheduleItem.currentVertexId, scheduleItem.arrivalTimeCurrentVertex);
@@ -327,7 +329,7 @@ export class RouteScheduler {
             priorities = [...this.bestRouteSet.priorities];
 
             // Handle mutationCounter greater than number of mutations
-            if (this.mutationCounter >= this.mutations.length) {
+            if (this.mutationCounter >= this.mutations.length && priorities.length > 0) {
                 let ranIndex = randomIntegerInRange(0, priorities.length - 1);
                 let ranNewIndex = randomIntegerInRange(0, priorities.length - 1);
                 let priority = priorities.splice(ranIndex, 1)[0];
@@ -566,10 +568,12 @@ export class RouteScheduler {
         this.data.newOrders = [];
 
         // Generate a new RouteSet
-        let priorities = this.generatePriorities();
-        let routeSet = new RouteSet(priorities, this.data.warehouse.graph.clone());
-        if (Object.keys(this.data.orders).length > 0 && this.calculateRoutes(this.data, routeSet) === true) {
-            this.setBestRouteSet(routeSet);
+        if (this.bestRouteSet === null || this.bestRouteSet.priorities.length > 0) {
+            let priorities = this.generatePriorities();
+            let routeSet = new RouteSet(priorities, this.data.warehouse.graph.clone());
+            if (Object.keys(this.data.orders).length > 0 && this.calculateRoutes(this.data, routeSet)) {
+                this.setBestRouteSet(routeSet);
+            }
         }
 
     }
