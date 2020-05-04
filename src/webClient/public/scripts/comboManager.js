@@ -9,52 +9,10 @@ var ForkliftStates;
 
 window.forkliftSpeed;
 
-function updateSelectedForkliftInformationOnUI() {
-    if (typeof (nForklifts.selectedForklift) == "string" && nForklifts.selectedForklift.length > 0) {
-        let forklift = forkliftData[nForklifts.selectedForklift];
-        if (typeof (forklift.position) != "undefined" &&
-            typeof (forklift.position.x) != "undefined" &&
-            typeof (forklift.position.y) != "undefined") {
-            let xPos = document.querySelector("#selectedForkliftXPosition");
-            let yPos = document.querySelector("#selectedForkliftYPosition");
-            xPos.innerHTML = (forklift.position.x).toFixed(2);
-            yPos.innerHTML = (forklift.position.y).toFixed(2);
-        }
-        if (typeof (forkliftData[nForklifts.selectedForklift].state) != "undefined") {
-            let state = document.querySelector("#selectedForkliftState");
-            state.innerHTML = forklift.state;
-        }
-    } else {
-        let xPos = document.querySelector("#selectedForkliftXPosition");
-        let yPos = document.querySelector("#selectedForkliftYPosition");
-        xPos.innerHTML = "...";
-        yPos.innerHTML = "...";
-        let state = document.querySelector("#selectedForkliftState");
-        state.innerHTML = "...";
-    }
-
-}
-
-function updateForkliftFocus(forklift) {
-    nForklifts.selectedForklift = forklift;
-    document.querySelector("#currentForklift").innerHTML = `<h3>${forklift}</h3>`;
-    document.querySelector("#forklift-list").value = forklift;
-}
+new UiManager();
 
 
-initializeUI();
-//Initialize UI
-function initializeUI() {
-    // Set dateInput to correct format
-    $('#sendOrderDateTimePicker').datetimepicker({
-        format: 'LLL'
-    });
-    // add blank forklift to select forklfit
-    let routeList = document.querySelector("#route-list");
-    routeList.innerHTML = `<option value=${""}>${""}</option>`;
-    routeList.onclick = (e) => Route.chooseRoute(e.target.innerHTML);
-    document.querySelector("#forklift-list").innerHTML = `<option value=${""}>${""}</option>`;
-}
+
 
 // WAREHOUSE
 window.socketManager.on(PackageTypes.warehouse, (warehouse) => {
@@ -109,7 +67,7 @@ window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
         //nForklifts.addTestDataToForklifts();
         //nForklifts.handleForkliftMovement();
-        updateSelectedForkliftInformationOnUI();
+        //updateSelectedForkliftInformationOnUI();
         mainGraph.updateForkliftsOnGraph();
         mainGraph.sigmaGraph.refresh();
     }

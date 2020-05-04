@@ -53,22 +53,13 @@ class Graph {
     }
 
     onStageClick() {
-        /*
-        nForklifts.selectedForklift = "";
-        this.revertColorsToOriginal();
-        this.sigmaGraph.refresh();
-
-        // Ui related
-        removeSelectedForkliftRouteOnUI();
-        updateForkliftFocus(nForklifts.selectedForklift);
-        */
-        this.selectForklift("");
+        //this.selectForklift("");
     }
 
     onNodeClick(element) {
-        if (element.data.node.id[0] == "F") {
+        /*if (element.data.node.id[0] == "F") {
             this.selectForklift(element.data.node.id);
-        }
+        }*/
     }
 
     // END -- EVENT SECTION -- END
@@ -171,9 +162,10 @@ class Graph {
     // FORKLIFT
     selectForklift(id) {
         if (typeof (id) != "undefined" && id.length > 0) {
+            /*
             // Ui related
+            nForklifts.selectedForklift = id;
             updateSelectedForkliftInformationOnUI();
-            updateForkliftFocus(id);
             forkliftData[id].route.selectRoute()
             //initiateSelectedForkliftRouteOnUI(forkliftData[nForklifts.selectedForklift]);
 
@@ -181,18 +173,17 @@ class Graph {
                 let path = this.intepretInstructions(forkliftData[nForklifts.selectedForklift]["route"]["instructions"]);
                 this.displayPath(path);
             }
-
+            */
         } else if (id === "") {
+            /*
             // Ui related
-            Route.resetRouteInformationOnUi();
-            updateForkliftFocus("");
-
+            UiManager.resetRouteInformationOnUi();
+            nForklifts.selectedForklift = "";
             this.revertColorsToOriginal();
             this.sigmaGraph.refresh();
 
-
+*/
         }
-
     }
 
     addForkliftToGraph(forklift) {

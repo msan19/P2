@@ -70,83 +70,12 @@ class Route {
     }
 
     // UI
-
-    static updateSelectedInstructionInformationOnUi(nodeId, occurance) {
-        let counter = 0;
-        let forkliftId = document.querySelector(".forkliftId").innerHTML;
-        for (let key in forkliftData[forkliftId].route.instructions) {
-            let instruction = forkliftData[forkliftId].route.instructions[key];
-            if (instruction.nodeId == nodeId) {
-                if (counter == occurance) {
-                    if (typeof (instruction.startTime) != "undefined") {
-                        document.querySelectorAll(".selectedRouteInstructionStartTime").forEach((e) => {
-                            e.innerHTML = moment(instruction.startTime).format('LLL');
-                        })
-                    } else if (typeof (instruction.endTime) != "undefined") {
-                        document.querySelectorAll(".selectedRouteInstructionEndTime").forEach((e) => {
-                            e.innerHTML = moment(instruction.startTime).format('LLL');
-                        })
-                    }
-                    break;
-                } else
-                    counter++;
-            }
-        }
-    }
-
-    // In case of the same node being on the list more than once
-    // This gets which of the times it is
-    static getOccuranceOfElementInInstructionList(target, instructions) {
-        let counter = 0;
-        for (let key in instructions) {
-            if (instructions[key].innerHTML == target.innerHTML) {
-                if (instructions[key] == target)
-                    return counter;
-                else
-                    counter++;
-            }
-        }
-    }
-
-    static selectInstruction(targetedNode) {
-        let instructionNodeId = targetedNode.target.innerHTML;
-        let occurance;
-        document.querySelectorAll(".selectedRouteInstructionList").forEach((e) => {
-            if (targetedNode.target.parentNode == e)
-                occurance = Route.getOccuranceOfElementInInstructionList(
-                    targetedNode.target,
-                    e.children
-
-                );
-
-        })
-
-        document.querySelectorAll(".selectedRouteInstructionList").forEach((e) => {
-            let instructions = e.children;
-            let counter = 0;
-            for (let i = 0; i < instructions.length; i++) {
-                if (instructions[i].innerHTML == targetedNode.target.innerHTML) {
-                    if (counter == occurance) {
-                        instructions[i].classList.add("active");
-                    } else {
-                        if (instructions[i].classList.contains("active"))
-                            instructions[i].classList.remove("active");
-                        counter++;
-                    }
-                } else if (instructions[i].classList.contains("active")) {
-                    instructions[i].classList.remove("active");
-                }
-            }
-        });
-        Route.updateSelectedInstructionInformationOnUi(instructionNodeId, occurance);
-    }
-
     createElementForInstrutionList(nodeId) {
         let newElement = document.createElement("button");
         newElement.classList.add("list-group-item");
         newElement.classList.add("list-group-item-action");
         newElement.innerHTML = nodeId;
-        newElement.onclick = Route.selectInstruction;
+        newElement.onclick = UiManager.selectInstruction;
         return newElement;
     }
 
@@ -157,23 +86,10 @@ class Route {
         })
     }
 
-    static clearInstrutionsOnUi() {
-        document.querySelectorAll(".selectedRouteInstructionList").forEach((e) => {
-            e.innerHTML = "";
-        })
-        document.querySelectorAll(".selectedRouteInstructionStartTime").forEach((e) => {
-            e.innerHTML = "";
-        })
-        document.querySelectorAll(".selectedRouteInstructionEndTime").forEach((e) => {
-            e.innerHTML = "";
-        })
-
-    }
-
     selectRoute() {
         if (typeof (this.forkliftId) != "undefined") {
             // Move this to seperate function in forklifts
-            updateForkliftFocus(this.forkliftId);
+            //updateForkliftFocus(this.forkliftId);
             document.querySelectorAll(".forkliftId").forEach((e) => {
                 e.innerHTML = this.forkliftId;
             });
@@ -204,27 +120,6 @@ class Route {
             Route.clearInstrutionsOnUi();
     }
 
-    static resetRouteInformationOnUi() {
-        document.querySelector("#selectedRouteForkliftId").innerHTML = "...";
-        document.querySelector("#selectedRouteOrderId").innerHTML = "...";
-        document.querySelector("#selectedRouteRouteId").innerHTML = "...";
-        Route.clearInstrutionsOnUi();
-    }
-
-    static chooseRoute(routeId) {
-        if (routeId == "")
-            Route.resetRouteInformationOnUi();
-        else {
-            for (let key in forkliftData) {
-                if (typeof (forkliftData[key].route) != "undefined")
-                    if (forkliftData[key].route.routeId == routeId) {
-                        forkliftData[key].route.selectRoute();
-                        break;
-                    }
-            }
-        }
-    }
-
     addRouteToUi() {
         document.querySelector('.select-route').innerHTML += `<option value=${this.routeId}>${this.routeId}</option>`;
     }
@@ -239,9 +134,5 @@ class Route {
             }
         }
     }
-
-
-
     // END -- UI -- END
-
 }
