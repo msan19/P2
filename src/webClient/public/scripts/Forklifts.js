@@ -1,6 +1,15 @@
 class Forklifts {
     selectedForklift = "";
 
+    onReceiveForklift(forklift) {
+        if (typeof (forklift.id) != "undefined") {
+            if (typeof (forkliftData[forklift.id]) == "undefined")
+                this.addForklift(forklift);
+            else
+                this.updateForklift(forklift);
+        }
+    }
+
     addForklift(forklift) {
         this.addForkliftToUi(forklift);
         forkliftData[forklift.id] = this.parseForklift(forklift);
@@ -23,15 +32,6 @@ class Forklifts {
 
         document.querySelectorAll('.select-forklift').forEach((item) => {
             item.innerHTML += `<option value=${forkliftInfo.id}>${forkliftInfo.id}</option>`;
-            item.onclick = (e) => {
-                let tempNewSelectedForklift = e.target.innerHTML;
-
-                if (tempNewSelectedForklift[0] == 'F')
-                    mainGraph.selectForklift(tempNewSelectedForklift);
-                else if (tempNewSelectedForklift.length == 0)
-                    mainGraph.selectForklift("");
-
-            }
         });
     }
 
@@ -53,6 +53,17 @@ class Forklifts {
             };
         }
         return forklift;
+    }
+
+    selectForklift(forkliftId) {
+        this.selectedForklift = forkliftId;
+    }
+
+    checkIfThereIsASelectedForklift() {
+        if (typeof (nForklifts.selectedForklift) == "string" && nForklifts.selectedForklift.length > 0)
+            return true;
+        else
+            return false;
     }
 
     static getIfForkliftHasPosition(forklift) {
@@ -194,106 +205,6 @@ class Forklifts {
                 x: targetNode.x + distanceTravelled * directionVector.x,
                 y: targetNode.y + distanceTravelled * directionVector.y
             };
-        }
-    }
-
-    calculateRouteTimes(instructions, currentTime, currentInstruction, speed, currentPosition) {
-        if (instructions.length == currentInstruction + 1)
-            return;
-        let targetPosition = {
-            x: mainGraph.sigmaGraph.graph.nodes(instructions[currentInstruction + 1].nodeId).x,
-            y: mainGraph.sigmaGraph.graph.nodes(instructions[currentInstruction + 1].nodeId).y
-        };
-        let dDistance = Math.abs(this.getDistanceBetweenPoints(
-            currentPosition.x,
-            currentPosition.y,
-            targetPosition.x,
-            targetPosition.y
-        ));
-        if (dDistance < speed) {
-            instructions[currentInstruction + 1].startTime = currentTime + dDistance / speed * 1000;
-            this.calculateRouteTimes(instructions, instructions[currentInstruction + 1].startTime, currentInstruction + 1, speed, targetPosition);
-        } else if (dDistance > speed) {
-            let directionVector = this.getDirectionVector(
-                dDistance,
-                currentPosition.x,
-                currentPosition.y,
-                targetPosition.x,
-                targetPosition.y
-            );
-            let newPosition = {
-                x: currentPosition.x + speed * directionVector.x,
-                y: currentPosition.y + speed * directionVector.y
-            };
-            this.calculateRouteTimes(instructions, currentTime + 1000, currentInstruction, newPosition);
-        } else {
-            instructions[currentInstruction + 1].startTime = currentTime + 1000;
-            this.calculateRouteTimes(instructions, instructions[currentInstruction + 1].startTime, currentInstruction + 1, speed, targetPosition);
-        }
-    }
-
-    generateRoute(route, node, length) {
-        let date = new Date();
-        Forklifts.generateRouteAux(route, node, length, date);
-    }
-
-    static generateRouteAux(route, node, length, date) {
-        if (length == 0)
-            return;
-        let nodes = mainGraph.sigmaGraph.graph.neighbors(node);
-        let num = Math.floor(Math.random() * Object.keys(nodes).length);
-
-        let attempts = 0;
-        // Remove if forklifts from neighbors
-        if (route.instructions.length > 1) {
-            while (Object.keys(nodes).splice(num, 1)[0] == route.instructions[route.instructions.length - 2].nodeId ||
-                Object.keys(nodes).splice(num, 1)[0][0] == "F") {
-                num = Math.floor(Math.random() * Object.keys(nodes).length);
-                delete Object.keys(nodes).splice(num, 1)[0];
-                attempts++;
-                if (attempts > 20)
-                    break;
-            }
-        }
-
-        node = Object.keys(nodes).splice(num, 1)[0];
-
-        route.instructions.push({
-            nodeId: node,
-            startTime: date.getTime(),
-            num: num
-        });
-        Forklifts.generateRouteAux(route, node, length - 1, date);
-
-    }
-
-    addTestDataToForklifts() {
-        for (let key in forkliftData) {
-            if (typeof (forkliftData[key].route) == "undefined") {
-                let route = {
-                    instructions: []
-                };
-                let nodes = mainGraph.sigmaGraph.graph.nodes();
-                let currentNode;
-                if (typeof (forkliftData[key].currentNode) == "undefined" || typeof (forkliftData[key].currentNode.nodeId) == "undefined")
-                    currentNode = nodes[Math.floor(Math.random() * nodes.length)].id;
-                else
-                    currentNode = forkliftData[key].currentNode.nodeId;
-                this.generateRoute(route, currentNode, Math.round(30));
-                if (route.instructions.length != 0) {
-                    forkliftData[key].route = route;
-                    forkliftData[key].currentNode = route.instructions[0];
-                    let speed = Math.random() * 2 + 1;
-                    this.calculateRouteTimes(route.instructions, route.instructions[0].startTime, 0, speed, {
-                        x: mainGraph.sigmaGraph.graph.nodes(route.instructions[0].nodeId).x,
-                        y: mainGraph.sigmaGraph.graph.nodes(route.instructions[0].nodeId).y
-                    });
-                    if (key == this.selectedForklift) {
-                        mainGraph.displaySelectedForkliftPath();
-                        initiateSelectedForkliftRouteOnUI(forkliftData[nForklifts.selectedForklift]);
-                    }
-                }
-            }
         }
     }
 }
