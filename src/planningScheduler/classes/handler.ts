@@ -209,12 +209,17 @@ export class Handler {
                 this.data.on(DataContainer.events.lockRoute, lockRoute);
                 webSocket.sendRoutes(this.data.routes);
 
+                let addOrder = (order: Order) => { webSocket.sendOrder(order); };
+                this.data.on(DataContainer.events.addOrder, addOrder);
+                webSocket.sendOrders(this.data.orders);
+
+
                 webSocket.on("close", () => {
                     this.data.removeListener(DataContainer.events.setWarehouse, setWarehouse);
                     this.data.removeListener(DataContainer.events.forkliftUpdated, updateForkliftInfo);
                     this.data.removeListener(DataContainer.events.lockRoute, lockRoute);;
+                    this.data.removeListener(DataContainer.events.addOrder, addOrder);;
                 });
-
 
             });
         }

@@ -55,10 +55,15 @@ Uge 18:       Bufferperiode (mapf og rapportskrivning)
   Mandag: Planlægge hele af routeset
   Tirsdag: Teste routeset planlægning og måske priority searching
   Onsdag:  priority searching
-  Torsdag: ?
-  Fredag:  ?
+  Torsdag: bug-fixing
+  Fredag:  bug-fixing
 
 Uge 19:       Test
+  Mandag: bug-fixing
+  Tirsdag: ?
+  Onsdag:  ?
+  Torsdag: ?
+  Fredag:  ?
 
 Uge 20 - 21:  Rapportskrivning
 
