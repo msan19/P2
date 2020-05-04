@@ -11,6 +11,7 @@ import { Order } from "./order";
 import { Warehouse } from "./warehouse";
 import { EventEmitter } from "events";
 import { JsonTryParse } from "./webUtilities";
+import { stringifyObject } from "./utilities";
 
 /** An enum representing the type of package being sendt and recieved */
 enum PackageTypes {
@@ -76,7 +77,7 @@ export class WebSocket extends EventEmitter {
      * @param obj An object to be sendt
      */
     private send(type: PackageTypes, obj: any): void {
-        this.socket.send(JSON.stringify({
+        this.socket.send(stringifyObject({
             type: type,
             body: obj
         }));

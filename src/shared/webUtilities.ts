@@ -7,6 +7,7 @@
 import { IncomingMessage, ServerResponse } from "http";
 import * as path from "path";
 import * as fs from "fs";
+import { stringifyObject } from "./utilities";
 
 /** 
  * Gets data out of a buffer-callback 
@@ -114,7 +115,7 @@ export function returnSuccess(response: ServerResponse) {
  */
 export function returnJson(response: ServerResponse, obj: any) {
     response.writeHead(200);
-    response.write(JSON.stringify(obj));
+    response.write(stringifyObject(obj));
     response.end();
 }
 

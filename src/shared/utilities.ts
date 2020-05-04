@@ -38,3 +38,31 @@ export function applyMixins(derivedCtor: any, baseCtors: any[]) {
         });
     });
 }
+
+function jsonReplacer(key, value) {
+    if (value === null) return value;
+    if (typeof (value) === "object") {
+
+        let publicKeys = value["jsonPublicKeys"];
+        if (!Array.isArray(publicKeys)) publicKeys = Object.keys(value);
+
+        if (Array.isArray(value)) { // If array
+            let output = [];
+            for (let publicKey of publicKeys) {
+                output[publicKey] = jsonReplacer(publicKey, value[publicKey]);
+            }
+        } else { // If generic object
+            let output = {};
+            for (let publicKey of publicKeys) {
+                output[publicKey] = jsonReplacer(publicKey, value[publicKey]);
+            }
+            return output;
+        }
+    }
+
+    return value;
+}
+
+export function stringifyObject(obj: any) {
+    return JSON.stringify(obj, jsonReplacer);
+}
