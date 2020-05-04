@@ -223,33 +223,32 @@ export class RouteScheduler {
         return true;
     }
 
+    /**
+     * Makes an array of idlepositions and estimates for when the forklifts can arrive at the startVertex of the order.
+     * Sorts them by when the forklift can be at the startpos
+     * Strips the estimates from the array
+     * Returns the sorted scheduleitems containing forklifts
+     * 
+     * @param routeSet 
+     * @param order 
+     * @returns An array of ScheduleItems based on idleForklifts, sorted by the time at which the forklift can arrive at the startVertex of the order
+     */
     assignForklift(routeSet: RouteSet, order: Order): ScheduleItem[] {
-        let inactiveForklifts: { vertex: string, forklift: string; }[] = [];
-        let idleItems: ScheduleItem[] = Object.values(routeSet.graph.idlePositions);
 
-        return idleItems.sort((ele1: ScheduleItem, ele2: ScheduleItem) => {
-            let ele1Time = order.time - (ele1.arrivalTimeCurrentVertex +
-                2 * this.heuristic(routeSet.graph.vertices[ele1.currentVertexId], routeSet.graph.vertices[order.startVertexId]));
-            let ele2Time = order.time - (ele2.arrivalTimeCurrentVertex +
-                2 * this.heuristic(routeSet.graph.vertices[ele2.currentVertexId], routeSet.graph.vertices[order.startVertexId]));
-
-            /*
-            Tabel:          ele1Time >= 0    ele1Time < 0
-            ele2Time >= 0     se (E1)             1              
-            ele2Time < 0        -1             se (E2)
-
-            (E1) ele2Time > ele1Time = -1   else 1
-            (E2) ele2Time > ele1Time = 1    else -1
-            */
-
-            if ((ele1Time >= 0 && ele2Time < 0) ||
-                (ele1Time >= 0 && ele2Time >= 0 && ele2Time > ele1Time) ||
-                (ele1Time < 0 && ele2Time < 0 && ele1Time > ele2Time)) {
-                return -1;
-            } else {
+        return Object.values(routeSet.graph.idlePositions) // Get array of values
+            .map((item) => { // Wrap them in object, containing EstimatedTimeOfArrival at startVertex of the order
+                return {
+                    scheduleItem: item,
+                    startVertexETA: order.time - (item.arrivalTimeCurrentVertex + 2 * this.heuristic(routeSet.graph.vertices[item.currentVertexId], routeSet.graph.vertices[order.startVertexId]))
+                };
+            })
+            .sort((item1, item2) => { // Sort by ETA
+                if (item1.startVertexETA >= 0 && item2.startVertexETA < 0) return -1;
+                if (item1.startVertexETA >= 0 && item2.startVertexETA >= 0 && item1.startVertexETA < item2.startVertexETA) return -1;
+                if (item1.startVertexETA < 0 && item2.startVertexETA < 0 && item1.startVertexETA > item2.startVertexETA) return -1;
                 return 1;
-            }
-        });
+            })
+            .map(item => item.scheduleItem); // Unwrap 
     }
 
 
