@@ -212,7 +212,7 @@ class Route {
     }
 
     static chooseRoute(routeId) {
-        if (routeId[0] != 'R')
+        if (routeId == "")
             Route.resetRouteInformationOnUi();
         else {
             for (let key in forkliftData) {
