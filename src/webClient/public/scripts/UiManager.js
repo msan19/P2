@@ -95,20 +95,28 @@ class UiManager {
         UiManager.updateSelectedInstructionInformationOnUi(instructionNodeId, occurance);
     }
     static resetRouteInformationOnUi() {
-        document.querySelector("#selectedRouteForkliftId").innerHTML = "...";
-        document.querySelector("#selectedRouteOrderId").innerHTML = "...";
-        document.querySelector("#selectedRouteRouteId").innerHTML = "...";
+        document.querySelector("#route-list").value = "";
+        document.querySelectorAll(".forkliftId").forEach((e) => {
+            e.innerHTML = "...";
+        })
+        document.querySelectorAll(".orderId").forEach((e) => {
+            e.innerHTML = "...";
+        })
+        document.querySelectorAll(".routeId").forEach((e) => {
+            e.innerHTML = "...";
+        })
         UiManager.clearInstrutionsOnUi();
     }
     static chooseRoute(routeId) {
-        if (routeId == "")
+        if (routeId == "") {
             UiManager.resetRouteInformationOnUi();
-        else {
+            this.selectForklift("");
+        } else {
             for (let key in forkliftData) {
                 if (typeof (forkliftData[key].route) != "undefined")
                     if (forkliftData[key].route.routeId == routeId) {
                         forkliftData[key].route.selectRoute();
-                        this.selectForklift(forkliftData[key].id)
+                        this.selectForklift(forkliftData[key].id);
                         break;
                     }
             }
@@ -118,7 +126,7 @@ class UiManager {
 
     // FORKLIFT
     static updateSelectedForkliftInformationOnUI() {
-        if (typeof (nForklifts.selectedForklift) == "string" && nForklifts.selectedForklift.length > 0) {
+        if (nForklifts.checkIfThereIsASelectedForklift()) {
             let forklift = forkliftData[nForklifts.selectedForklift];
             document.querySelector("#forklift-list").value = forklift.id;
             if (typeof (forklift.position) != "undefined" &&
@@ -130,6 +138,7 @@ class UiManager {
             if (typeof (forkliftData[nForklifts.selectedForklift].state) != "undefined")
                 document.querySelector("#selectedForkliftState").innerHTML = forklift.state;
         } else {
+            document.querySelector("#forklift-list").value = "";
             let xPos = document.querySelector("#selectedForkliftXPosition");
             let yPos = document.querySelector("#selectedForkliftYPosition");
             xPos.innerHTML = "...";
@@ -143,12 +152,16 @@ class UiManager {
     static selectForklift(forkliftId) {
         nForklifts.selectForklift(forkliftId);
         UiManager.updateSelectedForkliftInformationOnUI();
-        mainGraph.displaySelectedForkliftPath();
+        if (nForklifts.checkIfThereIsASelectedForklift())
+            mainGraph.displaySelectedForkliftPath();
+        else
+            mainGraph.revertColorsToOriginal();
     }
 
     static chooseForklift(forkliftId) {
         if (forkliftId == "") {
             UiManager.selectForklift(forkliftId);
+            UiManager.resetRouteInformationOnUi();
         } else if (forkliftId[0] == "F") {
             UiManager.selectForklift(forkliftId);
             if (typeof (forkliftData[nForklifts.selectedForklift].route) != "undefined")

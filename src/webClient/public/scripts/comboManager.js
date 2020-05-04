@@ -66,8 +66,7 @@ window.socketManager.on(PackageTypes.route, (route) => {
 window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
         //nForklifts.addTestDataToForklifts();
-        //nForklifts.handleForkliftMovement();
-        //updateSelectedForkliftInformationOnUI();
+        nForklifts.handleForkliftMovement();
         mainGraph.updateForkliftsOnGraph();
         mainGraph.sigmaGraph.refresh();
     }

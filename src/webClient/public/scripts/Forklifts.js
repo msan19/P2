@@ -5,6 +5,13 @@ class Forklifts {
         this.selectedForklift = forkliftId;
     }
 
+    checkIfThereIsASelectedForklift() {
+        if (typeof (nForklifts.selectedForklift) == "string" && nForklifts.selectedForklift.length > 0)
+            return true;
+        else
+            return false;
+    }
+
     addForklift(forklift) {
         this.addForkliftToUi(forklift);
         forkliftData[forklift.id] = this.parseForklift(forklift);

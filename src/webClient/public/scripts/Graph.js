@@ -159,33 +159,6 @@ class Graph {
         return newData;
     }
 
-    // FORKLIFT
-    selectForklift(id) {
-        if (typeof (id) != "undefined" && id.length > 0) {
-            /*
-            // Ui related
-            nForklifts.selectedForklift = id;
-            updateSelectedForkliftInformationOnUI();
-            forkliftData[id].route.selectRoute()
-            //initiateSelectedForkliftRouteOnUI(forkliftData[nForklifts.selectedForklift]);
-
-            if (typeof (forkliftData[nForklifts.selectedForklift]["route"]) != "undefined" && typeof (forkliftData[nForklifts.selectedForklift]["route"]["instructions"]) != "undefined") {
-                let path = this.intepretInstructions(forkliftData[nForklifts.selectedForklift]["route"]["instructions"]);
-                this.displayPath(path);
-            }
-            */
-        } else if (id === "") {
-            /*
-            // Ui related
-            UiManager.resetRouteInformationOnUi();
-            nForklifts.selectedForklift = "";
-            this.revertColorsToOriginal();
-            this.sigmaGraph.refresh();
-
-*/
-        }
-    }
-
     addForkliftToGraph(forklift) {
         if (Forklifts.getIfForkliftHasPosition(forklift)) {
             this.sigmaGraph.graph.addNode({
