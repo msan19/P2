@@ -184,7 +184,7 @@ class Graph {
 
         } else if (id === "") {
             // Ui related
-            removeSelectedForkliftRouteOnUI();
+            Route.resetRouteInformationOnUi();
             updateForkliftFocus("");
 
             this.revertColorsToOriginal();
