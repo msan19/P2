@@ -86,6 +86,7 @@ class Route {
 
         this.removeRouteFromUi();
         forkliftData[this.forkliftId].route = forkliftData[this.forkliftId].route.nextRoute;
+        mainGraph.displaySelectedForkliftPath();
     }
 
     onInstructionDone() {
