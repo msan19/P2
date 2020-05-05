@@ -31,7 +31,7 @@ function checkOrder(result: Order | null, expected: Order | null): void {
             /* Goes through all fields (keys is a list of field-names) and checks their values */
             for (let i = 0; i < length; i++) {
                 it(`${result[keys[i]]} should be ${expected[keys[i]]}`, () => {
-                    expect(result[keys[i]]).to.equal(expected[keys[i]]);
+                    expect(result[keys[i]]).to.eql(expected[keys[i]]);
                 });
             }
         } else {
