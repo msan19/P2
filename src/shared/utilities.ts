@@ -66,3 +66,35 @@ function jsonReplacer(key, value) {
 export function stringifyObject(obj: any) {
     return JSON.stringify(obj, jsonReplacer);
 }
+
+export function deepCopy<T>(obj: T): T {
+    switch (typeof (obj)) {
+        case "bigint":
+        case "boolean":
+        case "function":
+        case "number":
+        case "string":
+        case "symbol":
+        case "undefined":
+            return obj;
+        case "object":
+            if (obj === null) return null;
+            // Instantiate output as array or object, depending on type of obj
+            let output;
+            if (Array.isArray(obj)) output = [];
+            else {
+                // Create new instance of same class
+                function ctor() { }
+                ctor.prototype = obj;
+                output = new ctor();
+            }
+
+            // Deep copy values
+            for (let key in obj) {
+                output[key] = deepCopy(obj[key]);
+            }
+            return output;
+        default:
+            throw `Unknown type '${typeof (obj)}' in deepCopy`;
+    }
+}
