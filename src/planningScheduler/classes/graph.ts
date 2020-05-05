@@ -37,14 +37,12 @@ export class Graph extends Graph_Shared {
      * @returns A new {@link Graph}
      */
     clone(): Graph {
-
-        let newVertices: { [key: string]: Vertex; } = {};
         let newIdlePositions: { [forkliftId: string]: ScheduleItem; } = {};
-
         for (let key in this.idlePositions) {
             newIdlePositions[key] = this.idlePositions[key];
         }
 
+        let newVertices: { [key: string]: Vertex; } = {};
         for (let key in this.vertices) {
             newVertices[key] = this.vertices[key].clone();
         }
