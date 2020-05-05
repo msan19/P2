@@ -8,15 +8,15 @@
 import { expect } from 'chai';
 import 'mocha';
 
-import { MinPriorityQueue } from '../../src/planningScheduler/classes/minPriorityQueue';
-import { Vertex, Graph, ScheduleItem } from '../../src/planningScheduler/classes/graph';
-import { Vector2 } from '../../src/shared/vector2';
-import { createGraph } from '../../src/blackBox/warehouse';
-import { Order } from '../../src/planningScheduler/classes/order';
-import { RouteScheduler } from '../../src/planningScheduler/routeScheduler';
-import { DataContainer } from '../../src/planningScheduler/classes/dataContainer';
-import { RouteSet } from '../../src/planningScheduler/classes/routeSet';
-import { Warehouse } from '../../src/planningScheduler/classes/warehouse';
+import { MinPriorityQueue } from '../../../src/planningScheduler/classes/minPriorityQueue';
+import { Vertex, Graph, ScheduleItem } from '../../../src/planningScheduler/classes/graph';
+import { Vector2 } from '../../../src/shared/vector2';
+import { createGraph } from '../../../src/blackBox/warehouse';
+import { Order } from '../../../src/planningScheduler/classes/order';
+import { RouteScheduler } from '../../../src/planningScheduler/routeScheduler';
+import { DataContainer } from '../../../src/planningScheduler/classes/dataContainer';
+import { RouteSet } from '../../../src/planningScheduler/classes/routeSet';
+import { Warehouse } from '../../../src/planningScheduler/classes/warehouse';
 
 
 /**
@@ -416,12 +416,12 @@ function testAStar(): void {
 }
 
 function initRouteSet() {
-    let graph: Graph = createGraph();
+    let graph: Graph = Graph.parse(createGraph());
     return new RouteSet([], graph);
 }
 
 function initRouteScheduler() {
-    let graph: Graph = createGraph();
+    let graph: Graph = Graph.parse(createGraph());
     let warehouse = new Warehouse(graph, 15);
     let data: DataContainer = new DataContainer();
     data.warehouse = warehouse;
