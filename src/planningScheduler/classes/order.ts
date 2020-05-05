@@ -5,9 +5,7 @@ export class Order extends Order_Shared {
 
     constructor(orderId: string, type: OrderTypes, forkliftId: string, palletId: string, startVertexId: string, endVertexId: string, time: number, timeType: TimeType, delayCounter: number) {
         super(orderId, type, forkliftId, palletId, startVertexId, endVertexId, time, timeType, delayCounter);
-
     }
-
 
     /**
      * Creates an {@link Order} containing the content of the parameter object obj
