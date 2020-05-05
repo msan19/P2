@@ -2,7 +2,9 @@ import { Graph as Graph_Shared, Vertex as Vertex_Shared } from "../../shared/gra
 import { Vector2 } from "../../shared/vector2";
 
 function superCastVertex(vertex: Vertex_Shared): Vertex {
-    return new Vertex(vertex.id, vertex.position, vertex.label);
+    let output = new Vertex(vertex.id, vertex.position, vertex.label);
+    output.adjacentVertexIds = vertex.adjacentVertexIds;
+    return output;
 }
 function superCastGraph(graph: Graph_Shared): Graph {
     let castedVertices = {};
