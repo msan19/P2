@@ -65,9 +65,7 @@ function testParse(): void {
     data.warehouse = warehouse;
 
     describe(`Test of valid order`, () => {
-        let order: Order = new Order("O4", Order.types.moveForklift, "F2", "P4", "N23", "N29");
-        order.timeType = 1;
-        order.time = 100;
+        let order: Order = new Order("O4", Order.types.moveForklift, "F2", "P4", "N23", "N29", 100, Order.timeTypes.start, 3);
         let result: Order | null = Order.parse(order, data);
         let expected: Order = order;
 
@@ -76,7 +74,7 @@ function testParse(): void {
     });
 
     describe(`Test of invalid order vertex id`, () => {
-        let order: Order = new Order("O4", Order.types.moveForklift, "F2", "P4", "N24", "N29");
+        let order: Order = new Order("O4", Order.types.moveForklift, "F2", "P4", "N24", "N29", 100, Order.timeTypes.start, 3);
         let result: Order | null = Order.parse(order, data);
         let expected: Order | null = null;
 
@@ -84,7 +82,7 @@ function testParse(): void {
     });
 
     describe(`Test of invalid order forklift id`, () => {
-        let order: Order = new Order("O4", Order.types.charge, "F7", "P4", "N23", "N29");
+        let order: Order = new Order("O4", Order.types.charge, "F7", "P4", "N23", "N29", 100, Order.timeTypes.start, 3);
         let result: Order | null = Order.parse(order, data);
         let expected: Order | null = null;
 
@@ -92,7 +90,7 @@ function testParse(): void {
     });
 
     describe(`Test of valid order type`, () => {
-        let order: Order = new Order("O4", Order.types.charge, "F2", "P4", "N23", "N29");
+        let order: Order = new Order("O4", Order.types.charge, "F2", "P4", "N23", "N29", 100, Order.timeTypes.start, 3);
         order.type = null;
         let result: Order | null = Order.parse(order, data);
         let expected: Order | null = null;

@@ -18,7 +18,7 @@ callApi(API_HOSTNAME, API_PORT, "/orders", "GET", "");
 //callApi(API_HOSTNAME, API_PORT, "/routes", "GET", "");
 
 function sendOrder() {
-    let order = new Order("O0", Order.types.movePallet, "F0", "P0", "n0-0", "n4-7");
+    let order = new Order("O0", Order.types.movePallet, "F0", "P0", "n0-0", "n4-7", (new Date()).getTime(), 2, 3);
     console.log(order);
     callApi(API_HOSTNAME, API_PORT, "/orders", "POST", JSON.stringify(order, null, 4));
 }

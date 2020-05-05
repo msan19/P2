@@ -1,10 +1,10 @@
-import { Order as Order_Shared, OrderTypes } from "../../shared/order";
+import { Order as Order_Shared, OrderTypes, TimeType } from "../../shared/order";
 import { DataContainer } from "./dataContainer";
 
 export class Order extends Order_Shared {
 
-    constructor(orderId: string, type: OrderTypes, forkliftId: string, palletId: string, startVertexId: string, endVertexId: string) {
-        super(orderId, type, forkliftId, palletId, startVertexId, endVertexId);
+    constructor(orderId: string, type: OrderTypes, forkliftId: string, palletId: string, startVertexId: string, endVertexId: string, time: number, timeType: TimeType, delayCounter: number) {
+        super(orderId, type, forkliftId, palletId, startVertexId, endVertexId, time, timeType, delayCounter);
 
     }
 
