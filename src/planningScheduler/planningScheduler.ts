@@ -69,7 +69,13 @@ export class PlanningScheduler {
                             this.data.lockRoute(this.routeScheduler.getRoute(orderId));
                         }
                     } else if (this.data.orders[orderId].time < currentTime + timeOffset) {
-                        this.data.orders[orderId].time += 2 * timeOffset;
+                        let tempOrder = this.data.orders[orderId];
+                        if (!tempOrder.delayStartTime(timeOffset)) {
+                            // delayCounter is 0. Order must be deleted
+                            this.routeScheduler.removeOrderFromBestRouteSet(tempOrder);
+                            this.data.removeOrderFromOrders(tempOrder);
+                            // Throw error to client, order dumped
+                        }
                     }
                 } else {
                     // Handle forklift feedback for orders. If positive, remove
