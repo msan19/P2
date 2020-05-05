@@ -56,5 +56,20 @@ class Order {
         });
     }
 
+    selectOrder() {
+        document.querySelector("#selectedOrderForkliftId").innerHTML = this.forkliftId;
+        document.querySelector("#selectedOrderOrderId").innerHTML = this.orderId;
+        if (typeof (this.type) != "undefined")
+            document.querySelector("#selectedOrderType").innerHTML = this.orderId;
+        if (typeof (this.palletId) != "undefined")
+            document.querySelector("#selectedOrderPalletId").innerHTML = this.orderId;
+        if (typeof (this.startNodeId) != "undefined")
+            document.querySelector("#selectedOrderStartNodeId").innerHTML = this.startNodeId;
+        if (typeof (this.endNodeId) != "undefined")
+            document.querySelector("#selectedOrderEndNodeId").innerHTML = this.endNodeId;
+        if (typeof (this.startTime) != "undefined")
+            document.querySelector("#selectedOrderStartTime").innerHTML = moment(this.startTime).format("LLL");
+    }
+
 
 }
