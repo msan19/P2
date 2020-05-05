@@ -69,12 +69,19 @@ class Route {
 
     setNextRoute(route) {
         if (typeof (this.nextRoute) == "undefined")
-            this.nextRoute(route);
+            this.nextRoute = route;
         else
             this.nextRoute.setNextRoute(route);
     }
 
     onFinishRoute() {
+        if (nForklifts.selectedForklift == this.forkliftId) {
+            if (typeof (this.nextRoute) != "undefined")
+                UiManager.chooseRoute(this.nextRoute.routeId);
+            else
+                UiManager.resetRouteInformationOnUi();
+        }
+
         this.removeRouteFromUi();
         forkliftData[this.forkliftId].route = forkliftData[this.forkliftId].route.nextRoute;
     }

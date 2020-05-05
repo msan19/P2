@@ -15,7 +15,6 @@ class UiManager {
     }
 
     // ROUTE
-
     static clearInstrutionsOnUi() {
         document.querySelectorAll(".selectedRouteInstructionList").forEach((e) => {
             e.innerHTML = "";
