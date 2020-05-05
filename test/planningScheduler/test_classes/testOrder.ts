@@ -7,14 +7,13 @@
 
 import { expect } from 'chai';
 import 'mocha';
-import * as WebSocket from "ws";
 
 import { DataContainer } from "./../../../src/planningScheduler/classes/dataContainer";
-import { Warehouse } from '../../../src/shared/warehouse';
-import { Graph, Vertex } from '../../../src/shared/graph';
+import { Warehouse } from '../../../src/planningScheduler/classes/warehouse';
+import { Graph, Vertex } from '../../../src/planningScheduler/classes/graph';
 import { Vector2 } from '../../../src/shared/vector2';
 import { Forklift } from '../../../src/planningScheduler/classes/forklift';
-import { Order } from '../../../src/shared/order';
+import { Order } from '../../../src/planningScheduler/classes/order';
 
 /**
  * This function checks whether two orders are the same using Mocha's "expect"
@@ -32,7 +31,7 @@ function checkOrder(result: Order | null, expected: Order | null): void {
             /* Goes through all fields (keys is a list of field-names) and checks their values */
             for (let i = 0; i < length; i++) {
                 it(`${result[keys[i]]} should be ${expected[keys[i]]}`, () => {
-                    expect(result[keys[i]]).to.equal(expected[keys[i]]);
+                    expect(result[keys[i]]).to.eql(expected[keys[i]]);
                 });
             }
         } else {

@@ -7,7 +7,7 @@
 import { DataContainer } from "./classes/dataContainer";
 import { WebServerPlanningScheduler } from "./classes/WebServer";
 import { RouteScheduler } from "./routeScheduler";
-import { ScheduleItem } from "../shared/graph";
+import { ScheduleItem } from "./classes/graph";
 
 /**
  * Object to handle event loop of main server.
@@ -61,16 +61,15 @@ export class PlanningScheduler {
 
             for (let orderId in this.data.orders) {
                 if (this.routeScheduler.unfinishedOrderIds.indexOf(orderId) !== -1) {
-                    if (this.routeScheduler.bestRouteSet !== null) {
-                        let indexOfOrderId = this.routeScheduler.bestRouteSet.priorities.indexOf(orderId);
-                        if (indexOfOrderId !== -1 && this.routeScheduler.bestRouteSet.duration[indexOfOrderId] < Infinity) {
-                            let timeItTakes = this.routeScheduler.getStartTime(orderId);
-                            if (this.routeScheduler.getStartTime(orderId) < currentTime + timeOffset) {
-                                this.data.lockRoute(this.routeScheduler.getRoute(orderId));
-                            }
+                    let indexOfOrderId = this.routeScheduler.bestRouteSet !== null
+                        ? this.routeScheduler.bestRouteSet.priorities.indexOf(orderId)
+                        : -1;
+                    if (indexOfOrderId !== -1 && this.routeScheduler.bestRouteSet.duration[indexOfOrderId] < Infinity) {
+                        if (this.routeScheduler.getStartTime(orderId) < currentTime + timeOffset) {
+                            this.data.lockRoute(this.routeScheduler.getRoute(orderId));
                         }
                     } else if (this.data.orders[orderId].time < currentTime + timeOffset) {
-                        // Throw error: order could not be planned in time
+                        this.data.orders[orderId].time += 2 * timeOffset;
                     }
                 } else {
                     // Handle forklift feedback for orders. If positive, remove

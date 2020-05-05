@@ -92,7 +92,9 @@ addOrderForm.onsubmit = function () {
             if (input.name == "time") {
                 let date = moment(input.value, "LLL");
                 if (date.isValid())
-                    data[input.name] = date.unix()
+                    data[input.name] = date.unix() * 1000;
+            } else if (input.name == "timeType" || input.name == "type") {
+                data[input.name] = parseInt(input.value);
             } else
                 data[input.name] = input.value;
         }
