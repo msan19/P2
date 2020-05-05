@@ -95,4 +95,8 @@ export class DataContainer extends events.EventEmitter {
         this.emit(DataContainer.events.lockRoute, route);
     }
 
+    removeOrderFromOrders(order: Order) {
+        delete this.orders[order.id];
+    }
+
 }
