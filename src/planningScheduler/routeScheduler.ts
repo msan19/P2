@@ -391,7 +391,7 @@ export class RouteScheduler {
         return sum;
     }
 
-    isCollisionInevitable(startVertexId: string, scheduleItem: ScheduleItem, maxWarp: number, currentTime: number): boolean {
+    isCollisionInevitable(startVertexId: string, scheduleItem: ScheduleItem, maxWarp: number, currentTime: number, isLast: boolean): boolean {
         if (scheduleItem.nextScheduleItem !== null && scheduleItem.nextScheduleItem.currentVertexId === startVertexId) {
             if (scheduleItem.arrivalTimeCurrentVertex > maxWarp || scheduleItem.nextScheduleItem.arrivalTimeCurrentVertex > currentTime) {
                 return true;
@@ -400,6 +400,8 @@ export class RouteScheduler {
             if (scheduleItem.previousScheduleItem.arrivalTimeCurrentVertex > currentTime) {
                 return true;
             }
+        } else if (scheduleItem.nextScheduleItem === null && isLast) {
+            return true;
         }
         return false;
     }
@@ -420,7 +422,8 @@ export class RouteScheduler {
         time = 0;
         maxWarp = this.computeMaxWarp(currentVertex, destinationVertex, currentTime);
         while ((interval < this.timeIntervalMinimumSize || time <= maxWarp) && indexOfDestinationVertex < destinationVertex.scheduleItems.length) {
-            if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[indexOfDestinationVertex], maxWarp, currentTime)) {
+            if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[indexOfDestinationVertex], maxWarp, currentTime,
+                indexOfDestinationVertex === destinationVertex.scheduleItems.length - 1)) {
                 return Infinity;
             }
             time = destinationVertex.scheduleItems[indexOfDestinationVertex].arrivalTimeCurrentVertex;
