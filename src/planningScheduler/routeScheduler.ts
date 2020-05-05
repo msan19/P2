@@ -543,28 +543,6 @@ export class RouteScheduler {
         }
     }
 
-    /// TO DO
-    /** 
-     * Adds scheduleItems to all vertices the sorting algorithm pathed through.
-     * As end time is known the algorithm appends from the last element (end vertex)
-     * to the first (start vertex), using the time of the next vertex (not Vertex.previousVertex).
-     * Thus is appends scheduleItems while creating the stack, and not while resolving it.
-     * @param vertex Initially the end vertex. After it is the previous vertex in the path
-     * @param order The order for which the route was created
-     * @param time The time of the next vertex (as in opposite Vertex.previousVertex)
-     * @param nextVertexId The ID of the next vertex (as in opposite Vertex.previousVertex)
-     * @returns Nothing as the recursion uses the creation of the stack and not the resolution
-     */
-    downStacking(vertex: Vertex, order: Order, time: number, nextVertexId: string, forkliftSpeed: number): void {
-        let fulfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / forkliftSpeed;
-        let timeOnPrev: number = time - fulfillTime;
-
-        //vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId));
-        if (vertex.id !== order.startVertexId) {
-            this.downStacking(vertex.previousVertex, order, timeOnPrev, vertex.id, forkliftSpeed);
-        }
-    }
-
     getStartTime(orderId: string): number {
         let order: Order = this.data.orders[orderId];
         if (order.type === Order.types.movePallet) {

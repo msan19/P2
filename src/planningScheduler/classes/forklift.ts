@@ -33,7 +33,8 @@ export class Forklift extends ForkliftInfo {
         this.routes = [];
         this.state = Forklift.states.initiating;
 
-        this.setSocket(socket);
+        this.socket = socket;
+
         this.on(WebSocket.packageTypes.forkliftInfo, (forkliftInfo: ForkliftInfo) => {
             let initated = this.state === ForkliftStates.initiating;
             if (!this.putData(forkliftInfo)) return;
@@ -42,22 +43,24 @@ export class Forklift extends ForkliftInfo {
         });
     }
 
+
+    private _socket: WebSocket;
     /**
      * Returns a {@link WebSocket} between the {@link Forklift} object and the real forklift
      * @note Is redefined in {@link Forklift.setSocket}
      * @returns A socket
      */
-    private getSocket(): WebSocket {
-        return null;
+    private get socket(): WebSocket {
+        return this._socket;
     }
 
     /**
      * Sets the {@link WebSocket} of the {@link Forklift} by redefining {@link Forklift.getSocket}
      * @param socket A {@link WebSocket} to be set
      */
-    setSocket(socket: WebSocket | null): void {
-        if (this.hasSocket()) this.getSocket().close();
-        this.getSocket = () => { return socket; };
+    private set socket(socket: WebSocket | null) {
+        if (this.hasSocket()) this.socket.close();
+        this._socket = socket;
 
         if (socket !== null) {
             socket.on(WebSocket.packageTypes.forkliftInfo, (info) => {
@@ -71,7 +74,7 @@ export class Forklift extends ForkliftInfo {
      * @returns True if a {@link WebSocket} is asigned, false otherwise
      */
     hasSocket(): boolean {
-        return typeof (this.getSocket()) === "object" && this.getSocket() !== null;
+        return typeof (this.socket) === "object" && this.socket !== null;
     }
 
     /**
@@ -79,7 +82,7 @@ export class Forklift extends ForkliftInfo {
      * @param route A route to be sendt
      */
     sendRoute(route: Route): void {
-        this.getSocket().sendRoute(route);
+        this.socket.sendRoute(route);
     }
 
     /**

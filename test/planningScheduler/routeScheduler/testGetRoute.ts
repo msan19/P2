@@ -142,7 +142,7 @@ function checkRoute(result: Route, expected: Route): void {
             checkInstructions(result[key], expected[key]);
         } else {
             it(`${key}: ${result[key]} should be ${expected[key]}`, () => {
-                expect(result[key]).to.equal(expected[key]);
+                expect(result[key]).to.eql(expected[key]);
             });
         }
     }
