@@ -86,14 +86,18 @@ export class RouteScheduler {
         }
 
         // Splice order from priorities and duration
-        let indexOfOrder = this.bestRouteSet.priorities.indexOf(order.id);
-        this.bestRouteSet.priorities.splice(indexOfOrder, 1);
-        this.bestRouteSet.duration.splice(indexOfOrder, 1);
+        this.removeOrderFromBestRouteSet(order);
 
         // Redo mutations
         this.mutate();
 
         return new Route(routeId, order.palletId, forkliftId, orderId, routeStatus, instructions);
+    }
+
+    removeOrderFromBestRouteSet(order: Order) {
+        let indexOfOrder = this.bestRouteSet.priorities.indexOf(order.id);
+        this.bestRouteSet.priorities.splice(indexOfOrder, 1);
+        this.bestRouteSet.duration.splice(indexOfOrder, 1);
     }
 
     /**
