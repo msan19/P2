@@ -1,4 +1,4 @@
-// testAstar.ts
+// testHandler.ts
 /**
  * Test of {@link Handler}
  * @packageDocumentation
