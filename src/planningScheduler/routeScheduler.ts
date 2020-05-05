@@ -27,14 +27,17 @@ export class RouteScheduler {
     /** Heuristic function for A* implementation */
     heuristic: (v1: Vertex, v2: Vertex) => number;
 
+    /** The minimum amount of time between two forklifts crossing the same vertex for a third to cross in the meantime */
     timeIntervalMinimumSize: number;
 
+    /** The index of the mutation in the array of mutations currently being tried */
     mutationCounter: number;
 
+    /** An array of mutations or changes to the priority in which orders are planned*/
     mutations: { index: number, newIndex: number, value: number; }[];
 
+    /** An array of order ids of the orders currently being planned */
     unfinishedOrderIds: string[];
-
 
     /**
      * Constructor for the object.
@@ -171,10 +174,20 @@ export class RouteScheduler {
         instructions.push(newInstruction);
     }
 
-    private findVertex(vertexId: string) {
+    /**
+     * Finds the {@link Vertex} in bestGraph of the parameter id 
+     * @param vertexId An id of the {@link Vertex} to be found
+     * @return The found {@link Vertex}
+     */
+    private findVertex(vertexId: string): Vertex {
         return this.bestRouteSet.graph.vertices[vertexId];
     }
 
+    /**
+     * Finds the duration of the parameter order
+     * @param orderId An id of an order whose duration is to be found
+     * @return The duration of the given order
+     */
     private findDuration(orderId: string): number {
         for (let i = 0; i < this.bestRouteSet.duration.length; i++) {
             if (orderId === this.bestRouteSet.priorities[i]) {
@@ -184,6 +197,12 @@ export class RouteScheduler {
         return Infinity;
     }
 
+    /**
+     * Calculates all routes of the parameter {@link RouteSet} and creates the associated
+     * {@link ScheduleItem} on each {@link Vertex} on the route
+     * @param data A {@link DataContainer} givin acces to a dictionary of orders
+     * @param routeSet A {@link RouteSet} on which to calculate routes
+     */
     calculateRoutes(data: DataContainer, routeSet: RouteSet): boolean {
         for (let orderId of routeSet.priorities) {
             let order: Order = data.orders[orderId];
