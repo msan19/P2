@@ -105,7 +105,7 @@ export class OrderSpammer {
             )
         ];
 
-        let times = [20000, 120000, 220000, 320000];
+        let times = [20000, 60000, 100000, 140000];
 
         listOfPrePlannedOrders.forEach((order) => {
             order.time = this.firstTimeOrderCreated + times[listOfPrePlannedOrders.indexOf(order)];
