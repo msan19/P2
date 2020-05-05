@@ -62,8 +62,11 @@ class Route {
             forkliftData[newRoute.forkliftId].route = newRoute;
             if (typeof (forkliftData[newRoute.forkliftId].currentNode) == "undefined")
                 forkliftData[newRoute.forkliftId].currentNode = newRoute.instructions[0];
-            if (nForklifts.selectedForklift == newRoute.forkliftId)
+            if (nForklifts.selectedForklift == newRoute.forkliftId) {
+                newRoute.selectRoute();
                 mainGraph.displaySelectedForkliftPath();
+            }
+
         } else {
             forkliftData[newRoute.forkliftId].route.setNextRoute(newRoute);
         }
