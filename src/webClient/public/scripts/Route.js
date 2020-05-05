@@ -62,7 +62,8 @@ class Route {
             forkliftData[newRoute.forkliftId].route = newRoute;
             if (typeof (forkliftData[newRoute.forkliftId].currentNode) == "undefined")
                 forkliftData[newRoute.forkliftId].currentNode = newRoute.instructions[0];
-            UiManager.chooseRoute(this.routeId);
+            if (nForklifts.selectedForklift == newRoute.forkliftId)
+                newRoute.selectRoute();
         } else {
             forkliftData[newRoute.forkliftId].route.setNextRoute(newRoute);
         }
@@ -76,15 +77,14 @@ class Route {
     }
 
     onFinishRoute() {
-        if (nForklifts.selectedForklift == this.forkliftId) {
-            if (typeof (this.nextRoute) != "undefined")
-                UiManager.chooseRoute(this.nextRoute.routeId);
-            else
-                UiManager.resetRouteInformationOnUi();
-        }
-
         this.removeRouteFromUi();
         forkliftData[this.forkliftId].route = forkliftData[this.forkliftId].route.nextRoute;
+        if (nForklifts.selectedForklift == this.forkliftId) {
+            if (typeof (forkliftData[this.forkliftId].route) != "undefined") {
+                forkliftData[this.forkliftId].route.selectRoute();
+            } else
+                UiManager.resetRouteInformationOnUi();
+        }
     }
 
     onInstructionDone() {
@@ -149,6 +149,10 @@ class Route {
             this.listInstructionsOnUi();
         else
             Route.clearInstrutionsOnUi();
+        if (nForklifts.checkIfThereIsASelectedForklift())
+            mainGraph.displaySelectedForkliftPath();
+        else
+            mainGraph.revertColorsToOriginal();
     }
 
     addRouteToUi() {

@@ -151,10 +151,6 @@ class UiManager {
     static selectForklift(forkliftId) {
         nForklifts.selectForklift(forkliftId);
         UiManager.updateSelectedForkliftInformationOnUI();
-        if (nForklifts.checkIfThereIsASelectedForklift())
-            mainGraph.displaySelectedForkliftPath();
-        else
-            mainGraph.revertColorsToOriginal();
     }
 
     static chooseForklift(forkliftId) {
