@@ -10,9 +10,9 @@ import { IncomingMessage, ServerResponse } from "http";
 import * as ws from "ws";
 import { WebSocket } from "../../shared/webSocket";
 import { Socket } from "net";
-import { Warehouse } from "../../shared/warehouse";
-import { Graph } from "../../shared/graph";
-import { Order } from "../classes/order";
+import { Warehouse } from "./warehouse";
+import { Graph } from "./graph";
+import { Order } from "./order";
 
 import { getJson, returnJson, returnNotFound, returnStatus, passId, returnInvalidJson, returnSuccess } from "../../shared/webUtilities";
 import { ForkliftInfo } from "../../shared/forkliftInfo";
@@ -59,6 +59,7 @@ export class Handler {
                 getJson(request)
                     .then((obj) => {
                         let warehouse = Warehouse.parse(obj);
+
                         if (warehouse !== null) {
                             this.data.setWarehouse(warehouse);
                             returnSuccess(response);

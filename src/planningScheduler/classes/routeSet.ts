@@ -1,5 +1,5 @@
 import { Route } from "../../shared/route";
-import { Graph, Vertex, ScheduleItem } from "../../shared/graph";
+import { Graph, Vertex, ScheduleItem } from "./graph";
 
 
 /** A set of Routes containing priorities and a graph */
