@@ -12,6 +12,9 @@ class UiManager {
         let forkliftList = document.querySelector("#forklift-list");
         forkliftList.innerHTML = `<option value=${""}>${""}</option>`;
         forkliftList.onclick = (e) => UiManager.chooseForklift(e.target.innerHTML);
+        let orderList = document.querySelector("#order-list");
+        orderList.innerHTML = `<option value=${""}>${""}</option>`;
+        orderList.onclick = (e) => UiManager.chooseOrder(e.target.innerHTML);
     }
 
     // ROUTE
@@ -164,4 +167,25 @@ class UiManager {
         }
     }
     // END --- FORKLIFT --- END
+    // ORDER
+    static resetOrderInformationOnUi() {
+        document.querySelector("#selectedOrderForkliftId").innerHTML = "...";
+        document.querySelector("#selectedOrderOrderId").innerHTML = "...";
+        document.querySelector("#selectedOrderType").innerHTML = "...";
+        document.querySelector("#selectedOrderPalletId").innerHTML = "...";
+        document.querySelector("#selectedOrderStartNodeId").innerHTML = "...";
+        document.querySelector("#selectedOrderEndNodeId").innerHTML = "...";
+        document.querySelector("#selectedOrderStartTime").innerHTML = "...";
+    }
+
+    static chooseOrder(orderId) {
+        if (orderId == "") {
+            document.querySelectorAll(".select-order").forEach((e) => {
+                this.resetOrderInformationOnUi();
+            });
+        } else if (orderId[0] != "<") {
+            orders[orderId].selectOrder();
+        }
+    }
+    // END --- ORDER --- END
 }
