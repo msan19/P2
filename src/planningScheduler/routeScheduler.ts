@@ -582,7 +582,7 @@ export class RouteScheduler {
         // Find appropriate place in priorities and insert
         if (this.bestRouteSet !== null) {
             for (let newOrderId of this.data.newOrders) {
-                this.insertOrderInPrioritiesAppropriatedly(newOrderId);
+                this.insertOrderInPrioritiesAppropriately(newOrderId);
             }
         } else {
             this.data.newOrders.forEach((newOrder) => {
@@ -603,11 +603,11 @@ export class RouteScheduler {
 
     }
 
-    insertOrderInPrioritiesAppropriatedly(orderId: string): void {
-        let indexForNewOrder = this.bestRouteSet.priorities.length - 1;
+    insertOrderInPrioritiesAppropriately(orderId: string): void {
+        let indexForNewOrder = this.bestRouteSet.priorities.length;
 
         while (indexForNewOrder > 0
-            && this.data.orders[orderId].time > this.data.orders[this.bestRouteSet.priorities[indexForNewOrder]].time) {
+            && this.data.orders[orderId].time < this.data.orders[this.bestRouteSet.priorities[indexForNewOrder - 1]].time) {
             indexForNewOrder--;
         }
 
