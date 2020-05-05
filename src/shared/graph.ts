@@ -260,19 +260,6 @@ export class Vertex {
     }
 
     /**
-     * Finds distance from the vertex which the function is called on to the vertex specified 
-     * by the parameter id by recursively adding the distance to the previousVertex 
-     * @param startId An identification string specifying the last vertex in the recursion
-     */
-    g(startId: string): number {
-        if (this.id === startId || this.previousVertex === null) {
-            return 0;
-        } else {
-            return this.previousVertex.g(startId) + (this.position.getDistanceTo(this.previousVertex.position));
-        }
-    }
-
-    /**
      * Uses a binary search to find the index of a scheduleitem in the list of scheduleitems based on the parameter time
      * @param time A point in time for which the corresponding array index is found
      * @returns An index corresponding to the time
