@@ -8,6 +8,7 @@
  * A {@link Vector2} representing a position in two-dimentional space relative to a center origin point
  */
 export class Vector2 {
+    jsonPublicKeys = ["x", "y"];
 
     /** A number specifying the position on the x-axis */
     x: number;

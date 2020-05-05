@@ -28,6 +28,8 @@ export class Order {
     /** A reference to the entire enum of OrderTypes */
     static timeTypes = TimeType;
 
+    jsonPublicKeys = ["id", "timeType", "time", "type", "forkliftId", "palletId", "startVertexId", "endVertexId"];
+
     /** An identification string for the {@link Order} */
     id: string;
 
