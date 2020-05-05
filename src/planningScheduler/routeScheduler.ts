@@ -210,15 +210,11 @@ export class RouteScheduler {
             }
 
             // Comment
-            if (order.type === Order.types.moveForklift) {
-                currentRouteTime = this.planOptimalRoute(routeSet, routeSet.graph.idlePositions[order.forkliftId].currentVertexId,
-                    order.endVertexId, order.time, order.forkliftId);
-            }
-
-            // Comment
-            if (order.type === Order.types.charge) {
-                currentRouteTime = this.planOptimalRoute(routeSet, routeSet.graph.idlePositions[order.forkliftId].currentVertexId,
-                    order.endVertexId, order.time, order.forkliftId);
+            if (order.type === Order.types.moveForklift || order.type === Order.types.charge) {
+                if (routeSet.graph.idlePositions[order.forkliftId].arrivalTimeCurrentVertex <= order.time) {
+                    currentRouteTime = this.planOptimalRoute(routeSet, routeSet.graph.idlePositions[order.forkliftId].currentVertexId,
+                        order.endVertexId, order.time, order.forkliftId);
+                } else currentRouteTime = Infinity;
             }
 
             if (currentRouteTime != Infinity) {
