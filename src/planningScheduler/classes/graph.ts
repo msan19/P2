@@ -1,12 +1,23 @@
 import { Graph as Graph_Shared, Vertex as Vertex_Shared } from "../../shared/graph";
 import { Vector2 } from "../../shared/vector2";
 
+function superCastVertex(vertex: Vertex_Shared): Vertex {
+    return new Vertex(vertex.id, vertex.position, vertex.label);
+}
+function superCastGraph(graph: Graph_Shared): Graph {
+    let castedVertices = {};
+    for (let key in graph.vertices) {
+        castedVertices[key] = superCastVertex(graph.vertices[key]);
+    }
+
+    return new Graph(castedVertices);
+}
+
 export class Graph extends Graph_Shared {
     vertices: { [key: string]: Vertex; };
 
     /** A dictionary of ScheduleItems specifying the time and location of idle forklifts */
     idlePositions: { [forkliftId: string]: ScheduleItem; } = {};
-
 
     /**
      * Returns a new {@link Graph} containing only the legal content of the parameter {@link Graph}
@@ -14,40 +25,11 @@ export class Graph extends Graph_Shared {
      * @returns The new {@link Graph}
      */
     static parse(graph: any): Graph | null {
-        // Check necessary fields
-        if (typeof (graph) !== "object" || graph === null) return null;
-        if (typeof (graph.vertices) !== "object" || graph.vertices === null) return null;
+        let parsed: Graph | Graph_Shared = Graph_Shared.parse(graph);
+        if (parsed === null) return null;
+        parsed = superCastGraph(parsed);
 
-        // All vertices are vertex
-        let keys: string[] = Object.keys(graph.vertices);
-        let length: number = keys.length;
-        for (let i = 0; i < length; i++) {
-            let tempVertex: Vertex | null = Vertex.parse(graph.vertices[keys[i]]);
-            if (tempVertex === null) {
-                delete graph.vertices[keys[i]];
-            }
-        }
-
-        // Check for both-way edges
-        let tempVertices: { [key: string]: Vertex; } = {};
-        keys = Object.keys(graph.vertices);
-        length = keys.length;
-        for (let i = 0; i < length; i++) {
-            let currVertex: Vertex = graph.vertices[keys[i]];
-            let tempVertex: Vertex = Vertex.parse(currVertex);
-
-            if (tempVertex !== null) {
-                tempVertex.adjacentVertexIds = [];
-                for (let j = 0; j < currVertex.adjacentVertexIds.length; j++) {
-                    if (graph.vertices[currVertex.adjacentVertexIds[j]].adjacentVertexIds.includes(currVertex.id)) {
-                        tempVertex.adjacentVertexIds.push(currVertex.adjacentVertexIds[j]);
-                    }
-                }
-                tempVertices[tempVertex.id] = tempVertex;
-            }
-        }
-
-        return new Graph(tempVertices);
+        return <Graph>parsed;
     }
 
     /**
