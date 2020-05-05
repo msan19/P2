@@ -76,6 +76,9 @@ export class RouteScheduler {
 
         let forkliftId = currentScheduleItem.forkliftId;
 
+        // Lock idlePositions from bestRouteSet to this.data.warehouse.graph
+        this.data.warehouse.graph.idlePositions[forkliftId] = currentScheduleItem;
+
         // Inserts all scheduleItems from route of order from bestRouteSet.graph to data.warehouse.graph
         while (currentScheduleItem !== null) {
             this.data.warehouse.graph.vertices[currentScheduleItem.currentVertexId].insertScheduleItem(currentScheduleItem);
@@ -303,8 +306,10 @@ export class RouteScheduler {
         // Create an array of mutated entries for problematic values (values < ?)
         for (let i = 0; i < values.length; i++) {
             let newIndex = i - 1;
+            let currentOrder = this.data.orders[this.bestRouteSet.priorities[i]];
 
-            while (newIndex >= 0 && (values[newIndex] + newIndex * mutationConstant) > (values[i] + i * mutationConstant)) {
+            while (newIndex >= 0 && (values[newIndex] + newIndex * mutationConstant) > (values[i] + i * mutationConstant)
+                && RouteScheduler.isValidMutation(currentOrder, this.data.orders[this.bestRouteSet.priorities[newIndex]])) {
                 newIndex--;
             }
             newIndex++;
@@ -321,6 +326,14 @@ export class RouteScheduler {
 
         this.mutations = mutations;
         this.mutationCounter = 0;
+    }
+
+    static isValidMutation(currentOrder: Order, newOrder: Order): boolean {
+        let oneIsMovePallet: boolean = currentOrder.type === Order.types.movePallet || newOrder.type === Order.types.movePallet;
+        let differentForklifts: boolean = currentOrder.forkliftId !== newOrder.forkliftId;
+        let timeCurrentOrderIsLower: boolean = currentOrder.time < newOrder.time;
+
+        return oneIsMovePallet || differentForklifts || timeCurrentOrderIsLower;
     }
 
     generateChronologicalPriorities(): string[] {
@@ -342,30 +355,34 @@ export class RouteScheduler {
 
             // Handle mutationCounter greater than number of mutations
             if (this.mutationCounter >= this.mutations.length && priorities.length > 0) {
-                let ranIndex = randomIntegerInRange(0, priorities.length - 1);
-                let ranNewIndex = randomIntegerInRange(0, priorities.length - 1);
-                let priority = priorities.splice(ranIndex, 1)[0];
-                priorities.splice(ranNewIndex, 0, priority);
+                this.priotizeOnePriorityRandomly(priorities);
             } else {
                 // Handle the mutations
                 let priority = priorities.splice(this.mutations[this.mutationCounter].index, 1)[0];
                 priorities.splice(this.mutations[this.mutationCounter].newIndex, 0, priority);
             }
-
-
         } else {
             priorities = this.generateChronologicalPriorities();
 
             if (this.mutationCounter > 0) {
-                let ranIndex = randomIntegerInRange(0, priorities.length - 1);
-                let ranNewIndex = randomIntegerInRange(0, priorities.length - 1);
-                let priority = priorities.splice(ranIndex, 1)[0];
-                priorities.splice(ranNewIndex, 0, priority);
+                this.priotizeOnePriorityRandomly(priorities);
             }
         }
 
         this.mutationCounter++;
         return priorities;
+    }
+
+    priotizeOnePriorityRandomly(priorities): void {
+        let ranIndex;
+        let ranNewIndex;
+        let counter = priorities.length;
+
+        do {
+            ranIndex = randomIntegerInRange(0, priorities.length - 1);
+            ranNewIndex = randomIntegerInRange(0, ranIndex - 1);
+
+        } while (counter-- > 0 && RouteScheduler.isValidMutation(this.data.orders[priorities[ranIndex]], this.data.orders[priorities[ranNewIndex]]));
     }
 
     // Lower value is better
@@ -591,11 +608,11 @@ export class RouteScheduler {
     }
 
     insertOrderInPrioritiesAppropriatedly(orderId: string): void {
-        let indexForNewOrder = 0;
+        let indexForNewOrder = this.bestRouteSet.priorities.length - 1;
 
-        while (indexForNewOrder < this.bestRouteSet.priorities.length
+        while (indexForNewOrder > 0
             && this.data.orders[orderId].time > this.data.orders[this.bestRouteSet.priorities[indexForNewOrder]].time) {
-            indexForNewOrder++;
+            indexForNewOrder--;
         }
 
         this.bestRouteSet.priorities.splice(indexForNewOrder, 0, orderId);

@@ -15,7 +15,6 @@ class UiManager {
     }
 
     // ROUTE
-
     static clearInstrutionsOnUi() {
         document.querySelectorAll(".selectedRouteInstructionList").forEach((e) => {
             e.innerHTML = "";
@@ -152,10 +151,6 @@ class UiManager {
     static selectForklift(forkliftId) {
         nForklifts.selectForklift(forkliftId);
         UiManager.updateSelectedForkliftInformationOnUI();
-        if (nForklifts.checkIfThereIsASelectedForklift())
-            mainGraph.displaySelectedForkliftPath();
-        else
-            mainGraph.revertColorsToOriginal();
     }
 
     static chooseForklift(forkliftId) {

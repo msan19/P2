@@ -11,6 +11,7 @@ export class OrderSpammer {
     private socket: WebSocket;
     private apiCaller: ApiCaller;
 
+    firstTimeOrderCreated: number;
     ordersSentCount: number = 0;
     warehouse: Warehouse = null;
     forkliftIds: { [key: string]: string; };
@@ -28,6 +29,7 @@ export class OrderSpammer {
         this.socket.on(WebSocket.packageTypes.warehouse, (warehouse) => { this.warehouse = warehouse; });
         this.interval = interval;
         this.iterate();
+        this.firstTimeOrderCreated = (new Date()).getTime();
 
         this.socket.on(WebSocket.packageTypes.forkliftInfos, (forklifts: ForkliftInfo[]) => {
             this.forkliftIds = {};
@@ -41,8 +43,12 @@ export class OrderSpammer {
     }
 
     private iterate() {
-        if (this.warehouse !== null) {
+        /*if (this.warehouse !== null) {
             this.apiCaller.sendOrder(this.createRandomOrder());
+        }*/
+
+        if (this.warehouse !== null && this.ordersSentCount < 4) {
+            this.apiCaller.sendOrder(this.createPrePlannedOrder());
         }
 
         setTimeout(() => { this.iterate(); }, this.interval());
@@ -61,6 +67,54 @@ export class OrderSpammer {
         order.timeType = Order.timeTypes.start;
         this.ordersSentCount++;
         return order;
+    }
+
+    createPrePlannedOrder() {
+        let listOfPrePlannedOrders = [
+            new Order(
+                `0`,
+                Order.types.moveForklift,
+                `F0`,
+                `pallet-${this.ordersSentCount}`,
+                randomValue(this.warehouse.graph.vertices).id,
+                `N4-6`
+            ),
+            new Order(
+                `1`,
+                Order.types.moveForklift,
+                `F0`,
+                `pallet-${this.ordersSentCount}`,
+                randomValue(this.warehouse.graph.vertices).id,
+                `N9-7`
+            ),
+            new Order(
+                `2`,
+                Order.types.moveForklift,
+                `F0`,
+                `pallet-${this.ordersSentCount}`,
+                randomValue(this.warehouse.graph.vertices).id,
+                `N3-2`
+            ),
+            new Order(
+                `3`,
+                Order.types.moveForklift,
+                `F0`,
+                `pallet-${this.ordersSentCount}`,
+                randomValue(this.warehouse.graph.vertices).id,
+                `N9-1`
+            )
+        ];
+
+        let times = [20000, 50000, 80000, 110000];
+
+        listOfPrePlannedOrders.forEach((order) => {
+            order.time = this.firstTimeOrderCreated + times[listOfPrePlannedOrders.indexOf(order)];
+            order.timeType = Order.timeTypes.start;
+        });
+
+        return listOfPrePlannedOrders[this.ordersSentCount++] || null;
+
+
     }
 
 }
