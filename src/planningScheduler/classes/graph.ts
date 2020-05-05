@@ -93,36 +93,9 @@ export class Vertex extends Vertex_Shared {
      * @returns A legal vertex or null
      */
     static parse(vertex: any): Vertex | null {
-        // Check for necessary field types
-        if (typeof (vertex) !== "object" || vertex === null) return null;
-        if (typeof (vertex.id) !== "string") return null;
-        if (typeof (vertex.position) !== "object" || vertex.position === null) return null;
-
-        // Check for a valid position
-        let tempVector: Vector2 | null = Vector2.parse(vertex.position);
-        if (tempVector === null) return null;
-
-        // Check for label
-        let tempLabel: string = null;
-        if (typeof (vertex.label) === "string" && vertex.label.length > 0) {
-            tempLabel = vertex.label;
-        }
-
-        // Check adjacency list
-        let tempAdjacency: string[] = [];
-        if (typeof (vertex.adjacentVertexIds) === "object" && vertex.adjacentVertexIds !== null) {
-            for (let i = 0; i < vertex.adjacentVertexIds.length; i++) {
-                if (typeof (vertex.adjacentVertexIds[i]) && vertex.adjacentVertexIds[i].length > 0) {
-                    tempAdjacency.push(vertex.adjacentVertexIds[i]);
-                }
-            }
-        }
-
-        // Create the now valid vertex and add adjacency and schedule items
-        let tempVertex: Vertex = new Vertex(vertex.id, tempVector, tempLabel);
-        tempVertex.adjacentVertexIds = tempAdjacency;
-
-        return tempVertex;
+        let parsed = super.parse(vertex);
+        if (parsed === null) return null;
+        return superCastVertex(parsed);
     }
 
     /**
