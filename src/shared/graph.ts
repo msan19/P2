@@ -8,6 +8,7 @@ import { Vector2 } from "./vector2";
 
 /** A {@link Graph} cointaining interconnected vertices */
 export class Graph {
+    jsonPublicKeys = ["vertices"];
 
     /** A dictionary of vertices contained in the {@link Graph} */
     vertices: { [key: string]: Vertex; };
