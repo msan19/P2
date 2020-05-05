@@ -329,11 +329,11 @@ export class RouteScheduler {
     }
 
     static isValidMutation(currentOrder: Order, newOrder: Order): boolean {
-        let oneIsMovePallet: boolean = currentOrder.type === Order.types.movePallet || newOrder.type === Order.types.movePallet;
+        let oneOrderIsMovePallet: boolean = currentOrder.type === Order.types.movePallet || newOrder.type === Order.types.movePallet;
         let differentForklifts: boolean = currentOrder.forkliftId !== newOrder.forkliftId;
         let timeCurrentOrderIsLower: boolean = currentOrder.time < newOrder.time;
 
-        return oneIsMovePallet || differentForklifts || timeCurrentOrderIsLower;
+        return oneOrderIsMovePallet || differentForklifts || timeCurrentOrderIsLower;
     }
 
     generateChronologicalPriorities(): string[] {
