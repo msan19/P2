@@ -3,6 +3,7 @@ class Route {
     forkliftId;
     orderId;
     instructions;
+    nextRoute;
     constructor(route, routeId, forkliftId, orderId, instructions) {
         if (typeof (route) != "undefined" && route != null) {
             this.routeId = route.routeId;
@@ -62,19 +63,20 @@ class Route {
             if (typeof (forkliftData[newRoute.forkliftId].currentNode) == "undefined")
                 forkliftData[newRoute.forkliftId].currentNode = newRoute.instructions[0];
         } else {
-            forkliftData[newRoute.forkliftId].route.onChangeRoute();
-            forkliftData[newRoute.forkliftId].route = newRoute;
-            if (typeof (forkliftData[newRoute.forkliftId].currentNode) == "undefined")
-                forkliftData[newRoute.forkliftId].currentNode = newRoute.instructions[0];
+            forkliftData[newRoute.forkliftId].route.setNextRoute(newRoute);
         }
     }
 
-    onChangeRoute() {
-        this.removeRouteFromUi();
+    setNextRoute(route) {
+        if (typeof (this.nextRoute) == "undefined")
+            this.nextRoute(route);
+        else
+            this.nextRoute.setNextRoute(route);
     }
 
     onFinishRoute() {
         this.removeRouteFromUi();
+        forkliftData[this.forkliftId].route = forkliftData[this.forkliftId].route.nextRoute;
     }
 
     onInstructionDone() {

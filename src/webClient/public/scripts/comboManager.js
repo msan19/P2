@@ -1,5 +1,6 @@
 window.nForklifts = new Forklifts(null);
 window.mainGraph;
+window.orders = {};
 
 window.frameRate = 60;
 
@@ -52,6 +53,19 @@ window.socketManager.on(PackageTypes.route, (route) => {
     Route.onReceiveRoute(route);
 });
 // END --- ROUTE --- END
+// ORDER
+window.socketManager.on(PackageTypes.orders, (orders) => {
+    for (let key in orders) {
+        Order.onReceiveOrder(orders[key]);
+    }
+})
+
+window.socketManager.on(PackageTypes.order, (order) => {
+    Order.onReceiveOrder(order);
+});
+
+
+// END --- ORDER --- END
 
 // Event loop
 window.setInterval(function () {
