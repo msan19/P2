@@ -69,7 +69,7 @@ export class PlanningScheduler {
                             this.data.lockRoute(this.routeScheduler.getRoute(orderId));
                         }
                     } else if (this.data.orders[orderId].time < currentTime + timeOffset) {
-                        // Throw error: order could not be planned in time
+                        this.data.orders[orderId].time += 2 * timeOffset;
                     }
                 } else {
                     // Handle forklift feedback for orders. If positive, remove
