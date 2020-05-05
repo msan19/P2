@@ -416,12 +416,12 @@ function testAStar(): void {
 }
 
 function initRouteSet() {
-    let graph: Graph = createGraph();
+    let graph: Graph = Graph.parse(createGraph());
     return new RouteSet([], graph);
 }
 
 function initRouteScheduler() {
-    let graph: Graph = createGraph();
+    let graph: Graph = Graph.parse(createGraph());
     let warehouse = new Warehouse(graph, 15);
     let data: DataContainer = new DataContainer();
     data.warehouse = warehouse;
