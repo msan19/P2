@@ -62,7 +62,8 @@ class Route {
             forkliftData[newRoute.forkliftId].route = newRoute;
             if (typeof (forkliftData[newRoute.forkliftId].currentNode) == "undefined")
                 forkliftData[newRoute.forkliftId].currentNode = newRoute.instructions[0];
-            forkliftData[newRoute.forkliftId].route.selectRoute();
+            if (nForklifts.selectedForklift == newRoute.forkliftId)
+                mainGraph.displaySelectedForkliftPath();
         } else {
             forkliftData[newRoute.forkliftId].route.setNextRoute(newRoute);
         }
@@ -77,9 +78,9 @@ class Route {
 
     onFinishRoute() {
         if (nForklifts.selectedForklift == this.forkliftId) {
-            if (typeof (this.nextRoute) != "undefined")
-                this.selectRoute();
-            else
+            if (typeof (this.nextRoute) != "undefined") {
+                UiManager.chooseRoute(this.nextRoute);
+            } else
                 UiManager.resetRouteInformationOnUi();
         }
 
