@@ -58,6 +58,7 @@ window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
         nForklifts.handleForkliftMovement();
         mainGraph.updateForkliftsOnGraph();
+        UiManager.updateSelectedForkliftInformationOnUI();
         mainGraph.sigmaGraph.refresh();
     }
 }, 1000 / frameRate);
