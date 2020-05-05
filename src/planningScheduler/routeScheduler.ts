@@ -210,15 +210,11 @@ export class RouteScheduler {
             }
 
             // Comment
-            if (order.type === Order.types.moveForklift) {
-                currentRouteTime = this.planOptimalRoute(routeSet, routeSet.graph.idlePositions[order.forkliftId].currentVertexId,
-                    order.endVertexId, order.time, order.forkliftId);
-            }
-
-            // Comment
-            if (order.type === Order.types.charge) {
-                currentRouteTime = this.planOptimalRoute(routeSet, routeSet.graph.idlePositions[order.forkliftId].currentVertexId,
-                    order.endVertexId, order.time, order.forkliftId);
+            if (order.type === Order.types.moveForklift || order.type === Order.types.charge) {
+                if (routeSet.graph.idlePositions[order.forkliftId].arrivalTimeCurrentVertex <= order.time) {
+                    currentRouteTime = this.planOptimalRoute(routeSet, routeSet.graph.idlePositions[order.forkliftId].currentVertexId,
+                        order.endVertexId, order.time, order.forkliftId);
+                } else currentRouteTime = Infinity;
             }
 
             if (currentRouteTime != Infinity) {
@@ -356,7 +352,7 @@ export class RouteScheduler {
             // Handle mutationCounter greater than number of mutations
             if (this.mutationCounter >= this.mutations.length && priorities.length > 0) {
                 this.priotizeOnePriorityRandomly(priorities);
-            } else {
+            } else if (this.mutations.length > 0) {
                 // Handle the mutations
                 let priority = priorities.splice(this.mutations[this.mutationCounter].index, 1)[0];
                 priorities.splice(this.mutations[this.mutationCounter].newIndex, 0, priority);
@@ -547,28 +543,6 @@ export class RouteScheduler {
         }
     }
 
-    /// TO DO
-    /** 
-     * Adds scheduleItems to all vertices the sorting algorithm pathed through.
-     * As end time is known the algorithm appends from the last element (end vertex)
-     * to the first (start vertex), using the time of the next vertex (not Vertex.previousVertex).
-     * Thus is appends scheduleItems while creating the stack, and not while resolving it.
-     * @param vertex Initially the end vertex. After it is the previous vertex in the path
-     * @param order The order for which the route was created
-     * @param time The time of the next vertex (as in opposite Vertex.previousVertex)
-     * @param nextVertexId The ID of the next vertex (as in opposite Vertex.previousVertex)
-     * @returns Nothing as the recursion uses the creation of the stack and not the resolution
-     */
-    downStacking(vertex: Vertex, order: Order, time: number, nextVertexId: string, forkliftSpeed: number): void {
-        let fulfillTime: number = vertex.getDistanceDirect(vertex.previousVertex) / forkliftSpeed;
-        let timeOnPrev: number = time - fulfillTime;
-
-        //vertex.scheduleItems.push(new ScheduleItem(order.forkliftId, time, nextVertexId));
-        if (vertex.id !== order.startVertexId) {
-            this.downStacking(vertex.previousVertex, order, timeOnPrev, vertex.id, forkliftSpeed);
-        }
-    }
-
     getStartTime(orderId: string): number {
         let order: Order = this.data.orders[orderId];
         if (order.type === Order.types.movePallet) {
@@ -586,7 +560,7 @@ export class RouteScheduler {
         // Find appropriate place in priorities and insert
         if (this.bestRouteSet !== null) {
             for (let newOrderId of this.data.newOrders) {
-                this.insertOrderInPrioritiesAppropriatedly(newOrderId);
+                this.insertOrderInPrioritiesAppropriately(newOrderId);
             }
         } else {
             this.data.newOrders.forEach((newOrder) => {
@@ -607,11 +581,11 @@ export class RouteScheduler {
 
     }
 
-    insertOrderInPrioritiesAppropriatedly(orderId: string): void {
-        let indexForNewOrder = this.bestRouteSet.priorities.length - 1;
+    insertOrderInPrioritiesAppropriately(orderId: string): void {
+        let indexForNewOrder = this.bestRouteSet.priorities.length;
 
         while (indexForNewOrder > 0
-            && this.data.orders[orderId].time > this.data.orders[this.bestRouteSet.priorities[indexForNewOrder]].time) {
+            && this.data.orders[orderId].time < this.data.orders[this.bestRouteSet.priorities[indexForNewOrder - 1]].time) {
             indexForNewOrder--;
         }
 
