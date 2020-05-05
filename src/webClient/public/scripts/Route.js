@@ -62,6 +62,7 @@ class Route {
             forkliftData[newRoute.forkliftId].route = newRoute;
             if (typeof (forkliftData[newRoute.forkliftId].currentNode) == "undefined")
                 forkliftData[newRoute.forkliftId].currentNode = newRoute.instructions[0];
+            UiManager.chooseRoute(this.routeId);
         } else {
             forkliftData[newRoute.forkliftId].route.setNextRoute(newRoute);
         }
