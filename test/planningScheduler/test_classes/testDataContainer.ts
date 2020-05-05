@@ -53,7 +53,7 @@ function testAddOrder() {
     describe(`When an order is added`, () => {
         let data: DataContainer = new DataContainer();
         let orderId: string = "sfgojikdfjoi";
-        data.addOrder(new Order("sfgojikdfjoi", Order.types.moveForklift, "awd", "pallet1", "start1", "slut1"));
+        data.addOrder(new Order("sfgojikdfjoi", Order.types.moveForklift, "awd", "pallet1", "start1", "slut1", 1000, 2, 3));
 
         it(`Order number 1's ${Object.keys(data.orders[orderId])[0]} should be sfgojikdfjoi`, () => {
             expect(data.orders[orderId].id).to.equal("sfgojikdfjoi");
@@ -78,22 +78,34 @@ function testAddOrder() {
         it(`Order number 1's ${Object.keys(data.orders[orderId])[5]} should be "slut1"`, () => {
             expect(data.orders[orderId].endVertexId).to.equal("slut1");
         });
+
+        it(`Order number 1's ${Object.keys(data.orders[orderId])[6]} should be 1000`, () => {
+            expect(data.orders[orderId].endVertexId).to.equal(1000);
+        });
+
+        it(`Order number 1's ${Object.keys(data.orders[orderId])[7]} should be 2`, () => {
+            expect(data.orders[orderId].endVertexId).to.equal(2);
+        });
+
+        it(`Order number 1's ${Object.keys(data.orders[orderId])[8]} should be 3`, () => {
+            expect(data.orders[orderId].endVertexId).to.equal(3);
+        });
     });
 
     // Adding multiple orders
     describe(`When multiple orders are added`, () => {
         let data: DataContainer = new DataContainer();
-        data.addOrder(new Order("O0", Order.types.moveForklift, "TF2", "P17", "N17", "N21"));
-        data.addOrder(new Order("O1", Order.types.movePallet, "TF2", "P17", "N21", "N23"));
-        data.addOrder(new Order("O2", Order.types.charge, "TF2", "", "N23", "C1"));
-        data.addOrder(new Order("O3", Order.types.charge, "TF25", "", "", "C3"));
-        data.addOrder(new Order("O4", Order.types.moveForklift, "TF25", "P4", "C3", "N21"));
+        data.addOrder(new Order("O0", Order.types.moveForklift, "TF2", "P17", "N17", "N21", 100, 2, 3));
+        data.addOrder(new Order("O1", Order.types.movePallet, "TF2", "P17", "N21", "N23", 200, 2, 3));
+        data.addOrder(new Order("O2", Order.types.charge, "TF2", "", "N23", "C1", 300, 2, 3));
+        data.addOrder(new Order("O3", Order.types.charge, "TF25", "", "", "C3", 400, 2, 3));
+        data.addOrder(new Order("O4", Order.types.moveForklift, "TF25", "P4", "C3", "N21", 500, 2, 3));
 
-        let expectO0: any[] = ["O0", Order.types.moveForklift, "TF2", "P17", "N17", "N21"];
-        let expectO1: any[] = ["O1", Order.types.movePallet, "TF2", "P17", "N21", "N23"];
-        let expectO2: any[] = ["O2", Order.types.charge, "TF2", "", "N23", "C1"];
-        let expectO3: any[] = ["O3", Order.types.charge, "TF25", "", "", "C3"];
-        let expectO4: any[] = ["O4", Order.types.moveForklift, "TF25", "P4", "C3", "N21"];
+        let expectO0: any[] = ["O0", Order.types.moveForklift, "TF2", "P17", "N17", "N21", 100, 2, 3];
+        let expectO1: any[] = ["O1", Order.types.movePallet, "TF2", "P17", "N21", "N23", 200, 2, 3];
+        let expectO2: any[] = ["O2", Order.types.charge, "TF2", "", "N23", "C1", 300, 2, 3];
+        let expectO3: any[] = ["O3", Order.types.charge, "TF25", "", "", "C3", 400, 2, 3];
+        let expectO4: any[] = ["O4", Order.types.moveForklift, "TF25", "P4", "C3", "N21", 500, 2, 3];
 
         let expecteds: any[][] = [expectO0, expectO1, expectO2, expectO3, expectO4];
 
@@ -122,6 +134,18 @@ function testAddOrder() {
 
                 it(`Order ${orderId}'s ${Object.keys(data.orders[orderId])[5]} should be ${expecteds[i][5]}`, () => {
                     expect(data.orders[orderId].endVertexId).to.equal(expecteds[i][5]);
+                });
+
+                it(`Order ${orderId}'s ${Object.keys(data.orders[orderId])[6]} should be ${expecteds[i][6]}`, () => {
+                    expect(data.orders[orderId].endVertexId).to.equal(expecteds[i][6]);
+                });
+
+                it(`Order ${orderId}'s ${Object.keys(data.orders[orderId])[7]} should be ${expecteds[i][7]}`, () => {
+                    expect(data.orders[orderId].endVertexId).to.equal(expecteds[i][7]);
+                });
+
+                it(`Order ${orderId}'s ${Object.keys(data.orders[orderId])[8]} should be ${expecteds[i][8]}`, () => {
+                    expect(data.orders[orderId].endVertexId).to.equal(expecteds[i][8]);
                 });
             });
         }

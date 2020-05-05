@@ -17,6 +17,7 @@ import { RouteScheduler } from '../../src/planningScheduler/routeScheduler';
 import { DataContainer } from '../../src/planningScheduler/classes/dataContainer';
 import { RouteSet } from '../../src/planningScheduler/classes/routeSet';
 import { Warehouse } from '../../src/planningScheduler/classes/warehouse';
+import { OrderTypes } from '../../src/shared/order';
 
 
 /**
@@ -361,13 +362,9 @@ function testAStar(): void {
         let routeScheduler: RouteScheduler = initRouteScheduler();
 
         // Orders and such
-        let order: Order = new Order("O0", Order.types.moveForklift, "F23", "P23", "N1-2", "N8-9");
-        order.timeType = Order.timeTypes.start;
-        order.time = 400;
+        let order: Order = new Order("O0", Order.types.moveForklift, "F23", "P23", "N1-2", "N8-9", 400, Order.timeTypes.start, 3);
 
-        let orderAnnoying: Order = new Order("O1", Order.types.moveForklift, "F24", "P24", "N0-3", "N5-8");
-        orderAnnoying.timeType = Order.timeTypes.start;
-        orderAnnoying.time = 400;
+        let orderAnnoying: Order = new Order("O1", Order.types.moveForklift, "F24", "P24", "N0-3", "N5-8", 400, Order.timeTypes.start, 3);
 
         routeScheduler.planOptimalRoute(routeSet, order.startVertexId, order.endVertexId, order.time, "F23");
         routeScheduler.planOptimalRoute(routeSet, orderAnnoying.startVertexId, orderAnnoying.endVertexId, orderAnnoying.time, "F24");
@@ -436,9 +433,7 @@ function testRouteScheduler(): void {
             let routeSet: RouteSet = initRouteSet();
             let routeScheduler: RouteScheduler = initRouteScheduler();
 
-            let order: Order = new Order("O0", Order.types.moveForklift, "F23", "P23", "N1-2", "N8-9");
-            order.timeType = Order.timeTypes.start;
-            order.time = 400;
+            let order: Order = new Order("O0", Order.types.moveForklift, "F23", "P23", "N1-2", "N8-9", 400, Order.timeTypes.start, 3);
 
             let expected = [];
             let result = routeScheduler.assignForklift(routeSet, order);
@@ -454,9 +449,7 @@ function testRouteScheduler(): void {
             let routeSet: RouteSet = initRouteSet();
             let routeScheduler: RouteScheduler = initRouteScheduler();
 
-            let order: Order = new Order("O0", Order.types.moveForklift, "", "P23", "N1-2", "N8-9");
-            order.timeType = Order.timeTypes.start;
-            order.time = 100000;
+            let order: Order = new Order("O0", Order.types.moveForklift, "", "P23", "N1-2", "N8-9", 100000, Order.timeTypes.start, 3);
 
             // Set idlePositions of routeSet made of a dict of forkliftId : ScheduleItems pairs
             routeSet.graph.idlePositions["F23"] = new ScheduleItem("F23", 1400, "N0-0");
