@@ -8,6 +8,8 @@ import { Graph } from "./graph";
 
 /** A Warehouse containing a graph and the maximum forkliftspeed */
 export class Warehouse {
+    jsonPublicKeys = ["graph", "maxForkliftSpeed"];
+
     /** The layout of the warehouse */
     graph: Graph;
 
@@ -15,10 +17,7 @@ export class Warehouse {
     maxForkliftSpeed: number;
 
 
-    jsonPublicKeys = [
-        "graph",
-        "maxForkliftSpeed"
-    ];
+
 
     constructor(graph: Graph, forkliftSpeed: number) {
         this.graph = graph;

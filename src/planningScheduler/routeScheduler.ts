@@ -76,6 +76,9 @@ export class RouteScheduler {
 
         let forkliftId = currentScheduleItem.forkliftId;
 
+        // Lock idlePositions from bestRouteSet to this.data.warehouse.graph
+        this.data.warehouse.graph.idlePositions[forkliftId] = currentScheduleItem;
+
         // Inserts all scheduleItems from route of order from bestRouteSet.graph to data.warehouse.graph
         while (currentScheduleItem !== null) {
             this.data.warehouse.graph.vertices[currentScheduleItem.currentVertexId].insertScheduleItem(currentScheduleItem);
