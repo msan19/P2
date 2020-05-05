@@ -55,13 +55,20 @@ export class Order {
     /** An identification string for the {@link Vertex} at which the forklift should drive to */
     endVertexId: string;
 
-    constructor(orderId: string, type: OrderTypes, forkliftId: string, palletId: string, startVertexId: string, endVertexId: string) {
+    /** Number of times the order can be delayed before being dropped */
+    delayCounter: number;
+
+    constructor(orderId: string, type: OrderTypes, forkliftId: string, palletId: string,
+        startVertexId: string, endVertexId: string, time: number, timeType: TimeType, delayCounter: number) {
         this.id = orderId;
         this.type = type;
         this.forkliftId = forkliftId;
         this.palletId = palletId;
         this.startVertexId = startVertexId;
         this.endVertexId = endVertexId;
+        this.time = time;
+        this.timeType = timeType;
+        this.delayCounter = delayCounter;
     }
 
     /**
@@ -91,13 +98,14 @@ export class Order {
         /*obj.timeType = Number(obj.timeType);
         if (typeof (Order.timeTypes[obj.timeType]) === "undefined") return null;*/
 
-        // Check for valid time abc
+        // Check for valid time
         obj.time = Number(obj.time);
         if (isNaN(obj.time)) return null;
 
-        let newOrder = new Order(obj.id, obj.type, obj.forkliftId, obj.palletId, obj.startVertexId, obj.endVertexId);
-        newOrder.time = obj.time;
-        newOrder.timeType = obj.timeType;
-        return newOrder;
+        // Check for valid delayCounter
+        obj.delayCounter = Number(obj.delayCounter);
+        if (isNaN(obj.delayCounter)) obj.delayCounter = 0;
+
+        return new Order(obj.id, obj.type, obj.forkliftId, obj.palletId, obj.startVertexId, obj.endVertexId, obj.time, obj.timeType, obj.delayCounter);
     }
 }
