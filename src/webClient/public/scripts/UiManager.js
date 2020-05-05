@@ -108,17 +108,18 @@ class UiManager {
             e.innerHTML = "...";
         })
         UiManager.clearInstrutionsOnUi();
+        new Route().selectRoute();
     }
     static chooseRoute(routeId) {
         if (routeId == "") {
-            UiManager.resetRouteInformationOnUi();
             this.selectForklift("");
+            new Route().selectRoute();
         } else {
             for (let key in forkliftData) {
                 if (typeof (forkliftData[key].route) != "undefined")
                     if (forkliftData[key].route.routeId == routeId) {
-                        forkliftData[key].route.selectRoute();
                         this.selectForklift(forkliftData[key].id);
+                        forkliftData[key].route.selectRoute();
                         break;
                     }
             }
