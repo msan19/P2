@@ -352,7 +352,7 @@ export class RouteScheduler {
             // Handle mutationCounter greater than number of mutations
             if (this.mutationCounter >= this.mutations.length && priorities.length > 0) {
                 this.priotizeOnePriorityRandomly(priorities);
-            } else {
+            } else if (this.mutations.length > 0) {
                 // Handle the mutations
                 let priority = priorities.splice(this.mutations[this.mutationCounter].index, 1)[0];
                 priorities.splice(this.mutations[this.mutationCounter].newIndex, 0, priority);
