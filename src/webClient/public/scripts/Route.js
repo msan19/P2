@@ -79,7 +79,7 @@ class Route {
     onFinishRoute() {
         if (nForklifts.selectedForklift == this.forkliftId) {
             if (typeof (this.nextRoute) != "undefined") {
-                UiManager.chooseRoute(this.nextRoute);
+                this.nextRoute.selectRoute();
             } else
                 UiManager.resetRouteInformationOnUi();
         }
