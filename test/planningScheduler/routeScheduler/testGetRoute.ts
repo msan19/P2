@@ -4,20 +4,21 @@ import 'mocha';
 import { DataContainer } from "./../../../src/planningScheduler/classes/dataContainer";
 import { RouteScheduler } from "./../../../src/planningScheduler/routeScheduler";
 import { createGraph } from "./../../../src/blackBox/warehouse";
-import { RouteSet, Route, Instruction } from "./../../../src/shared/route";
-import { ScheduleItem, Graph } from '../../../src/shared/graph';
-import { Order } from '../../../src/shared/order';
-import { Warehouse } from '../../../src/shared/warehouse';
+import { Route, Instruction } from "./../../../src/shared/route";
+import { RouteSet } from "./../../../src/planningScheduler/classes/routeSet";
+import { ScheduleItem, Graph } from '../../../src/planningScheduler/classes/graph';
+import { Order } from '../../../src/planningScheduler/classes/order';
+import { Warehouse } from '../../../src/planningScheduler/classes/warehouse';
 
 function testGetRoute(): void {
     describe("Test getRoute for movePallet order", () => {
         let data: DataContainer = new DataContainer();
-        let warehouseGraph: Graph = createGraph();
+        let warehouseGraph: Graph = Graph.parse(createGraph());
         let warehouse = new Warehouse(warehouseGraph, 15);
         data.warehouse = warehouse;
 
         let routeScheduler = new RouteScheduler(data);
-        let bestRouteSetgraph = createGraph();
+        let bestRouteSetgraph = Graph.parse(createGraph());
 
         let firstOrderId = "O1";
         let secondOrderId = "O2";

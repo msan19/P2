@@ -7,14 +7,13 @@
 
 import { expect } from 'chai';
 import 'mocha';
-import * as WebSocket from "ws";
 
 import { DataContainer } from "./../../../src/planningScheduler/classes/dataContainer";
-import { Warehouse } from '../../../src/shared/warehouse';
-import { Graph, Vertex } from '../../../src/shared/graph';
+import { Warehouse } from '../../../src/planningScheduler/classes/warehouse';
+import { Graph, Vertex } from '../../../src/planningScheduler/classes/graph';
 import { Vector2 } from '../../../src/shared/vector2';
 import { Forklift } from '../../../src/planningScheduler/classes/forklift';
-import { Order } from '../../../src/shared/order';
+import { Order } from '../../../src/planningScheduler/classes/order';
 
 /**
  * This function checks whether two orders are the same using Mocha's "expect"

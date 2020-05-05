@@ -8,7 +8,7 @@
 import { expect } from 'chai';
 import 'mocha';
 
-import { Graph, Vertex, ScheduleItem } from "../../../src/shared/graph";
+import { Graph, Vertex, ScheduleItem } from "../../../src/planningScheduler/classes/graph";
 import { Vector2 } from "../../../src/shared/vector2";
 
 /**

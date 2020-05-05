@@ -8,7 +8,7 @@ import { DataContainer } from "./classes/dataContainer";
 import { Route, Instruction } from "../shared/route";
 import { RouteSet } from "./classes/routeSet";
 import { Order } from "./classes/order";
-import { Vertex, ScheduleItem } from "../shared/graph";
+import { Vertex, ScheduleItem } from "./classes/graph";
 import { MinPriorityQueue } from "./classes/minPriorityQueue";
 import { randomIntegerInRange } from "../shared/utilities";
 

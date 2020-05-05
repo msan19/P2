@@ -4,7 +4,6 @@
  * @category Shared
  */
 
-import { Vertex, Graph, ScheduleItem } from "./graph";
 
 /** An enum of possible states used to describe a route */
 enum RouteStatus {

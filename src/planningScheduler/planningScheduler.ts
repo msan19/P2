@@ -7,7 +7,7 @@
 import { DataContainer } from "./classes/dataContainer";
 import { WebServerPlanningScheduler } from "./classes/WebServer";
 import { RouteScheduler } from "./routeScheduler";
-import { ScheduleItem } from "../shared/graph";
+import { ScheduleItem } from "./classes/graph";
 
 /**
  * Object to handle event loop of main server.
