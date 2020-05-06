@@ -25,6 +25,9 @@ let originalObj = {
 };
 let copiedObj = deepCopy(originalObj);
 
+let originalVector = new Vector2(2, 5);
+let copiedVector = deepCopy(new Vector2(2, 5));
+
 
 describe("deepCopy", () => {
     it("Values should remain equal", () => {
@@ -37,7 +40,8 @@ describe("deepCopy", () => {
         expect(copiedObj.arrayOfVectors).to.not.equal(originalObj.arrayOfVectors);
     });
     it("deepCopy should maintain prototypes", () => {
-        expect(copiedObj.arrayOfVectors[0] instanceof Vector2).to.be.true;
-        expect(copiedObj.arrayOfVectors[0].add(new Vector2(2, 2))).to.eql(new Vector2(3, 4));
+        expect(deepCopy(new Vector2(2, 5)) instanceof Vector2).to.be.true; // Try prototype of root
+        expect(copiedObj.arrayOfVectors[0] instanceof Vector2).to.be.true; // Try prototype from branch
+        expect(copiedObj.arrayOfVectors[0].add(new Vector2(2, 2))).to.eql(new Vector2(3, 4)); // Try a function from prototype
     });
 });
