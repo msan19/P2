@@ -25,7 +25,7 @@ export class Order extends Order_Shared {
         let keysVertices: string[] = Object.keys(data.warehouse.graph.vertices);
         if (!keysVertices.includes(obj.startVertexId) || !keysVertices.includes(obj.endVertexId)) return null;
 
-        return order;
+        return <Order>order;
     }
 
 }
