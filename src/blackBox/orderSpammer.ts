@@ -48,8 +48,12 @@ export class OrderSpammer {
             this.apiCaller.sendOrder(this.createRandomOrder());
         }*/
 
-        if (this.warehouse !== null && (this.ordersSentCount + this.ordersForF0Sent) < 8) {
+        /*if (this.warehouse !== null && (this.ordersSentCount + this.ordersForF0Sent) < 8) {
             this.apiCaller.sendOrder(this.createPrePlannedOrder());
+        }*/
+
+        if (this.warehouse !== null && (this.ordersSentCount) < 2) {
+            this.apiCaller.sendOrder(this.createAnnoyingOrder());
         }
 
         setTimeout(() => { this.iterate(); }, this.interval());
@@ -68,6 +72,38 @@ export class OrderSpammer {
             3);
         this.ordersSentCount++;
         return order;
+    }
+
+    // Should be deleted when program works (semi)
+    createAnnoyingOrder() {
+        let time = 20000;
+
+        let list = [
+            new Order(
+                `0`,
+                Order.types.moveForklift,
+                `F0`,
+                `pallet-${this.ordersSentCount}`,
+                randomValue(this.warehouse.graph.vertices).id,
+                `N9-2`,
+                this.firstTimeOrderCreated + time,
+                Order.timeTypes.start,
+                0
+            ),
+            new Order(
+                `1`,
+                Order.types.moveForklift,
+                `F9`,
+                `pallet-${this.ordersSentCount}`,
+                randomValue(this.warehouse.graph.vertices).id,
+                `N9-3`,
+                this.firstTimeOrderCreated + time,
+                Order.timeTypes.start,
+                0
+            )
+        ];
+
+        return list[this.ordersSentCount++];
     }
 
     createPrePlannedOrder() {
