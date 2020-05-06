@@ -1,10 +1,16 @@
 import { Order as Order_Shared, OrderTypes, TimeType } from "../../shared/order";
 import { DataContainer } from "./dataContainer";
 
+function superCastOrder(order: Order_Shared): Order {
+    let output = new Order(order.id, order.type, order.forkliftId, order.palletId, order.startVertexId,
+        order.endVertexId, order.time, order.timeType, order.delayMax);
+    return output;
+}
+
 export class Order extends Order_Shared {
 
-    constructor(orderId: string, type: OrderTypes, forkliftId: string, palletId: string, startVertexId: string, endVertexId: string, time: number, timeType: TimeType, delayCounter: number) {
-        super(orderId, type, forkliftId, palletId, startVertexId, endVertexId, time, timeType, delayCounter);
+    constructor(orderId: string, type: OrderTypes, forkliftId: string, palletId: string, startVertexId: string, endVertexId: string, time: number, timeType: TimeType, delayMax: number) {
+        super(orderId, type, forkliftId, palletId, startVertexId, endVertexId, time, timeType, delayMax);
     }
 
     /**
@@ -26,16 +32,16 @@ export class Order extends Order_Shared {
         let keysVertices: string[] = Object.keys(data.warehouse.graph.vertices);
         if (!keysVertices.includes(obj.startVertexId) || !keysVertices.includes(obj.endVertexId)) return null;
 
-        return <Order>order;
+        return superCastOrder(order);
     }
 
     delayStartTime(baseDelayTime: number) {
-        if (this.delayCounter <= 0) return false;
+        if (this.delayCounter >= this.delayMax) return false;
 
         // delayCounter is more than 0
 
         this.time += baseDelayTime * 2 ** this.delayCounter;
-        this.delayCounter--;
+        this.delayCounter++;
         return true;
     }
 
