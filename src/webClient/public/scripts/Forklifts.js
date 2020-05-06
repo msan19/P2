@@ -210,4 +210,15 @@ class Forklifts {
             };
         }
     }
+
+    getForkliftColor(forklift) {
+
+        if (typeof (forklift.route) == "undefined")
+            return "#ff0000";
+        else if (forklift.currentNode.nodeId == forklift.route.instructions[0].nodeId)
+            return "#ffff00";
+        else
+            return "#66ff66";
+
+    }
 }
