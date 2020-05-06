@@ -601,22 +601,6 @@ function testGraph() {
         });
 
     });
-
-    describe(`Test of Graph method "clone"`, () => {
-        let graph: Graph = new Graph({
-            "N23": new Vertex("N23", new Vector2(10, 10)),
-            "N27": new Vertex("N27", new Vector2(20, 20))
-        });
-        let vertex1: Vertex = graph.vertices["N23"];
-        let vertex2: Vertex = graph.vertices["N27"];
-
-        let result: Graph = graph.clone();
-        graph.vertices["N23"].scheduleItems.push(new ScheduleItem("F29", 10923029, "N23"));
-
-        it(`${result} and ${graph}`, () => {
-            expect(result).to.not.equal(graph);
-        });
-    });
 }
 
 
