@@ -210,4 +210,16 @@ class Forklifts {
             };
         }
     }
+
+    getForkliftColor(forklift) {
+
+        if (typeof (forklift.route) == "undefined")
+            return "#ff0000";
+        let time = forklift.currentNode.startTime - new Date().getTime();
+        if (time > 0)
+            return "#ffff00";
+        else
+            return "#66ff66";
+
+    }
 }

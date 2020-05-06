@@ -182,6 +182,7 @@ class Graph {
         else {
             this.sigmaGraph.graph.nodes(forklift.id).x = forklift.position.x;
             this.sigmaGraph.graph.nodes(forklift.id).y = forklift.position.y;
+            this.sigmaGraph.graph.nodes(forklift.id).color = nForklifts.getForkliftColor(forklift);
         }
     }
 
