@@ -423,13 +423,15 @@ export class RouteScheduler {
             if (scheduleItem.previousScheduleItem.arrivalTimeCurrentVertex > currentTime) {
                 return true;
             }
-        } else if (scheduleItem.nextScheduleItem === null && isLast) {
+        }
+
+        if (scheduleItem.nextScheduleItem === null && isLast) {
             return true;
         }
         return false;
     }
 
-    getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number): number {
+    getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number, isEndVertex: boolean): number {
         let time: number;
         let interval: number;
         let maxWarp: number;
@@ -457,6 +459,11 @@ export class RouteScheduler {
 
         if (time < maxWarp) {
             return maxWarp;
+        }
+
+        // If it blocks another route on its last vertex
+        if (isEndVertex && indexOfDestinationVertex < destinationVertex.scheduleItems.length) {
+            return Infinity;
         }
 
         return destinationVertex.scheduleItems[indexOfDestinationVertex - 1].arrivalTimeCurrentVertex + (this.timeIntervalMinimumSize / 2);
@@ -525,13 +532,14 @@ export class RouteScheduler {
             for (let u = 0; u < currentVertex.adjacentVertexIds.length; u++) {
                 let adjacentVertex: Vertex = routeSet.graph.vertices[currentVertex.adjacentVertexIds[u]];
                 if (adjacentVertex.id === endVertex.id) {
-                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
-                    adjacentVertex.isVisited = true;
-                    adjacentVertex.previousVertex = currentVertex;
-                    return endVertex.visitTime - orderTime;
+                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime, true);
+                    if (adjacentVertex.visitTime < Infinity) {
+                        adjacentVertex.isVisited = true;
+                        adjacentVertex.previousVertex = currentVertex;
+                        return endVertex.visitTime - orderTime;
+                    }
                 } else if (!adjacentVertex.isVisited) {
-                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
-                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime);
+                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime, false);
                     if (adjacentVertex.visitTime < Infinity) {
                         queue.insert(adjacentVertex);
                         adjacentVertex.isVisited = true;
