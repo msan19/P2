@@ -79,24 +79,6 @@ export class Vertex extends Vertex_Shared {
     }
 
     /**
-     * Creates a vertex containing clones of the content of the vertex the function is called on
-     * @returns A created vertex
-     */
-    clone(): Vertex {
-        let v: Vertex = new Vertex(this.id, this.position.clone(), this.label);
-
-        for (let a of this.adjacentVertexIds) {
-            v.adjacentVertexIds.push(a);
-        }
-
-        v.scheduleItems = [];
-        for (let s in this.scheduleItems) {
-            v.scheduleItems.push(this.scheduleItems[s]);
-        }
-
-        return v;
-    }
-    /**
      * Uses a binary search to find the index of a scheduleitem in the list of scheduleitems based on the parameter time
      * @param time A point in time for which the corresponding array index is found
      * @returns An index corresponding to the time
