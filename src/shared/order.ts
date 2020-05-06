@@ -108,13 +108,4 @@ export class Order {
 
         return new Order(obj.id, obj.type, obj.forkliftId, obj.palletId, obj.startVertexId, obj.endVertexId, obj.time, obj.timeType, obj.delayCounter);
     }
-
-    delayStartTime(baseDelayTime: number) {
-        if (this.delayCounter > 0) {
-            this.time += baseDelayTime * 2 ** this.delayCounter;
-            this.delayCounter--;
-            return true;
-        }
-        return false;
-    }
 }
