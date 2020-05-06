@@ -17,6 +17,7 @@ export class Order extends Order_Shared {
     static parse(obj: any, data: DataContainer): Order | null {
         // Parse what is unrelated to DataContainer
         let order = Order_Shared.parse(obj);
+        if (order === null) return null;
 
         // Ensure that the forkliftId exists in dataContainer
         if (order.forkliftId && !data.forklifts[order.forkliftId]) return null;
