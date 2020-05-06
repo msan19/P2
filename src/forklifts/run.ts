@@ -9,6 +9,7 @@ import { Forklift } from "./forklift";
 import { randomIntegerInRange, randomValue } from "../shared/utilities";
 import { ApiCaller } from "../shared/apiCaller";
 import { Warehouse } from "../shared/warehouse";
+import { Vector2 } from "../shared/vector2";
 
 const SERVER_HOSTNAME = '127.0.0.1';
 const SERVER_PORT = 3000;
@@ -38,6 +39,6 @@ function getWarehouse() {
 
 getWarehouse().then((warehouse: Warehouse) => {
     for (let i = 0; i < 10; i++) {
-        forklifts.push(new Forklift("F" + i, SERVER_HOSTNAME, SERVER_PORT, randomIntegerInRange(5, 100), Forklift.states.idle, randomValue(warehouse.graph.vertices).position));
+        forklifts.push(new Forklift("F" + i, SERVER_HOSTNAME, SERVER_PORT, randomIntegerInRange(5, 100), Forklift.states.idle, new Vector2(i * 101 % 9, i * 7 % 9).scale(10)));
     }
 });
