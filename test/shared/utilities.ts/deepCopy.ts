@@ -40,4 +40,21 @@ describe("deepCopy", () => {
         expect(copiedObj.arrayOfVectors[0] instanceof Vector2).to.be.true; // Try prototype from branch
         expect(copiedObj.arrayOfVectors[0].add(new Vector2(2, 2))).to.eql(new Vector2(3, 4)); // Try a function from prototype
     });
+    it("deepCopy should do circular references, without crashing", () => {
+        let obj1 = {};
+        let obj2 = {};
+        obj1["obj2"] = obj2;
+        obj2["obj1"] = obj1;
+
+        let copy;
+        try {
+            copy = deepCopy(obj1);
+            expect(copy.obj2).to.equal(copy.obj2.obj1.obj2.obj1.obj2);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            expect(copy, "crashed from circular definition").to.exist;
+        }
+
+    });
 });
