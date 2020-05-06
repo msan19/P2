@@ -48,13 +48,13 @@ export class OrderSpammer {
             this.apiCaller.sendOrder(this.createRandomOrder());
         }*/
 
-        /*if (this.warehouse !== null && (this.ordersSentCount + this.ordersForF0Sent) < 8) {
+        if (this.warehouse !== null && (this.ordersSentCount + this.ordersForF0Sent) < 8) {
             this.apiCaller.sendOrder(this.createPrePlannedOrder());
-        }*/
-
-        if (this.warehouse !== null && (this.ordersSentCount) < 2) {
-            this.apiCaller.sendOrder(this.createAnnoyingOrder());
         }
+
+        /*if (this.warehouse !== null && (this.ordersSentCount) < 2) {
+            this.apiCaller.sendOrder(this.createAnnoyingOrder());
+        }*/
 
         setTimeout(() => { this.iterate(); }, this.interval());
     }
