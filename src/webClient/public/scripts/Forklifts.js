@@ -215,8 +215,7 @@ class Forklifts {
 
         if (typeof (forklift.route) == "undefined")
             return "#ff0000";
-        let time = forklift.currentNode.startTime - new Date().getTime();
-        if (time > 0)
+        else if (forklift.currentNode.nodeId == forklift.route.instructions[0].nodeId)
             return "#ffff00";
         else
             return "#66ff66";
