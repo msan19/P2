@@ -25,10 +25,6 @@ let originalObj = {
 };
 let copiedObj = deepCopy(originalObj);
 
-let originalVector = new Vector2(2, 5);
-let copiedVector = deepCopy(new Vector2(2, 5));
-
-
 describe("deepCopy", () => {
     it("Values should remain equal", () => {
         expect(copiedObj).to.eql(originalObj);
