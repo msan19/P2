@@ -55,7 +55,7 @@ class Route {
         if (!this.checkIfValidRoute(parsedRoute))
             return;
         let newRoute = new Route(parsedRoute);
-
+        //newRoute.order = orders[newRoute.orderId];
 
         newRoute.addRouteToUi();
         if (typeof (forkliftData[newRoute.forkliftId].route) == "undefined") {
@@ -79,6 +79,7 @@ class Route {
     onFinishRoute() {
         this.removeRouteFromUi();
         forkliftData[this.forkliftId].route = forkliftData[this.forkliftId].route.nextRoute;
+        orders[this.orderId].onFinishRoute();
         if (nForklifts.selectedForklift == this.forkliftId) {
             if (typeof (forkliftData[this.forkliftId].route) != "undefined") {
                 forkliftData[this.forkliftId].route.selectRoute();
