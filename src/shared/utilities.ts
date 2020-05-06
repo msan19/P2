@@ -67,7 +67,7 @@ export function stringifyObject(obj: any) {
     return JSON.stringify(obj, jsonReplacer);
 }
 
-export function deepCopy<T>(obj: T): T {
+export function deepCopy<T>(obj: T, previousReferences: any[] = []): T {
     switch (typeof (obj)) {
         case "bigint":
         case "boolean":
@@ -79,6 +79,11 @@ export function deepCopy<T>(obj: T): T {
             return obj;
         case "object":
             if (obj === null) return null;
+
+            // Detect circular references
+            let indexOfPreviousReference = previousReferences.indexOf(obj);
+            if (indexOfPreviousReference !== -1) return obj;
+
             // Instantiate output as array or object, depending on type of obj
             let output;
             if (Array.isArray(obj)) output = [];
@@ -89,9 +94,13 @@ export function deepCopy<T>(obj: T): T {
                 output = new ctor();
             }
 
+            // Tell next level about previous layers
+            let nextReferenceArray = [...previousReferences];
+            nextReferenceArray.push(obj);
+
             // Deep copy values
             for (let key in obj) {
-                output[key] = deepCopy(obj[key]);
+                output[key] = deepCopy(obj[key], nextReferenceArray);
             }
             return output;
         default:
