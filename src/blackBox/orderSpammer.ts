@@ -48,7 +48,7 @@ export class OrderSpammer {
             this.apiCaller.sendOrder(this.createRandomOrder());
         }*/
 
-        if (this.warehouse !== null && (this.ordersSentCount + this.ordersForF0Sent) < 9) {
+        if (this.warehouse !== null && (this.ordersSentCount + this.ordersForF0Sent) < 8) {
             this.apiCaller.sendOrder(this.createPrePlannedOrder());
         }
 
@@ -72,6 +72,7 @@ export class OrderSpammer {
 
     createPrePlannedOrder() {
         let times = [20000, 80000, 140000, 200000];
+        let debounce = 0;
 
         let listOfPrePlannedOrdersForF0 = [
             new Order(
@@ -83,7 +84,7 @@ export class OrderSpammer {
                 `N4-6`,
                 this.firstTimeOrderCreated + times[0],
                 Order.timeTypes.start,
-                3
+                debounce
             ),
             new Order(
                 `1`,
@@ -94,7 +95,7 @@ export class OrderSpammer {
                 `N4-2`,
                 this.firstTimeOrderCreated + times[1],
                 Order.timeTypes.start,
-                3
+                debounce
             ),
             new Order(
                 `2`,
@@ -105,7 +106,7 @@ export class OrderSpammer {
                 `N3-2`,
                 this.firstTimeOrderCreated + times[2],
                 Order.timeTypes.start,
-                3
+                debounce
             ),
             new Order(
                 `3`,
@@ -116,7 +117,7 @@ export class OrderSpammer {
                 `N9-1`,
                 this.firstTimeOrderCreated + times[3],
                 Order.timeTypes.start,
-                3
+                debounce
             )
         ];
 
@@ -130,7 +131,7 @@ export class OrderSpammer {
                 `N4-0`,
                 this.firstTimeOrderCreated + times[0],
                 Order.timeTypes.start,
-                3
+                debounce
             ),
             new Order(
                 `5`,
@@ -141,7 +142,7 @@ export class OrderSpammer {
                 `N4-9`,
                 this.firstTimeOrderCreated + times[1],
                 Order.timeTypes.start,
-                3
+                debounce
             ),
             new Order(
                 `6`,
@@ -149,10 +150,10 @@ export class OrderSpammer {
                 `F1`,
                 `pallet-${this.ordersSentCount}`,
                 randomValue(this.warehouse.graph.vertices).id,
-                `N3-2`,
+                `N3-3`,
                 this.firstTimeOrderCreated + times[2],
                 Order.timeTypes.start,
-                3
+                debounce
             ),
             new Order(
                 `7`,
@@ -160,10 +161,10 @@ export class OrderSpammer {
                 `F1`,
                 `pallet-${this.ordersSentCount}`,
                 randomValue(this.warehouse.graph.vertices).id,
-                `N9-1`,
+                `N9-2`,
                 this.firstTimeOrderCreated + times[3],
                 Order.timeTypes.start,
-                3
+                debounce
             )
         ];
 

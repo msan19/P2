@@ -88,7 +88,7 @@ function testAddOrder() {
         });
 
         it(`Order number 1's ${Object.keys(data.orders[orderId])[8]} should be 3`, () => {
-            expect(data.orders[orderId].delayCounter).to.equal(3);
+            expect(data.orders[orderId].delayMax).to.equal(3);
         });
     });
 
@@ -145,7 +145,7 @@ function testAddOrder() {
                 });
 
                 it(`Order ${orderId}'s ${Object.keys(data.orders[orderId])[8]} should be ${expecteds[i][8]}`, () => {
-                    expect(data.orders[orderId].delayCounter).to.equal(expecteds[i][8]);
+                    expect(data.orders[orderId].delayMax).to.equal(expecteds[i][8]);
                 });
             });
         }

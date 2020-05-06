@@ -12,7 +12,7 @@ import { Response } from "node-fetch";
 import { OrderSpammer } from "./orderSpammer";
 import { randomIntegerInRange } from "../shared/utilities";
 
-let warehouse = new Warehouse(createGraph(), 2.17);
+let warehouse = new Warehouse(createGraph(), 4.17);
 let graph = JSON.stringify(warehouse, null, 4);
 //fs.writeFileSync("./src/blackBox/graph.json", graph);
 

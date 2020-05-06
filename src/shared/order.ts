@@ -56,10 +56,12 @@ export class Order {
     endVertexId: string;
 
     /** Number of times the order can be delayed before being dropped */
+    delayMax: number;
+
     delayCounter: number;
 
     constructor(orderId: string, type: OrderTypes, forkliftId: string, palletId: string,
-        startVertexId: string, endVertexId: string, time: number, timeType: TimeType, delayCounter: number) {
+        startVertexId: string, endVertexId: string, time: number, timeType: TimeType, delayMax: number) {
         this.id = orderId;
         this.type = type;
         this.forkliftId = forkliftId;
@@ -68,7 +70,8 @@ export class Order {
         this.endVertexId = endVertexId;
         this.time = time;
         this.timeType = timeType;
-        this.delayCounter = delayCounter;
+        this.delayMax = delayMax;
+        this.delayCounter = 0;
     }
 
     /**
@@ -102,10 +105,10 @@ export class Order {
         obj.time = Number(obj.time);
         if (isNaN(obj.time)) return null;
 
-        // Check for valid delayCounter
-        obj.delayCounter = Number(obj.delayCounter);
-        if (isNaN(obj.delayCounter)) obj.delayCounter = 0;
+        // Check for valid delayMax
+        obj.delayMax = Number(obj.delayMax);
+        if (isNaN(obj.delayMax)) obj.delayMax = 0;
 
-        return new Order(obj.id, obj.type, obj.forkliftId, obj.palletId, obj.startVertexId, obj.endVertexId, obj.time, obj.timeType, obj.delayCounter);
+        return new Order(obj.id, obj.type, obj.forkliftId, obj.palletId, obj.startVertexId, obj.endVertexId, obj.time, obj.timeType, obj.delayMax);
     }
 }
