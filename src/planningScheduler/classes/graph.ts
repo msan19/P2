@@ -35,26 +35,6 @@ export class Graph extends Graph_Shared {
     }
 
     /**
-     * Creates a new {@link Graph} containing a clone of each object in the {@link Graph} the function is called on
-     * @returns A new {@link Graph}
-     */
-    clone(): Graph {
-        let newIdlePositions: { [forkliftId: string]: ScheduleItem; } = {};
-        for (let key in this.idlePositions) {
-            newIdlePositions[key] = this.idlePositions[key];
-        }
-
-        let newVertices: { [key: string]: Vertex; } = {};
-        for (let key in this.vertices) {
-            newVertices[key] = this.vertices[key].clone();
-        }
-
-        let graph = new Graph(newVertices);
-        graph.idlePositions = newIdlePositions;
-        return graph;
-    }
-
-    /**
      * Sets the isVisited value of each {@link Vertex} in the {@link Graph} to false
      */
     reset(): void {
