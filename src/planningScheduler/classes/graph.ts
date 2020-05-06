@@ -173,12 +173,4 @@ export class ScheduleItem {
         nextScheduleItem.previousScheduleItem = this;
     }
 
-    /**
-     * Creates a {@link ScheduleItem} with the content of the {@link ScheduleItem} the function is called on
-     * @returns A new {@link ScheduleItem}
-     */
-    clone(): ScheduleItem {
-        return new ScheduleItem(this.forkliftId, this.arrivalTimeCurrentVertex, this.currentVertexId);
-    }
-
 }
