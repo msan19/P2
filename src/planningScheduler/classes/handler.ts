@@ -4,19 +4,21 @@
  * @category PlanningScheduler
  */
 
-import { Forklift } from "./forklift";
-import { DataContainer } from "./dataContainer";
-import { IncomingMessage, ServerResponse } from "http";
 import * as ws from "ws";
-import { WebSocket } from "../../shared/webSocket";
 import { Socket } from "net";
+import { IncomingMessage, ServerResponse } from "http";
+
+import { getJson, returnJson, returnNotFound, returnStatus, passId, returnInvalidJson, returnSuccess } from "../../shared/webUtilities";
+import { WebSocket } from "../../shared/webSocket";
+import { ForkliftInfo } from "../../shared/forkliftInfo";
+import { Route } from "../../shared/route";
+
+import { DataContainer } from "./dataContainer";
 import { Warehouse } from "./warehouse";
+import { Forklift } from "./forklift";
 import { Graph } from "./graph";
 import { Order } from "./order";
 
-import { getJson, returnJson, returnNotFound, returnStatus, passId, returnInvalidJson, returnSuccess } from "../../shared/webUtilities";
-import { ForkliftInfo } from "../../shared/forkliftInfo";
-import { Route } from "../../shared/route";
 
 /** An interface specifying a function which handles HTTP requests */
 interface IHttpMethod { (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void; }

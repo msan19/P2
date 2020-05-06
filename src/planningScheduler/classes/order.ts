@@ -17,25 +17,26 @@ export class Order extends Order_Shared {
     static parse(obj: any, data: DataContainer): Order | null {
         // Parse what is unrelated to DataContainer
         let order = Order_Shared.parse(obj);
+        if (order === null) return null;
 
-        // Check for valid forkliftId
-        if (obj.forkliftId !== null) {
-            let present: boolean = false;
-            let keysForklifts: string[] = Object.keys(data.forklifts);
-            for (let i = 0; i < keysForklifts.length; i++) {
-                if (obj.forkliftId === data.forklifts[keysForklifts[i]].id) {
-                    present = true;
-                    break;
-                }
-            }
-            if (!present) return null;
-        }
+        // Ensure that the forkliftId exists in dataContainer
+        if (order.forkliftId && !data.forklifts[order.forkliftId]) return null;
 
         // Check for valid vertixIds (If either is invalid, return null)
         let keysVertices: string[] = Object.keys(data.warehouse.graph.vertices);
         if (!keysVertices.includes(obj.startVertexId) || !keysVertices.includes(obj.endVertexId)) return null;
 
-        return order;
+        return <Order>order;
+    }
+
+    delayStartTime(baseDelayTime: number) {
+        if (this.delayCounter <= 0) return false;
+
+        // delayCounter is more than 0
+
+        this.time += baseDelayTime * 2 ** this.delayCounter;
+        this.delayCounter--;
+        return true;
     }
 
 }
