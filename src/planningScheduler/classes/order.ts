@@ -29,12 +29,13 @@ export class Order extends Order_Shared {
     }
 
     delayStartTime(baseDelayTime: number) {
-        if (this.delayCounter > 0) {
-            this.time += baseDelayTime * 2 ** this.delayCounter;
-            this.delayCounter--;
-            return true;
-        }
-        return false;
+        if (this.delayCounter <= 0) return false;
+
+        // delayCounter is more than 0
+
+        this.time += baseDelayTime * 2 ** this.delayCounter;
+        this.delayCounter--;
+        return true;
     }
 
 }
