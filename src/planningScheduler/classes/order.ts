@@ -18,18 +18,8 @@ export class Order extends Order_Shared {
         // Parse what is unrelated to DataContainer
         let order = Order_Shared.parse(obj);
 
-        // Check for valid forkliftId
-        if (obj.forkliftId !== null) {
-            let present: boolean = false;
-            let keysForklifts: string[] = Object.keys(data.forklifts);
-            for (let i = 0; i < keysForklifts.length; i++) {
-                if (obj.forkliftId === data.forklifts[keysForklifts[i]].id) {
-                    present = true;
-                    break;
-                }
-            }
-            if (!present) return null;
-        }
+        // Ensure that the forkliftId exists in dataContainer
+        if (order.forkliftId && !data.forklifts[order.forkliftId]) return null;
 
         // Check for valid vertixIds (If either is invalid, return null)
         let keysVertices: string[] = Object.keys(data.warehouse.graph.vertices);
