@@ -148,7 +148,7 @@ class Route {
         if (typeof (this.instructions) != "undefined")
             this.listInstructionsOnUi();
         else
-            Route.clearInstrutionsOnUi();
+            UiManager.clearInstrutionsOnUi();
         if (nForklifts.checkIfThereIsASelectedForklift())
             mainGraph.displaySelectedForkliftPath();
         else
