@@ -50,9 +50,24 @@ class Order {
         orders[this.orderId] = this;
     }
 
+    removeOrderFromMainOrderDictionary() {
+        delete orders[this.orderId];
+    }
+
     addOrderToUi() {
         document.querySelectorAll(".select-order").forEach((e) => {
             e.innerHTML += `<option value=${this.orderId}>${this.orderId}</option>`;
+        });
+    }
+
+    removeOrderFromUi() {
+        document.querySelectorAll(".select-order").forEach((e) => {
+            for (let key in e.childNodes) {
+                if (e.childNodes[key].innerHTML == this.orderId) {
+                    e.removeChild(e.childNodes[key]);
+                    break;
+                }
+            }
         });
     }
 
@@ -71,5 +86,8 @@ class Order {
             document.querySelector("#selectedOrderStartTime").innerHTML = moment(this.startTime).format("LLL");
     }
 
-
+    onFinishRoute() {
+        this.removeOrderFromMainOrderDictionary();
+        this.removeOrderFromUi();
+    }
 }
