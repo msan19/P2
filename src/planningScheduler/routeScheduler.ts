@@ -10,7 +10,7 @@ import { RouteSet } from "./classes/routeSet";
 import { Order } from "./classes/order";
 import { Vertex, ScheduleItem } from "./classes/graph";
 import { MinPriorityQueue } from "./classes/minPriorityQueue";
-import { randomIntegerInRange } from "../shared/utilities";
+import { randomIntegerInRange, deepCopy } from "../shared/utilities";
 
 
 /**
@@ -607,7 +607,7 @@ export class RouteScheduler {
         // Generate a new RouteSet
         if (this.bestRouteSet === null || this.bestRouteSet.priorities.length > 0) {
             let priorities = this.generatePriorities();
-            let routeSet = new RouteSet(priorities, this.data.warehouse.graph.clone());
+            let routeSet = new RouteSet(priorities, deepCopy(this.data.warehouse.graph));
             if (Object.keys(this.data.orders).length > 0 && this.calculateRoutes(this.data, routeSet)) {
                 this.setBestRouteSet(routeSet);
             }
