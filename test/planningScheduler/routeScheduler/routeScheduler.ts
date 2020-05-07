@@ -1,45 +1,13 @@
 import { expect } from 'chai';
 import 'mocha';
 
-import { Vertex, Graph, ScheduleItem } from '../../../src/planningScheduler/classes/graph';
+import { Graph, ScheduleItem } from '../../../src/planningScheduler/classes/graph';
 import { createGraph } from '../../../src/blackBox/warehouse';
 import { Order } from '../../../src/planningScheduler/classes/order';
 import { RouteScheduler } from '../../../src/planningScheduler/routeScheduler';
 import { DataContainer } from '../../../src/planningScheduler/classes/dataContainer';
 import { RouteSet } from '../../../src/planningScheduler/classes/routeSet';
 import { Warehouse } from '../../../src/planningScheduler/classes/warehouse';
-
-
-/**
- * Checks whether two arrays contains same values
- * @param result The array that is to be checked
- * @param expected The array containing the expected values
- * @returns Mocha handles the appropriate responses
- */
-function checkArray(result: number[], expected: number[]) {
-    let length: number = Math.max(result.length, expected.length);
-    for (let i = 0; i < length; i++) {
-        it(`${result[i]} should be ${expected[i]}`, () => {
-            expect(result[i]).to.equal(expected[i]);
-        });
-    }
-}
-
-function checkScheduleItem(result: ScheduleItem, expected: ScheduleItem) {
-    let keys: string[] = Object.keys(expected);
-    for (let key of keys) {
-        it(`${key}: ${result[key]} should be ${result[key]}`, () => {
-            expect(result[key]).to.equal(expected[key]);
-        });
-    }
-}
-
-function checkScheduleItems(result: ScheduleItem[], expected: ScheduleItem[]) {
-    let length: number = Math.max(result.length, expected.length);
-    for (let i = 0; i < length; i++) {
-        checkScheduleItem(result[i], expected[i]);
-    }
-}
 
 
 function initRouteSet() {
@@ -75,7 +43,7 @@ function testRouteScheduler(): void {
         });
 
         // All assignable forklifts
-        describe(`Test with all assignable forklifts`, () => {
+        it(`Test with all assignable forklifts`, () => {
             let routeSet: RouteSet = initRouteSet();
             let routeScheduler: RouteScheduler = initRouteScheduler();
 
@@ -89,7 +57,7 @@ function testRouteScheduler(): void {
             let result = routeScheduler.assignForklift(routeSet, order);
 
             // Empty arrays have length 0
-            checkScheduleItems(result, expected);
+            expect(result).to.be.eql(expected);
         });
 
         // Mix of assignable and non-assignable forklifts
