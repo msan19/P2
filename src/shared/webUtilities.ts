@@ -128,7 +128,8 @@ export function sanitizePath(publicPath: string, requestPath: string): string {
     return path.normalize(`${publicPath}/${path.normalize(requestPath)}`);
 }
 
-/** Reads a static file from `publicPath/requestPath` as a promise
+/**
+ * Reads a static file from `publicPath/requestPath` as a promise
  * @param publicPath String
  * @param requestPath String
  * @returns Promise with the fileData as a string or empty reject
@@ -152,6 +153,12 @@ export function getStaticFile(publicPath: string, requestPath: string): Promise<
     });
 }
 
+/**
+ * Gets the content of a HTML file and replaces the placeholders "<file>'filename'" with the content of 'filename'
+ * @param folder The folder in which the file is 
+ * @param file The name of the file 
+ * @returns The content of the file as a string
+ */
 export function getContentsHTML(folder: string, file: string) {
     let fileContents = String(fs.readFileSync(sanitizePath(folder, file)));
     let matches = fileContents.match(/@{file:(?<file>[^}]+)}/ig);

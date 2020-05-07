@@ -75,10 +75,12 @@ class Graph {
         }
         for (let key in nodesIds) {
             if (key > 0) {
-                if (nodesIds[key] < nodesIds[key - 1])
-                    edgeIds.push(nodesIds[key] + "," + nodesIds[key - 1]);
-                else
-                    edgeIds.push(nodesIds[key - 1] + "," + nodesIds[key]);
+                if (nodesIds[key] != nodesIds[key] - 1) {
+                    if (nodesIds[key] < nodesIds[key - 1])
+                        edgeIds.push(nodesIds[key] + "," + nodesIds[key - 1]);
+                    else
+                        edgeIds.push(nodesIds[key - 1] + "," + nodesIds[key]);
+                }
             }
         }
         return {
