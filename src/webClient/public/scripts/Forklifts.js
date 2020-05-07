@@ -57,6 +57,8 @@ class Forklifts {
 
     selectForklift(forkliftId) {
         this.selectedForklift = forkliftId;
+        if (forkliftId != "")
+            mainGraph.displaySelectedForkliftPath();
     }
 
     checkIfThereIsASelectedForklift() {
@@ -212,13 +214,14 @@ class Forklifts {
     }
 
     getForkliftColor(forklift) {
-
-        if (typeof (forklift.route) == "undefined")
-            return "#ff0000";
-        else if (forklift.currentNode.nodeId == forklift.route.instructions[0].nodeId)
-            return "#ffff00";
-        else
-            return "#66ff66";
-
+        if ((typeof (nForklifts.selectedForklift) == "undefined" || nForklifts.selectedForklift == "") || nForklifts.selectedForklift == forklift.id) {
+            if (typeof (forklift.route) == "undefined")
+                return mainGraph.inactiveColor;
+            else if (forklift.currentNode.nodeId == forklift.route.instructions[0].nodeId)
+                return mainGraph.waitingColor;
+            else
+                return mainGraph.movingColor;
+        } else
+            return mainGraph.unFocusColor;
     }
 }
