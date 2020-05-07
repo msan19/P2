@@ -75,9 +75,9 @@ class Order {
         document.querySelector("#selectedOrderForkliftId").innerHTML = this.forkliftId;
         document.querySelector("#selectedOrderOrderId").innerHTML = this.orderId;
         if (typeof (this.type) != "undefined")
-            document.querySelector("#selectedOrderType").innerHTML = this.orderId;
+            document.querySelector("#selectedOrderType").innerHTML = this.type;
         if (typeof (this.palletId) != "undefined")
-            document.querySelector("#selectedOrderPalletId").innerHTML = this.orderId;
+            document.querySelector("#selectedOrderPalletId").innerHTML = this.palletId;
         if (typeof (this.startNodeId) != "undefined")
             document.querySelector("#selectedOrderStartNodeId").innerHTML = this.startNodeId;
         if (typeof (this.endNodeId) != "undefined")

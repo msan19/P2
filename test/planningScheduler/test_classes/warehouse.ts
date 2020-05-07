@@ -30,6 +30,10 @@ describe(`Warehouse parse`, () => {
         it(`should be parsed as a warehouse`, () => {
             expect(resultingWarehouse).to.eql(expectedWarehouse);
         });
+        it("values should have different references", () => {
+            expect(resultingWarehouse).to.not.equal(expectedWarehouse);
+            expect(resultingWarehouse.graph).to.not.equal(expectedWarehouse.graph);
+        });
     });
 
     context(`when valid graph, invalid maxForkliftSpeed`, () => {
@@ -58,5 +62,4 @@ describe(`Warehouse parse`, () => {
             expect(resultingWarehouse).to.eql(expectedWarehouse);
         });
     });
-
 });

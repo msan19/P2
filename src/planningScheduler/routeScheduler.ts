@@ -56,6 +56,12 @@ export class RouteScheduler {
         this.unfinishedOrderIds = [];
     }
 
+    /**
+     * Creates the {@link Route} associated with the parameter order id, removes the order from 
+     * the list of orders being planned and locks the route as permanent
+     * @param orderId A string id for the order to be locked
+     * @returns The created {@link Route}
+     */
     handleLockOrder(orderId: string): Route {
         let order = this.data.orders[orderId];
 
@@ -102,6 +108,11 @@ export class RouteScheduler {
         return new Route(routeId, order.palletId, forkliftId, order.id, routeStatus, instructions);
     }
 
+    /**
+     * Finds the last {@link ScheduleItem} in the route associated with the parameter {@link Order}
+     * @param order An orders whose last {@link ScheduleItem} is to be found
+     * @returns The found {@link ScheduleItem}
+     */
     getLastScheduleItemForOrder(order: Order): ScheduleItem {
         let endVertex = this.findVertex(order.endVertexId);
         let duration = this.findDuration(order.id);
@@ -109,7 +120,11 @@ export class RouteScheduler {
         return endVertex.getScheduleItem(order.time + duration);
     }
 
-    removeOrderFromBestRouteSet(order: Order) {
+    /**
+     * Removes the parameter order from the arrays in bestRouteSet
+     * @param order An order to be removed
+     */
+    removeOrderFromBestRouteSet(order: Order): void {
         let indexOfOrder = this.bestRouteSet.priorities.indexOf(order.id);
         this.bestRouteSet.priorities.splice(indexOfOrder, 1);
         this.bestRouteSet.duration.splice(indexOfOrder, 1);
@@ -225,7 +240,7 @@ export class RouteScheduler {
             let forkliftId: string = order.forkliftId || "";
             let moveForkliftScheduleItems: ScheduleItem[] = [];
 
-            // Handle all order cases     
+            // Handles orders of the movePallet type     
             if (order.type === Order.types.movePallet) {
                 assignableForklifts = this.assignForklift(routeSet, order);
                 for (let i = 0; i < assignableForklifts.length && currentRouteTime === Infinity; i++) {
@@ -247,7 +262,7 @@ export class RouteScheduler {
                 }
             }
 
-            // Comment
+            // Handles orders of the moveForklift and charge types
             if (order.type === Order.types.moveForklift || order.type === Order.types.charge) {
                 if (routeSet.graph.idlePositions[order.forkliftId].arrivalTimeCurrentVertex <= order.time) {
                     currentRouteTime = this.planOptimalRoute(routeSet, routeSet.graph.idlePositions[order.forkliftId].currentVertexId,
@@ -255,6 +270,7 @@ export class RouteScheduler {
                 } else currentRouteTime = Infinity;
             }
 
+            // Converts the temporary references on each Vertex to linked ScheduleItems
             if (currentRouteTime != Infinity) {
                 if (order.timeType === Order.timeTypes.start) {
                     if (order.type === Order.types.movePallet) {
@@ -262,7 +278,6 @@ export class RouteScheduler {
                         this.upStacking(routeSet.graph.vertices[order.endVertexId], order.startVertexId, forkliftId, null);
                         let scheduleItemOfStartVertex = routeSet.graph.vertices[order.startVertexId].getScheduleItem(order.time);
                         scheduleItemOfStartVertex.linkPrevious(moveForkliftScheduleItems[0]);
-                        // Recursively stacking up
                     } else {
                         let startVertexId = routeSet.graph.idlePositions[order.forkliftId].currentVertexId;
                         this.upStacking(routeSet.graph.vertices[order.endVertexId], startVertexId, forkliftId, null);
@@ -305,7 +320,11 @@ export class RouteScheduler {
             .map(item => item.scheduleItem); // Unwrap 
     }
 
-    setBestRouteSet(newRouteSet): void {
+    /**
+     * Changes bestRouteSet if the parameter newRouteSet has a smaller duration
+     * @param newRouteSet A {@link RouteSet} to be compared to bestRouteSet
+     */
+    setBestRouteSet(newRouteSet: RouteSet): void {
         if (this.bestRouteSet === null || RouteScheduler.evalRouteSet(newRouteSet) < RouteScheduler.evalRouteSet(this.bestRouteSet)) {
             this.bestRouteSet = newRouteSet;
             this.unfinishedOrderIds = this.bestRouteSet.priorities;
@@ -313,6 +332,10 @@ export class RouteScheduler {
         }
     }
 
+    /**
+     * Sets the mutations array to a new array with mutations for bestRouteSet.
+     * The new array is sorted by the least efficient routes first
+     */
     mutate(): void {
         let moveForkliftConstant = 2.0;
         let chargeConstant = 2.0;
@@ -360,9 +383,10 @@ export class RouteScheduler {
     }
 
     /**
-     * Checks whether it is valid to plan and order after another 
-     * @param currentOrder 
-     * @param newOrder 
+     * Checks whether it is valid to plan the parameter currentOrder before the parameter newOrder
+     * @param currentOrder An {@link Order} to be checked
+     * @param newOrder An {@link Order} to be checked
+     * @returns True if currentOrder can be planned before newOrder
      */
     static isValidMutation(currentOrder: Order, newOrder: Order): boolean {
         let oneOrderIsMovePallet: boolean = currentOrder.type === Order.types.movePallet || newOrder.type === Order.types.movePallet;
@@ -518,7 +542,8 @@ export class RouteScheduler {
         interval = 0;
         time = 0;
         earliestArrivalTime = this.computeEarliestArrivalTime(currentVertex, destinationVertex, currentTime);
-        while ((interval < this.timeIntervalMinimumSize || time <= earliestArrivalTime) && indexOfDestinationVertex < destinationVertex.scheduleItems.length) {
+        while ((interval < this.timeIntervalMinimumSize || time + this.timeIntervalMinimumSize / 2 <= earliestArrivalTime)
+            && indexOfDestinationVertex < destinationVertex.scheduleItems.length) {
             if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[indexOfDestinationVertex], earliestArrivalTime, currentTime,
                 indexOfDestinationVertex === destinationVertex.scheduleItems.length - 1, forkliftId)) {
                 return Infinity;
@@ -529,7 +554,7 @@ export class RouteScheduler {
             indexOfDestinationVertex++;
         }
 
-        if (time < earliestArrivalTime) {
+        if (time + this.timeIntervalMinimumSize / 2 < earliestArrivalTime) {
             return earliestArrivalTime;
         }
 
@@ -576,15 +601,21 @@ export class RouteScheduler {
 
     /**
      * Computes the earliest possible time for when the forklift can arrive at destinationVertex
+     * @returns The computed time
      */
     computeEarliestArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, time: number): number {
         return (1000 * currentVertex.getDistanceDirect(destinationVertex) / this.data.warehouse.maxForkliftSpeed) + time;
     }
 
     /**
-     * Implementation of A*. Further description look at https://thisneedstobeadded.org/astar
-     * @param routeSet Routeset where route is added. Assumes RouteSet.graph is full
-     * @param order Order to be calculated route for
+     * Finds the fastest route between the parameter startVertex and the parameter endVertex for the parameter forklift.
+     * The route is stored in temporary variables on the verticies of the parameter {@link RouteSet}
+     * @param routeSet A {@link RouteSet} which the route is stored on
+     * @param startVertexId A string id of the start {@link Vertex}
+     * @param endVertexId A string id of the end {@link Vertex}
+     * @param orderTime A time for when the route begins
+     * @param forkliftId A string id specifying the forklift which the route is planned for 
+     * @returns The amount of time the route takes
      */
     planOptimalRoute(routeSet: RouteSet, startVertexId: string, endVertexId: string, orderTime: number, forkliftId: string): number {
         let endVertex: Vertex = routeSet.graph.vertices[endVertexId];
@@ -623,23 +654,12 @@ export class RouteScheduler {
         return Infinity;
     }
 
-    printRoute(startVertex: Vertex, endVertex: Vertex) {
-        if (endVertex !== startVertex && endVertex !== null) {
-            this.printRoute(startVertex, endVertex.previousVertex);
-        }
-        endVertex.scheduleItems.forEach((scheduleItem) => {
-            console.log(`Forklift: ${scheduleItem.forkliftId}`);
-            console.log(`Vertex:   ${scheduleItem.currentVertexId}`);
-            console.log(`Time:     ${scheduleItem.arrivalTimeCurrentVertex}\n`);
-        });
-    }
-
     /**
-     * Used in the situation where the orders has a start time
-     * @param vertex 
-     * @param order 
-     * @param forkliftId 
-     * @param nextItem 
+     * Inserts a new {@link ScheduleItem} recursivly for each {@link Vertex} linked by previousVertex
+     * @param vertex A {@link Vertex} which the {@link ScheduleItem} is to be inserted on
+     * @param startVertexId A string id for the {@link Vertex} where the recursion stops
+     * @param forkliftId A string id for the forklift following the route
+     * @param nextItem A {@link ScheduleItem} which the new {@link ScheduleItem} is to be linked to
      */
     upStacking(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null): void {
         let i = vertex.insertScheduleItem(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));

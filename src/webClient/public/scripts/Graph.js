@@ -235,6 +235,7 @@ class Graph {
 
     displaySelectedForkliftPath() {
         let route = forkliftData[nForklifts.selectedForklift].route;
+        this.unfocusGraph();
         if (Route.checkIfValidRoute(route))
             this.displayPath(this.intepretInstructions(route.instructions));
     }
