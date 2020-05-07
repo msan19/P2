@@ -31,10 +31,10 @@
         "install": "npm i node typescript ts-node mocha chai @types/node @types/chai @types/mocha ws @types/ws --save-dev",
         "test": "mocha --require ts-node/register",
         "tests": "mocha --require ts-node/register test/planningScheduler/**/*.ts",
-        "test-vector": "mocha --require ts-node/register test/planningScheduler/**/testVector2.ts",
+        "test-vector": "mocha --require ts-node/register test/shared/utilities.ts/vector2.ts",
         "test-data": "mocha --require ts-node/register test/planningScheduler/**/testDataContainer.ts",
         "test-graph": "mocha --require ts-node/register test/planningScheduler/**/testGraph.ts",
-        "test-warehouse": "mocha --require ts-node/register test/planningScheduler/**/testWarehouse.ts",
+        "test-warehouse": "mocha --require ts-node/register test/planningScheduler/**/warehouse.ts",
         "test-order": "mocha --require ts-node/register test/planningScheduler/**/testOrder.ts",
         "test-Astar": "mocha --require ts-node/register test/planningScheduler/**/testAstar.ts",
         "test-route": "mocha --require ts-node/register test/planningScheduler/**/testGetRoute.ts"
