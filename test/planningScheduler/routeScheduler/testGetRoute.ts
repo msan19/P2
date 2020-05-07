@@ -68,7 +68,7 @@ function testGetRoute(): void {
             firstOrder.time = startTime;
             routeScheduler.data = data;
 
-            let resultingRoute = routeScheduler.getRoute(firstOrderId);
+            let resultingRoute = routeScheduler.handleLockOrder(firstOrderId);
 
             let expectedRoute = createMovePalletRoute(routeScheduler, firstOrder, vertexIdFirstRoute, "RO1", firstForkliftId);
 

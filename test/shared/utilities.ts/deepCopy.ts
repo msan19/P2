@@ -36,8 +36,8 @@ describe("deepCopy", () => {
         expect(copiedObj.arrayOfVectors).to.not.equal(originalObj.arrayOfVectors);
     });
     it("deepCopy should maintain prototypes", () => {
-        expect(deepCopy(new Vector2(2, 5)) instanceof Vector2).to.be.true; // Try prototype of root
-        expect(copiedObj.arrayOfVectors[0] instanceof Vector2).to.be.true; // Try prototype from branch
+        expect(deepCopy(new Vector2(2, 5))).to.be.instanceOf(Vector2); // Try prototype of root
+        expect(copiedObj.arrayOfVectors[0]).to.be.instanceOf(Vector2); // Try prototype from branch
         expect(copiedObj.arrayOfVectors[0].add(new Vector2(2, 2))).to.eql(new Vector2(3, 4)); // Try a function from prototype
     });
     it("deepCopy should do circular references, without crashing", () => {
