@@ -12,11 +12,12 @@ import { Response } from "node-fetch";
 import { OrderSpammer } from "./orderSpammer";
 import { randomIntegerInRange } from "../shared/utilities";
 
-let warehouse = new Warehouse(createGraph(), 4.17);
-let graph = JSON.stringify(warehouse, null, 4);
-//fs.writeFileSync("./src/blackBox/graph.json", graph);
+const SERVER_HOSTNAME = 'localhost';
+const SERVER_PORT = 3000;
 
-let api = new ApiCaller("http://localhost:3000");
+let warehouse = new Warehouse(createGraph(), 4.17);
+
+let api = new ApiCaller(`http://${SERVER_HOSTNAME}:${SERVER_PORT}`);
 
 setTimeout(() => {
     api.sendWarehouse(warehouse).then((response: Response) => {

@@ -6,4 +6,7 @@
 
 import { PlanningScheduler } from "./planningScheduler";
 
-new PlanningScheduler(3000, "localhost");
+const SERVER_HOSTNAME = 'localhost';
+const SERVER_PORT = 3000;
+
+new PlanningScheduler(SERVER_HOSTNAME, SERVER_PORT);
