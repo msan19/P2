@@ -76,7 +76,7 @@ export class OrderSpammer {
 
     // Should be deleted when program works (semi)
     createAnnoyingOrder() {
-        let time = 20000;
+        let time = 40000;
 
         let list = [
             new Order(

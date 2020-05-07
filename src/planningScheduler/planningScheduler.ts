@@ -57,7 +57,7 @@ export class PlanningScheduler {
         if (this.data !== null && this.data.warehouse !== null && this.data.warehouse.graph !== null && Object.keys(this.data.orders).length > 0) {
             // Get route(s)
             let currentTime = (new Date()).getTime(); // 1588233898230
-            let timeOffset = 10000;
+            let timeOffset = 1000;
 
             for (let orderId in this.data.orders) {
                 if (this.routeScheduler.unfinishedOrderIds.indexOf(orderId) !== -1) {
@@ -66,7 +66,7 @@ export class PlanningScheduler {
                         : -1;
                     if (indexOfOrderId !== -1 && this.routeScheduler.bestRouteSet.duration[indexOfOrderId] < Infinity) {
                         if (this.routeScheduler.getStartTime(orderId) < currentTime + timeOffset) {
-                            this.data.lockRoute(this.routeScheduler.getRoute(orderId));
+                            this.data.lockRoute(this.routeScheduler.handleLockOrder(orderId));
                         }
                     } else if (this.data.orders[orderId].time < currentTime + timeOffset) {
                         let tempOrder = this.data.orders[orderId];

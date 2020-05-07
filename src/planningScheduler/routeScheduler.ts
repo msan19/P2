@@ -56,37 +56,18 @@ export class RouteScheduler {
         this.unfinishedOrderIds = [];
     }
 
-    /**
-     * Looks at the best routeSet and finds a route that matches the orderId.
-     * Converts scheduleItems to a route
-     * @note Each order Id is unique
-     * @param orderId A string that uniquely identifies the given order
-     */
-    getRoute(orderId: string): Route {
+    handleLockOrder(orderId: string): Route {
         let order = this.data.orders[orderId];
 
-        // Create a route object for the route of an order on bestRouteSet
-        let routeId = "R" + orderId;
-        let instructions = this.createInstructions(order);
-        let routeStatus = Route.Statuses.queued;
+        // Get the last scheduleItem for given order, and get forkliftId from this scheduleItem
+        let lastScheduleItem = this.getLastScheduleItemForOrder(order);
+        let forkliftId = lastScheduleItem.forkliftId;
 
-        // Add the locked route on the graph on this.data.warehouse.graph
-        // endVertex and duration are from bestRouteSet
-        let endVertex = this.findVertex(order.endVertexId);
-        let duration = this.findDuration(order.id);
-        // At this point currentScheduleItem is the lastScheduleItem for the given order
-        let currentScheduleItem = endVertex.getScheduleItem(order.time + duration);
-
-        let forkliftId = currentScheduleItem.forkliftId;
+        // Create route before order is removed from bestRouteSet
+        let route: Route = this.getRoute(order, lastScheduleItem, forkliftId);
 
         // Lock idlePositions from bestRouteSet to this.data.warehouse.graph
-        this.data.warehouse.graph.idlePositions[forkliftId] = currentScheduleItem;
-
-        // Inserts all scheduleItems from route of order from bestRouteSet.graph to data.warehouse.graph
-        while (currentScheduleItem !== null) {
-            this.data.warehouse.graph.vertices[currentScheduleItem.currentVertexId].insertScheduleItem(currentScheduleItem);
-            currentScheduleItem = currentScheduleItem.previousScheduleItem;
-        }
+        this.data.warehouse.graph.idlePositions[forkliftId] = lastScheduleItem;
 
         // Splice order from priorities and duration
         this.removeOrderFromBestRouteSet(order);
@@ -94,7 +75,38 @@ export class RouteScheduler {
         // Redo mutations
         this.mutate();
 
-        return new Route(routeId, order.palletId, forkliftId, orderId, routeStatus, instructions);
+        return route;
+    }
+
+    /**
+     * Looks at the best routeSet and finds a route that matches the orderId.
+     * Converts scheduleItems to a route
+     * @note Each order Id is unique
+     * @param orderId A string that uniquely identifies the given order
+     */
+    getRoute(order: Order, lastScheduleItem: ScheduleItem, forkliftId: string): Route {
+        // Create a route object for the route of an order on bestRouteSet
+        let routeId = "R" + order.id;
+        let instructions = this.createInstructions(order);
+        let routeStatus = Route.Statuses.queued;
+
+        // Different name, as lastScheduleItem is not fitting for the while loop
+        let currentScheduleItem = lastScheduleItem;
+
+        // Inserts all scheduleItems from route of order from bestRouteSet.graph to data.warehouse.graph
+        while (currentScheduleItem !== null) {
+            this.data.warehouse.graph.vertices[currentScheduleItem.currentVertexId].insertScheduleItem(currentScheduleItem);
+            currentScheduleItem = currentScheduleItem.previousScheduleItem;
+        }
+
+        return new Route(routeId, order.palletId, forkliftId, order.id, routeStatus, instructions);
+    }
+
+    getLastScheduleItemForOrder(order: Order): ScheduleItem {
+        let endVertex = this.findVertex(order.endVertexId);
+        let duration = this.findDuration(order.id);
+
+        return endVertex.getScheduleItem(order.time + duration);
     }
 
     removeOrderFromBestRouteSet(order: Order) {
