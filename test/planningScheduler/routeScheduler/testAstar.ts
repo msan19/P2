@@ -17,49 +17,6 @@ import { RouteSet } from '../../../src/planningScheduler/classes/routeSet';
 import { Warehouse } from '../../../src/planningScheduler/classes/warehouse';
 
 /**
- * Checks wether two lengths are equal
- * @param l1 First length
- * @param l2 Second length 
- * @returns Mocha handles the appropriate responses
- */
-function checkLength(l1: number, l2: number): void {
-    it(`Length l1 (${l1}) should be the same as l2 (${l2})`, () => {
-        expect(l1).to.equal(l2);
-    });
-}
-
-/**
- * Checks whether two arrays contains same values
- * @param result The array that is to be checked
- * @param expected The array containing the expected values
- * @returns Mocha handles the appropriate responses
- */
-function checkArray(result: number[], expected: number[]) {
-    let length: number = Math.max(result.length, expected.length);
-    for (let i = 0; i < length; i++) {
-        it(`${result[i]} should be ${expected[i]}`, () => {
-            expect(result[i]).to.equal(expected[i]);
-        });
-    }
-}
-
-function checkScheduleItem(result: ScheduleItem, expected: ScheduleItem) {
-    let keys: string[] = Object.keys(expected);
-    for (let key of keys) {
-        it(`${key}: ${result[key]} should be ${result[key]}`, () => {
-            expect(result[key]).to.equal(expected[key]);
-        });
-    }
-}
-
-function checkScheduleItems(result: ScheduleItem[], expected: ScheduleItem[]) {
-    let length: number = Math.max(result.length, expected.length);
-    for (let i = 0; i < length; i++) {
-        checkScheduleItem(result[i], expected[i]);
-    }
-}
-
-/**
  * Test of A*
  * @returns Mocha handles the appropriate responses
  */
@@ -98,7 +55,7 @@ function testAStar(): void {
         //console.log(`\n\n Length Blue: ${routeSet.graph.vertices[orderAnnoying.endVertexId].g(orderAnnoying.startVertexId)}`);
     });
 
-    describe(`Test arrival time`, () => {
+    it(`Test arrival time`, () => {
         let routeSet: RouteSet = initRouteSet();
         let routeScheduler: RouteScheduler = initRouteScheduler();
 
@@ -132,8 +89,7 @@ function testAStar(): void {
         expecteds.push(70400 + 30000 / 2);
         expecteds.push(70400 + 30000 / 2);
 
-        checkArray(results, expecteds);
-
+        expect(results).to.be.eql(expecteds);
     });
 }
 
