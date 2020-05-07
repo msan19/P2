@@ -24,9 +24,6 @@ interface IHttpMethod { (request: IncomingMessage, response: ServerResponse, par
 /** An interface specifying a dictionary of {@link IHttpMethod} */
 interface IController { [key: string]: IHttpMethod; };
 
-//interface IHttpUpgrade { (request: IncomingMessage, webSocket: WebSocket, parsedUrl: string[]): void; }
-//interface IHttpUpgrade { (request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void; }
-
 /** An interface specifying a function which handles socket messages */
 interface ISocketController { (socketServer: ws.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void; }
 
@@ -198,9 +195,10 @@ export class Handler {
                 let webSocket = new WebSocket(ws);
                 webSocket.accept();
 
+                let self = this;
                 function subscribeSocketToDataContainer<T>(dataEvent: DataContainerEvents, sendData: (obj: T) => any) {
-                    this.data.on(dataEvent, sendData);
-                    webSocket.on("close", () => { this.data.removeListener(dataEvent, sendData); });
+                    self.data.on(dataEvent, sendData);
+                    webSocket.on("close", () => { self.data.removeListener(dataEvent, sendData); });
                 }
 
                 subscribeSocketToDataContainer(DataContainer.events.setWarehouse, webSocket.sendWarehouse);
