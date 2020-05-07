@@ -542,7 +542,8 @@ export class RouteScheduler {
         interval = 0;
         time = 0;
         earliestArrivalTime = this.computeEarliestArrivalTime(currentVertex, destinationVertex, currentTime);
-        while ((interval < this.timeIntervalMinimumSize || time <= earliestArrivalTime) && indexOfDestinationVertex < destinationVertex.scheduleItems.length) {
+        while ((interval < this.timeIntervalMinimumSize || time + this.timeIntervalMinimumSize / 2 <= earliestArrivalTime)
+            && indexOfDestinationVertex < destinationVertex.scheduleItems.length) {
             if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[indexOfDestinationVertex], earliestArrivalTime, currentTime,
                 indexOfDestinationVertex === destinationVertex.scheduleItems.length - 1, forkliftId)) {
                 return Infinity;
@@ -553,7 +554,7 @@ export class RouteScheduler {
             indexOfDestinationVertex++;
         }
 
-        if (time < earliestArrivalTime) {
+        if (time + this.timeIntervalMinimumSize / 2 < earliestArrivalTime) {
             return earliestArrivalTime;
         }
 

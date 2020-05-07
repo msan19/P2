@@ -95,7 +95,7 @@ describe(`Test of A* algorithm`, () => {
 
         expecteds.push(Infinity);
         expecteds.push(30400 + 30000 / 2);
-        expecteds.push(70400 + 30000 / 2);
+        expecteds.push(30400 + 30000 / 2);
         expecteds.push(70400 + 30000 / 2);
 
         expect(results).to.be.eql(expecteds);
