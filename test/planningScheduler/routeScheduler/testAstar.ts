@@ -396,10 +396,10 @@ function testAStar(): void {
         let results: number[] = [];
         let expecteds: number[] = [];
 
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 0, false));
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 401, false));
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 30401, false));
-        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 62481, true));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 0, false, "F0"));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 401, false, "F1"));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 30401, false, "F2"));
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 62481, true, "F1"));
 
         expecteds.push(Infinity);
         expecteds.push(30400 + 30000 / 2);
