@@ -404,23 +404,35 @@ export class RouteScheduler {
         return priorities;
     }
 
-    priotizeOnePriorityRandomly(priorities): void {
-        let ranIndex;
-        let ranNewIndex;
-        let counter = priorities.length;
+    /**
+     * Looks through as many random mutations as there are strings in the parameter array, 
+     * until a valid mutation is found
+     * @param priorities A string array with order ids in the order they are to be planned
+     */
+    priotizeOnePriorityRandomly(priorities: string[]): void {
+        let ranIndex: number = randomIntegerInRange(0, priorities.length - 1);
+        let ranNewIndex: number = ranIndex + 1;
 
-        do {
-            ranIndex = randomIntegerInRange(0, priorities.length - 1);
-            ranNewIndex = randomIntegerInRange(0, ranIndex - 1);
+        // Increases ranNewIndex until the mutation is no longer valid
+        while (ranNewIndex < priorities.length && RouteScheduler.isValidMutation(this.data.orders[priorities[ranIndex]], this.data.orders[priorities[ranNewIndex]])) {
+            ranNewIndex++;
+        }
 
-        } while (counter-- > 0 && RouteScheduler.isValidMutation(this.data.orders[priorities[ranIndex]], this.data.orders[priorities[ranNewIndex]]));
+        // Performs the mutation
+        if (ranNewIndex - 1 > ranIndex) {
+            let priority = priorities.splice(ranIndex, 1)[0];
+            priorities.splice(ranNewIndex, 0, priority);
+        }
     }
 
-    // Lower value is better
+    /**
+     * Finds the sum of the durations of all routes in a {@link RouteSet}
+     * @param routeSet A {@link RouteSet} whose durations sum is to be found
+     * @returns The sum of the durations
+     */
     static evalRouteSet(routeSet: RouteSet): number {
         let sum = 0;
-        let length: number = routeSet.duration.length;
-        for (let i = 0; i < length; i++) {
+        for (let i = 0; i < routeSet.duration.length; i++) {
             sum += routeSet.duration[i];
         }
         return sum;
