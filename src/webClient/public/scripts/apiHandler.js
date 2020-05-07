@@ -95,6 +95,11 @@ addOrderForm.onsubmit = function () {
                     data[input.name] = date.unix() * 1000;
             } else if (input.name == "timeType" || input.name == "type") {
                 data[input.name] = parseInt(input.value);
+            } else if (input.name == "id") {
+                if (typeof (input.value) == "undefined" || input.value == "")
+                    data[input.name] = input.placeholder;
+                else
+                    data[input.name] = input.value;
             } else
                 data[input.name] = input.value;
         }

@@ -217,9 +217,10 @@ export class RouteScheduler {
             if (order.type === Order.types.movePallet) {
                 assignableForklifts = this.assignForklift(routeSet, order);
                 for (let i = 0; i < assignableForklifts.length && currentRouteTime === Infinity; i++) {
+                    let expectedStartTimeOfForklift = order.time - 2 * this.heuristic(routeSet.graph.vertices[assignableForklifts[i].currentVertexId], routeSet.graph.vertices[order.startVertexId]);
                     currentRouteTime = this.planOptimalRoute(routeSet, assignableForklifts[i].currentVertexId, order.startVertexId,
-                        assignableForklifts[i].arrivalTimeCurrentVertex, assignableForklifts[i].forkliftId);
-                    if (assignableForklifts[i].arrivalTimeCurrentVertex + currentRouteTime > order.time) {
+                        expectedStartTimeOfForklift, assignableForklifts[i].forkliftId);
+                    if (expectedStartTimeOfForklift + currentRouteTime > order.time) {
                         currentRouteTime = Infinity;
                     }
                     if (currentRouteTime != Infinity) {

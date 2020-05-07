@@ -14,6 +14,7 @@ class UiManager {
         let orderList = document.querySelector("#order-list");
         orderList.innerHTML = `<option value=${""}>${""}</option>`;
         orderList.onclick = (e) => UiManager.chooseOrder(e.target.innerHTML);
+        document.querySelector("#openAddOrderMenu").onclick = (e) => UiManager.addRandomOrderId(e);
     }
 
     // ROUTE
@@ -168,6 +169,31 @@ class UiManager {
     }
     // END --- FORKLIFT --- END
     // ORDER
+    // Taken from https://stackoverflow.com/questions/9407892/how-to-generate-random-sha1-hash-to-use-as-id-in-node-js
+    // str byteToHex(uint8 byte)
+    //   converts a single byte to a hex string 
+    static byteToHex(byte) {
+        return ('0' + byte.toString(16)).slice(-2);
+    }
+
+    // str generateId(int len);
+    //   len - must be an even number (default: 40)
+    static generateId(len = 20) {
+        var arr = new Uint8Array(len / 2);
+        window.crypto.getRandomValues(arr);
+        return Array.from(arr, UiManager.byteToHex).join("");
+    }
+
+    static generateRandomOrderId() {
+        let orderId = "O";
+        orderId += this.generateId();
+        return orderId;
+    }
+
+    static addRandomOrderId() {
+        document.querySelector("#inputFormOrderId").placeholder = this.generateRandomOrderId();
+    }
+
     static resetOrderInformationOnUi() {
         document.querySelector("#selectedOrderForkliftId").innerHTML = "...";
         document.querySelector("#selectedOrderOrderId").innerHTML = "...";
