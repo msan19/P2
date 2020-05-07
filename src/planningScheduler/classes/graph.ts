@@ -35,26 +35,6 @@ export class Graph extends Graph_Shared {
     }
 
     /**
-     * Creates a new {@link Graph} containing a clone of each object in the {@link Graph} the function is called on
-     * @returns A new {@link Graph}
-     */
-    clone(): Graph {
-        let newIdlePositions: { [forkliftId: string]: ScheduleItem; } = {};
-        for (let key in this.idlePositions) {
-            newIdlePositions[key] = this.idlePositions[key];
-        }
-
-        let newVertices: { [key: string]: Vertex; } = {};
-        for (let key in this.vertices) {
-            newVertices[key] = this.vertices[key].clone();
-        }
-
-        let graph = new Graph(newVertices);
-        graph.idlePositions = newIdlePositions;
-        return graph;
-    }
-
-    /**
      * Sets the isVisited value of each {@link Vertex} in the {@link Graph} to false
      */
     reset(): void {
@@ -98,24 +78,6 @@ export class Vertex extends Vertex_Shared {
         return superCastVertex(parsed);
     }
 
-    /**
-     * Creates a vertex containing clones of the content of the vertex the function is called on
-     * @returns A created vertex
-     */
-    clone(): Vertex {
-        let v: Vertex = new Vertex(this.id, this.position.clone(), this.label);
-
-        for (let a of this.adjacentVertexIds) {
-            v.adjacentVertexIds.push(a);
-        }
-
-        v.scheduleItems = [];
-        for (let s in this.scheduleItems) {
-            v.scheduleItems.push(this.scheduleItems[s]);
-        }
-
-        return v;
-    }
     /**
      * Uses a binary search to find the index of a scheduleitem in the list of scheduleitems based on the parameter time
      * @param time A point in time for which the corresponding array index is found
@@ -209,14 +171,6 @@ export class ScheduleItem {
     linkNext(nextScheduleItem: ScheduleItem) {
         this.nextScheduleItem = nextScheduleItem;
         nextScheduleItem.previousScheduleItem = this;
-    }
-
-    /**
-     * Creates a {@link ScheduleItem} with the content of the {@link ScheduleItem} the function is called on
-     * @returns A new {@link ScheduleItem}
-     */
-    clone(): ScheduleItem {
-        return new ScheduleItem(this.forkliftId, this.arrivalTimeCurrentVertex, this.currentVertexId);
     }
 
 }
