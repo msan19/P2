@@ -213,26 +213,21 @@ export class Handler {
                 // subscribeSocketToDataContainer(DataContainer.events.addOrder, webSocket.sendOrder);
                 // webSocket.sendOrders(this.data.orders);
 
-                let setWarehouse = (warehouse: Warehouse) => { webSocket.sendWarehouse(warehouse); }; function subscribeSocketToDataContainer<T>(dataEvent: DataContainerEvents, sendData: (obj: T) => any) {
-                    this.data.on(DataContainer.events.setWarehouse, setWarehouse); this.data.on(dataEvent, sendData);
-                    webSocket.on("close", () => { this.data.removeListener(dataEvent, sendData); });
-                }
+                let setWarehouse = (warehouse: Warehouse) => { webSocket.sendWarehouse(warehouse); };
+                this.data.on(DataContainer.events.setWarehouse, setWarehouse);
+                if (this.data.warehouse !== null) webSocket.sendWarehouse(this.data.warehouse);
 
-                subscribeSocketToDataContainer(DataContainer.events.setWarehouse, webSocket.sendWarehouse);
-                if (this.data.warehouse !== null) webSocket.sendWarehouse(this.data.warehouse); if (this.data.warehouse !== null) webSocket.sendWarehouse(this.data.warehouse);
-
-
-                let updateForkliftInfo = (forklift) => { webSocket.sendForkliftInfo(forklift); }; subscribeSocketToDataContainer(DataContainer.events.forkliftUpdated, webSocket.sendForkliftInfo);
+                let updateForkliftInfo = (forklift) => { webSocket.sendForkliftInfo(forklift); };
                 this.data.on(DataContainer.events.forkliftUpdated, updateForkliftInfo);
                 webSocket.sendForkliftInfos(this.data.forklifts); webSocket.sendForkliftInfos(this.data.forklifts);
 
 
-                let lockRoute = (route) => { webSocket.sendRoute(route); }; subscribeSocketToDataContainer(DataContainer.events.lockRoute, webSocket.sendRoute);
+                let lockRoute = (route) => { webSocket.sendRoute(route); };
                 this.data.on(DataContainer.events.lockRoute, lockRoute);
                 webSocket.sendRoutes(this.data.routes); webSocket.sendRoutes(this.data.routes);
 
 
-                let addOrder = (order: Order) => { webSocket.sendOrder(order); }; subscribeSocketToDataContainer(DataContainer.events.addOrder, webSocket.sendOrder);
+                let addOrder = (order: Order) => { webSocket.sendOrder(order); };
                 this.data.on(DataContainer.events.addOrder, addOrder);
                 webSocket.sendOrders(this.data.orders); webSocket.sendOrders(this.data.orders);
 
