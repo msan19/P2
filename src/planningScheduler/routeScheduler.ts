@@ -404,23 +404,35 @@ export class RouteScheduler {
         return priorities;
     }
 
-    priotizeOnePriorityRandomly(priorities): void {
-        let ranIndex;
-        let ranNewIndex;
-        let counter = priorities.length;
+    /**
+     * Looks through as many random mutations as there are strings in the parameter array, 
+     * until a valid mutation is found
+     * @param priorities A string array with order ids in the order they are to be planned
+     */
+    priotizeOnePriorityRandomly(priorities: string[]): void {
+        let ranIndex: number = randomIntegerInRange(0, priorities.length - 1);
+        let ranNewIndex: number = ranIndex + 1;
 
-        do {
-            ranIndex = randomIntegerInRange(0, priorities.length - 1);
-            ranNewIndex = randomIntegerInRange(0, ranIndex - 1);
+        // Increases ranNewIndex until the mutation is no longer valid
+        while (ranNewIndex < priorities.length && RouteScheduler.isValidMutation(this.data.orders[priorities[ranIndex]], this.data.orders[priorities[ranNewIndex]])) {
+            ranNewIndex++;
+        }
 
-        } while (counter-- > 0 && RouteScheduler.isValidMutation(this.data.orders[priorities[ranIndex]], this.data.orders[priorities[ranNewIndex]]));
+        // Performs the mutation
+        if (ranNewIndex - 1 > ranIndex) {
+            let priority = priorities.splice(ranIndex, 1)[0];
+            priorities.splice(ranNewIndex, 0, priority);
+        }
     }
 
-    // Lower value is better
+    /**
+     * Finds the sum of the durations of all routes in a {@link RouteSet}
+     * @param routeSet A {@link RouteSet} whose durations sum is to be found
+     * @returns The sum of the durations
+     */
     static evalRouteSet(routeSet: RouteSet): number {
         let sum = 0;
-        let length: number = routeSet.duration.length;
-        for (let i = 0; i < length; i++) {
+        for (let i = 0; i < routeSet.duration.length; i++) {
             sum += routeSet.duration[i];
         }
         return sum;
@@ -439,22 +451,27 @@ export class RouteScheduler {
      * @returns True if crossing the edge at this time is not possible, false otherwise
      */
     isCollisionInevitable(startVertexId: string, scheduleItem: ScheduleItem, earliestArrivalTime: number, currentTime: number, isLast: boolean, forkliftId: string): boolean {
-        // It is checked if the parameter scheduleItem is part of a route from the other Vertex to the startVertex in the
-        // first case, and from the startVertex to the other Vertex in the second case
+        // Checks if the parameter scheduleItem is part of a route from the other Vertex to the startVertex in the
+        // first case, or from the startVertex to the other Vertex in the second case
         if (scheduleItem.nextScheduleItem !== null && scheduleItem.nextScheduleItem.currentVertexId === startVertexId) {
-            // Checks whether 
+
+            // Checks for a frontal collision
             if (scheduleItem.arrivalTimeCurrentVertex > earliestArrivalTime || scheduleItem.nextScheduleItem.arrivalTimeCurrentVertex > currentTime) {
                 return true;
             }
         } else if (scheduleItem.previousScheduleItem !== null && scheduleItem.previousScheduleItem.currentVertexId === startVertexId) {
+
+            // Checks for a rear-end collision
             if (scheduleItem.previousScheduleItem.arrivalTimeCurrentVertex > currentTime) {
                 return true;
             }
         }
 
+        // Checks whether the ScheduleItem marks an idle forklift other than itself
         if (scheduleItem.nextScheduleItem === null && isLast && scheduleItem.forkliftId !== forkliftId) {
             return true;
         }
+
         return false;
     }
 
