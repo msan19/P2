@@ -16,11 +16,20 @@ import { DataContainer } from '../../../src/planningScheduler/classes/dataContai
 import { RouteSet } from '../../../src/planningScheduler/classes/routeSet';
 import { Warehouse } from '../../../src/planningScheduler/classes/warehouse';
 
-/**
- * Test of A*
- * @returns Mocha handles the appropriate responses
- */
-function testAStar(): void {
+function initRouteSet() {
+    let graph: Graph = Graph.parse(createGraph());
+    return new RouteSet([], graph);
+}
+
+function initRouteScheduler() {
+    let graph: Graph = Graph.parse(createGraph());
+    let warehouse = new Warehouse(graph, 15);
+    let data: DataContainer = new DataContainer();
+    data.warehouse = warehouse;
+    return new RouteScheduler(data);
+}
+
+describe(`Test of A* algorithm`, () => {
     /*describe(`Test of A* with Graph from createGraph input`, () => {
         let graph: Graph = createGraph();
         let routeSet: RouteSet = new RouteSet([], graph);
@@ -91,19 +100,4 @@ function testAStar(): void {
 
         expect(results).to.be.eql(expecteds);
     });
-}
-
-function initRouteSet() {
-    let graph: Graph = Graph.parse(createGraph());
-    return new RouteSet([], graph);
-}
-
-function initRouteScheduler() {
-    let graph: Graph = Graph.parse(createGraph());
-    let warehouse = new Warehouse(graph, 15);
-    let data: DataContainer = new DataContainer();
-    data.warehouse = warehouse;
-    return new RouteScheduler(data);
-}
-
-describe(`Test of A* algorithm`, testAStar);
+});
