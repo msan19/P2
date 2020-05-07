@@ -213,6 +213,7 @@ export class RouteScheduler {
             let assignableForklifts: ScheduleItem[] = [];
             let currentRouteTime: number = Infinity;
             let forkliftId: string = order.forkliftId || "";
+            let moveForkliftScheduleItems: ScheduleItem[] = [];
 
             // Handle all order cases     
             if (order.type === Order.types.movePallet) {
@@ -224,6 +225,9 @@ export class RouteScheduler {
                         currentRouteTime = Infinity;
                     }
                     if (currentRouteTime != Infinity) {
+                        this.upStackingToArray(routeSet.graph.vertices[order.startVertexId], assignableForklifts[i].currentVertexId,
+                            forkliftId, null, moveForkliftScheduleItems);
+                        //routeSet.graph.vertices[order.startVertexId].previousVertex = null;
                         currentRouteTime = this.planOptimalRoute(routeSet, order.startVertexId, order.endVertexId,
                             order.time, assignableForklifts[i].forkliftId);
 
@@ -243,7 +247,10 @@ export class RouteScheduler {
             if (currentRouteTime != Infinity) {
                 if (order.timeType === Order.timeTypes.start) {
                     if (order.type === Order.types.movePallet) {
+                        this.insertScheduleItemsArray(data, routeSet, moveForkliftScheduleItems);
                         this.upStacking(routeSet.graph.vertices[order.endVertexId], order.startVertexId, forkliftId, null);
+                        let scheduleItemOfStartVertex = routeSet.graph.vertices[order.startVertexId].getScheduleItem(order.time);
+                        scheduleItemOfStartVertex.linkPrevious(moveForkliftScheduleItems[0]);
                         // Recursively stacking up
                     } else {
                         let startVertexId = routeSet.graph.idlePositions[order.forkliftId].currentVertexId;
@@ -574,6 +581,23 @@ export class RouteScheduler {
         if (nextItem !== null) nextItem.linkPrevious(vertex.scheduleItems[i]);
         if (vertex.id !== startVertexId) {
             this.upStacking(vertex.previousVertex, startVertexId, forkliftId, vertex.scheduleItems[i]);
+        }
+    }
+
+    // Used to save scheduleitems for forklifts that might be used for a movepallet order
+    upStackingToArray(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null, outputArray: ScheduleItem[]) {
+        outputArray.push(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
+        if (nextItem !== null) nextItem.linkPrevious(outputArray[outputArray.length - 1]);
+        if (vertex.id !== startVertexId) {
+            this.upStackingToArray(vertex.previousVertex, startVertexId, forkliftId, outputArray[outputArray.length - 1], outputArray);
+        }
+    }
+
+    // Inserts scheduleitems from upStackingToArray to the graph of the routeSet
+    insertScheduleItemsArray(data: DataContainer, routeSet: RouteSet, scheduleItemsArray: ScheduleItem[]) {
+        for (let scheduleItem of scheduleItemsArray) {
+            let tempVertex = routeSet.graph.vertices[scheduleItem.currentVertexId];
+            tempVertex.insertScheduleItem(scheduleItem);
         }
     }
 
