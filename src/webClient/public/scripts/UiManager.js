@@ -15,6 +15,10 @@ class UiManager {
         orderList.innerHTML = `<option value=${""}>${""}</option>`;
         orderList.onclick = (e) => UiManager.chooseOrder(e.target.innerHTML);
         document.querySelector("#openAddOrderMenu").onclick = (e) => UiManager.addRandomOrderId(e);
+        document.querySelector("#addOrderSubmit").onclick = () => $(function () {
+            $('#modal-add-order').modal('hide');
+        });
+
     }
 
     // ROUTE
