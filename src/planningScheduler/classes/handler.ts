@@ -195,23 +195,55 @@ export class Handler {
                 let webSocket = new WebSocket(ws);
                 webSocket.accept();
 
-                let self = this;
-                function subscribeSocketToDataContainer<T>(dataEvent: DataContainerEvents, sendData: (obj: T) => any) {
-                    self.data.on(dataEvent, sendData);
-                    webSocket.on("close", () => { self.data.removeListener(dataEvent, sendData); });
+                // let self = this;
+                // function subscribeSocketToDataContainer<T>(dataEvent: DataContainerEvents, sendData: (obj: T) => any) {
+                //     self.data.on(dataEvent, sendData);
+                //     webSocket.on("close", () => { self.data.removeListener(dataEvent, sendData); });
+                // }
+
+                // subscribeSocketToDataContainer(DataContainer.events.setWarehouse, webSocket.sendWarehouse);
+                // if (this.data.warehouse !== null) webSocket.sendWarehouse(this.data.warehouse);
+
+                // subscribeSocketToDataContainer(DataContainer.events.forkliftUpdated, webSocket.sendForkliftInfo);
+                // webSocket.sendForkliftInfos(this.data.forklifts);
+
+                // subscribeSocketToDataContainer(DataContainer.events.lockRoute, webSocket.sendRoute);
+                // webSocket.sendRoutes(this.data.routes);
+
+                // subscribeSocketToDataContainer(DataContainer.events.addOrder, webSocket.sendOrder);
+                // webSocket.sendOrders(this.data.orders);
+
+                let setWarehouse = (warehouse: Warehouse) => { webSocket.sendWarehouse(warehouse); }; function subscribeSocketToDataContainer<T>(dataEvent: DataContainerEvents, sendData: (obj: T) => any) {
+                    this.data.on(DataContainer.events.setWarehouse, setWarehouse); this.data.on(dataEvent, sendData);
+                    webSocket.on("close", () => { this.data.removeListener(dataEvent, sendData); });
                 }
 
                 subscribeSocketToDataContainer(DataContainer.events.setWarehouse, webSocket.sendWarehouse);
-                if (this.data.warehouse !== null) webSocket.sendWarehouse(this.data.warehouse);
+                if (this.data.warehouse !== null) webSocket.sendWarehouse(this.data.warehouse); if (this.data.warehouse !== null) webSocket.sendWarehouse(this.data.warehouse);
 
-                subscribeSocketToDataContainer(DataContainer.events.forkliftUpdated, webSocket.sendForkliftInfo);
-                webSocket.sendForkliftInfos(this.data.forklifts);
 
-                subscribeSocketToDataContainer(DataContainer.events.lockRoute, webSocket.sendRoute);
-                webSocket.sendRoutes(this.data.routes);
+                let updateForkliftInfo = (forklift) => { webSocket.sendForkliftInfo(forklift); }; subscribeSocketToDataContainer(DataContainer.events.forkliftUpdated, webSocket.sendForkliftInfo);
+                this.data.on(DataContainer.events.forkliftUpdated, updateForkliftInfo);
+                webSocket.sendForkliftInfos(this.data.forklifts); webSocket.sendForkliftInfos(this.data.forklifts);
 
-                subscribeSocketToDataContainer(DataContainer.events.addOrder, webSocket.sendOrder);
-                webSocket.sendOrders(this.data.orders);
+
+                let lockRoute = (route) => { webSocket.sendRoute(route); }; subscribeSocketToDataContainer(DataContainer.events.lockRoute, webSocket.sendRoute);
+                this.data.on(DataContainer.events.lockRoute, lockRoute);
+                webSocket.sendRoutes(this.data.routes); webSocket.sendRoutes(this.data.routes);
+
+
+                let addOrder = (order: Order) => { webSocket.sendOrder(order); }; subscribeSocketToDataContainer(DataContainer.events.addOrder, webSocket.sendOrder);
+                this.data.on(DataContainer.events.addOrder, addOrder);
+                webSocket.sendOrders(this.data.orders); webSocket.sendOrders(this.data.orders);
+
+
+                webSocket.on("close", () => {
+                    this.data.removeListener(DataContainer.events.setWarehouse, setWarehouse);
+                    this.data.removeListener(DataContainer.events.forkliftUpdated, updateForkliftInfo);
+                    this.data.removeListener(DataContainer.events.lockRoute, lockRoute);;
+                    this.data.removeListener(DataContainer.events.addOrder, addOrder);;
+                });
+
             });
         }
     };
