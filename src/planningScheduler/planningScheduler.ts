@@ -66,7 +66,7 @@ export class PlanningScheduler {
                         : -1;
                     if (indexOfOrderId !== -1 && this.routeScheduler.bestRouteSet.duration[indexOfOrderId] < Infinity) {
                         if (this.routeScheduler.getStartTime(orderId) < currentTime + timeOffset) {
-                            this.data.lockRoute(this.routeScheduler.getRoute(orderId));
+                            this.data.lockRoute(this.routeScheduler.handleLockOrder(orderId));
                         }
                     } else if (this.data.orders[orderId].time < currentTime + timeOffset) {
                         let tempOrder = this.data.orders[orderId];
