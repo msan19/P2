@@ -239,7 +239,7 @@ describe("MinPriorityQueue", () => {
                 queue.insert(vertices[i]);
             }
 
-            expect(queue.array).to.be.eql(expected);
+            expect(queue.array, "Failed to insert and maintain order").to.be.eql(expected);
         });
     });
 });
