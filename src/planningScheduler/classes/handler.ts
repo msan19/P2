@@ -195,9 +195,10 @@ export class Handler {
                 let webSocket = new WebSocket(ws);
                 webSocket.accept();
 
+                let self = this;
                 function subscribeSocketToDataContainer<T>(dataEvent: DataContainerEvents, sendData: (obj: T) => any) {
-                    this.data.on(dataEvent, sendData);
-                    webSocket.on("close", () => { this.data.removeListener(dataEvent, sendData); });
+                    self.data.on(dataEvent, sendData);
+                    webSocket.on("close", () => { self.data.removeListener(dataEvent, sendData); });
                 }
 
                 subscribeSocketToDataContainer(DataContainer.events.setWarehouse, webSocket.sendWarehouse);
