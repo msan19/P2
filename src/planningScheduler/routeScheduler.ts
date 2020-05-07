@@ -439,22 +439,27 @@ export class RouteScheduler {
      * @returns True if crossing the edge at this time is not possible, false otherwise
      */
     isCollisionInevitable(startVertexId: string, scheduleItem: ScheduleItem, earliestArrivalTime: number, currentTime: number, isLast: boolean, forkliftId: string): boolean {
-        // It is checked if the parameter scheduleItem is part of a route from the other Vertex to the startVertex in the
-        // first case, and from the startVertex to the other Vertex in the second case
+        // Checks if the parameter scheduleItem is part of a route from the other Vertex to the startVertex in the
+        // first case, or from the startVertex to the other Vertex in the second case
         if (scheduleItem.nextScheduleItem !== null && scheduleItem.nextScheduleItem.currentVertexId === startVertexId) {
-            // Checks whether 
+
+            // Checks for a frontal collision
             if (scheduleItem.arrivalTimeCurrentVertex > earliestArrivalTime || scheduleItem.nextScheduleItem.arrivalTimeCurrentVertex > currentTime) {
                 return true;
             }
         } else if (scheduleItem.previousScheduleItem !== null && scheduleItem.previousScheduleItem.currentVertexId === startVertexId) {
+
+            // Checks for a rear-end collision
             if (scheduleItem.previousScheduleItem.arrivalTimeCurrentVertex > currentTime) {
                 return true;
             }
         }
 
+        // Checks whether the ScheduleItem marks an idle forklift other than itself
         if (scheduleItem.nextScheduleItem === null && isLast && scheduleItem.forkliftId !== forkliftId) {
             return true;
         }
+
         return false;
     }
 
