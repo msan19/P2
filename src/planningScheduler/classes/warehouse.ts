@@ -10,7 +10,7 @@ import { Graph } from "./graph";
 /** A Warehouse containing a graph and the maximum forkliftspeed */
 export class Warehouse extends Warehouse_Shared {
     /** The layout of the warehouse */
-    graph: Graph;
+    graph: Graph; // Different from Warehouse_Shared.graph
 
     /** 
      * Parses to a warehouse
@@ -18,6 +18,7 @@ export class Warehouse extends Warehouse_Shared {
      * @returns A Warehouse if possible else null
      */
     static parse(obj: any): Warehouse | null {
+        // this function differs from Warehouse_Shared.parse, as it's a different graph.parse
         let parsedGraph: Graph | null = Graph.parse(obj.graph);
         if (parsedGraph === null) return null;
 
