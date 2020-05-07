@@ -71,17 +71,17 @@ class Graph {
         let edgeIds = [];
         // add nodes
         for (let key in instructions) {
-            nodesIds.push(instructions[key]["nodeId"]);
+            if (!nodesIds.includes(instructions[key]["nodeId"]))
+                nodesIds.push(instructions[key]["nodeId"]);
         }
         for (let key in nodesIds) {
             if (key > 0) {
-                if (nodesIds[key] != nodesIds[key] - 1) {
-                    if (nodesIds[key] < nodesIds[key - 1])
-                        edgeIds.push(nodesIds[key] + "," + nodesIds[key - 1]);
-                    else
-                        edgeIds.push(nodesIds[key - 1] + "," + nodesIds[key]);
-                }
+                if (nodesIds[key] < nodesIds[key - 1])
+                    edgeIds.push(nodesIds[key] + "," + nodesIds[key - 1]);
+                else
+                    edgeIds.push(nodesIds[key - 1] + "," + nodesIds[key]);
             }
+
         }
         return {
             nodes: nodesIds,
