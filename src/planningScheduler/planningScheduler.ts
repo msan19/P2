@@ -57,7 +57,7 @@ export class PlanningScheduler {
         if (this.data !== null && this.data.warehouse !== null && this.data.warehouse.graph !== null && Object.keys(this.data.orders).length > 0) {
             // Get route(s)
             let currentTime = (new Date()).getTime(); // 1588233898230
-            let timeOffset = 10000;
+            let timeOffset = 1000;
 
             for (let orderId in this.data.orders) {
                 if (this.routeScheduler.unfinishedOrderIds.indexOf(orderId) !== -1) {
