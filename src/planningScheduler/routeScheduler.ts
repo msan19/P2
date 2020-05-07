@@ -294,12 +294,6 @@ export class RouteScheduler {
             .map(item => item.scheduleItem); // Unwrap 
     }
 
-
-    getBestRouteSet(routeSets: RouteSet[]): RouteSet {
-        // TO DO
-        return null;
-    }
-
     setBestRouteSet(newRouteSet): void {
         if (this.bestRouteSet === null || RouteScheduler.evalRouteSet(newRouteSet) < RouteScheduler.evalRouteSet(this.bestRouteSet)) {
             this.bestRouteSet = newRouteSet;

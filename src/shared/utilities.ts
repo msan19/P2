@@ -67,7 +67,29 @@ export function stringifyObject(obj: any) {
     return JSON.stringify(obj, jsonReplacer);
 }
 
-export function deepCopy<T>(obj: T, previousReferences: any[] = []): T {
+class PreviousReferences {
+    original: any;
+    copy: any;
+    previous: PreviousReferences | null;
+
+    constructor(original: any = null, copy: any = null, previous: any = null) {
+        this.original = original;
+        this.copy = copy;
+        this.previous = previous;
+    }
+
+    createNext(original: any, copy: any) {
+        return new PreviousReferences(original, copy, this);
+    }
+
+    findByOriginal(original: any) {
+        if (this.original === original) return this;
+        if (this.previous) return this.previous.findByOriginal(original);
+        return null;
+    }
+}
+
+export function deepCopy<T>(obj: T, refManager: PreviousReferences = new PreviousReferences()): T {
     switch (typeof (obj)) {
         case "bigint":
         case "boolean":
@@ -81,8 +103,8 @@ export function deepCopy<T>(obj: T, previousReferences: any[] = []): T {
             if (obj === null) return null;
 
             // Detect circular references
-            let indexOfPreviousReference = previousReferences.indexOf(obj);
-            if (indexOfPreviousReference !== -1) return obj;
+            let prevRef = refManager.findByOriginal(obj);
+            if (prevRef !== null) return prevRef.copy;
 
             // Instantiate output as array or object, depending on type of obj
             let output;
@@ -94,13 +116,9 @@ export function deepCopy<T>(obj: T, previousReferences: any[] = []): T {
                 output = new ctor();
             }
 
-            // Tell next level about previous layers
-            let nextReferenceArray = [...previousReferences];
-            nextReferenceArray.push(obj);
-
             // Deep copy values
             for (let key in obj) {
-                output[key] = deepCopy(obj[key], nextReferenceArray);
+                output[key] = deepCopy(obj[key], refManager.createNext(obj, output));
             }
             return output;
         default:

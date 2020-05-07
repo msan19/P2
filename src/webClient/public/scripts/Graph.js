@@ -1,10 +1,11 @@
-var hightlightcolor = "#ff0000";
-var unFocusColor = "#e5e5e5";
 // The id of the edge piece going from the selected forklift to it's next immidiete node
 var forkliftHighlightEdgePathPiece = "highlightedEdgePiece";
 
 class Graph {
-    // 
+    inactiveColor = "#ff0000"; // red
+    waitingColor = "#ffff00"; // yellow
+    movingColor = "#66ff66"; // green
+    unFocusColor = "#e5e5e5";
     constructor(container, graph) {
         // See http://sigmajs.org/
         // returns neighbouring nodes i.e. nodes with a connecting edge
@@ -29,7 +30,7 @@ class Graph {
                 maxEdgeSize: 0,
                 minNodeSize: 0,
                 maxNodeSize: 0,
-                hideEdgesOnMove: true,
+                //hideEdgesOnMove: true,
                 labelThreshold: 16,
                 // how much to zoom on double click
                 doubleClickZoomingRatio: 1
@@ -58,6 +59,7 @@ class Graph {
 
     onNodeClick(element) {
         if (element.data.node.id[0] == "F") {
+            this.unfocusGraph();
             UiManager.chooseForklift(element.data.node.id);
         }
     }
@@ -217,7 +219,7 @@ class Graph {
                 source: nForklifts.selectedForklift,
                 target: forkliftData[nForklifts.selectedForklift].route.instructions[0].nodeId,
                 size: 4,
-                color: hightlightcolor
+                color: mainGraph.hightlightcolor
             });
         }
     }
@@ -240,23 +242,23 @@ class Graph {
         this.sigmaGraph.refresh();
     }
 
-    hightlightPath(path) {
+    unfocusGraph() {
         this.sigmaGraph.graph.nodes().forEach((element) => {
-            if (element.id != nForklifts.selectedForklift)
-                element.color = unFocusColor;
-            else
-                element.color = element.originalColor;
+            element.color = mainGraph.unFocusColor;
         });
         this.sigmaGraph.graph.edges().forEach((element) => {
-            if (element.id != forkliftHighlightEdgePathPiece)
-                element.color = unFocusColor;
+            element.color = mainGraph.unFocusColor;
         });
+    }
 
+    hightlightPath(path) {
+        let newHighlightColor = (forkliftData[nForklifts.selectedForklift].currentNode.nodeId == forkliftData[nForklifts.selectedForklift].route.instructions[0].nodeId) ? mainGraph.waitingColor : mainGraph.movingColor;
+        this.unfocusGraph();
         for (let node in path.nodes)
-            this.sigmaGraph.graph.nodes(path.nodes[node]).color = hightlightcolor;
+            this.sigmaGraph.graph.nodes(path.nodes[node]).color = newHighlightColor;
 
         for (let edge in path.edges) {
-            this.sigmaGraph.graph.edges(path.edges[edge]).color = hightlightcolor;
+            this.sigmaGraph.graph.edges(path.edges[edge]).color = newHighlightColor;
         }
 
     }
