@@ -140,13 +140,11 @@ export class RouteScheduler {
      *                     first schedulteItem in route is reached 
      */
     private createMovePalletInstructions(instructions: Instruction[], order: Order, scheduleItem: ScheduleItem): void {
-        let instructionType;
+        let instructionType = Instruction.types.move;
         if (scheduleItem.previousScheduleItem !== null) {
             this.createMovePalletInstructions(instructions, order, scheduleItem.previousScheduleItem);
             if (scheduleItem.currentVertexId === order.endVertexId) {
                 instructionType = Instruction.types.unloadPallet;
-            } else {
-                instructionType = Instruction.types.move;
             }
         } else if (scheduleItem.currentVertexId === order.startVertexId) {
             instructionType = Instruction.types.loadPallet;
@@ -219,9 +217,10 @@ export class RouteScheduler {
             if (order.type === Order.types.movePallet) {
                 assignableForklifts = this.assignForklift(routeSet, order);
                 for (let i = 0; i < assignableForklifts.length && currentRouteTime === Infinity; i++) {
+                    let expectedStartTimeOfForklift = order.time - 2 * this.heuristic(routeSet.graph.vertices[assignableForklifts[i].currentVertexId], routeSet.graph.vertices[order.startVertexId]);
                     currentRouteTime = this.planOptimalRoute(routeSet, assignableForklifts[i].currentVertexId, order.startVertexId,
-                        assignableForklifts[i].arrivalTimeCurrentVertex, assignableForklifts[i].forkliftId);
-                    if (assignableForklifts[i].arrivalTimeCurrentVertex + currentRouteTime > order.time) {
+                        expectedStartTimeOfForklift, assignableForklifts[i].forkliftId);
+                    if (expectedStartTimeOfForklift + currentRouteTime > order.time) {
                         currentRouteTime = Infinity;
                     }
                     if (currentRouteTime != Infinity) {
@@ -415,7 +414,7 @@ export class RouteScheduler {
         return sum;
     }
 
-    isCollisionInevitable(startVertexId: string, scheduleItem: ScheduleItem, maxWarp: number, currentTime: number, isLast: boolean): boolean {
+    isCollisionInevitable(startVertexId: string, scheduleItem: ScheduleItem, maxWarp: number, currentTime: number, isLast: boolean, forkliftId: string): boolean {
         if (scheduleItem.nextScheduleItem !== null && scheduleItem.nextScheduleItem.currentVertexId === startVertexId) {
             if (scheduleItem.arrivalTimeCurrentVertex > maxWarp || scheduleItem.nextScheduleItem.arrivalTimeCurrentVertex > currentTime) {
                 return true;
@@ -426,13 +425,13 @@ export class RouteScheduler {
             }
         }
 
-        if (scheduleItem.nextScheduleItem === null && isLast) {
+        if (scheduleItem.nextScheduleItem === null && isLast && scheduleItem.forkliftId !== forkliftId) {
             return true;
         }
         return false;
     }
 
-    getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number, isEndVertex: boolean): number {
+    getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number, isEndVertex: boolean, forkliftId: string): number {
         let time: number;
         let interval: number;
         let maxWarp: number;
@@ -449,7 +448,7 @@ export class RouteScheduler {
         maxWarp = this.computeMaxWarp(currentVertex, destinationVertex, currentTime);
         while ((interval < this.timeIntervalMinimumSize || time <= maxWarp) && indexOfDestinationVertex < destinationVertex.scheduleItems.length) {
             if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[indexOfDestinationVertex], maxWarp, currentTime,
-                indexOfDestinationVertex === destinationVertex.scheduleItems.length - 1)) {
+                indexOfDestinationVertex === destinationVertex.scheduleItems.length - 1, forkliftId)) {
                 return Infinity;
             }
             time = destinationVertex.scheduleItems[indexOfDestinationVertex].arrivalTimeCurrentVertex;
@@ -533,14 +532,14 @@ export class RouteScheduler {
             for (let u = 0; u < currentVertex.adjacentVertexIds.length; u++) {
                 let adjacentVertex: Vertex = routeSet.graph.vertices[currentVertex.adjacentVertexIds[u]];
                 if (adjacentVertex.id === endVertex.id) {
-                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime, true);
+                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime, true, forkliftId);
                     if (adjacentVertex.visitTime < Infinity) {
                         adjacentVertex.isVisited = true;
                         adjacentVertex.previousVertex = currentVertex;
                         return endVertex.visitTime - orderTime;
                     }
                 } else if (!adjacentVertex.isVisited) {
-                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime, false);
+                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime, false, forkliftId);
                     if (adjacentVertex.visitTime < Infinity) {
                         queue.insert(adjacentVertex);
                         adjacentVertex.isVisited = true;
