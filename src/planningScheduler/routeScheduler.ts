@@ -62,25 +62,14 @@ export class RouteScheduler {
      * @note Each order Id is unique
      * @param orderId A string that uniquely identifies the given order
      */
-    getRoute(orderId: string): Route {
-        let order = this.data.orders[orderId];
-
+    getRoute(order: Order, lastScheduleItem: ScheduleItem, forkliftId: string): Route {
         // Create a route object for the route of an order on bestRouteSet
-        let routeId = "R" + orderId;
+        let routeId = "R" + order.id;
         let instructions = this.createInstructions(order);
         let routeStatus = Route.Statuses.queued;
 
-        // Add the locked route on the graph on this.data.warehouse.graph
-        // endVertex and duration are from bestRouteSet
-        let endVertex = this.findVertex(order.endVertexId);
-        let duration = this.findDuration(order.id);
-        // At this point currentScheduleItem is the lastScheduleItem for the given order
-        let currentScheduleItem = endVertex.getScheduleItem(order.time + duration);
-
-        let forkliftId = currentScheduleItem.forkliftId;
-
-        // Lock idlePositions from bestRouteSet to this.data.warehouse.graph
-        this.data.warehouse.graph.idlePositions[forkliftId] = currentScheduleItem;
+        // Different name, as lastScheduleItem is not fitting for the while loop
+        let currentScheduleItem = lastScheduleItem;
 
         // Inserts all scheduleItems from route of order from bestRouteSet.graph to data.warehouse.graph
         while (currentScheduleItem !== null) {
@@ -88,11 +77,9 @@ export class RouteScheduler {
             currentScheduleItem = currentScheduleItem.previousScheduleItem;
         }
 
-        // Splice order from priorities and duration
-        this.removeOrderFromBestRouteSet(order);
+        return new Route(routeId, order.palletId, forkliftId, order.id, routeStatus, instructions);
+    }
 
-        // Redo mutations
-        this.mutate();
 
         return new Route(routeId, order.palletId, forkliftId, orderId, routeStatus, instructions);
     }
