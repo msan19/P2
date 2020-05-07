@@ -71,8 +71,10 @@ class Graph {
         let edgeIds = [];
         // add nodes
         for (let key in instructions) {
-            if (!nodesIds.includes(instructions[key]["nodeId"]))
-                nodesIds.push(instructions[key]["nodeId"]);
+            if (instructions.length > 1)
+                if (nodesIds[key - 1] == instructions[key]["nodeId"])
+                    continue;
+            nodesIds.push(instructions[key]["nodeId"]);
         }
         for (let key in nodesIds) {
             if (key > 0) {
