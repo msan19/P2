@@ -359,6 +359,11 @@ export class RouteScheduler {
         this.mutationCounter = 0;
     }
 
+    /**
+     * Checks whether it is valid to plan and order after another 
+     * @param currentOrder 
+     * @param newOrder 
+     */
     static isValidMutation(currentOrder: Order, newOrder: Order): boolean {
         let oneOrderIsMovePallet: boolean = currentOrder.type === Order.types.movePallet || newOrder.type === Order.types.movePallet;
         let differentForklifts: boolean = currentOrder.forkliftId !== newOrder.forkliftId;
@@ -367,6 +372,10 @@ export class RouteScheduler {
         return oneOrderIsMovePallet || differentForklifts || timeCurrentOrderIsLower;
     }
 
+    /**
+     * Generates a new array of order ids in the sequence they are to be executed.
+     * @returns A string array of order ids
+     */
     generateChronologicalPriorities(): string[] {
         let orders: string[] = [...this.unfinishedOrderIds];
 
@@ -377,17 +386,26 @@ export class RouteScheduler {
         return orders;
     }
 
+    /**
+     * Generates a new array of order ids in the sequence they are to be planned based mostly on 
+     * bestRouteSet or chronological order, but makes changes based on mutations or randomness
+     * @returns The new priorities in a string array of order ids
+     */
     generatePriorities(): string[] {
-        let priorities = [];
+        let priorities: string[] = [];
 
+        //Checks if the new priorities are to be based on bestRouteSet or on chronological order
         if (this.bestRouteSet !== null) {
+
             // Clone of bestRouteSet.priorities
             priorities = [...this.bestRouteSet.priorities];
 
             // Handle mutationCounter greater than number of mutations
             if (this.mutationCounter >= this.mutations.length && priorities.length > 0) {
                 this.priotizeOnePriorityRandomly(priorities);
+
             } else if (this.mutations.length > 0) {
+
                 // Handle the mutations
                 let priority = priorities.splice(this.mutations[this.mutationCounter].index, 1)[0];
                 priorities.splice(this.mutations[this.mutationCounter].newIndex, 0, priority);
@@ -411,15 +429,16 @@ export class RouteScheduler {
      */
     priotizeOnePriorityRandomly(priorities: string[]): void {
         let ranIndex: number = randomIntegerInRange(0, priorities.length - 1);
-        let ranNewIndex: number = ranIndex + 1;
+        let ranNewIndex: number = ranIndex - 1;
 
         // Increases ranNewIndex until the mutation is no longer valid
-        while (ranNewIndex < priorities.length && RouteScheduler.isValidMutation(this.data.orders[priorities[ranIndex]], this.data.orders[priorities[ranNewIndex]])) {
-            ranNewIndex++;
+        while (ranNewIndex >= 0 && RouteScheduler.isValidMutation(this.data.orders[priorities[ranIndex]], this.data.orders[priorities[ranNewIndex]])) {
+            ranNewIndex--;
         }
+        ranNewIndex++;
 
         // Performs the mutation
-        if (ranNewIndex - 1 > ranIndex) {
+        if (ranNewIndex < ranIndex) {
             let priority = priorities.splice(ranIndex, 1)[0];
             priorities.splice(ranNewIndex, 0, priority);
         }
@@ -494,9 +513,8 @@ export class RouteScheduler {
             return this.computeEarliestArrivalTime(currentVertex, destinationVertex, currentTime);
         }
 
-        /** Find earliest possible reference to destinationVertex */
+        // Find earliest possible reference to destinationVertex
         let indexOfDestinationVertex = this.findReferenceToVertex(currentVertex, destinationVertex, currentTime);
-        // 1588321483297 - 1588321468280
         interval = 0;
         time = 0;
         earliestArrivalTime = this.computeEarliestArrivalTime(currentVertex, destinationVertex, currentTime);
