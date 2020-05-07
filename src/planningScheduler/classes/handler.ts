@@ -10,8 +10,6 @@ import { IncomingMessage, ServerResponse } from "http";
 
 import { getJson, returnJson, returnNotFound, returnStatus, passId, returnInvalidJson, returnSuccess } from "../../shared/webUtilities";
 import { WebSocket } from "../../shared/webSocket";
-import { ForkliftInfo } from "../../shared/forkliftInfo";
-import { Route } from "../../shared/route";
 
 import { DataContainer, DataContainerEvents } from "./dataContainer";
 import { Warehouse } from "./warehouse";
