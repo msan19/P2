@@ -80,8 +80,11 @@ export class RouteScheduler {
         return new Route(routeId, order.palletId, forkliftId, order.id, routeStatus, instructions);
     }
 
+    getLastScheduleItemForOrder(order: Order): ScheduleItem {
+        let endVertex = this.findVertex(order.endVertexId);
+        let duration = this.findDuration(order.id);
 
-        return new Route(routeId, order.palletId, forkliftId, orderId, routeStatus, instructions);
+        return endVertex.getScheduleItem(order.time + duration);
     }
 
     removeOrderFromBestRouteSet(order: Order) {
