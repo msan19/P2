@@ -14,7 +14,7 @@ import { Order } from "./order";
 import { Route } from "../../shared/route";
 
 
-enum eventsEnum {
+export enum DataContainerEvents {
     addOrder = "addOrder",
     addForklift = "addForklift",
     setWarehouse = "setWarehouse",
@@ -24,7 +24,7 @@ enum eventsEnum {
 }
 
 export class DataContainer extends events.EventEmitter {
-    static events = eventsEnum;
+    static events = DataContainerEvents;
 
     /** Is a dictionary containing {@link Forklift} objects */
     forklifts: { [key: string]: Forklift; };
