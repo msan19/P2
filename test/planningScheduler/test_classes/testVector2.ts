@@ -9,162 +9,127 @@ import { Vector2 } from "../../../src/shared/vector2";
 import { expect } from 'chai';
 import 'mocha';
 
-/**
- * Checks whether a vector contains the expected x-y values 
- * @param vector The vector that is to be checked
- * @param expX The expected x-value
- * @param expY The expected y-value
- * @returns Mocha handles the appropriate responses
- */
-function checkVector(vector: Vector2, expX: number, expY: number): void {
-    it('x and y are as expected', () => {
-        expect(vector.x).to.equal(expX);
-        expect(vector.y).to.equal(expY);
+let oneVector = new Vector2(10, 10);
+let anotherVector = new Vector2(15, 15);
+
+describe(`Vector add`, () => {
+    let resultingVector = oneVector.add(anotherVector);
+    let expectedVector = new Vector2(25, 25);
+    it(`should be the product of the two vectors`, () => {
+        expect(resultingVector).to.eql(expectedVector);
     });
-}
+});
 
-/**
- * Checks whether two numbers are the same
- * @param actual The actual number to be tested
- * @param expected The expected value
- * @returns Mocha handles the appropriate responses
- */
-function checkNumber(actual: number, expected: number): void {
-    it(`${expected} should be ${actual}`, () => {
-        expect(actual).to.equal(expected);
+describe(`Vector subtract`, () => {
+    let resultingVector = oneVector.subtract(anotherVector);
+    let expectedVector = new Vector2(-5, -5);
+    it(`should be the first vector subtracted the second vector`, () => {
+        expect(resultingVector).to.eql(expectedVector);
     });
-}
+});
 
-/**
- * Test for the method add on object Vector2
- * @returns Mocha handles the appropriate responses
- */
-function testAdd(): void {
-    let vectors: Vector2[] = [];
-    vectors.push(new Vector2(10, 20));
-    vectors.push(new Vector2(40, 5));
-    vectors.push(new Vector2(43, 57));
-    let expects: [number, number][] = [[50, 25], [50, 25], [83, 62], [53, 77]];
-    let results: Vector2[] = [];
+describe(`Vector scale`, () => {
+    let scalar = -0.3;
+    let resultingVector = oneVector.scale(scalar);
+    let expectedVector = new Vector2(-3, -3);
+    it(`should be the first vector times a scalar`, () => {
+        expect(resultingVector).to.eql(expectedVector);
+    });
+});
 
-    results.push(vectors[0].add(vectors[1]));
-    results.push(vectors[1].add(vectors[0]));
-    results.push(vectors[2].add(vectors[1]));
-    results.push(vectors[0].add(vectors[2]));
+describe(`Vector getLength`, () => {
+    let resultingLength = parseFloat(oneVector.getLength().toFixed(2));
+    let expectedLength = 14.14;
+    it(`should be the length of the vector`, () => {
+        expect(resultingLength).to.eql(expectedLength);
+    });
+});
 
-    for (let i = 0; i < results.length; i++) {
-        checkVector(results[i], expects[i][0], expects[i][1]);
-    }
-}
+describe(`Vector getDistanceTo`, () => {
+    context(`when getting distance to another vector`, () => {
+        let resultingLength = parseFloat(oneVector.getDistanceTo(anotherVector).toFixed(2));
+        let expectedLength = 7.07;
+        it(`should be the length from one vector to another vector`, () => {
+            expect(resultingLength).to.eql(expectedLength);
+        });
+    });
 
-/**
- * Test for the method subtract on object Vector2
- * @returns Mocha handles the appropriate responses
- */
-function testSubtract(): void {
-    let vectors: Vector2[] = [];
-    vectors.push(new Vector2(10, 20));
-    vectors.push(new Vector2(40, 5));
-    vectors.push(new Vector2(43, 57));
-    let expects: [number, number][] = [[-30, 15], [30, -15], [3, 52], [-33, -37]];
-    let results: Vector2[] = [];
+    context(`when getting distance to itself`, () => {
+        let resultingLength = parseFloat(oneVector.getDistanceTo(oneVector).toFixed(2));
+        let expectedLength = 0.00;
+        it(`should be the length from one vector to itself`, () => {
+            expect(resultingLength).to.eql(expectedLength);
+        });
+    });
+});
 
-    results.push(vectors[0].subtract(vectors[1]));
-    results.push(vectors[1].subtract(vectors[0]));
-    results.push(vectors[2].subtract(vectors[1]));
-    results.push(vectors[0].subtract(vectors[2]));
+describe(`Vector getManhattanDistanceTo`, () => {
+    context(`when getting distance to another vector`, () => {
+        let resultingLength = parseFloat(oneVector.getManhattanDistanceTo(anotherVector).toFixed(2));
+        let expectedLength = 10.00;
+        it(`should be the length from one vector to another vector in a "Manhattan Grid"`, () => {
+            expect(resultingLength).to.eql(expectedLength);
+        });
+    });
 
-    for (let i = 0; i < results.length; i++) {
-        checkVector(results[i], expects[i][0], expects[i][1]);
-    }
-}
+    context(`when getting distance to itself`, () => {
+        let resultingLength = parseFloat(oneVector.getManhattanDistanceTo(oneVector).toFixed(2));
+        let expectedLength = 0.00;
+        it(`should be the length from one vector to itself in a "Manhattan Grid"`, () => {
+            expect(resultingLength).to.eql(expectedLength);
+        });
+    });
+});
 
-/**
- * Test for the method scale on object Vector2
- * @returns Mocha handles the appropriate responses
- */
-function testScale(): void {
-    let vectors: Vector2[] = [];
-    let scalars: number[] = [7, -4, 3.2];
-    vectors.push(new Vector2(10, 20));
-    vectors.push(new Vector2(40, 5));
-    vectors.push(new Vector2(43, 57));
-    let expects: [number, number][] = [
-        [70, 140], [-40, -80], [32.0, 64.0],
-        [280, 35], [-160, -20], [128.0, 16.0],
-        [301, 399], [-172, -228], [137.6, 182.4]
-    ];
-    let results: Vector2[] = [];
+describe(`Vector parse`, () => {
+    let originalX = 10;
+    let originalY = 15;
+    let referenceVector = new Vector2(originalX, originalY);
 
-    /* Creating results for different scales */
-    for (let i = 0; i < vectors.length; i++) {
-        for (let j = 0; j < scalars.length; j++) {
-            results.push(vectors[i].scale(scalars[j]));
-        }
-    }
+    context(`when valid x and valid y`, () => {
+        let testObject = { x: originalX, y: originalY };
+        let resultingVector = Vector2.parse(testObject);
+        let expectedVector = referenceVector;
+        it(`should be parsed as Vector2`, () => {
+            expect(resultingVector).to.eql(expectedVector);
+        });
+    });
 
-    for (let i = 0; i < results.length; i++) {
-        checkVector(results[i], expects[i][0], expects[i][1]);
-    }
-}
+    context(`when valid x and invalid y`, () => {
+        let testObject = { x: originalX, y: null };
+        let resultingVector = Vector2.parse(testObject);
+        let expectedVector = null;
+        it(`should not be parsed as Vector2`, () => {
+            expect(resultingVector).to.eql(expectedVector);
+        });
+    });
 
-/**
- * Test for the method length on object Vector2
- * @returns Mocha handles the appropriate responses
- */
-function testLength(): void {
-    let vectors: Vector2[] = [];
-    vectors.push(new Vector2(10, 20));
-    vectors.push(new Vector2(40, 5));
-    vectors.push(new Vector2(43, 57));
-    let expects: number[] = [22.36, 40.31, 71.40];
-    let results: number[] = [];
+    context(`when invalid x and valid y`, () => {
+        let testObject = { x: null, y: originalY };
+        let resultingVector = Vector2.parse(testObject);
+        let expectedVector = null;
+        it(`should not be parsed as Vector2`, () => {
+            expect(resultingVector).to.eql(expectedVector);
+        });
+    });
 
-    for (let i = 0; i < vectors.length; i++) {
-        results.push(parseFloat(vectors[i].getLength().toFixed(2)));
-    }
+    context(`when invalid x and invalid y`, () => {
+        let testObject = { x: null, y: null };
+        let resultingVector = Vector2.parse(testObject);
+        let expectedVector = null;
+        it(`should not be parsed as Vector2`, () => {
+            expect(resultingVector).to.eql(expectedVector);
+        });
+    });
+});
 
-    /* Checks all numbers in the result array if they are equal the expects array */
-    for (let i = 0; i < results.length; i++) {
-        checkNumber(results[i], expects[i]);
-    }
-}
-
-/**
- * Test for the method distanceTo on object Vector2
- * @returns Mocha handles the appropriate responses
- */
-function testDistanceTo(): void {
-    let vectors: Vector2[] = [];
-    vectors.push(new Vector2(10, 20));
-    vectors.push(new Vector2(40, 5));
-    vectors.push(new Vector2(43, 57));
-    let expects: number[] = [33.54, 49.58, 52.09];
-    let results: number[] = [];
-
-    /* first: 0 to 1, second: 0 to 2, third: 1 to 2 */
-    for (let i = 0; i < vectors.length; i++) {
-        for (let j = i + 1; j < vectors.length; j++) {
-            results.push(parseFloat(vectors[i].getDistanceTo(vectors[j]).toFixed(2)));
-        }
-    }
-
-    for (let i = 0; i < results.length; i++) {
-        checkNumber(results[i], expects[i]);
-    }
-}
-
-/* Test of vector add */
-describe("Vector 'add' test", testAdd);
-
-/* Test of vector subtract */
-describe("Vector 'subtract' test", testSubtract);
-
-/* Test of vector scale */
-describe("Vector 'scale' test", testScale);
-
-/* Test of vector length */
-describe("Vector 'length' test", testLength);
-
-/* Test of vector getDistanceTo */
-describe("Vector 'distance to' test", testDistanceTo);
+describe(`Vector clone`, () => {
+    let cloneOfVector = oneVector.clone();
+    let expectedVector = oneVector;
+    it(`should maintain values`, () => {
+        expect(cloneOfVector).to.eql(expectedVector);
+    });
+    it("should be different", () => {
+        expect(cloneOfVector).to.not.equal(expectedVector);
+    });
+});
