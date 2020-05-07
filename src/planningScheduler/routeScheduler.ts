@@ -56,6 +56,28 @@ export class RouteScheduler {
         this.unfinishedOrderIds = [];
     }
 
+    handleLockOrder(orderId: string): Route {
+        let order = this.data.orders[orderId];
+
+        // Get the last scheduleItem for given order, and get forkliftId from this scheduleItem
+        let lastScheduleItem = this.getLastScheduleItemForOrder(order);
+        let forkliftId = lastScheduleItem.forkliftId;
+
+        // Create route before order is removed from bestRouteSet
+        let route: Route = this.getRoute(order, lastScheduleItem, forkliftId);
+
+        // Lock idlePositions from bestRouteSet to this.data.warehouse.graph
+        this.data.warehouse.graph.idlePositions[forkliftId] = lastScheduleItem;
+
+        // Splice order from priorities and duration
+        this.removeOrderFromBestRouteSet(order);
+
+        // Redo mutations
+        this.mutate();
+
+        return route;
+    }
+
     /**
      * Looks at the best routeSet and finds a route that matches the orderId.
      * Converts scheduleItems to a route
