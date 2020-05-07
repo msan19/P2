@@ -1,5 +1,4 @@
 class UiManager {
-
     constructor() {
         // Set dateInput to correct format
         $('#sendOrderDateTimePicker').datetimepicker({

@@ -140,13 +140,11 @@ export class RouteScheduler {
      *                     first schedulteItem in route is reached 
      */
     private createMovePalletInstructions(instructions: Instruction[], order: Order, scheduleItem: ScheduleItem): void {
-        let instructionType;
+        let instructionType = Instruction.types.move;
         if (scheduleItem.previousScheduleItem !== null) {
             this.createMovePalletInstructions(instructions, order, scheduleItem.previousScheduleItem);
             if (scheduleItem.currentVertexId === order.endVertexId) {
                 instructionType = Instruction.types.unloadPallet;
-            } else {
-                instructionType = Instruction.types.move;
             }
         } else if (scheduleItem.currentVertexId === order.startVertexId) {
             instructionType = Instruction.types.loadPallet;
@@ -213,6 +211,7 @@ export class RouteScheduler {
             let assignableForklifts: ScheduleItem[] = [];
             let currentRouteTime: number = Infinity;
             let forkliftId: string = order.forkliftId || "";
+            let moveForkliftScheduleItems: ScheduleItem[] = [];
 
             // Handle all order cases     
             if (order.type === Order.types.movePallet) {
@@ -224,6 +223,9 @@ export class RouteScheduler {
                         currentRouteTime = Infinity;
                     }
                     if (currentRouteTime != Infinity) {
+                        this.upStackingToArray(routeSet.graph.vertices[order.startVertexId], assignableForklifts[i].currentVertexId,
+                            forkliftId, null, moveForkliftScheduleItems);
+                        //routeSet.graph.vertices[order.startVertexId].previousVertex = null;
                         currentRouteTime = this.planOptimalRoute(routeSet, order.startVertexId, order.endVertexId,
                             order.time, assignableForklifts[i].forkliftId);
 
@@ -243,7 +245,10 @@ export class RouteScheduler {
             if (currentRouteTime != Infinity) {
                 if (order.timeType === Order.timeTypes.start) {
                     if (order.type === Order.types.movePallet) {
+                        this.insertScheduleItemsArray(data, routeSet, moveForkliftScheduleItems);
                         this.upStacking(routeSet.graph.vertices[order.endVertexId], order.startVertexId, forkliftId, null);
+                        let scheduleItemOfStartVertex = routeSet.graph.vertices[order.startVertexId].getScheduleItem(order.time);
+                        scheduleItemOfStartVertex.linkPrevious(moveForkliftScheduleItems[0]);
                         // Recursively stacking up
                     } else {
                         let startVertexId = routeSet.graph.idlePositions[order.forkliftId].currentVertexId;
@@ -408,7 +413,7 @@ export class RouteScheduler {
         return sum;
     }
 
-    isCollisionInevitable(startVertexId: string, scheduleItem: ScheduleItem, maxWarp: number, currentTime: number, isLast: boolean): boolean {
+    isCollisionInevitable(startVertexId: string, scheduleItem: ScheduleItem, maxWarp: number, currentTime: number, isLast: boolean, forkliftId: string): boolean {
         if (scheduleItem.nextScheduleItem !== null && scheduleItem.nextScheduleItem.currentVertexId === startVertexId) {
             if (scheduleItem.arrivalTimeCurrentVertex > maxWarp || scheduleItem.nextScheduleItem.arrivalTimeCurrentVertex > currentTime) {
                 return true;
@@ -419,13 +424,13 @@ export class RouteScheduler {
             }
         }
 
-        if (scheduleItem.nextScheduleItem === null && isLast) {
+        if (scheduleItem.nextScheduleItem === null && isLast && scheduleItem.forkliftId !== forkliftId) {
             return true;
         }
         return false;
     }
 
-    getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number, isEndVertex: boolean): number {
+    getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number, isEndVertex: boolean, forkliftId: string): number {
         let time: number;
         let interval: number;
         let maxWarp: number;
@@ -442,7 +447,7 @@ export class RouteScheduler {
         maxWarp = this.computeMaxWarp(currentVertex, destinationVertex, currentTime);
         while ((interval < this.timeIntervalMinimumSize || time <= maxWarp) && indexOfDestinationVertex < destinationVertex.scheduleItems.length) {
             if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[indexOfDestinationVertex], maxWarp, currentTime,
-                indexOfDestinationVertex === destinationVertex.scheduleItems.length - 1)) {
+                indexOfDestinationVertex === destinationVertex.scheduleItems.length - 1, forkliftId)) {
                 return Infinity;
             }
             time = destinationVertex.scheduleItems[indexOfDestinationVertex].arrivalTimeCurrentVertex;
@@ -526,14 +531,14 @@ export class RouteScheduler {
             for (let u = 0; u < currentVertex.adjacentVertexIds.length; u++) {
                 let adjacentVertex: Vertex = routeSet.graph.vertices[currentVertex.adjacentVertexIds[u]];
                 if (adjacentVertex.id === endVertex.id) {
-                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime, true);
+                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime, true, forkliftId);
                     if (adjacentVertex.visitTime < Infinity) {
                         adjacentVertex.isVisited = true;
                         adjacentVertex.previousVertex = currentVertex;
                         return endVertex.visitTime - orderTime;
                     }
                 } else if (!adjacentVertex.isVisited) {
-                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime, false);
+                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime, false, forkliftId);
                     if (adjacentVertex.visitTime < Infinity) {
                         queue.insert(adjacentVertex);
                         adjacentVertex.isVisited = true;
@@ -568,6 +573,23 @@ export class RouteScheduler {
         if (nextItem !== null) nextItem.linkPrevious(vertex.scheduleItems[i]);
         if (vertex.id !== startVertexId) {
             this.upStacking(vertex.previousVertex, startVertexId, forkliftId, vertex.scheduleItems[i]);
+        }
+    }
+
+    // Used to save scheduleitems for forklifts that might be used for a movepallet order
+    upStackingToArray(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null, outputArray: ScheduleItem[]) {
+        outputArray.push(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
+        if (nextItem !== null) nextItem.linkPrevious(outputArray[outputArray.length - 1]);
+        if (vertex.id !== startVertexId) {
+            this.upStackingToArray(vertex.previousVertex, startVertexId, forkliftId, outputArray[outputArray.length - 1], outputArray);
+        }
+    }
+
+    // Inserts scheduleitems from upStackingToArray to the graph of the routeSet
+    insertScheduleItemsArray(data: DataContainer, routeSet: RouteSet, scheduleItemsArray: ScheduleItem[]) {
+        for (let scheduleItem of scheduleItemsArray) {
+            let tempVertex = routeSet.graph.vertices[scheduleItem.currentVertexId];
+            tempVertex.insertScheduleItem(scheduleItem);
         }
     }
 
