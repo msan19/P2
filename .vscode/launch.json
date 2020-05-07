@@ -85,7 +85,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Mocha PlanningScheduler",
+            "name": "Mocha All",
             "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
             "args": [
                 "--timeout",
@@ -95,7 +95,8 @@
                 "ts-node/register",
                 "--reporter",
                 "dot",
-                "${workspaceFolder}/test/planningScheduler/**/*.ts"
+                "\"${workspaceFolder}/test/**/*.ts\"",
+                "--recursive"
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
