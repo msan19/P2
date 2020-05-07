@@ -24,9 +24,6 @@ interface IHttpMethod { (request: IncomingMessage, response: ServerResponse, par
 /** An interface specifying a dictionary of {@link IHttpMethod} */
 interface IController { [key: string]: IHttpMethod; };
 
-//interface IHttpUpgrade { (request: IncomingMessage, webSocket: WebSocket, parsedUrl: string[]): void; }
-//interface IHttpUpgrade { (request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void; }
-
 /** An interface specifying a function which handles socket messages */
 interface ISocketController { (socketServer: ws.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void; }
 
