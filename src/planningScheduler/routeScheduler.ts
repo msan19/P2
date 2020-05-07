@@ -600,15 +600,21 @@ export class RouteScheduler {
 
     /**
      * Computes the earliest possible time for when the forklift can arrive at destinationVertex
+     * @returns The computed time
      */
     computeEarliestArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, time: number): number {
         return (1000 * currentVertex.getDistanceDirect(destinationVertex) / this.data.warehouse.maxForkliftSpeed) + time;
     }
 
     /**
-     * Implementation of A*. Further description look at https://thisneedstobeadded.org/astar
-     * @param routeSet Routeset where route is added. Assumes RouteSet.graph is full
-     * @param order Order to be calculated route for
+     * Finds the fastest route between the parameter startVertex and the parameter endVertex for the parameter forklift.
+     * The route is stored in temporary variables on the verticies of the parameter {@link RouteSet}
+     * @param routeSet A {@link RouteSet} which the route is stored on
+     * @param startVertexId A string id of the start {@link Vertex}
+     * @param endVertexId A string id of the end {@link Vertex}
+     * @param orderTime A time for when the route begins
+     * @param forkliftId A string id specifying the forklift which the route is planned for 
+     * @returns The amount of time the route takes
      */
     planOptimalRoute(routeSet: RouteSet, startVertexId: string, endVertexId: string, orderTime: number, forkliftId: string): number {
         let endVertex: Vertex = routeSet.graph.vertices[endVertexId];
@@ -647,23 +653,12 @@ export class RouteScheduler {
         return Infinity;
     }
 
-    printRoute(startVertex: Vertex, endVertex: Vertex) {
-        if (endVertex !== startVertex && endVertex !== null) {
-            this.printRoute(startVertex, endVertex.previousVertex);
-        }
-        endVertex.scheduleItems.forEach((scheduleItem) => {
-            console.log(`Forklift: ${scheduleItem.forkliftId}`);
-            console.log(`Vertex:   ${scheduleItem.currentVertexId}`);
-            console.log(`Time:     ${scheduleItem.arrivalTimeCurrentVertex}\n`);
-        });
-    }
-
     /**
-     * Used in the situation where the orders has a start time
-     * @param vertex 
-     * @param order 
-     * @param forkliftId 
-     * @param nextItem 
+     * Inserts a new {@link ScheduleItem} recursivly for each {@link Vertex} linked by previousVertex
+     * @param vertex A {@link Vertex} which the {@link ScheduleItem} is to be inserted on
+     * @param startVertexId A string id for the {@link Vertex} where the recursion stops
+     * @param forkliftId A string id for the forklift following the route
+     * @param nextItem A {@link ScheduleItem} which the new {@link ScheduleItem} is to be linked to
      */
     upStacking(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null): void {
         let i = vertex.insertScheduleItem(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
