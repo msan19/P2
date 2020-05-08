@@ -194,10 +194,11 @@ export class RouteScheduler {
      *                     first schedulteItem in route is reached
      */
     private createMoveInstructions(instructions: Instruction[], order: Order, scheduleItem: ScheduleItem): void {
+        let instructionType;
         if (scheduleItem.previousScheduleItem !== null) {
             this.createMoveInstructions(instructions, order, scheduleItem.previousScheduleItem);
         }
-        let instructionType = Instruction.types.move;
+        instructionType = Instruction.types.move;
         let newInstruction = new Instruction(instructionType, scheduleItem.currentVertexId, scheduleItem.arrivalTimeCurrentVertex);
         instructions.push(newInstruction);
     }
@@ -697,9 +698,9 @@ export class RouteScheduler {
     }
 
     /**
-     * Inserts 
-     * @param routeSet 
-     * @param scheduleItemsArray 
+     * Inserts each {@link ScheduleItem} in the parameter scheduleItemsArray on each predetermined vertex
+     * @param routeSet A {@link RouteSet} for each {@link ScheduleItem} to be inserted on
+     * @param scheduleItemsArray A {@link ScheduleItem} array to be inserted
      */
     insertScheduleItemsArray(routeSet: RouteSet, scheduleItemsArray: ScheduleItem[]) {
         for (let scheduleItem of scheduleItemsArray) {
@@ -708,6 +709,11 @@ export class RouteScheduler {
         }
     }
 
+    /**
+     * Finds the time when the route associated with the parameter order starts
+     * @param orderId A string id specifying the order to find the start time for
+     * @returns The start time
+     */
     getStartTime(orderId: string): number {
         let order: Order = this.data.orders[orderId];
         if (order.type === Order.types.movePallet) {
@@ -721,6 +727,9 @@ export class RouteScheduler {
         return order.time;
     }
 
+    /**
+     * Updates the routeScheduler by adding new orders and calculating a new {@link RouteSet} and compares it to bestRouteSet
+     */
     update(): void {
         // Find appropriate place in priorities and insert
         if (this.bestRouteSet !== null) {
@@ -746,6 +755,10 @@ export class RouteScheduler {
 
     }
 
+    /**
+     * Inserts a new order the prioritized list of orders on the bestRouteSet in a chronologial manner
+     * @param orderId A string id for the order to be inserted
+     */
     insertOrderInPrioritiesAppropriately(orderId: string): void {
         let indexForNewOrder = this.bestRouteSet.priorities.length;
 
