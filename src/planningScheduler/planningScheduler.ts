@@ -28,7 +28,7 @@ export class PlanningScheduler {
      * @param port The port number associated with the server
      * @param hostname The host name associated with the server
      */
-    constructor(port: number, hostname: string) {
+    constructor(hostname: string, port: number) {
         this.data = new DataContainer();
 
 

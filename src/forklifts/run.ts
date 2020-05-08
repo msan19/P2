@@ -11,12 +11,12 @@ import { ApiCaller } from "../shared/apiCaller";
 import { Warehouse } from "../shared/warehouse";
 import { Vector2 } from "../shared/vector2";
 
-const SERVER_HOSTNAME = '127.0.0.1';
+const SERVER_HOSTNAME = 'localhost';
 const SERVER_PORT = 3000;
 
 var forklifts = [];
 
-let apiCaller = new ApiCaller("http://localhost:3000");
+let apiCaller = new ApiCaller(`http://${SERVER_HOSTNAME}:${SERVER_PORT}`);
 function getWarehouse() {
     return new Promise((resolve) => {
         apiCaller.getWarehouse().then((warehouse) => {
@@ -40,6 +40,6 @@ function getWarehouse() {
 getWarehouse().then((warehouse: Warehouse) => {
     for (let i = 0; i < 10; i++) {
         forklifts.push(new Forklift("F" + i, SERVER_HOSTNAME, SERVER_PORT, randomIntegerInRange(5, 100), Forklift.states.idle,
-            i === 0 ? new Vector2(9, 1).scale(10) : new Vector2(i, 9 - i).scale(10)));
+            new Vector2(i, 9 - i).scale(10)));
     }
 });
