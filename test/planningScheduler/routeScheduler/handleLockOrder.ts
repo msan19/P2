@@ -159,7 +159,6 @@ describe("Test handleLockOrder", () => {
             routeScheduler.data = data;
 
             let resultingRoute = routeScheduler.handleLockOrder(fifthOrderId);
-            console.log(resultingRoute);
 
             let expectedRoute = createMovePalletRoute(routeScheduler, fifthOrder, vertexIdFifthRoute, "RO5", fifthForkliftId, visitTimes[4]);
 
