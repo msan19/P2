@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @category BlackBox
+ */
+
 import { Order } from "../shared/order";
 
 export class OrderTester {

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PlanningScheduler | P2</title>
+	<title>OrderTester | P2</title>
 	<meta name="description" content="Documentation for P2">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,32 +56,24 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_src_planningscheduler_planningscheduler_.html">&quot;src/planningScheduler/planningScheduler&quot;</a>
+					<a href="../modules/_src_blackbox_orderstest_.html">&quot;src/blackBox/ordersTest&quot;</a>
 				</li>
 				<li>
-					<a href="_src_planningscheduler_planningscheduler_.planningscheduler.html">PlanningScheduler</a>
+					<a href="_src_blackbox_orderstest_.ordertester.html">OrderTester</a>
 				</li>
 			</ul>
-			<h1>Class PlanningScheduler</h1>
+			<h1>Class OrderTester</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Object to handle event loop of main server.
-						Object where main server is run from.</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">PlanningScheduler</span>
+						<span class="target">OrderTester</span>
 					</li>
 				</ul>
 			</section>
@@ -92,22 +84,23 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_src_planningscheduler_planningscheduler_.planningscheduler.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_src_blackbox_orderstest_.ordertester.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_planningscheduler_planningscheduler_.planningscheduler.html#data" class="tsd-kind-icon">data</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_planningscheduler_planningscheduler_.planningscheduler.html#routescheduler" class="tsd-kind-icon">route<wbr>Scheduler</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_planningscheduler_planningscheduler_.planningscheduler.html#server" class="tsd-kind-icon">server</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_planningscheduler_planningscheduler_.planningscheduler.html#updater" class="tsd-kind-icon">updater</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_blackbox_orderstest_.ordertester.html#matrixofendvertexids" class="tsd-kind-icon">matrix<wbr>OfEnd<wbr>Vertex<wbr>Ids</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_blackbox_orderstest_.ordertester.html#matrixofstartvertexids" class="tsd-kind-icon">matrix<wbr>OfStart<wbr>Vertex<wbr>Ids</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_blackbox_orderstest_.ordertester.html#matrixoftypesoforders" class="tsd-kind-icon">matrix<wbr>OfTypes<wbr>OfOrders</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_blackbox_orderstest_.ordertester.html#timeofcreation" class="tsd-kind-icon">time<wbr>OfCreation</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_blackbox_orderstest_.ordertester.html#timeoffset" class="tsd-kind-icon">time<wbr>Offset</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_planningscheduler_planningscheduler_.planningscheduler.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_blackbox_orderstest_.ordertester.html#generateorder" class="tsd-kind-icon">generate<wbr>Order</a></li>
 							</ul>
 						</section>
 					</div>
@@ -119,41 +112,25 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Planning<wbr>Scheduler<span class="tsd-signature-symbol">(</span>hostname<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, port<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_planningscheduler_planningscheduler_.planningscheduler.html" class="tsd-signature-type">PlanningScheduler</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Order<wbr>Tester<span class="tsd-signature-symbol">(</span>timeOfCreation<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, timeOffset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_blackbox_orderstest_.ordertester.html" class="tsd-signature-type">OrderTester</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/9a1317a/src/planningScheduler/planningScheduler.ts#L23">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/planningScheduler.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/9a1317a/src/blackBox/ordersTest.ts#L13">home/xomnez/aau/2.semester/P2_rob/P2/src/blackBox/ordersTest.ts:13</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Constructor for object.
-									Initializes the server and starts the event loop using this.update()</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>hostname: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The host name associated with the server</p>
-										</div>
-									</div>
+									<h5>timeOfCreation: <span class="tsd-signature-type">any</span></h5>
 								</li>
 								<li>
-									<h5>port: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The port number associated with the server</p>
-										</div>
-									</div>
+									<h5>timeOffset: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_src_planningscheduler_planningscheduler_.planningscheduler.html" class="tsd-signature-type">PlanningScheduler</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_src_blackbox_orderstest_.ordertester.html" class="tsd-signature-type">OrderTester</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -161,52 +138,52 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="data" class="tsd-anchor"></a>
-					<h3>data</h3>
-					<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <a href="_src_planningscheduler_classes_datacontainer_.datacontainer.html" class="tsd-signature-type">DataContainer</a></div>
+					<a name="matrixofendvertexids" class="tsd-anchor"></a>
+					<h3>matrix<wbr>OfEnd<wbr>Vertex<wbr>Ids</h3>
+					<div class="tsd-signature tsd-kind-icon">matrix<wbr>OfEnd<wbr>Vertex<wbr>Ids<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/9a1317a/src/planningScheduler/planningScheduler.ts#L20">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/planningScheduler.ts:20</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Object to store data regarding warehouse, forklifts and orders</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="routescheduler" class="tsd-anchor"></a>
-					<h3>route<wbr>Scheduler</h3>
-					<div class="tsd-signature tsd-kind-icon">route<wbr>Scheduler<span class="tsd-signature-symbol">:</span> <a href="_src_planningscheduler_routescheduler_.routescheduler.html" class="tsd-signature-type">RouteScheduler</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/9a1317a/src/planningScheduler/planningScheduler.ts#L22">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/planningScheduler.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/9a1317a/src/blackBox/ordersTest.ts#L12">home/xomnez/aau/2.semester/P2_rob/P2/src/blackBox/ordersTest.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="server" class="tsd-anchor"></a>
-					<h3>server</h3>
-					<div class="tsd-signature tsd-kind-icon">server<span class="tsd-signature-symbol">:</span> <a href="_src_planningscheduler_classes_webserver_.webserverplanningscheduler.html" class="tsd-signature-type">WebServerPlanningScheduler</a></div>
+					<a name="matrixofstartvertexids" class="tsd-anchor"></a>
+					<h3>matrix<wbr>OfStart<wbr>Vertex<wbr>Ids</h3>
+					<div class="tsd-signature tsd-kind-icon">matrix<wbr>OfStart<wbr>Vertex<wbr>Ids<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/9a1317a/src/planningScheduler/planningScheduler.ts#L18">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/planningScheduler.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/9a1317a/src/blackBox/ordersTest.ts#L11">home/xomnez/aau/2.semester/P2_rob/P2/src/blackBox/ordersTest.ts:11</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Server object to run the server from</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="updater" class="tsd-anchor"></a>
-					<h3>updater</h3>
-					<div class="tsd-signature tsd-kind-icon">updater<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Immediate</span></div>
+					<a name="matrixoftypesoforders" class="tsd-anchor"></a>
+					<h3>matrix<wbr>OfTypes<wbr>OfOrders</h3>
+					<div class="tsd-signature tsd-kind-icon">matrix<wbr>OfTypes<wbr>OfOrders<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/9a1317a/src/planningScheduler/planningScheduler.ts#L23">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/planningScheduler.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/9a1317a/src/blackBox/ordersTest.ts#L13">home/xomnez/aau/2.semester/P2_rob/P2/src/blackBox/ordersTest.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="timeofcreation" class="tsd-anchor"></a>
+					<h3>time<wbr>OfCreation</h3>
+					<div class="tsd-signature tsd-kind-icon">time<wbr>OfCreation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/9a1317a/src/blackBox/ordersTest.ts#L9">home/xomnez/aau/2.semester/P2_rob/P2/src/blackBox/ordersTest.ts:9</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="timeoffset" class="tsd-anchor"></a>
+					<h3>time<wbr>Offset</h3>
+					<div class="tsd-signature tsd-kind-icon">time<wbr>Offset<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/9a1317a/src/blackBox/ordersTest.ts#L10">home/xomnez/aau/2.semester/P2_rob/P2/src/blackBox/ordersTest.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -214,19 +191,28 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="update" class="tsd-anchor"></a>
-					<h3>update</h3>
+					<a name="generateorder" class="tsd-anchor"></a>
+					<h3>generate<wbr>Order</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">generate<wbr>Order<span class="tsd-signature-symbol">(</span>forkliftIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, orderIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_shared_order_.order.html" class="tsd-signature-type">Order</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/9a1317a/src/planningScheduler/planningScheduler.ts#L55">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/planningScheduler.ts:55</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/9a1317a/src/blackBox/ordersTest.ts#L67">home/xomnez/aau/2.semester/P2_rob/P2/src/blackBox/ordersTest.ts:67</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>forkliftIndex: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>orderIndex: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_src_shared_order_.order.html" class="tsd-signature-type">Order</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -239,7 +225,7 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="../modules/_src_planningscheduler_planningscheduler_.html">&quot;src/planning<wbr>Scheduler/planning<wbr>Scheduler&quot;</a>
+						<a href="../modules/_src_blackbox_orderstest_.html">&quot;src/black<wbr>Box/orders<wbr>Test&quot;</a>
 					</li>
 				</ul>
 			</nav>
@@ -248,25 +234,28 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module">
-						<a href="_src_planningscheduler_planningscheduler_.planningscheduler.html" class="tsd-kind-icon">Planning<wbr>Scheduler</a>
+						<a href="_src_blackbox_orderstest_.ordertester.html" class="tsd-kind-icon">Order<wbr>Tester</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_src_planningscheduler_planningscheduler_.planningscheduler.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_src_blackbox_orderstest_.ordertester.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_planningscheduler_planningscheduler_.planningscheduler.html#data" class="tsd-kind-icon">data</a>
+								<a href="_src_blackbox_orderstest_.ordertester.html#matrixofendvertexids" class="tsd-kind-icon">matrix<wbr>OfEnd<wbr>Vertex<wbr>Ids</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_planningscheduler_planningscheduler_.planningscheduler.html#routescheduler" class="tsd-kind-icon">route<wbr>Scheduler</a>
+								<a href="_src_blackbox_orderstest_.ordertester.html#matrixofstartvertexids" class="tsd-kind-icon">matrix<wbr>OfStart<wbr>Vertex<wbr>Ids</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_planningscheduler_planningscheduler_.planningscheduler.html#server" class="tsd-kind-icon">server</a>
+								<a href="_src_blackbox_orderstest_.ordertester.html#matrixoftypesoforders" class="tsd-kind-icon">matrix<wbr>OfTypes<wbr>OfOrders</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_planningscheduler_planningscheduler_.planningscheduler.html#updater" class="tsd-kind-icon">updater</a>
+								<a href="_src_blackbox_orderstest_.ordertester.html#timeofcreation" class="tsd-kind-icon">time<wbr>OfCreation</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_src_blackbox_orderstest_.ordertester.html#timeoffset" class="tsd-kind-icon">time<wbr>Offset</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_planningscheduler_planningscheduler_.planningscheduler.html#update" class="tsd-kind-icon">update</a>
+								<a href="_src_blackbox_orderstest_.ordertester.html#generateorder" class="tsd-kind-icon">generate<wbr>Order</a>
 							</li>
 						</ul>
 					</li>

@@ -2,7 +2,7 @@
 /**
  * Test of {@link Order}
  * @packageDocumentation
- * @category planningScheduler test
+ * @category Test
  */
 
 import { expect } from 'chai';
