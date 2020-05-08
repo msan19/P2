@@ -25,12 +25,14 @@ export class Order extends Order_Shared {
         let order = Order_Shared.parse(obj);
         if (order === null) return null;
 
-        // Ensure that the forkliftId exists in dataContainer
-        if (order.forkliftId && !data.forklifts[order.forkliftId]) return null;
+        // Ensure that the forkliftId exists in dataContainer if the type of order requires a forklift (moveForklift, charge)
+        if (order.type !== Order.types.movePallet && (order.forkliftId && !data.forklifts[order.forkliftId])) return null;
 
-        // Check for valid vertixIds (If either is invalid, return null)
+        // Check for valid vertixIds. Depending on type of order only endVertex is needed
         let keysVertices: string[] = Object.keys(data.warehouse.graph.vertices);
-        if (!keysVertices.includes(obj.startVertexId) || !keysVertices.includes(obj.endVertexId)) return null;
+        if ((order.type === Order.types.movePallet && !keysVertices.includes(obj.startVertexId)) || !keysVertices.includes(obj.endVertexId)) {
+            return null;
+        }
 
         return superCastOrder(order);
     }
