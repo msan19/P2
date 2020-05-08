@@ -1,3 +1,9 @@
+/**
+ * Test of API's
+ * @packageDocumentation
+ * @category Test
+ */
+
 import * as http from "http";
 import { getJson, getEntireString } from "./../../src/shared/webUtilities";
 

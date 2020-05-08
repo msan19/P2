@@ -1,8 +1,7 @@
-// testAstar.ts
 /**
  * Test of {@link Vector2}
  * @packageDocumentation
- * @category planningScheduler test
+ * @category Test
  */
 
 import { Vector2 } from "../../../src/shared/vector2";

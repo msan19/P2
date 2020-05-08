@@ -1,8 +1,7 @@
-// testAstar.ts
 /**
  * Test of ({@link Warehouse}). Assumes 
  * @packageDocumentation
- * @category planningScheduler test
+ * @category Test
  */
 
 import { expect } from 'chai';

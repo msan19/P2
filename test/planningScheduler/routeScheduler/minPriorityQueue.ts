@@ -1,3 +1,9 @@
+/**
+ * Test of minPriorityQueue
+ * @packageDocumentation
+ * @category Test
+ */
+
 import { expect } from 'chai';
 import 'mocha';
 

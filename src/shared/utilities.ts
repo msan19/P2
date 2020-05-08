@@ -1,10 +1,15 @@
 /**
+ * @packageDocumentation
+ * @category Shared
+ */
+
+/**
  *  Returns a random key from the set
  * @param set An object or array
  */
 export function randomKey(set: Object | any[]) {
     let keys = Object.keys(set); // Returns an array of every valid key for both arrays and objects
-    if(keys.length === 0) return;
+    if (keys.length === 0) return;
     return keys[Math.floor(Math.random() * keys.length)];
 }
 
@@ -14,7 +19,7 @@ export function randomKey(set: Object | any[]) {
  */
 export function randomValue(set: Object | any[]) {
     let key = randomKey(set);
-    if(typeof(key) === "undefined") return;
+    if (typeof (key) === "undefined") return;
     return set[randomKey(set)];
 }
 

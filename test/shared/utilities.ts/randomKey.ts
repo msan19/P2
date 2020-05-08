@@ -1,3 +1,9 @@
+/**
+ * Test of randomKeys
+ * @packageDocumentation
+ * @category Test
+ */
+
 import { randomKey } from "../../../src/shared/utilities";
 import { expect } from 'chai';
 import 'mocha';

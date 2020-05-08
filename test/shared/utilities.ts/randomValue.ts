@@ -1,3 +1,9 @@
+/**
+ * Test of randomValue
+ * @packageDocumentation
+ * @category Test
+ */
+
 import { randomValue } from "../../../src/shared/utilities";
 import { expect } from 'chai';
 import 'mocha';

@@ -81,6 +81,11 @@
 				<ul class="tsd-hierarchy">
 					<li>
 						<span class="target">Order</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<a href="_src_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -97,9 +102,12 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_order_.order.html#delaycounter" class="tsd-kind-icon">delay<wbr>Counter</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_order_.order.html#delaymax" class="tsd-kind-icon">delay<wbr>Max</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_order_.order.html#endvertexid" class="tsd-kind-icon">end<wbr>Vertex<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_order_.order.html#forkliftid" class="tsd-kind-icon">forklift<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_order_.order.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_order_.order.html#jsonpublickeys" class="tsd-kind-icon">json<wbr>Public<wbr>Keys</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_order_.order.html#palletid" class="tsd-kind-icon">pallet<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_order_.order.html#startvertexid" class="tsd-kind-icon">start<wbr>Vertex<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_shared_order_.order.html#time" class="tsd-kind-icon">time</a></li>
@@ -124,13 +132,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Order<span class="tsd-signature-symbol">(</span>orderId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, type<span class="tsd-signature-symbol">: </span><a href="../enums/_src_shared_order_.ordertypes.html" class="tsd-signature-type">OrderTypes</a>, forkliftId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, palletId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, startVertexId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, endVertexId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_shared_order_.order.html" class="tsd-signature-type">Order</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Order<span class="tsd-signature-symbol">(</span>orderId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, type<span class="tsd-signature-symbol">: </span><a href="../enums/_src_shared_order_.ordertypes.html" class="tsd-signature-type">OrderTypes</a>, forkliftId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, palletId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, startVertexId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, endVertexId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, time<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, timeType<span class="tsd-signature-symbol">: </span><a href="../enums/_src_shared_order_.timetype.html" class="tsd-signature-type">TimeType</a>, delayMax<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_shared_order_.order.html" class="tsd-signature-type">Order</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/e66ed26/src/shared/order.ts#L56">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/c822360/src/shared/order.ts#L61">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:61</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -153,6 +161,15 @@
 								<li>
 									<h5>endVertexId: <span class="tsd-signature-type">string</span></h5>
 								</li>
+								<li>
+									<h5>time: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>timeType: <a href="../enums/_src_shared_order_.timetype.html" class="tsd-signature-type">TimeType</a></h5>
+								</li>
+								<li>
+									<h5>delayMax: <span class="tsd-signature-type">number</span></h5>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_src_shared_order_.order.html" class="tsd-signature-type">Order</a></h4>
 						</li>
@@ -162,12 +179,37 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="delaycounter" class="tsd-anchor"></a>
+					<h3>delay<wbr>Counter</h3>
+					<div class="tsd-signature tsd-kind-icon">delay<wbr>Counter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/c822360/src/shared/order.ts#L61">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:61</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="delaymax" class="tsd-anchor"></a>
+					<h3>delay<wbr>Max</h3>
+					<div class="tsd-signature tsd-kind-icon">delay<wbr>Max<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/c822360/src/shared/order.ts#L59">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:59</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Number of times the order can be delayed before being dropped</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="endvertexid" class="tsd-anchor"></a>
 					<h3>end<wbr>Vertex<wbr>Id</h3>
 					<div class="tsd-signature tsd-kind-icon">end<wbr>Vertex<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e66ed26/src/shared/order.ts#L56">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:56</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/c822360/src/shared/order.ts#L56">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:56</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -182,7 +224,7 @@
 					<div class="tsd-signature tsd-kind-icon">forklift<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e66ed26/src/shared/order.ts#L46">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:46</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/c822360/src/shared/order.ts#L46">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:46</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -197,7 +239,7 @@
 					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e66ed26/src/shared/order.ts#L34">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/c822360/src/shared/order.ts#L34">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:34</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -207,12 +249,22 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="jsonpublickeys" class="tsd-anchor"></a>
+					<h3>json<wbr>Public<wbr>Keys</h3>
+					<div class="tsd-signature tsd-kind-icon">json<wbr>Public<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [&quot;id&quot;, &quot;timeType&quot;, &quot;time&quot;, &quot;type&quot;, &quot;forkliftId&quot;, &quot;palletId&quot;, &quot;startVertexId&quot;, &quot;endVertexId&quot;]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/c822360/src/shared/order.ts#L31">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:31</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="palletid" class="tsd-anchor"></a>
 					<h3>pallet<wbr>Id</h3>
 					<div class="tsd-signature tsd-kind-icon">pallet<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e66ed26/src/shared/order.ts#L50">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:50</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/c822360/src/shared/order.ts#L50">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:50</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -228,7 +280,7 @@
 					<div class="tsd-signature tsd-kind-icon">start<wbr>Vertex<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e66ed26/src/shared/order.ts#L53">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:53</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/c822360/src/shared/order.ts#L53">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:53</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -243,7 +295,7 @@
 					<div class="tsd-signature tsd-kind-icon">time<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e66ed26/src/shared/order.ts#L40">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/c822360/src/shared/order.ts#L40">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -258,7 +310,7 @@
 					<div class="tsd-signature tsd-kind-icon">time<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="../enums/_src_shared_order_.timetype.html" class="tsd-signature-type">TimeType</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e66ed26/src/shared/order.ts#L37">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:37</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/c822360/src/shared/order.ts#L37">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:37</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -273,7 +325,7 @@
 					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <a href="../enums/_src_shared_order_.ordertypes.html" class="tsd-signature-type">OrderTypes</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e66ed26/src/shared/order.ts#L43">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/c822360/src/shared/order.ts#L43">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:43</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -288,7 +340,7 @@
 					<div class="tsd-signature tsd-kind-icon">time<wbr>Types<span class="tsd-signature-symbol">:</span> <a href="../enums/_src_shared_order_.timetype.html" class="tsd-signature-type">TimeType</a><span class="tsd-signature-symbol"> = TimeType</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e66ed26/src/shared/order.ts#L31">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/c822360/src/shared/order.ts#L29">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:29</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -303,7 +355,7 @@
 					<div class="tsd-signature tsd-kind-icon">types<span class="tsd-signature-symbol">:</span> <a href="../enums/_src_shared_order_.ordertypes.html" class="tsd-signature-type">OrderTypes</a><span class="tsd-signature-symbol"> = OrderTypes</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e66ed26/src/shared/order.ts#L28">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/c822360/src/shared/order.ts#L26">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:26</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -319,13 +371,13 @@
 					<a name="parse" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> parse</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">parse<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, data<span class="tsd-signature-symbol">: </span><a href="_src_planningscheduler_classes_datacontainer_.datacontainer.html" class="tsd-signature-type">DataContainer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_shared_order_.order.html" class="tsd-signature-type">Order</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
+						<li class="tsd-signature tsd-kind-icon">parse<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, _<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_shared_order_.order.html" class="tsd-signature-type">Order</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/e66ed26/src/shared/order.ts#L74">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/c822360/src/shared/order.ts#L84">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/order.ts:84</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -342,9 +394,9 @@
 									</div>
 								</li>
 								<li>
-									<h5>data: <a href="_src_planningscheduler_classes_datacontainer_.datacontainer.html" class="tsd-signature-type">DataContainer</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> _: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>A DataContainer used to verify the existance of object speficied
+										<p>An unused parameter required to extend the class
 										by identification strings in obj</p>
 									</div>
 								</li>
@@ -369,10 +421,10 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum tsd-parent-kind-module tsd-is-not-exported">
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
 						<a href="../enums/_src_shared_order_.ordertypes.html" class="tsd-kind-icon">Order<wbr>Types</a>
 					</li>
-					<li class=" tsd-kind-enum tsd-parent-kind-module tsd-is-not-exported">
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
 						<a href="../enums/_src_shared_order_.timetype.html" class="tsd-kind-icon">Time<wbr>Type</a>
 					</li>
 				</ul>
@@ -384,6 +436,12 @@
 								<a href="_src_shared_order_.order.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_src_shared_order_.order.html#delaycounter" class="tsd-kind-icon">delay<wbr>Counter</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_src_shared_order_.order.html#delaymax" class="tsd-kind-icon">delay<wbr>Max</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_src_shared_order_.order.html#endvertexid" class="tsd-kind-icon">end<wbr>Vertex<wbr>Id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -391,6 +449,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_src_shared_order_.order.html#id" class="tsd-kind-icon">id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_src_shared_order_.order.html#jsonpublickeys" class="tsd-kind-icon">json<wbr>Public<wbr>Keys</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_src_shared_order_.order.html#palletid" class="tsd-kind-icon">pallet<wbr>Id</a>
@@ -430,14 +491,16 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>

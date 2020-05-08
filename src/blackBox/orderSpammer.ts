@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @category BlackBox
+ */
+
 import * as ws from "ws";
 import { WebSocket } from "./../shared/webSocket";
 import { ApiCaller } from "./../shared/apiCaller";

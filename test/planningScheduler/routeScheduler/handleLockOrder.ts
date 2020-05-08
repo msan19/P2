@@ -1,3 +1,9 @@
+/**
+ * Test of handleLockOrder
+ * @packageDocumentation
+ * @category Test
+ */
+
 import { expect } from 'chai';
 import 'mocha';
 
@@ -104,7 +110,7 @@ describe("Test handleLockOrder", () => {
         data.addOrder(new Order(fifthOrderId, Order.types.movePallet, fifthForkliftId, "P3", vertexIdFifthRoute[0], vertexIdFifthRoute[vertexIdFifthRoute.length - 1], visitTimes[0][4], Order.timeTypes.start, 3));
         data.addOrder(new Order(sixthOrderId, Order.types.movePallet, sixthForkliftId, "P3", vertexIdSixthRoute[0], vertexIdSixthRoute[vertexIdSixthRoute.length - 1], visitTimes[0][5], Order.timeTypes.start, 3));
 
-        context("Test for one scheduleItem at each vertex", () => {
+        context("Test for one scheduleItem at each vertex in the route", () => {
             // give routeScheduler access to the data (it needs access to Orders[])
             let firstOrder = routeScheduler.data.orders[firstOrderId];
             firstOrder.time = visitTimes[0][0];
@@ -153,7 +159,7 @@ describe("Test handleLockOrder", () => {
 
         });
 
-        context("Test getRoute when there are multiple scheduleItems at a vertex", () => {
+        context("Test getRoute when there are multiple scheduleItems at a vertex in the route", () => {
             let fifthOrder = routeScheduler.data.orders[fifthOrderId];
             fifthOrder.time = visitTimes[4][0];
             routeScheduler.data = data;

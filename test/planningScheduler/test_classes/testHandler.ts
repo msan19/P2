@@ -1,8 +1,7 @@
-// testHandler.ts
 /**
  * Test of {@link Handler}
  * @packageDocumentation
- * @category planningScheduler test
+ * @category Test
  */
 
 import { Handler } from "../../../src/planningScheduler/classes/handler";

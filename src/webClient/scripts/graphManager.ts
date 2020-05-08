@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @category WebClient
+ */
+
 const container: string = 'sigmaContainer';
 const defaultNodeColorValue = '#5c3935';
 const defaultEdgeColorValue = '#5c3935';

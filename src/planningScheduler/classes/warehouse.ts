@@ -1,7 +1,7 @@
 // warehouse.ts
 /**
  * @packageDocumentation
- * @category Shared
+ * @category PlanningScheduler
  */
 
 import { Warehouse as Warehouse_Shared } from "../../shared/warehouse";

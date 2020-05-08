@@ -1,8 +1,7 @@
-// testAstar.ts
 /**
- * Test of dataContainer
+ * Test of {@link dataContainer}
  * @packageDocumentation
- * @category planningScheduler test
+ * @category Test
  */
 
 import { DataContainer } from "./../../../src/planningScheduler/classes/dataContainer";

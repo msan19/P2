@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @category PlanningScheduler
+ */
+
 import { Graph as Graph_Shared, Vertex as Vertex_Shared } from "../../shared/graph";
 import { Vector2 } from "../../shared/vector2";
 

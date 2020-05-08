@@ -1,8 +1,8 @@
 // deepCopy.ts
 /**
- * Test of {@link Handler}
+ * Test of deepCopy
  * @packageDocumentation
- * @category planningScheduler test
+ * @category Test
  */
 
 import { deepCopy } from "../../../src/shared/utilities";

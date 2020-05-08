@@ -1,8 +1,7 @@
-// testAstar.ts
 /**
  * Test of {@link graph}
  * @packageDocumentation
- * @category planningScheduler test
+ * @category Test
  */
 
 import { expect } from 'chai';

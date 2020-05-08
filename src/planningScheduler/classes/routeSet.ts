@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @category PlanningScheduler
+ */
+
 import { Route } from "../../shared/route";
 import { Graph, Vertex, ScheduleItem } from "./graph";
 

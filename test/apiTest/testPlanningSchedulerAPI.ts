@@ -1,3 +1,9 @@
+/**
+ * Test of plannningScheduler API
+ * @packageDocumentation
+ * @category Test
+ */
+
 import { callApi } from "./apiTest";
 import { Order } from "../../src/shared/order";
 

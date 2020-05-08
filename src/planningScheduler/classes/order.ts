@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @category PlanningScheduler
+ */
+
 import { Order as Order_Shared, OrderTypes, TimeType } from "../../shared/order";
 import { DataContainer } from "./dataContainer";
 
