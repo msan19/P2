@@ -274,7 +274,7 @@ export class RouteScheduler {
             if (currentRouteTime != Infinity) {
                 if (order.timeType === Order.timeTypes.start) {
                     if (order.type === Order.types.movePallet) {
-                        this.insertScheduleItemsArray(data, routeSet, moveForkliftScheduleItems);
+                        this.insertScheduleItemsArray(routeSet, moveForkliftScheduleItems);
                         this.upStacking(routeSet.graph.vertices[order.endVertexId], order.startVertexId, forkliftId, null);
                         let scheduleItemOfStartVertex = routeSet.graph.vertices[order.startVertexId].getScheduleItem(order.time);
                         scheduleItemOfStartVertex.linkPrevious(moveForkliftScheduleItems[0]);
@@ -566,12 +566,22 @@ export class RouteScheduler {
         return destinationVertex.scheduleItems[indexOfDestinationVertex - 1].arrivalTimeCurrentVertex + (this.timeIntervalMinimumSize / 2);
     }
 
-    findReferenceToVertex(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number) {
+    /**
+     * Goes through the each {@link ScheduleItem} on the parameter currentVertex starting at currentTime backwards in time,
+     * until the earliest reference to the parameter destinationVertex occurs. A reference is here the previousScheduleItem
+     * and the nextScheduleItem references that form a doubly linked list on a graph
+     * @param currentVertex A {@link Vertex} whose {@link ScheduleItem} array is searched
+     * @param destinationVertex A {@link Vertex} to find a reference to, and to find the returned index on
+     * @param currentTime A time for when to begin the search on the parameter currentVertex
+     * @returns The index of the {@link ScheduleItem} on the parameter destinationVertex first referenced on the parameter currentVertex
+     */
+    findReferenceToVertex(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number): number {
         let previousVertexId: string = "";
         let nextVertexId: string = "";
         let i: number;
         let time: number;
 
+        //Searches linearly through the ScheduleItems for a reference
         for (i = currentVertex.getScheduleItemIndex(currentTime); i >= 0
             && previousVertexId !== destinationVertex.id
             && nextVertexId !== destinationVertex.id
@@ -588,6 +598,7 @@ export class RouteScheduler {
         }
         if (i === -1) i = 0;
 
+        //Finds the time of the ScheduleItem on the destinationVertex
         if (previousVertexId === destinationVertex.id && currentVertex.scheduleItems[i].previousScheduleItem !== null) {
             time = currentVertex.scheduleItems[i].previousScheduleItem.arrivalTimeCurrentVertex;
         } else if (nextVertexId === destinationVertex.id && currentVertex.scheduleItems[i].nextScheduleItem !== null) {
@@ -596,6 +607,7 @@ export class RouteScheduler {
             time = 0;
         }
 
+        //Returns the index of the ScheduleItem
         return destinationVertex.getScheduleItemIndex(time);
     }
 
@@ -669,8 +681,15 @@ export class RouteScheduler {
         }
     }
 
-    // Used to save scheduleitems for forklifts that might be used for a movepallet order
-    upStackingToArray(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null, outputArray: ScheduleItem[]) {
+    /**
+     * Inserts a new {@link ScheduleItem} recursivly for each {@link Vertex} linked by previousVertex to the parameter array
+     * @param vertex A {@link Vertex} denoting the step of the recursing through the chain
+     * @param startVertexId A string id for the {@link Vertex} where the recursion stops
+     * @param forkliftId A string id for the forklift following the route
+     * @param nextItem A {@link ScheduleItem} which the new {@link ScheduleItem} is to be linked to
+     * @param outputArray A {@link ScheduleItem} array to store the output
+     */
+    upStackingToArray(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null, outputArray: ScheduleItem[]): void {
         outputArray.push(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
         if (nextItem !== null) nextItem.linkPrevious(outputArray[outputArray.length - 1]);
         if (vertex.id !== startVertexId) {
@@ -678,8 +697,12 @@ export class RouteScheduler {
         }
     }
 
-    // Inserts scheduleitems from upStackingToArray to the graph of the routeSet
-    insertScheduleItemsArray(data: DataContainer, routeSet: RouteSet, scheduleItemsArray: ScheduleItem[]) {
+    /**
+     * Inserts 
+     * @param routeSet 
+     * @param scheduleItemsArray 
+     */
+    insertScheduleItemsArray(routeSet: RouteSet, scheduleItemsArray: ScheduleItem[]) {
         for (let scheduleItem of scheduleItemsArray) {
             let tempVertex = routeSet.graph.vertices[scheduleItem.currentVertexId];
             tempVertex.insertScheduleItem(scheduleItem);
