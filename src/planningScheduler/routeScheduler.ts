@@ -27,9 +27,6 @@ export class RouteScheduler {
     /** Heuristic function for A* implementation */
     heuristic: (v1: Vertex, v2: Vertex) => number;
 
-    /** The minimum amount of time between two forklifts crossing the same vertex for a third to cross in the meantime */
-    timeIntervalMinimumSize: number;
-
     /** The index of the mutation in the array of mutations currently being tried */
     mutationCounter: number;
 
@@ -38,6 +35,17 @@ export class RouteScheduler {
 
     /** An array of order ids of the orders currently being planned */
     unfinishedOrderIds: string[];
+
+    /** The minimum amount of time between two forklifts crossing the same vertex for a third to cross in the meantime */
+    timeIntervalMinimumSize: number;
+
+    expectedDurationMultiplier: number;
+
+    moveForkliftConstant: number;
+
+    chargeConstant: number;
+
+    mutationConstant: number;
 
     /**
      * Constructor for the object.
@@ -50,10 +58,16 @@ export class RouteScheduler {
         this.data = data;
         this.bestRouteSet = null;
         this.heuristic = (v1: Vertex, v2: Vertex) => { return v1.getDistanceDirect(v2) / this.data.warehouse.maxForkliftSpeed * 1000; };
-        this.timeIntervalMinimumSize = 30000;
         this.mutationCounter = 0;
         this.mutations = [];
         this.unfinishedOrderIds = [];
+
+        //Constants
+        this.timeIntervalMinimumSize = 3000;
+        this.expectedDurationMultiplier = 2.0;
+        this.moveForkliftConstant = 2.0;
+        this.chargeConstant = 2.0;
+        this.mutationConstant = 1.0;
     }
 
     /**
@@ -244,7 +258,7 @@ export class RouteScheduler {
             if (order.type === Order.types.movePallet) {
                 assignableForklifts = this.assignForklift(routeSet, order);
                 for (let i = 0; i < assignableForklifts.length && currentRouteTime === Infinity; i++) {
-                    let expectedStartTimeOfForklift = order.time - 2 * this.heuristic(routeSet.graph.vertices[assignableForklifts[i].currentVertexId], routeSet.graph.vertices[order.startVertexId]);
+                    let expectedStartTimeOfForklift = order.time - this.expectedDurationMultiplier * this.heuristic(routeSet.graph.vertices[assignableForklifts[i].currentVertexId], routeSet.graph.vertices[order.startVertexId]);
                     currentRouteTime = this.planOptimalRoute(routeSet, assignableForklifts[i].currentVertexId, order.startVertexId,
                         expectedStartTimeOfForklift, assignableForklifts[i].forkliftId);
                     if (expectedStartTimeOfForklift + currentRouteTime > order.time) {
@@ -308,7 +322,7 @@ export class RouteScheduler {
             .map((item) => { // Wrap them in object, containing EstimatedTimeOfArrival at startVertex of the order
                 return {
                     scheduleItem: item,
-                    startVertexETA: order.time - (item.arrivalTimeCurrentVertex + 2 * this.heuristic(routeSet.graph.vertices[item.currentVertexId], routeSet.graph.vertices[order.startVertexId]))
+                    startVertexETA: order.time - (item.arrivalTimeCurrentVertex + this.expectedDurationMultiplier * this.heuristic(routeSet.graph.vertices[item.currentVertexId], routeSet.graph.vertices[order.startVertexId]))
                 };
             })
             .sort((item1, item2) => { // Sort by ETA
@@ -337,9 +351,6 @@ export class RouteScheduler {
      * The new array is sorted by the least efficient routes first
      */
     mutate(): void {
-        let moveForkliftConstant = 2.0;
-        let chargeConstant = 2.0;
-        let mutationConstant = 2.0;
         let values = [];
         let mutations: { index: number, newIndex: number, value: number; }[] = [];
 
@@ -351,9 +362,9 @@ export class RouteScheduler {
                 let endVertex = this.data.warehouse.graph.vertices[order.endVertexId];
                 values.push(startVertex.getDistanceDirect(endVertex) / this.bestRouteSet.duration[i]);
             } else if (order.type === Order.types.moveForklift) {
-                values.push(moveForkliftConstant);
+                values.push(this.moveForkliftConstant);
             } else if (order.type === Order.types.charge) {
-                values.push(chargeConstant);
+                values.push(this.chargeConstant);
             }
         }
 
@@ -362,7 +373,7 @@ export class RouteScheduler {
             let newIndex = i - 1;
             let currentOrder = this.data.orders[this.bestRouteSet.priorities[i]];
 
-            while (newIndex >= 0 && (values[newIndex] + newIndex * mutationConstant) > (values[i] + i * mutationConstant)
+            while (newIndex >= 0 && (values[newIndex] + newIndex * this.mutationConstant) > (values[i] + i * this.mutationConstant)
                 && RouteScheduler.isValidMutation(currentOrder, this.data.orders[this.bestRouteSet.priorities[newIndex]])) {
                 newIndex--;
             }

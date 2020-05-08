@@ -94,9 +94,9 @@ describe(`Test of A* algorithm`, () => {
         results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 62481, true, "F1"));
 
         expecteds.push(Infinity);
-        expecteds.push(30400 + 30000 / 2);
-        expecteds.push(30400 + 30000 / 2);
-        expecteds.push(70400 + 30000 / 2);
+        expecteds.push(30400 + routeScheduler.timeIntervalMinimumSize / 2);
+        expecteds.push(30400 + routeScheduler.timeIntervalMinimumSize / 2);
+        expecteds.push(70400 + routeScheduler.timeIntervalMinimumSize / 2);
 
         expect(results).to.be.eql(expecteds);
     });
