@@ -27,9 +27,6 @@ export class RouteScheduler {
     /** Heuristic function for A* implementation */
     heuristic: (v1: Vertex, v2: Vertex) => number;
 
-    /** The minimum amount of time between two forklifts crossing the same vertex for a third to cross in the meantime */
-    timeIntervalMinimumSize: number;
-
     /** The index of the mutation in the array of mutations currently being tried */
     mutationCounter: number;
 
@@ -38,6 +35,17 @@ export class RouteScheduler {
 
     /** An array of order ids of the orders currently being planned */
     unfinishedOrderIds: string[];
+
+    /** The minimum amount of time between two forklifts crossing the same vertex for a third to cross in the meantime */
+    timeIntervalMinimumSize: number;
+
+    expectedDurationMultiplier: number;
+
+    moveForkliftConstant: number;
+
+    chargeConstant: number;
+
+    mutationConstant: number;
 
     /**
      * Constructor for the object.
@@ -50,10 +58,16 @@ export class RouteScheduler {
         this.data = data;
         this.bestRouteSet = null;
         this.heuristic = (v1: Vertex, v2: Vertex) => { return v1.getDistanceDirect(v2) / this.data.warehouse.maxForkliftSpeed * 1000; };
-        this.timeIntervalMinimumSize = 30000;
         this.mutationCounter = 0;
         this.mutations = [];
         this.unfinishedOrderIds = [];
+
+        //Constants
+        this.timeIntervalMinimumSize = 3000;
+        this.expectedDurationMultiplier = 2.0;
+        this.moveForkliftConstant = 2.0;
+        this.chargeConstant = 2.0;
+        this.mutationConstant = 1.0;
     }
 
     /**
@@ -244,7 +258,7 @@ export class RouteScheduler {
             if (order.type === Order.types.movePallet) {
                 assignableForklifts = this.assignForklift(routeSet, order);
                 for (let i = 0; i < assignableForklifts.length && currentRouteTime === Infinity; i++) {
-                    let expectedStartTimeOfForklift = order.time - 2 * this.heuristic(routeSet.graph.vertices[assignableForklifts[i].currentVertexId], routeSet.graph.vertices[order.startVertexId]);
+                    let expectedStartTimeOfForklift = order.time - this.expectedDurationMultiplier * this.heuristic(routeSet.graph.vertices[assignableForklifts[i].currentVertexId], routeSet.graph.vertices[order.startVertexId]);
                     currentRouteTime = this.planOptimalRoute(routeSet, assignableForklifts[i].currentVertexId, order.startVertexId,
                         expectedStartTimeOfForklift, assignableForklifts[i].forkliftId);
                     if (expectedStartTimeOfForklift + currentRouteTime > order.time) {
@@ -274,7 +288,7 @@ export class RouteScheduler {
             if (currentRouteTime != Infinity) {
                 if (order.timeType === Order.timeTypes.start) {
                     if (order.type === Order.types.movePallet) {
-                        this.insertScheduleItemsArray(data, routeSet, moveForkliftScheduleItems);
+                        this.insertScheduleItemsArray(routeSet, moveForkliftScheduleItems);
                         this.upStacking(routeSet.graph.vertices[order.endVertexId], order.startVertexId, forkliftId, null);
                         let scheduleItemOfStartVertex = routeSet.graph.vertices[order.startVertexId].getScheduleItem(order.time);
                         scheduleItemOfStartVertex.linkPrevious(moveForkliftScheduleItems[0]);
@@ -308,7 +322,7 @@ export class RouteScheduler {
             .map((item) => { // Wrap them in object, containing EstimatedTimeOfArrival at startVertex of the order
                 return {
                     scheduleItem: item,
-                    startVertexETA: order.time - (item.arrivalTimeCurrentVertex + 2 * this.heuristic(routeSet.graph.vertices[item.currentVertexId], routeSet.graph.vertices[order.startVertexId]))
+                    startVertexETA: order.time - (item.arrivalTimeCurrentVertex + this.expectedDurationMultiplier * this.heuristic(routeSet.graph.vertices[item.currentVertexId], routeSet.graph.vertices[order.startVertexId]))
                 };
             })
             .sort((item1, item2) => { // Sort by ETA
@@ -337,9 +351,6 @@ export class RouteScheduler {
      * The new array is sorted by the least efficient routes first
      */
     mutate(): void {
-        let moveForkliftConstant = 2.0;
-        let chargeConstant = 2.0;
-        let mutationConstant = 2.0;
         let values = [];
         let mutations: { index: number, newIndex: number, value: number; }[] = [];
 
@@ -351,9 +362,9 @@ export class RouteScheduler {
                 let endVertex = this.data.warehouse.graph.vertices[order.endVertexId];
                 values.push(startVertex.getDistanceDirect(endVertex) / this.bestRouteSet.duration[i]);
             } else if (order.type === Order.types.moveForklift) {
-                values.push(moveForkliftConstant);
+                values.push(this.moveForkliftConstant);
             } else if (order.type === Order.types.charge) {
-                values.push(chargeConstant);
+                values.push(this.chargeConstant);
             }
         }
 
@@ -362,7 +373,7 @@ export class RouteScheduler {
             let newIndex = i - 1;
             let currentOrder = this.data.orders[this.bestRouteSet.priorities[i]];
 
-            while (newIndex >= 0 && (values[newIndex] + newIndex * mutationConstant) > (values[i] + i * mutationConstant)
+            while (newIndex >= 0 && (values[newIndex] + newIndex * this.mutationConstant) > (values[i] + i * this.mutationConstant)
                 && RouteScheduler.isValidMutation(currentOrder, this.data.orders[this.bestRouteSet.priorities[newIndex]])) {
                 newIndex--;
             }
@@ -566,12 +577,22 @@ export class RouteScheduler {
         return destinationVertex.scheduleItems[indexOfDestinationVertex - 1].arrivalTimeCurrentVertex + (this.timeIntervalMinimumSize / 2);
     }
 
-    findReferenceToVertex(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number) {
+    /**
+     * Goes through the each {@link ScheduleItem} on the parameter currentVertex starting at currentTime backwards in time,
+     * until the earliest reference to the parameter destinationVertex occurs. A reference is here the previousScheduleItem
+     * and the nextScheduleItem references that form a doubly linked list on a graph
+     * @param currentVertex A {@link Vertex} whose {@link ScheduleItem} array is searched
+     * @param destinationVertex A {@link Vertex} to find a reference to, and to find the returned index on
+     * @param currentTime A time for when to begin the search on the parameter currentVertex
+     * @returns The index of the {@link ScheduleItem} on the parameter destinationVertex first referenced on the parameter currentVertex
+     */
+    findReferenceToVertex(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number): number {
         let previousVertexId: string = "";
         let nextVertexId: string = "";
         let i: number;
         let time: number;
 
+        //Searches linearly through the ScheduleItems for a reference
         for (i = currentVertex.getScheduleItemIndex(currentTime); i >= 0
             && previousVertexId !== destinationVertex.id
             && nextVertexId !== destinationVertex.id
@@ -588,6 +609,7 @@ export class RouteScheduler {
         }
         if (i === -1) i = 0;
 
+        //Finds the time of the ScheduleItem on the destinationVertex
         if (previousVertexId === destinationVertex.id && currentVertex.scheduleItems[i].previousScheduleItem !== null) {
             time = currentVertex.scheduleItems[i].previousScheduleItem.arrivalTimeCurrentVertex;
         } else if (nextVertexId === destinationVertex.id && currentVertex.scheduleItems[i].nextScheduleItem !== null) {
@@ -596,6 +618,7 @@ export class RouteScheduler {
             time = 0;
         }
 
+        //Returns the index of the ScheduleItem
         return destinationVertex.getScheduleItemIndex(time);
     }
 
@@ -669,8 +692,15 @@ export class RouteScheduler {
         }
     }
 
-    // Used to save scheduleitems for forklifts that might be used for a movepallet order
-    upStackingToArray(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null, outputArray: ScheduleItem[]) {
+    /**
+     * Inserts a new {@link ScheduleItem} recursivly for each {@link Vertex} linked by previousVertex to the parameter array
+     * @param vertex A {@link Vertex} denoting the step of the recursing through the chain
+     * @param startVertexId A string id for the {@link Vertex} where the recursion stops
+     * @param forkliftId A string id for the forklift following the route
+     * @param nextItem A {@link ScheduleItem} which the new {@link ScheduleItem} is to be linked to
+     * @param outputArray A {@link ScheduleItem} array to store the output
+     */
+    upStackingToArray(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null, outputArray: ScheduleItem[]): void {
         outputArray.push(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
         if (nextItem !== null) nextItem.linkPrevious(outputArray[outputArray.length - 1]);
         if (vertex.id !== startVertexId) {
@@ -678,14 +708,23 @@ export class RouteScheduler {
         }
     }
 
-    // Inserts scheduleitems from upStackingToArray to the graph of the routeSet
-    insertScheduleItemsArray(data: DataContainer, routeSet: RouteSet, scheduleItemsArray: ScheduleItem[]) {
+    /**
+     * Inserts each {@link ScheduleItem} in the parameter scheduleItemsArray on each predetermined vertex
+     * @param routeSet A {@link RouteSet} for each {@link ScheduleItem} to be inserted on
+     * @param scheduleItemsArray A {@link ScheduleItem} array to be inserted
+     */
+    insertScheduleItemsArray(routeSet: RouteSet, scheduleItemsArray: ScheduleItem[]) {
         for (let scheduleItem of scheduleItemsArray) {
             let tempVertex = routeSet.graph.vertices[scheduleItem.currentVertexId];
             tempVertex.insertScheduleItem(scheduleItem);
         }
     }
 
+    /**
+     * Finds the time when the route associated with the parameter order starts
+     * @param orderId A string id specifying the order to find the start time for
+     * @returns The start time
+     */
     getStartTime(orderId: string): number {
         let order: Order = this.data.orders[orderId];
         if (order.type === Order.types.movePallet) {
@@ -699,6 +738,9 @@ export class RouteScheduler {
         return order.time;
     }
 
+    /**
+     * Updates the routeScheduler by adding new orders and calculating a new {@link RouteSet} and compares it to bestRouteSet
+     */
     update(): void {
         // Find appropriate place in priorities and insert
         if (this.bestRouteSet !== null) {
@@ -724,6 +766,10 @@ export class RouteScheduler {
 
     }
 
+    /**
+     * Inserts a new order the prioritized list of orders on the bestRouteSet in a chronologial manner
+     * @param orderId A string id for the order to be inserted
+     */
     insertOrderInPrioritiesAppropriately(orderId: string): void {
         let indexForNewOrder = this.bestRouteSet.priorities.length;
 

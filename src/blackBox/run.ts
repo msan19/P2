@@ -30,5 +30,7 @@ setTimeout(() => {
         console.log("Failed to set warehouse");
     });
 
-    new OrderSpammer("http://localhost:3000", "http://localhost:3000/subscribe", () => { return randomIntegerInRange(5000, 10000); });
+    setTimeout(() => {
+        new OrderSpammer("http://localhost:3000", "http://localhost:3000/subscribe", () => { return randomIntegerInRange(100, 500); });
+    }, 1000);
 }, 2000);

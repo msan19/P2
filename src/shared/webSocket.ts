@@ -172,4 +172,13 @@ export class WebSocket extends EventEmitter {
         });
     }
 
+    async whenPackage<T>(type: PackageTypes): Promise<T> {
+        return new Promise((resolve: (result: T) => any) => {
+            let event = (result: T) => {
+                resolve(result);
+                this.removeListener(type, event);
+            };
+            this.on(type, event);
+        });
+    }
 }
