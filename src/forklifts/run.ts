@@ -40,6 +40,6 @@ function getWarehouse() {
 getWarehouse().then((warehouse: Warehouse) => {
     for (let i = 0; i < 10; i++) {
         forklifts.push(new Forklift("F" + i, SERVER_HOSTNAME, SERVER_PORT, randomIntegerInRange(5, 100), Forklift.states.idle,
-            i === 0 ? new Vector2(9, 1).scale(10) : new Vector2(i, 9 - i).scale(10)));
+            new Vector2(i, 9 - i).scale(10)));
     }
 });
