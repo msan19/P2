@@ -194,11 +194,10 @@ export class RouteScheduler {
      *                     first schedulteItem in route is reached
      */
     private createMoveInstructions(instructions: Instruction[], order: Order, scheduleItem: ScheduleItem): void {
-        let instructionType;
         if (scheduleItem.previousScheduleItem !== null) {
             this.createMoveInstructions(instructions, order, scheduleItem.previousScheduleItem);
         }
-        instructionType = Instruction.types.move;
+        let instructionType = Instruction.types.move;
         let newInstruction = new Instruction(instructionType, scheduleItem.currentVertexId, scheduleItem.arrivalTimeCurrentVertex);
         instructions.push(newInstruction);
     }
