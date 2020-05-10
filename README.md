@@ -69,20 +69,33 @@ Uge 14-17:    Programmering
       Fredag:  a* på et routeset
 
 Uge 18:       Bufferperiode (mapf og rapportskrivning)
-  Mandag: Planlægge hele af routeset
+  Mandag:  Planlægge hele af routeset
   Tirsdag: Teste routeset planlægning og måske priority searching
   Onsdag:  priority searching
   Torsdag: bug-fixing
   Fredag:  bug-fixing
 
 Uge 19:       Test
-  Mandag: bug-fixing
-  Tirsdag: ?
-  Onsdag:  ?
-  Torsdag: ?
-  Fredag:  ?
+  Mandag:  bug-fixing
+  Tirsdag: bug-fixing
+  Onsdag:  bug-fixing
+  Torsdag: Test af mapf
+  Fredag:  Test af mapf
 
-Uge 20 - 21:  Rapportskrivning
+Uge 20:    Rapportskrivning
+  Mandag:  Test af mapf og status på rapport
+  Tirsdag: Skrive!
+  Onsdag:  Skrive!
+  Torsdag: status på struktur og skrive!
+  Fredag:  Skrive!
+
+Uge 21:    Rapportskrivning
+  Mandag:  Status på rapport og skrive!
+  Tirsdag: Udkast til konklusion og skrive!
+  Onsdag:  Skrive!
+  Torsdag: status på rapport og skrive!
+  Fredag:  Skrive!
+
 
 Uge 22:       AFLERVERING!
 ```
