@@ -221,7 +221,7 @@ function linkScheduleItems(routeSet: RouteSet, verticeIdList: string[], visitTim
     let firstScheduleItem = getScheduleItem(firstVertex, visitTimeArray[0]);
     let secondScheduleItem = getScheduleItem(secondVertex, visitTimeArray[1]);
     firstScheduleItem.previousScheduleItem = null;
-    firstScheduleItem.linkNext(secondScheduleItem);
+    firstScheduleItem.setNext(secondScheduleItem);
 
     for (let j = 1; j < verticeIdList.length - 1; j++) {
         let previousVertex = routeSet.graph.vertices[verticeIdList[j - 1]];
@@ -230,12 +230,12 @@ function linkScheduleItems(routeSet: RouteSet, verticeIdList: string[], visitTim
         let currentVertex = routeSet.graph.vertices[verticeIdList[j]];
         let currentScheduleItem = getScheduleItem(currentVertex, visitTimeArray[j]);
 
-        currentScheduleItem.linkPrevious(previousScheduleItem);
+        currentScheduleItem.setPrevious(previousScheduleItem);
 
         if (j !== verticeIdList.length - 1) {
             let nextVertex = routeSet.graph.vertices[verticeIdList[j + 1]];
             let nextScheduleItem = getScheduleItem(nextVertex, visitTimeArray[j + 1]);
-            currentScheduleItem.linkNext(nextScheduleItem);
+            currentScheduleItem.setNext(nextScheduleItem);
         } else {
             console.log("Should not happen.");
         }

@@ -168,12 +168,12 @@ export class ScheduleItem {
         return new ScheduleItem(item.forkliftId, item.time, item.nextVertexId);
     }
 
-    linkPrevious(previousScheduleItem: ScheduleItem) {
+    setPrevious(previousScheduleItem: ScheduleItem) {
         this.previousScheduleItem = previousScheduleItem;
         previousScheduleItem.nextScheduleItem = this;
     }
 
-    linkNext(nextScheduleItem: ScheduleItem) {
+    setNext(nextScheduleItem: ScheduleItem) {
         this.nextScheduleItem = nextScheduleItem;
         nextScheduleItem.previousScheduleItem = this;
     }
