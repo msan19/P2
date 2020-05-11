@@ -32,5 +32,5 @@ setTimeout(() => {
 
     setTimeout(() => {
         new OrderSpammer("http://localhost:3000", "http://localhost:3000/subscribe", () => { return randomIntegerInRange(100, 500); });
-    }, 1000);
+    }, 2000);
 }, 2000);
