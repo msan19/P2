@@ -40,7 +40,12 @@ export class RouteSet {
         return new RouteSet(routeSet.priorities, routeSet.graphVertices);
     }
 
-    // O(nm + m) 
+    /**
+     * Finds the first {@link ScheduleItem} of a forklift
+     * runs in O(nm + m)
+     * @param forkliftId The id of the wanted forklift
+     * @returns The first {@link ScheduleItem}
+     */
     getFirstScheduleItemForForklift(forkliftId: string) {
         for (let verticeId in this.graph.vertices) {
             for (let scheduleItem of this.graph.vertices[verticeId].scheduleItems) {
@@ -52,11 +57,16 @@ export class RouteSet {
         }
     }
 
+    /**
+     * Recursively prints the forkliftId, VertexId and time or Δtime for all ScheduleItems in a route
+     * @param scheduleItem The scheduleItem to print
+     * @param previousScheduleItem The previosScheduleItem if there is one
+     */
     printRoute(scheduleItem: ScheduleItem, previousScheduleItem?: ScheduleItem) {
-        if (!previousScheduleItem) {
-            console.log(scheduleItem.forkliftId, `Vertex: ${scheduleItem.currentVertexId}`, `Time: ${scheduleItem.arrivalTimeCurrentVertex}`);
-        } else {
+        if (previousScheduleItem) {
             console.log(scheduleItem.forkliftId, `Vertex: ${scheduleItem.currentVertexId}`, `ΔTime: ${scheduleItem.arrivalTimeCurrentVertex - previousScheduleItem.arrivalTimeCurrentVertex}`);
+        } else {
+            console.log(scheduleItem.forkliftId, `Vertex: ${scheduleItem.currentVertexId}`, `Time: ${scheduleItem.arrivalTimeCurrentVertex}`);
         }
         if (scheduleItem.nextScheduleItem) {
             this.printRoute(scheduleItem.nextScheduleItem, scheduleItem);
