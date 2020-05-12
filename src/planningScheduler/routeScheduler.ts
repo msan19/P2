@@ -156,7 +156,7 @@ export class RouteScheduler {
         let lastScheduleItem = endVertex.getScheduleItem(order.time + duration);
 
         if (order.type === Order.types.movePallet) {
-            this.createMovePalletInstructions(instructions, order, lastScheduleItem);
+            this.createMovePalletInstructions(instructions, order, lastScheduleItem, order.time + duration);
         } else if (order.type === Order.types.moveForklift || order.type === Order.types.charge) {
             let nextLastScheduleitem = lastScheduleItem.previousScheduleItem;
             if (nextLastScheduleitem !== null) {
@@ -180,11 +180,11 @@ export class RouteScheduler {
      * @param scheduleItem Initially the last scheduleItem in the route, then scheduleItems predecessors are followed recursively until 
      *                     first schedulteItem in route is reached 
      */
-    private createMovePalletInstructions(instructions: Instruction[], order: Order, scheduleItem: ScheduleItem): void {
+    private createMovePalletInstructions(instructions: Instruction[], order: Order, scheduleItem: ScheduleItem, endVertexTime: number): void {
         let instructionType = Instruction.types.move;
         if (scheduleItem.previousScheduleItem !== null) {
-            this.createMovePalletInstructions(instructions, order, scheduleItem.previousScheduleItem);
-            if (scheduleItem.currentVertexId === order.endVertexId) {
+            this.createMovePalletInstructions(instructions, order, scheduleItem.previousScheduleItem, endVertexTime);
+            if (scheduleItem.currentVertexId === order.endVertexId && scheduleItem.arrivalTimeCurrentVertex === endVertexTime) {
                 instructionType = Instruction.types.unloadPallet;
             }
         } else if (scheduleItem.currentVertexId === order.startVertexId) {
