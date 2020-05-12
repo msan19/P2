@@ -12,7 +12,7 @@ export class RouteSet {
     graph: Graph;
 
     /** 
-     * priorities and duration are associative arrays
+     * priorities and duration are associative
      */
     priorities: string[];
     duration: number[];
@@ -29,13 +29,13 @@ export class RouteSet {
      * @returns a RouteSet if possible else null
      */
     static parse(routeSet: any): RouteSet | null {
-        if (typeof (Route.parseMultiple(routeSet.routes)) === "object") return null;
-        if (typeof (routeSet.priorities) !== null) {
-            routeSet.priorities.forEach(element => {
-                if (typeof (element) !== "string") return null;
-            });
+        if (Route.parseMultiple(routeSet.routes) === null) return null;
+        if (routeSet.priorities === null) return null;
+
+        for (let priority in routeSet.priorities) {
+            if (typeof (priority !== "string")) return null;
         }
-        if (typeof (Vertex.parseMultiple(routeSet.graphVertices)) !== "object") return null;
+        if (Vertex.parseMultiple(routeSet.graphVertices) === null) return null;
 
         return new RouteSet(routeSet.priorities, routeSet.graphVertices);
     }

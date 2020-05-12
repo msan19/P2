@@ -162,7 +162,7 @@ export class Vertex {
         let tempAdjacency: string[] = [];
         if (typeof (vertex.adjacentVertexIds) === "object" && vertex.adjacentVertexIds !== null) {
             for (let i = 0; i < vertex.adjacentVertexIds.length; i++) {
-                if (typeof (vertex.adjacentVertexIds[i]) && vertex.adjacentVertexIds[i].length > 0) {
+                if (typeof (vertex.adjacentVertexIds[i]) === "string" && vertex.adjacentVertexIds[i].length > 0) {
                     tempAdjacency.push(vertex.adjacentVertexIds[i]);
                 }
             }
@@ -195,16 +195,17 @@ export class Vertex {
      * @returns A created array of vertices
      */
     static parseMultiple(vertices: Vertex[]): Vertex[] | null {
-        vertices.forEach(element => {
-            if (typeof (Vertex.parse(element)) === "object") return null;
-        });
         let newVertices: Vertex[] = [];
-        vertices.forEach(element => {
-            newVertices.push(element);
-        });
+
+        if (!Array.isArray(vertices)) return null;
+
+        for (let vertex of vertices) {
+            let parsed = Vertex.parse(vertex);
+            if (parsed === null) return null;
+            else newVertices.push(parsed);
+        }
 
         return newVertices;
     }
-
 
 }
