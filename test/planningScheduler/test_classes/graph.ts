@@ -358,6 +358,73 @@ function testVertex(): void {
             });
         });
 
+        describe("Insertion of ScheduleItem after current times", () => {
+            let vertex = new Vertex("P23", new Vector2(3, 4));
+            let scheduleItemList = [
+                new ScheduleItem("F22", 10000, "F23"),
+                new ScheduleItem("F22", 10100, "F23"),
+                new ScheduleItem("F22", 10200, "F23"),
+                new ScheduleItem("F22", 10300, "F23"),
+                new ScheduleItem("F22", 10400, "F23"),
+                new ScheduleItem("F22", 10500, "F23"),
+                new ScheduleItem("F22", 10600, "F23"),
+                new ScheduleItem("F22", 10700, "F23"),
+                new ScheduleItem("F22", 10800, "F23"),
+                new ScheduleItem("F22", 10900, "F23")
+            ];
+            vertex.scheduleItems = scheduleItemList;
+            let time = 10000;
+            let newScheduleItem: ScheduleItem = new ScheduleItem("F21", time, "F23");
+            vertex.insertScheduleItem(newScheduleItem);
+
+            let expected: number = time;
+            let result: number = vertex.scheduleItems[0].arrivalTimeCurrentVertex;
+
+            it(`Should be ${expected}`, () => {
+                expect(result).to.equal(expected);
+            });
+
+            let expectedId: string = "F21";
+            let resultingId: string = vertex.scheduleItems[0].forkliftId;
+
+            it(`Should be ${expectedId}`, () => {
+                expect(resultingId).to.equal(expectedId);
+            });
+        });
+
+        describe("Insertion of ScheduleItem after current times", () => {
+            let vertex = new Vertex("P23", new Vector2(3, 4));
+            let scheduleItemList = [
+                new ScheduleItem("F22", 10000, "F23"),
+                new ScheduleItem("F22", 10100, "F23"),
+                new ScheduleItem("F22", 10200, "F23"),
+                new ScheduleItem("F22", 10300, "F23"),
+                new ScheduleItem("F22", 10400, "F23"),
+                new ScheduleItem("F22", 10500, "F23"),
+                new ScheduleItem("F22", 10600, "F23"),
+                new ScheduleItem("F22", 10700, "F23"),
+                new ScheduleItem("F22", 10800, "F23"),
+                new ScheduleItem("F22", 10900, "F23")
+            ];
+            vertex.scheduleItems = scheduleItemList;
+            let time = 10900;
+            let newScheduleItem: ScheduleItem = new ScheduleItem("F21", time, "F23");
+            vertex.insertScheduleItem(newScheduleItem);
+
+            let expected: number = time;
+            let result: number = vertex.scheduleItems[9].arrivalTimeCurrentVertex;
+
+            it(`Should be ${expected}`, () => {
+                expect(result).to.equal(expected);
+            });
+
+            let expectedId: string = "F21";
+            let resultingId: string = vertex.scheduleItems[9].forkliftId;
+
+            it(`Should be ${expectedId}`, () => {
+                expect(resultingId).to.equal(expectedId);
+            });
+        });
     });
 }
 
