@@ -17,7 +17,7 @@ import { Order } from '../../../src/planningScheduler/classes/order';
 import { Warehouse } from '../../../src/planningScheduler/classes/warehouse';
 
 describe("Test handleLockOrder", () => {
-    describe("Test getRoute for movePallet order", () => {
+    describe("Test getRoute", () => {
         let data: DataContainer = new DataContainer();
         let warehouseGraph: Graph = Graph.parse(createGraph());
         let warehouse = new Warehouse(warehouseGraph, 15);
@@ -32,8 +32,9 @@ describe("Test handleLockOrder", () => {
         let fourthOrderId = "O4";
         let fifthOrderId = "O5";
         let sixthOrderId = "O6";
+        let seventhOrderId = "O7";
         let routePriorities = [firstOrderId, secondOrderId, thirdOrderId,
-            fourthOrderId, fifthOrderId, sixthOrderId];
+            fourthOrderId, fifthOrderId, sixthOrderId, seventhOrderId];
 
         routeScheduler.bestRouteSet = new RouteSet(routePriorities, bestRouteSetgraph);
 
@@ -43,6 +44,7 @@ describe("Test handleLockOrder", () => {
         let fourthForkliftId = "F4";
         let fifthForkliftId = "F5";
         let sixthForkliftId = "F6";
+        let seventhForkliftId = "F7";
 
         // no overlapping routes
         let vertexIdFirstRoute = [
@@ -74,15 +76,21 @@ describe("Test handleLockOrder", () => {
             "N9-7"
         ];
 
+        // route that visits same vertices more than once
+        let vertexIdSeventhRoute = [
+            "N5-1", "N5-2", "N5-3", "N5-4", "N5-5",
+            "N5-6", "N5-7", "N5-8", "N5-9", "N5-8",
+            "N5-7", "N5-6", "N5-5", "N5-4"
+        ];
+
         let vertexIds = [vertexIdFirstRoute, vertexIdSecondRoute, vertexIdThirdRoute,
-            vertexIdFourthRoute, vertexIdFifthRoute, vertexIdSixthRoute];
+            vertexIdFourthRoute, vertexIdFifthRoute, vertexIdSixthRoute, vertexIdSeventhRoute]; //
 
         // create array of visitTimes
         let defaultStartTime = 30000;
-        let visitTimes = []; // two-dimensional array
+        let visitTimes: number[][] = []; // two-dimensional array
         for (let i = 0; i < routePriorities.length; i++) {
             let newTimeStamps: number[] = [];
-            if (i === vertexIds[i].length - 1) defaultStartTime = 40000;
             for (let j = 0; j < vertexIds[i].length; j++) {
                 newTimeStamps[j] = defaultStartTime + (j * 100);
             }
@@ -102,15 +110,20 @@ describe("Test handleLockOrder", () => {
         createScheduleItems(routeScheduler.bestRouteSet, vertexIdFifthRoute, fifthForkliftId, visitTimes[4]);
         createScheduleItems(routeScheduler.bestRouteSet, vertexIdSixthRoute, sixthForkliftId, visitTimes[5]);
 
+        // here is a problem. I think geScheduleItemIndex does not work when a vertex is visited several times in the same route. 
+        createScheduleItems(routeScheduler.bestRouteSet, vertexIdSeventhRoute, seventhForkliftId, visitTimes[6]);
+        //printScheduleItem(routeScheduler.bestRouteSet, vertexIdSeventhRoute, visitTimes[6]); // forkerte scheduleItems (geScheduleItemIndex giver ikke det rigtige index)
+
         // create movePallet orders
         data.addOrder(new Order(firstOrderId, Order.types.movePallet, firstForkliftId, "P1", vertexIdFirstRoute[0], vertexIdFirstRoute[vertexIdFirstRoute.length - 1], visitTimes[0][0], Order.timeTypes.start, 3));
         data.addOrder(new Order(secondOrderId, Order.types.movePallet, secondForkliftId, "P2", vertexIdSecondRoute[0], vertexIdSecondRoute[vertexIdSecondRoute.length - 1], visitTimes[0][1], Order.timeTypes.start, 3));
         data.addOrder(new Order(thirdOrderId, Order.types.movePallet, thirdForkliftId, "P3", vertexIdThirdRoute[0], vertexIdThirdRoute[vertexIdThirdRoute.length - 1], visitTimes[0][2], Order.timeTypes.start, 3));
-        data.addOrder(new Order(fourthOrderId, Order.types.movePallet, fourthForkliftId, "P3", vertexIdFourthRoute[0], vertexIdFourthRoute[vertexIdFourthRoute.length - 1], visitTimes[0][3], Order.timeTypes.start, 3));
-        data.addOrder(new Order(fifthOrderId, Order.types.movePallet, fifthForkliftId, "P3", vertexIdFifthRoute[0], vertexIdFifthRoute[vertexIdFifthRoute.length - 1], visitTimes[0][4], Order.timeTypes.start, 3));
-        data.addOrder(new Order(sixthOrderId, Order.types.movePallet, sixthForkliftId, "P3", vertexIdSixthRoute[0], vertexIdSixthRoute[vertexIdSixthRoute.length - 1], visitTimes[0][5], Order.timeTypes.start, 3));
+        data.addOrder(new Order(fourthOrderId, Order.types.movePallet, fourthForkliftId, "P4", vertexIdFourthRoute[0], vertexIdFourthRoute[vertexIdFourthRoute.length - 1], visitTimes[0][3], Order.timeTypes.start, 3));
+        data.addOrder(new Order(fifthOrderId, Order.types.movePallet, fifthForkliftId, "P5", vertexIdFifthRoute[0], vertexIdFifthRoute[vertexIdFifthRoute.length - 1], visitTimes[0][4], Order.timeTypes.start, 3));
+        data.addOrder(new Order(sixthOrderId, Order.types.movePallet, sixthForkliftId, "P6", vertexIdSixthRoute[0], vertexIdSixthRoute[vertexIdSixthRoute.length - 1], visitTimes[0][5], Order.timeTypes.start, 3));
+        data.addOrder(new Order(seventhOrderId, Order.types.movePallet, seventhForkliftId, "P7", vertexIdSeventhRoute[0], vertexIdSeventhRoute[vertexIdSeventhRoute.length - 1], visitTimes[0][6], Order.timeTypes.start, 3));
 
-        context("Test for one scheduleItem at each vertex in the route", () => {
+        context("movePallet: Test for one scheduleItem at each vertex in the route", () => {
             // give routeScheduler access to the data (it needs access to Orders[])
             let firstOrder = routeScheduler.data.orders[firstOrderId];
             firstOrder.time = visitTimes[0][0];
@@ -130,7 +143,6 @@ describe("Test handleLockOrder", () => {
             it(`Should be ${expectedRoute}`, () => {
                 expect(resultingRoute).eql(expectedRoute);
             });
-
 
             // check that the route given by vertexIdFirstRoute is saved to the graph in data.warehouse.graph
             for (let i = 0; i < vertexIdFirstRoute.length; i++) {
@@ -159,7 +171,7 @@ describe("Test handleLockOrder", () => {
 
         });
 
-        context("Test getRoute when there are multiple scheduleItems at a vertex in the route", () => {
+        context("movePallet order: Test getRoute when there are multiple scheduleItems at a vertex in the route", () => {
             let fifthOrder = routeScheduler.data.orders[fifthOrderId];
             fifthOrder.time = visitTimes[4][0];
             routeScheduler.data = data;
@@ -180,6 +192,27 @@ describe("Test handleLockOrder", () => {
             });
         });
 
+        context("movePallet order: Test getRoute when vertices are visited more than once", () => {
+            let seventhOrder = routeScheduler.data.orders[seventhOrderId];
+
+            seventhOrder.time = visitTimes[6][0];
+            routeScheduler.data = data;
+
+            let resultingRoute = routeScheduler.handleLockOrder(seventhOrderId);
+
+            let expectedRoute = createMovePalletRoute(routeScheduler, seventhOrder, vertexIdSeventhRoute, "RO7", seventhForkliftId, visitTimes[6]);
+
+            let expectedLength = expectedRoute.instructions.length;
+            let resultingLength = resultingRoute.instructions.length;
+
+            it(`Should be ${expectedLength}`, () => {
+                expect(resultingLength).to.equal(expectedLength);
+            });
+
+            it(`Should be ${expectedRoute}`, () => {
+                expect(resultingRoute).eql(expectedRoute);
+            });
+        });
 
         // describe("Test getRoute for moveForklift order when there is one scheduleItem at each vertex", () => {
         //     /// TO DO
@@ -297,3 +330,27 @@ function createMovePalletRoute(routeScheduler: RouteScheduler, order: Order, ver
 }
 
 
+function printScheduleItem(routeSet: RouteSet, verticeIdList: string[], visitTimeArray: number[]): void {
+    for (let i = 0; i < verticeIdList.length; i++) {
+        console.log("Index:", i);
+        let vertex = routeSet.graph.vertices[verticeIdList[i]];
+        let scheduleItem = getScheduleItem(vertex, visitTimeArray[i]);
+        console.log(scheduleItem.currentVertexId);
+        console.log("      ", scheduleItem.forkliftId);
+        console.log("      ", scheduleItem.arrivalTimeCurrentVertex);
+
+        if (scheduleItem.previousScheduleItem !== null) {
+            console.log("      prev:", scheduleItem.previousScheduleItem.currentVertexId);
+        } else {
+            console.log("      prev:", scheduleItem.previousScheduleItem);
+        }
+
+        if (scheduleItem.nextScheduleItem !== null) {
+            console.log("      next:", scheduleItem.nextScheduleItem.currentVertexId);
+        } else {
+            console.log("      next:", scheduleItem.nextScheduleItem);
+        }
+        console.log("\n");
+    }
+
+}
