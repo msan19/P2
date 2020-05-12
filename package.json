@@ -37,7 +37,7 @@
         "test-data": "mocha --require ts-node/register test/planningScheduler/**/testDataContainer.ts",
         "test-graph": "mocha --require ts-node/register test/planningScheduler/**/testGraph.ts",
         "test-warehouse": "mocha --require ts-node/register test/planningScheduler/**/warehouse.ts",
-        "test-order": "mocha --require ts-node/register test/planningScheduler/**/testOrder.ts",
+        "test-order": "mocha --require ts-node/register test/planningScheduler/**/order.ts",
         "test-Astar": "mocha --require ts-node/register test/planningScheduler/**/testAstar.ts",
         "test-route": "mocha --require ts-node/register test/planningScheduler/**/testGetRoute.ts"
     },

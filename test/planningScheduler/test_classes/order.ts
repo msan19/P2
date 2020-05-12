@@ -43,7 +43,7 @@ describe(`Order parse`, () => {
     });
 
     context(`when order is valid, forklift is invalid and vertices are valid`, () => {
-        let testObject = new Order_Shared("1", Order.types.movePallet, "NOT_A_FORKLIFT", "P2", "N1-8", "N1-9", 100, Order.timeTypes.start, 0);
+        let testObject = new Order_Shared("1", Order.types.moveForklift, "NOT_A_FORKLIFT", "P2", "N1-8", "N1-9", 100, Order.timeTypes.start, 0);
         let resultingOrder = Order.parse(testObject, data);
         let expectedOrder = null;
         it(`should not be parsed as an order`, () => {
@@ -63,7 +63,6 @@ describe(`Order parse`, () => {
 
 describe(`Order delayStartTime`, () => {
     context(`when counter is 0 and delayMax is 1`, () => {
-        let delayCounter = 0;
         let baseDelayTime = 100;
         let originalOrder = new Order("1", Order.types.movePallet, "F2", "P2", "N1-8", "N1-9", 100, Order.timeTypes.start, 1);
         let newTime = originalOrder.time + 100;     // 100 from formula, where i is delayCounter: newTime = originalTime + baseDelayTime * 2 ** i
