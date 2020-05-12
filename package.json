@@ -27,7 +27,7 @@
         "ts-node": "^8.10.1",
         "typedoc": "^0.17.4",
         "typescript": "^3.8.3",
-        "ws": "^7.2.5"
+        "ws": "^7.3.0"
     },
     "scripts": {
         "install": "npm i node typescript ts-node mocha chai @types/node @types/chai @types/mocha ws @types/ws --save-dev",
