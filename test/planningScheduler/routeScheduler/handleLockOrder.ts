@@ -3,7 +3,6 @@
  * @packageDocumentation
  * @category Test
  */
-
 import { expect } from 'chai';
 import 'mocha';
 
@@ -82,35 +81,28 @@ describe("Test getRoute for moveForklift order type, i.e. test of createMoveInst
     routeScheduler.bestRouteSet = new RouteSet(["O3"], bestRouteSetgraph);
     routeScheduler.bestRouteSet.duration = [4000];
 
-    let order = new Order("O3", Order.types.movePallet, "F3", "P3", "N5-1", "N5-5", 30000, Order.timeTypes.start, 3);
+    let order = new Order("O3", Order.types.moveForklift, "F3", "P3", "N5-1", "N5-5", 30000, Order.timeTypes.start, 3);
     routeScheduler.data.addOrder(order);
 
     setVisitTimes(routeScheduler.bestRouteSet.graph, vertexIds, visitTimes);
     createScheduleItems(routeScheduler.bestRouteSet, vertexIds, "F3", visitTimes);
 
     let resultingRoute = routeScheduler.handleLockOrder("O3");
-    let expectedRoute = createMovePalletRoute(routeScheduler, order, vertexIds, "RO3", "F3", visitTimes);
+    let expectedRoute = createMoveForkliftRoute(routeScheduler, order, vertexIds, "RO3", "F3", visitTimes);
     it(`Should be ${expectedRoute}`, () => {
         expect(resultingRoute).eql(expectedRoute);
     });
 });
 
 
+
+/* Auxiliary functions */
 function setVisitTimes(graph: Graph, vertexIds: string[], visitTimes: number[]) {
     for (let i = 0; i < visitTimes.length; i++) {
         graph.vertices[vertexIds[i]].visitTime = visitTimes[i];
     }
 }
 
-/**
- * 
- * @note The route is added the the firs element in scheduleItems[]. This means that there are
- * not multiple routes in the same scheduleItems-list
- * @param routeSet List of verticeId's
- * @param verticeList 
- * @param forkliftId
- * @param startTime 
- */
 function createScheduleItems(routeSet: RouteSet, verticeIdList: string[], forkliftId: string, visitTimeArray: number[]): void {
     // create current scheduleItem
     let startTime = visitTimeArray[0];
@@ -120,9 +112,7 @@ function createScheduleItems(routeSet: RouteSet, verticeIdList: string[], forkli
         let index = getScheduleItemIndex(currentVertex.scheduleItems, visitTimeArray[i]);
         currentVertex.scheduleItems[index] = scheduleItem;
     }
-
     linkScheduleItems(routeSet, verticeIdList, visitTimeArray);
-
 }
 
 function linkScheduleItems(routeSet: RouteSet, verticeIdList: string[], visitTimeArray: number[]): void {
@@ -221,28 +211,4 @@ function createMoveForkliftRoute(routeScheduler: RouteScheduler, order: Order, v
     }
 
     return new Route(routeId, order.palletId, forkliftId, order.id, 1, instructions);
-}
-
-function printScheduleItem(routeSet: RouteSet, verticeIdList: string[], visitTimeArray: number[]): void {
-    for (let i = 0; i < verticeIdList.length; i++) {
-        console.log("Index:", i);
-        let vertex = routeSet.graph.vertices[verticeIdList[i]];
-        let scheduleItem = getScheduleItem(vertex, visitTimeArray[i]);
-        console.log(scheduleItem.currentVertexId);
-        console.log("      ", scheduleItem.forkliftId);
-        console.log("      ", scheduleItem.arrivalTimeCurrentVertex);
-
-        if (scheduleItem.previousScheduleItem !== null) {
-            console.log("      prev:", scheduleItem.previousScheduleItem.currentVertexId);
-        } else {
-            console.log("      prev:", scheduleItem.previousScheduleItem);
-        }
-
-        if (scheduleItem.nextScheduleItem !== null) {
-            console.log("      next:", scheduleItem.nextScheduleItem.currentVertexId);
-        } else {
-            console.log("      next:", scheduleItem.nextScheduleItem);
-        }
-        console.log("\n");
-    }
 }
