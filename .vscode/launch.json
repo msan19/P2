@@ -95,7 +95,7 @@
                 "ts-node/register",
                 "--reporter",
                 "dot",
-                "\"${workspaceFolder}/test/**/*.ts\"",
+                "${workspaceFolder}/test/**/*.ts",
                 "--recursive"
             ],
             "console": "integratedTerminal",
