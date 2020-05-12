@@ -120,19 +120,19 @@ describe("Test handleLockOrder", () => {
             data.addOrder(new Order(fifthOrderId, Order.types.movePallet, fifthForkliftId, "P5", vertexIdFifthRoute[0], vertexIdFifthRoute[vertexIdFifthRoute.length - 1], visitTimes[0][4], Order.timeTypes.start, 3));
             data.addOrder(new Order(sixthOrderId, Order.types.movePallet, sixthForkliftId, "P6", vertexIdSixthRoute[0], vertexIdSixthRoute[vertexIdSixthRoute.length - 1], visitTimes[0][5], Order.timeTypes.start, 3));
             data.addOrder(new Order(seventhOrderId, Order.types.movePallet, seventhForkliftId, "P7", vertexIdSeventhRoute[0], vertexIdSeventhRoute[vertexIdSeventhRoute.length - 1], visitTimes[0][6], Order.timeTypes.start, 3));
+            routeScheduler.data = data;
 
             context("Test for one scheduleItem at each vertex in the route", () => {
                 // give routeScheduler access to the data (it needs access to Orders[])
                 let firstOrder = routeScheduler.data.orders[firstOrderId];
                 firstOrder.time = visitTimes[0][0];
-                routeScheduler.data = data;
 
                 let resultingRoute = routeScheduler.handleLockOrder(firstOrderId);
 
                 let expectedRoute = createMovePalletRoute(routeScheduler, firstOrder, vertexIdFirstRoute, "RO1", firstForkliftId, visitTimes[0]);
 
                 let expectedLength = expectedRoute.instructions.length;
-                let resultingLength = resultingRoute.instructions.length + 1;
+                let resultingLength = resultingRoute.instructions.length;
 
                 it(`Should be ${expectedLength}`, () => {
                     expect(resultingLength).to.equal(expectedLength);
@@ -172,7 +172,6 @@ describe("Test handleLockOrder", () => {
             context("Test getRoute when there are multiple scheduleItems at a vertex in the route", () => {
                 let fifthOrder = routeScheduler.data.orders[fifthOrderId];
                 fifthOrder.time = visitTimes[4][0];
-                routeScheduler.data = data;
 
                 let resultingRoute = routeScheduler.handleLockOrder(fifthOrderId);
 
@@ -194,7 +193,6 @@ describe("Test handleLockOrder", () => {
                 let seventhOrder = routeScheduler.data.orders[seventhOrderId];
 
                 seventhOrder.time = visitTimes[6][0];
-                routeScheduler.data = data;
 
                 let resultingRoute = routeScheduler.handleLockOrder(seventhOrderId);
 
@@ -215,6 +213,7 @@ describe("Test handleLockOrder", () => {
 
         // createMoveInstructions for order.type.moveForklift
         context("Order type: moveForklift", () => {
+
             data.addOrder(new Order(firstOrderId, Order.types.moveForklift, firstForkliftId, "P1", vertexIdFirstRoute[0], vertexIdFirstRoute[vertexIdFirstRoute.length - 1], visitTimes[0][0], Order.timeTypes.start, 3));
             data.addOrder(new Order(secondOrderId, Order.types.moveForklift, secondForkliftId, "P2", vertexIdSecondRoute[0], vertexIdSecondRoute[vertexIdSecondRoute.length - 1], visitTimes[0][1], Order.timeTypes.start, 3));
             data.addOrder(new Order(thirdOrderId, Order.types.moveForklift, thirdForkliftId, "P3", vertexIdThirdRoute[0], vertexIdThirdRoute[vertexIdThirdRoute.length - 1], visitTimes[0][2], Order.timeTypes.start, 3));
@@ -222,10 +221,10 @@ describe("Test handleLockOrder", () => {
             data.addOrder(new Order(fifthOrderId, Order.types.moveForklift, fifthForkliftId, "P5", vertexIdFifthRoute[0], vertexIdFifthRoute[vertexIdFifthRoute.length - 1], visitTimes[0][4], Order.timeTypes.start, 3));
             data.addOrder(new Order(sixthOrderId, Order.types.moveForklift, sixthForkliftId, "P6", vertexIdSixthRoute[0], vertexIdSixthRoute[vertexIdSixthRoute.length - 1], visitTimes[0][5], Order.timeTypes.start, 3));
             data.addOrder(new Order(seventhOrderId, Order.types.moveForklift, seventhForkliftId, "P7", vertexIdSeventhRoute[0], vertexIdSeventhRoute[vertexIdSeventhRoute.length - 1], visitTimes[0][6], Order.timeTypes.start, 3));
+            routeScheduler.data = data;
 
             context("Test for one scheduleItem at each vertex in the route", () => {
                 // give routeScheduler access to the data (it needs access to Orders[])
-                routeScheduler.data = data;
                 let firstOrder = routeScheduler.data.orders[firstOrderId];
                 firstOrder.time = visitTimes[0][0];
 
