@@ -81,8 +81,8 @@ describe(`Test of A* algorithm`, () => {
         vertex2.scheduleItems.push(new ScheduleItem("F1", 70400, vertex2.id));
 
         // Link shit
-        vertex1.scheduleItems[0].linkNext(vertex2.scheduleItems[1]);
-        vertex1.scheduleItems[1].linkNext(vertex2.scheduleItems[2]);
+        vertex1.scheduleItems[0].setNext(vertex2.scheduleItems[1]);
+        vertex1.scheduleItems[1].setNext(vertex2.scheduleItems[2]);
 
         // Test the shit
         let results: number[] = [];

@@ -291,7 +291,7 @@ export class RouteScheduler {
                         this.insertScheduleItemsArray(routeSet, moveForkliftScheduleItems);
                         this.upStacking(routeSet.graph.vertices[order.endVertexId], order.startVertexId, forkliftId, null);
                         let scheduleItemOfStartVertex = routeSet.graph.vertices[order.startVertexId].getScheduleItem(order.time);
-                        scheduleItemOfStartVertex.linkPrevious(moveForkliftScheduleItems[0]);
+                        scheduleItemOfStartVertex.setPrevious(moveForkliftScheduleItems[0]);
                     } else {
                         let startVertexId = routeSet.graph.idlePositions[order.forkliftId].currentVertexId;
                         this.upStacking(routeSet.graph.vertices[order.endVertexId], startVertexId, forkliftId, null);
@@ -686,7 +686,7 @@ export class RouteScheduler {
      */
     upStacking(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null): void {
         let i = vertex.insertScheduleItem(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
-        if (nextItem !== null) nextItem.linkPrevious(vertex.scheduleItems[i]);
+        if (nextItem !== null) nextItem.setPrevious(vertex.scheduleItems[i]);
         if (vertex.id !== startVertexId) {
             this.upStacking(vertex.previousVertex, startVertexId, forkliftId, vertex.scheduleItems[i]);
         }
@@ -702,7 +702,7 @@ export class RouteScheduler {
      */
     upStackingToArray(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null, outputArray: ScheduleItem[]): void {
         outputArray.push(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
-        if (nextItem !== null) nextItem.linkPrevious(outputArray[outputArray.length - 1]);
+        if (nextItem !== null) nextItem.setPrevious(outputArray[outputArray.length - 1]);
         if (vertex.id !== startVertexId) {
             this.upStackingToArray(vertex.previousVertex, startVertexId, forkliftId, outputArray[outputArray.length - 1], outputArray);
         }
