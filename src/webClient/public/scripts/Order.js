@@ -54,9 +54,24 @@ class Order {
         delete orders[this.orderId];
     }
 
+    static createOrderElement(elementOrderId) {
+        let element = document.createElement("option");
+        element.value = elementOrderId;
+        element.innerHTML = elementOrderId;
+        return element;
+    }
+
     addOrderToUi() {
+        let newOrderElement = Order.createOrderElement(this.orderId);
         document.querySelectorAll(".select-order").forEach((e) => {
-            e.innerHTML += `<option value=${this.orderId}>${this.orderId}</option>`;
+            e.appendChild(newOrderElement);
+        });
+    }
+
+    static addEmptyOrderToUi() {
+        let newOrderElement = Order.createOrderElement("");
+        document.querySelectorAll(".select-order").forEach((e) => {
+            e.appendChild(newOrderElement);
         });
     }
 

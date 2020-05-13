@@ -7,17 +7,23 @@ class UiManager {
         // add blank forklift to select forklfit
         let routeList = document.querySelector("#route-list");
         routeList.innerHTML = `<option value=${""}>${""}</option>`;
-        routeList.onclick = (e) => UiManager.chooseRoute(e.target.innerHTML);
+        routeList.onchange = function (e) {
+            UiManager.chooseRoute(e.target.selectedOptions[0].innerHTML)
+        }
         let forkliftList = document.querySelector("#forklift-list");
         forkliftList.innerHTML = `<option value=${""}>${""}</option>`;
-        forkliftList.onclick = (e) => UiManager.chooseForklift(e.target.innerHTML);
-        let orderList = document.querySelector("#order-list");
-        orderList.innerHTML = `<option value=${""}>${""}</option>`;
-        orderList.onclick = (e) => UiManager.chooseOrder(e.target.innerHTML);
+        forkliftList.onchange = function (e) {
+            UiManager.chooseForklift(e.target.selectedOptions[0].innerHTML)
+        }
+        document.querySelector("#order-list").onchange = function (e) {
+            UiManager.chooseOrder(e.target.selectedOptions[0].innerHTML)
+        }
+        Order.addEmptyOrderToUi();
         document.querySelector("#openAddOrderMenu").onclick = (e) => UiManager.addRandomOrderId(e);
         document.querySelector("#addOrderSubmit").onclick = () => $(function () {
             $('#modal-add-order').modal('hide');
         });
+
 
     }
 
@@ -209,6 +215,7 @@ class UiManager {
     }
 
     static chooseOrder(orderId) {
+        console.log(orderId)
         if (orderId == "") {
             document.querySelectorAll(".select-order").forEach((e) => {
                 this.resetOrderInformationOnUi();
