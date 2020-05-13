@@ -16,51 +16,50 @@ import { Order } from '../../../src/planningScheduler/classes/order';
 import { Warehouse } from '../../../src/planningScheduler/classes/warehouse';
 
 describe("Test getRoute for movePallet order type, i.e. test of createMovePalletInstructions", () => {
-    let vertexIds = ["N0-1", "N0-2", "N0-3", "N0-4", "N0-5", "N0-6", "N0-7"];
-    let visitTimes = [30000, 31000, 32000, 33000, 34000, 35000, 36000];
-
-    let data: DataContainer = new DataContainer();
-    data.warehouse = new Warehouse(Graph.parse(createGraph()), 15);;
-    let routeScheduler = new RouteScheduler(data);
-
     let bestRouteSetgraph = Graph.parse(createGraph());
-    routeScheduler.bestRouteSet = new RouteSet(["O1"], bestRouteSetgraph);
-    routeScheduler.bestRouteSet.duration = [6000];
-
-    let order = new Order("O1", Order.types.movePallet, "F1", "P1", "N0-1", "N0-7", 30000, Order.timeTypes.start, 3);
-    routeScheduler.data.addOrder(order);
-
-    setVisitTimes(routeScheduler.bestRouteSet.graph, vertexIds, visitTimes);
-    createScheduleItems(routeScheduler.bestRouteSet, vertexIds, "F1", visitTimes);
 
     context("when all vertices in route are unique", () => {
+        let vertexIds = ["N0-1", "N0-2", "N0-3", "N0-4", "N0-5", "N0-6", "N0-7"];
+        let visitTimes = [30000, 31000, 32000, 33000, 34000, 35000, 36000];
+
+        let data: DataContainer = new DataContainer();
+        data.warehouse = new Warehouse(Graph.parse(createGraph()), 15);;
+        let routeScheduler = new RouteScheduler(data);
+
+
+        routeScheduler.bestRouteSet = new RouteSet(["O1"], bestRouteSetgraph);
+        routeScheduler.bestRouteSet.duration = [6000];
+
+        let order = new Order("O1", Order.types.movePallet, "F1", "P1", "N0-1", "N0-7", 30000, Order.timeTypes.start, 3);
+        routeScheduler.data.addOrder(order);
+
+        setVisitTimes(routeScheduler.bestRouteSet.graph, vertexIds, visitTimes);
+        createScheduleItems(routeScheduler.bestRouteSet, vertexIds, "F1", visitTimes);
+
         let resultingRoute = routeScheduler.handleLockOrder("O1");
         let expectedRoute = createMovePalletRoute(routeScheduler, order, vertexIds, "RO1", "F1", visitTimes);
         it(`Should be ${expectedRoute}`, () => {
             expect(resultingRoute).eql(expectedRoute);
         });
     });
-});
-
-describe("Test getRoute for movePallet order type, i.e. test of createMovePalletInstructions_", () => {
-    let vertexIds = ["N5-1", "N5-2", "N5-3", "N5-4", "N5-3"];
-    let visitTimes = [30000, 31000, 32000, 33000, 34000];
-
-    let data: DataContainer = new DataContainer();
-    data.warehouse = new Warehouse(Graph.parse(createGraph()), 15);;
-    let routeScheduler = new RouteScheduler(data);
-
-    let bestRouteSetgraph = Graph.parse(createGraph());
-    routeScheduler.bestRouteSet = new RouteSet(["O2"], bestRouteSetgraph);
-    routeScheduler.bestRouteSet.duration = [4000];
-
-    let order = new Order("O2", Order.types.movePallet, "F2", "P2", "N5-1", "N5-3", 30000, Order.timeTypes.start, 3);
-    routeScheduler.data.addOrder(order);
-
-    setVisitTimes(routeScheduler.bestRouteSet.graph, vertexIds, visitTimes);
-    createScheduleItems(routeScheduler.bestRouteSet, vertexIds, "F2", visitTimes);
 
     context("when route visits same vertex more than once", () => {
+        let vertexIds = ["N5-1", "N5-2", "N5-3", "N5-4", "N5-3"];
+        let visitTimes = [30000, 31000, 32000, 33000, 34000];
+
+        let data: DataContainer = new DataContainer();
+        data.warehouse = new Warehouse(Graph.parse(createGraph()), 15);;
+        let routeScheduler = new RouteScheduler(data);
+
+        routeScheduler.bestRouteSet = new RouteSet(["O2"], bestRouteSetgraph);
+        routeScheduler.bestRouteSet.duration = [4000];
+
+        let order = new Order("O2", Order.types.movePallet, "F2", "P2", "N5-1", "N5-3", 30000, Order.timeTypes.start, 3);
+        routeScheduler.data.addOrder(order);
+
+        setVisitTimes(routeScheduler.bestRouteSet.graph, vertexIds, visitTimes);
+        createScheduleItems(routeScheduler.bestRouteSet, vertexIds, "F2", visitTimes);
+
         let resultingRoute = routeScheduler.handleLockOrder("O2");
         let expectedRoute = createMovePalletRoute(routeScheduler, order, vertexIds, "RO2", "F2", visitTimes);
         it(`Should be ${expectedRoute}`, () => {
