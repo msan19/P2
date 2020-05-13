@@ -11,17 +11,20 @@ import { Warehouse } from "../shared/warehouse";
 import { randomValue, randomIntegerInRange } from "../shared/utilities";
 import { ForkliftInfo } from "../shared/forkliftInfo";
 import { OrderTester } from "./ordersTest";
+import { Route } from "../shared/route";
 
 
 export class OrderSpammer {
     private socket: WebSocket;
     private apiCaller: ApiCaller;
 
+    unfinishedOrders: { [key: string]: Order; } = {};
+    lockedRoutes: { [key: string]: Route; } = {};
     firstTimeOrderCreated: number;
     ordersSentCount: number = 0;
     totalNumberOfTestOrders: number = 10;
     warehouse: Warehouse = null;
-    forkliftIds: { [key: string]: string; };
+    forklifts: { [key: string]: ForkliftInfo; } = {};
     interval: () => number;
 
     /**
@@ -39,14 +42,49 @@ export class OrderSpammer {
         this.firstTimeOrderCreated = (new Date()).getTime();
 
         this.socket.on(WebSocket.packageTypes.forkliftInfos, (forklifts: ForkliftInfo[]) => {
-            this.forkliftIds = {};
             for (let key in forklifts) {
-                this.forkliftIds[forklifts[key].id] = forklifts[key].id;
+                this.forklifts[forklifts[key].id] = forklifts[key];
             }
         });
         this.socket.on(WebSocket.packageTypes.forkliftInfo, (forklift: ForkliftInfo) => {
-            this.forkliftIds[forklift.id] = forklift.id;
+            this.forklifts[forklift.id] = forklift;
         });
+        this.socket.on(WebSocket.packageTypes.order, (order: Order) => {
+            this.saveOrder(order);
+        });
+        this.socket.on(WebSocket.packageTypes.orders, (orders: Order[]) => {
+            for (let orderId in orders) this.saveOrder(orders[orderId]);
+        });
+        this.socket.on(WebSocket.packageTypes.route, (route: Route) => {
+            this.receivedRoute(route);
+        });
+        this.socket.on(WebSocket.packageTypes.routes, (routes: Route[]) => {
+            for (let routeId in routes) this.receivedRoute(routes[routeId]);
+        });
+        this.socket.on(WebSocket.packageTypes.warehouse, (warehouse: Warehouse) => {
+
+            this.warehouse = Warehouse.parse(warehouse);
+        });
+    }
+
+    private saveOrder(order: Order) {
+        if (this.lockedRoutes[order.id]) {
+            return false;
+        } else {
+            this.unfinishedOrders[order.id] = order;
+            return true;
+        }
+    }
+    private sendOrder(order: Order) {
+        if (this.saveOrder(order)) this.apiCaller.sendOrder(order);
+    }
+    private receivedRoute(route: Route) {
+        if (this.unfinishedOrders[route.orderId]) {
+            delete this.unfinishedOrders[route.orderId];
+            this.unfinishedOrders[route.orderId] = undefined;
+            delete this.unfinishedOrders[route.orderId];
+        }
+        this.lockedRoutes[route.orderId] = route;
     }
 
     private iterate() {
@@ -63,24 +101,136 @@ export class OrderSpammer {
         }*/
 
         if (this.warehouse !== null && (this.ordersSentCount) < this.totalNumberOfTestOrders) {
-            this.apiCaller.sendOrder(this.createTestingOrder());
+            this.sendOrder(this.createTestingOrder());
+        } else {
+            if (this.warehouse) {
+                let order = this.createRandomOrder();
+                if (order) this.sendOrder(order);
+            }
         }
 
         setTimeout(() => { this.iterate(); }, this.interval());
     }
 
+    //#region getAvailableForklifts
+    private isForkliftOccupied(forkliftId: string, time: number) {
+        for (let i in this.unfinishedOrders) {
+            let order = this.unfinishedOrders[i];
+            if (order.forkliftId && order.forkliftId === forkliftId) {
+                return true;
+            }
+        }
+        for (let i in this.lockedRoutes) {
+            let route = this.lockedRoutes[i];
+            if (route.forkliftId && route.forkliftId === forkliftId) { // If same forklift
+                let instructions = route.instructions;
+                if ((instructions[0].startTime < time) && (instructions[instructions.length - 1].startTime > time)) {
+                    // If time is within timespan of route
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private getAvailableForkliftIds(time: number) {
+        let output = [];
+        for (let id in this.forklifts) {
+            if (!this.isForkliftOccupied(id, time)) {
+                output.push(id);
+            }
+        }
+        return output;
+    }
+    //#endregion
+
+    //#region getAvailableVertices 
+    private isVertexOccupied(vertexId: string, time: number) {
+        for (let i in this.unfinishedOrders) {
+            let order = this.unfinishedOrders[i];
+            if (order.endVertexId && order.endVertexId === vertexId) {
+                return true;
+            }
+        }
+
+        for (let i in this.lockedRoutes) {
+            let route = this.lockedRoutes[i];
+            let lastInstruction = route.instructions[route.instructions.length - 1];
+
+            if ((lastInstruction.vertexId === vertexId) && lastInstruction.startTime > time) {
+                // If same endVertex
+                return true;
+            }
+        }
+
+        for (let i in this.forklifts) {
+            if (this.warehouse.graph.vertices[vertexId].position.getDistanceTo(this.forklifts[i].position) < 1)
+                return true;
+        }
+
+        return false;
+    }
+    private getAvailableVertexIds(time: number) {
+        let output = [];
+        for (let id in this.warehouse.graph.vertices) {
+            if (!this.isVertexOccupied(id, time)) {
+                output.push(id);
+            }
+        }
+        return output;
+    }
+    //#endregion
+
     createRandomOrder() {
-        let order = new Order(
-            `${this.ordersSentCount}`,
-            randomValue([Order.types.moveForklift]),
-            randomValue(this.forkliftIds),
-            `pallet-${this.ordersSentCount}`,
-            randomValue(this.warehouse.graph.vertices).id,
-            randomValue(this.warehouse.graph.vertices).id,
-            (new Date()).getTime() + randomIntegerInRange(20000, 21000),
-            Order.timeTypes.start,
-            3);
+        let type = randomValue(Order.types);
+        let now = (new Date()).getTime();
+        let startTime = now + randomIntegerInRange(20000, 30000);
+        let availableForkliftIds = this.getAvailableForkliftIds(startTime);
+        let availableVertexIds = this.getAvailableVertexIds(startTime);
+
+        if (availableForkliftIds.length < 1) return;
+        if (availableVertexIds.length < 2) return;
+
         this.ordersSentCount++;
+
+        let order: Order;
+        switch (type) {
+            case Order.types.charge:
+                order = new Order(
+                    `O${this.ordersSentCount}`,
+                    type,
+                    randomValue(availableForkliftIds),
+                    undefined,
+                    undefined,
+                    randomValue(availableVertexIds),
+                    startTime,
+                    Order.timeTypes.start,
+                    3);
+                break;
+            case Order.types.moveForklift:
+                order = new Order(
+                    `O${this.ordersSentCount}`,
+                    type,
+                    randomValue(availableForkliftIds),
+                    undefined,
+                    undefined,
+                    randomValue(availableVertexIds),
+                    startTime,
+                    Order.timeTypes.start,
+                    3);
+                break;
+            case Order.types.movePallet:
+                order = new Order(
+                    `O${this.ordersSentCount}`,
+                    type,
+                    undefined,
+                    `P${this.ordersSentCount}`,
+                    randomValue(availableVertexIds),
+                    randomValue(availableVertexIds),
+                    startTime,
+                    Order.timeTypes.start,
+                    3);
+                break;
+        }
         return order;
     }
 
