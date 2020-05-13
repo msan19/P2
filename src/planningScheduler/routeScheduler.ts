@@ -351,22 +351,10 @@ export class RouteScheduler {
      * The new array is sorted by the least efficient routes first
      */
     mutate(): void {
-        let values = [];
         let mutations: { index: number, newIndex: number, value: number; }[] = [];
 
         // Determine values for all routes in bestRouteSet
-        for (let i = 0; i < this.bestRouteSet.duration.length; i++) {
-            let order = this.data.orders[this.bestRouteSet.priorities[i]];
-            if (order.type === Order.types.movePallet) {
-                let startVertex = this.data.warehouse.graph.vertices[order.startVertexId];
-                let endVertex = this.data.warehouse.graph.vertices[order.endVertexId];
-                values.push(startVertex.getDistanceDirect(endVertex) / this.bestRouteSet.duration[i]);
-            } else if (order.type === Order.types.moveForklift) {
-                values.push(this.moveForkliftConstant);
-            } else if (order.type === Order.types.charge) {
-                values.push(this.chargeConstant);
-            }
-        }
+        let values = this.getRouteAppraisals();
 
         // Create an array of mutated entries for problematic values (values < ?)
         for (let i = 0; i < values.length; i++) {
@@ -391,6 +379,30 @@ export class RouteScheduler {
 
         this.mutations = mutations;
         this.mutationCounter = 0;
+    }
+
+    /**
+     * Appraises each route in the current best route-set.
+     * movePallet is appraised by 
+     * @returns An array of estimates for how good each route is
+     */
+    getRouteAppraisals() {
+        return this.bestRouteSet.priorities.map((priority, index) => {
+            let order = this.data.orders[priority];
+            let duration = this.bestRouteSet.duration[index];
+            switch (order.type) {
+                case Order.types.movePallet:
+                    let startVertex = this.data.warehouse.graph.vertices[order.startVertexId];
+                    let endVertex = this.data.warehouse.graph.vertices[order.endVertexId];
+                    return startVertex.getDistanceDirect(endVertex) / duration;
+                case Order.types.moveForklift:
+                    return this.moveForkliftConstant;
+                case Order.types.charge:
+                    return this.chargeConstant;
+                default:
+                    throw `unhandled order-type ${order.type}`;
+            }
+        });
     }
 
     /**
