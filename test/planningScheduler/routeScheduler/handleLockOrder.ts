@@ -3,7 +3,6 @@
  * @packageDocumentation
  * @category Test
  */
-
 import { expect } from 'chai';
 import 'mocha';
 
@@ -16,191 +15,93 @@ import { Graph, Vertex, ScheduleItem } from '../../../src/planningScheduler/clas
 import { Order } from '../../../src/planningScheduler/classes/order';
 import { Warehouse } from '../../../src/planningScheduler/classes/warehouse';
 
-describe("Test handleLockOrder", () => {
-    describe("Test getRoute for movePallet order", () => {
+describe("Test getRoute for movePallet order type, i.e. test of createMovePalletInstructions", () => {
+    let bestRouteSetgraph = Graph.parse(createGraph());
+
+    context("when all vertices in route are unique", () => {
+        let vertexIds = ["N0-1", "N0-2", "N0-3", "N0-4", "N0-5", "N0-6", "N0-7"];
+        let visitTimes = [30000, 31000, 32000, 33000, 34000, 35000, 36000];
+
         let data: DataContainer = new DataContainer();
-        let warehouseGraph: Graph = Graph.parse(createGraph());
-        let warehouse = new Warehouse(warehouseGraph, 15);
-        data.warehouse = warehouse;
-
+        data.warehouse = new Warehouse(Graph.parse(createGraph()), 15);;
         let routeScheduler = new RouteScheduler(data);
-        let bestRouteSetgraph = Graph.parse(createGraph());
-
-        let firstOrderId = "O1";
-        let secondOrderId = "O2";
-        let thirdOrderId = "O3";
-        let fourthOrderId = "O4";
-        let fifthOrderId = "O5";
-        let sixthOrderId = "O6";
-        let routePriorities = [firstOrderId, secondOrderId, thirdOrderId,
-            fourthOrderId, fifthOrderId, sixthOrderId];
-
-        routeScheduler.bestRouteSet = new RouteSet(routePriorities, bestRouteSetgraph);
-
-        let firstForkliftId = "F1";
-        let secondForkliftId = "F2";
-        let thirdForkliftId = "F3";
-        let fourthForkliftId = "F4";
-        let fifthForkliftId = "F5";
-        let sixthForkliftId = "F6";
-
-        // no overlapping routes
-        let vertexIdFirstRoute = [
-            "N0-0", "N0-1", "N0-2", "N0-3", "N0-4",
-            "N0-5", "N0-6", "N0-7", "N0-8", "N0-9",
-            "N1-9", "N1-8", "N1-7"
-        ];
-        let vertexIdSecondRoute = [
-            "N2-7", "N2-8", "N2-9", "N3-9", "N4-9",
-            "N4-8"
-        ];
-        let vertexIdThirdRoute = [
-            "N4-3", "N4-2", "N4-1", "N4-0", "N5-0",
-            "N6-0", "N7-0", "N7-1", "N7-2"
-        ];
-
-        // overlapping routes
-        let vertexIdFourthRoute = [
-            "N8-7", "N8-8", "N8-9", "N9-9", "N9-8",
-            "N9-7", "N9-6", "N9-5", "N0-4"
-        ];
-        let vertexIdFifthRoute = [
-            "N7-9", "N8-9", "N9-9", "N8-9", "N7-9",
-            "N6-9", "N5-9", "N4-9", "N3-9", "N2-9"
-        ];
-        let vertexIdSixthRoute = [
-            "N8-2", "N8-1", "N8-0", "N9-0", "N9-1",
-            "N9-2", "N9-3", "N9-4", "N9-5", "N9-6",
-            "N9-7"
-        ];
-
-        let vertexIds = [vertexIdFirstRoute, vertexIdSecondRoute, vertexIdThirdRoute,
-            vertexIdFourthRoute, vertexIdFifthRoute, vertexIdSixthRoute];
-
-        // create array of visitTimes
-        let defaultStartTime = 30000;
-        let visitTimes = []; // two-dimensional array
-        for (let i = 0; i < routePriorities.length; i++) {
-            let newTimeStamps: number[] = [];
-            if (i === vertexIds[i].length - 1) defaultStartTime = 40000;
-            for (let j = 0; j < vertexIds[i].length; j++) {
-                newTimeStamps[j] = defaultStartTime + (j * 100);
-            }
-            visitTimes.push(newTimeStamps);
-        }
-
-        let duration = [];
-        for (let i = 0; i < visitTimes.length; i++) {
-            duration.push(getDuration(visitTimes[i]));
-        }
-        routeScheduler.bestRouteSet.duration = duration;
-
-        createScheduleItems(routeScheduler.bestRouteSet, vertexIdFirstRoute, firstForkliftId, visitTimes[0]);
-        createScheduleItems(routeScheduler.bestRouteSet, vertexIdSecondRoute, secondForkliftId, visitTimes[1]);
-        createScheduleItems(routeScheduler.bestRouteSet, vertexIdThirdRoute, thirdForkliftId, visitTimes[2]);
-        createScheduleItems(routeScheduler.bestRouteSet, vertexIdFourthRoute, fourthForkliftId, visitTimes[3]);
-        createScheduleItems(routeScheduler.bestRouteSet, vertexIdFifthRoute, fifthForkliftId, visitTimes[4]);
-        createScheduleItems(routeScheduler.bestRouteSet, vertexIdSixthRoute, sixthForkliftId, visitTimes[5]);
-
-        // create movePallet orders
-        data.addOrder(new Order(firstOrderId, Order.types.movePallet, firstForkliftId, "P1", vertexIdFirstRoute[0], vertexIdFirstRoute[vertexIdFirstRoute.length - 1], visitTimes[0][0], Order.timeTypes.start, 3));
-        data.addOrder(new Order(secondOrderId, Order.types.movePallet, secondForkliftId, "P2", vertexIdSecondRoute[0], vertexIdSecondRoute[vertexIdSecondRoute.length - 1], visitTimes[0][1], Order.timeTypes.start, 3));
-        data.addOrder(new Order(thirdOrderId, Order.types.movePallet, thirdForkliftId, "P3", vertexIdThirdRoute[0], vertexIdThirdRoute[vertexIdThirdRoute.length - 1], visitTimes[0][2], Order.timeTypes.start, 3));
-        data.addOrder(new Order(fourthOrderId, Order.types.movePallet, fourthForkliftId, "P3", vertexIdFourthRoute[0], vertexIdFourthRoute[vertexIdFourthRoute.length - 1], visitTimes[0][3], Order.timeTypes.start, 3));
-        data.addOrder(new Order(fifthOrderId, Order.types.movePallet, fifthForkliftId, "P3", vertexIdFifthRoute[0], vertexIdFifthRoute[vertexIdFifthRoute.length - 1], visitTimes[0][4], Order.timeTypes.start, 3));
-        data.addOrder(new Order(sixthOrderId, Order.types.movePallet, sixthForkliftId, "P3", vertexIdSixthRoute[0], vertexIdSixthRoute[vertexIdSixthRoute.length - 1], visitTimes[0][5], Order.timeTypes.start, 3));
-
-        context("Test for one scheduleItem at each vertex in the route", () => {
-            // give routeScheduler access to the data (it needs access to Orders[])
-            let firstOrder = routeScheduler.data.orders[firstOrderId];
-            firstOrder.time = visitTimes[0][0];
-            routeScheduler.data = data;
-
-            let resultingRoute = routeScheduler.handleLockOrder(firstOrderId);
-
-            let expectedRoute = createMovePalletRoute(routeScheduler, firstOrder, vertexIdFirstRoute, "RO1", firstForkliftId, visitTimes[0]);
-
-            let expectedLength = expectedRoute.instructions.length;
-            let resultingLength = resultingRoute.instructions.length;
-
-            it(`Should be ${expectedLength}`, () => {
-                expect(resultingLength).to.equal(expectedLength);
-            });
-
-            it(`Should be ${expectedRoute}`, () => {
-                expect(resultingRoute).eql(expectedRoute);
-            });
 
 
-            // check that the route given by vertexIdFirstRoute is saved to the graph in data.warehouse.graph
-            for (let i = 0; i < vertexIdFirstRoute.length; i++) {
-                let bestRouteVertex = routeScheduler.bestRouteSet.graph.vertices[vertexIdFirstRoute[i]];
-                let warehouseVertex = data.warehouse.graph.vertices[vertexIdFirstRoute[i]];
+        routeScheduler.bestRouteSet = new RouteSet(["O1"], bestRouteSetgraph);
+        routeScheduler.bestRouteSet.duration = [6000];
 
-                let routeSchedulteItem = bestRouteVertex.scheduleItems[0];
-                let warehouseScheduleItem = warehouseVertex.scheduleItems[0];
+        let order = new Order("O1", Order.types.movePallet, "F1", "P1", "N0-1", "N0-7", 30000, Order.timeTypes.start, 3);
+        routeScheduler.data.addOrder(order);
 
-                it(`${warehouseScheduleItem} should be equal to ${routeSchedulteItem}`, () => {
-                    expect(warehouseScheduleItem).eql(routeSchedulteItem);
-                });
-            }
+        setVisitTimes(routeScheduler.bestRouteSet.graph, vertexIds, visitTimes);
+        createScheduleItems(routeScheduler.bestRouteSet, vertexIds, "F1", visitTimes);
 
-            // check scheduleItem of vertex that is not in vertexIdFirstRoute
-            let warehouseVertex = data.warehouse.graph.vertices["N1-6"];
-            it(`${warehouseVertex.scheduleItems.length} should be 0`, () => {
-                expect(warehouseVertex.scheduleItems.length).to.equal(0);
-            });
-
-            // check another scheduleItem of vertex that is not in vertexIdFirstRoute
-            warehouseVertex = data.warehouse.graph.vertices[vertexIdThirdRoute[4]];
-            it(`${warehouseVertex.scheduleItems.length} should be 0`, () => {
-                expect(warehouseVertex.scheduleItems.length).to.equal(0);
-            });
-
+        let resultingRoute = routeScheduler.handleLockOrder("O1");
+        let expectedRoute = createMovePalletRoute(routeScheduler, order, vertexIds, "RO1", "F1", visitTimes);
+        it(`Should be ${expectedRoute}`, () => {
+            expect(resultingRoute).eql(expectedRoute);
         });
+    });
 
-        context("Test getRoute when there are multiple scheduleItems at a vertex in the route", () => {
-            let fifthOrder = routeScheduler.data.orders[fifthOrderId];
-            fifthOrder.time = visitTimes[4][0];
-            routeScheduler.data = data;
+    context("when route visits same vertex more than once", () => {
+        let vertexIds = ["N5-1", "N5-2", "N5-3", "N5-4", "N5-3"];
+        let visitTimes = [30000, 31000, 32000, 33000, 34000];
 
-            let resultingRoute = routeScheduler.handleLockOrder(fifthOrderId);
+        let data: DataContainer = new DataContainer();
+        data.warehouse = new Warehouse(Graph.parse(createGraph()), 15);;
+        let routeScheduler = new RouteScheduler(data);
 
-            let expectedRoute = createMovePalletRoute(routeScheduler, fifthOrder, vertexIdFifthRoute, "RO5", fifthForkliftId, visitTimes[4]);
+        routeScheduler.bestRouteSet = new RouteSet(["O2"], bestRouteSetgraph);
+        routeScheduler.bestRouteSet.duration = [4000];
 
-            let expectedLength = expectedRoute.instructions.length;
-            let resultingLength = resultingRoute.instructions.length;
+        let order = new Order("O2", Order.types.movePallet, "F2", "P2", "N5-1", "N5-3", 30000, Order.timeTypes.start, 3);
+        routeScheduler.data.addOrder(order);
 
-            it(`Should be ${expectedLength}`, () => {
-                expect(resultingLength).to.equal(expectedLength);
-            });
+        setVisitTimes(routeScheduler.bestRouteSet.graph, vertexIds, visitTimes);
+        createScheduleItems(routeScheduler.bestRouteSet, vertexIds, "F2", visitTimes);
 
-            it(`Should be ${expectedRoute}`, () => {
-                expect(resultingRoute).eql(expectedRoute);
-            });
+        let resultingRoute = routeScheduler.handleLockOrder("O2");
+        let expectedRoute = createMovePalletRoute(routeScheduler, order, vertexIds, "RO2", "F2", visitTimes);
+        it(`Should be ${expectedRoute}`, () => {
+            expect(resultingRoute).eql(expectedRoute);
         });
-
-
-        // describe("Test getRoute for moveForklift order when there is one scheduleItem at each vertex", () => {
-        //     /// TO DO
-        // });
-
     });
 });
 
-function getDuration(visitTime: number[]): number {
-    return visitTime[visitTime.length - 1] - visitTime[0];
+describe("Test getRoute for moveForklift order type, i.e. test of createMoveInstructions", () => {
+    let vertexIds = ["N5-1", "N5-2", "N5-3", "N5-4", "N5-5"];
+    let visitTimes = [30000, 31000, 32000, 33000, 34000];
+
+    let data: DataContainer = new DataContainer();
+    data.warehouse = new Warehouse(Graph.parse(createGraph()), 15);;
+    let routeScheduler = new RouteScheduler(data);
+
+    let bestRouteSetgraph = Graph.parse(createGraph());
+    routeScheduler.bestRouteSet = new RouteSet(["O3"], bestRouteSetgraph);
+    routeScheduler.bestRouteSet.duration = [4000];
+
+    let order = new Order("O3", Order.types.moveForklift, "F3", "P3", "N5-1", "N5-5", 30000, Order.timeTypes.start, 3);
+    routeScheduler.data.addOrder(order);
+
+    setVisitTimes(routeScheduler.bestRouteSet.graph, vertexIds, visitTimes);
+    createScheduleItems(routeScheduler.bestRouteSet, vertexIds, "F3", visitTimes);
+
+    let resultingRoute = routeScheduler.handleLockOrder("O3");
+    let expectedRoute = createMoveForkliftRoute(routeScheduler, order, vertexIds, "RO3", "F3", visitTimes);
+    it(`Should be ${expectedRoute}`, () => {
+        expect(resultingRoute).eql(expectedRoute);
+    });
+});
+
+
+
+/* Auxiliary functions */
+function setVisitTimes(graph: Graph, vertexIds: string[], visitTimes: number[]) {
+    for (let i = 0; i < visitTimes.length; i++) {
+        graph.vertices[vertexIds[i]].visitTime = visitTimes[i];
+    }
 }
 
-/**
- * 
- * @note The route is added the the firs element in scheduleItems[]. This means that there are
- * not multiple routes in the same scheduleItems-list
- * @param routeSet List of verticeId's
- * @param verticeList 
- * @param forkliftId
- * @param startTime 
- */
 function createScheduleItems(routeSet: RouteSet, verticeIdList: string[], forkliftId: string, visitTimeArray: number[]): void {
     // create current scheduleItem
     let startTime = visitTimeArray[0];
@@ -210,9 +111,7 @@ function createScheduleItems(routeSet: RouteSet, verticeIdList: string[], forkli
         let index = getScheduleItemIndex(currentVertex.scheduleItems, visitTimeArray[i]);
         currentVertex.scheduleItems[index] = scheduleItem;
     }
-
     linkScheduleItems(routeSet, verticeIdList, visitTimeArray);
-
 }
 
 function linkScheduleItems(routeSet: RouteSet, verticeIdList: string[], visitTimeArray: number[]): void {
@@ -266,9 +165,6 @@ function getScheduleItemIndex(scheduleItems: ScheduleItem[], time: number): numb
     }
 }
 
-/**
- * Works when scheduleItems are one scheduleItem in each scheduleItem list 
- */
 function createMovePalletRoute(routeScheduler: RouteScheduler, order: Order, vertexId: string[], routeId: string, forkliftId: string, visitTimes: number[]): Route {
     let instructions: Instruction[] = [];
 
@@ -296,4 +192,22 @@ function createMovePalletRoute(routeScheduler: RouteScheduler, order: Order, ver
     return new Route(routeId, order.palletId, forkliftId, order.id, 1, instructions);
 }
 
+function createMoveForkliftRoute(routeScheduler: RouteScheduler, order: Order, vertexId: string[], routeId: string, forkliftId: string, visitTimes: number[]): Route {
+    let instructions: Instruction[] = [];
 
+    let currentVertex = routeScheduler.bestRouteSet.graph.vertices[vertexId[0]];
+    let currentScheduleItem = getScheduleItem(currentVertex, visitTimes[0]);
+    for (let i = 0; i < vertexId.length; i++) {
+        let instructionType;
+        if (i === vertexId.length - 1) {
+            instructionType = Instruction.types.sendFeedback;
+        } else {
+            instructionType = Instruction.types.move;
+        }
+        let newInstruction = new Instruction(instructionType, vertexId[i], currentScheduleItem.arrivalTimeCurrentVertex);
+        instructions.push(newInstruction);
+        currentScheduleItem = currentScheduleItem.nextScheduleItem;
+    }
+
+    return new Route(routeId, order.palletId, forkliftId, order.id, 1, instructions);
+}

@@ -6,6 +6,11 @@
 import { Order as Order_Shared, OrderTypes, TimeType } from "../../shared/order";
 import { DataContainer } from "./dataContainer";
 
+/**
+ * Converts an {@link Order_shared} to an Order
+ * @param order of type {@link Order_shared} to be converted
+ * @returns a new {@link Order} containing content of order
+ */
 function superCastOrder(order: Order_Shared): Order {
     let output = new Order(order.id, order.type, order.forkliftId, order.palletId, order.startVertexId,
         order.endVertexId, order.time, order.timeType, order.delayMax);
@@ -27,7 +32,7 @@ export class Order extends Order_Shared {
      */
     static parse(obj: any, data: DataContainer): Order | null {
         // Parse what is unrelated to DataContainer
-        let order = Order_Shared.parse(obj);
+        let order = super.parse(obj);
         if (order === null) return null;
 
         // Ensure that the forkliftId exists in dataContainer if the type of order requires a forklift (moveForklift, charge)
@@ -42,10 +47,13 @@ export class Order extends Order_Shared {
         return superCastOrder(order);
     }
 
+    /**
+     * Delays the order and increments delayCounter if delay is ok >= delayMax
+     * @param baseDelayTime used to calculate the delay time
+     * @returns true if delay was made false otherwise 
+     */
     delayStartTime(baseDelayTime: number) {
         if (this.delayCounter >= this.delayMax) return false;
-
-        // delayCounter is more than 0
 
         this.time += baseDelayTime * 2 ** this.delayCounter;
         this.delayCounter++;

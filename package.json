@@ -27,7 +27,7 @@
         "ts-node": "^8.10.1",
         "typedoc": "^0.17.4",
         "typescript": "^3.8.3",
-        "ws": "^7.2.5"
+        "ws": "^7.3.0"
     },
     "scripts": {
         "install": "npm i node typescript ts-node mocha chai @types/node @types/chai @types/mocha ws @types/ws --save-dev",
@@ -37,7 +37,7 @@
         "test-data": "mocha --require ts-node/register test/planningScheduler/**/testDataContainer.ts",
         "test-graph": "mocha --require ts-node/register test/planningScheduler/**/testGraph.ts",
         "test-warehouse": "mocha --require ts-node/register test/planningScheduler/**/warehouse.ts",
-        "test-order": "mocha --require ts-node/register test/planningScheduler/**/testOrder.ts",
+        "test-order": "mocha --require ts-node/register test/planningScheduler/**/order.ts",
         "test-Astar": "mocha --require ts-node/register test/planningScheduler/**/testAstar.ts",
         "test-route": "mocha --require ts-node/register test/planningScheduler/**/testGetRoute.ts"
     },

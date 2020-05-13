@@ -4,6 +4,8 @@
  * @category Shared
  */
 
+import { RouteSet } from "../planningScheduler/classes/routeSet";
+
 
 /** An enum of possible states used to describe a route */
 enum RouteStatus {
@@ -67,16 +69,16 @@ export class Instruction {
      * @returns An array of Instructions if possible else null
      */
     static parseMultiple(instructions: any): Instruction[] | null {
-        if (!Array.isArray(instructions)) return null;
-        instructions = <any[]>instructions; // Typescript-specific casting to array
-
         let newInstructionSet: Instruction[] = [];
 
-        instructions.forEach(element => {
-            let newInstruction = Instruction.parse(element);
+        if (!Array.isArray(instructions)) return null;
+
+        for (let instruction of instructions) {
+            let newInstruction = Instruction.parse(instruction);
+
             if (newInstruction === null) return null;
-            newInstructionSet.push(newInstruction);
-        });
+            else newInstructionSet.push(newInstruction);
+        }
 
         return newInstructionSet;
     }
@@ -124,7 +126,7 @@ export class Route {
         if (typeof (route.orderId) !== "string") return null;
         // Implement checking of valid ids?
         if (typeof (route.status) !== "number") return null;
-        if (typeof (Instruction.parseMultiple(route.instructions)) !== "object") return null;
+        if (Instruction.parseMultiple(route.instructions) === null) return null;
 
         return new Route(route.routeId, route.palletId, route.forkliftId, route.orderId, route.RouteStatus, route.instructions);
     }
@@ -135,15 +137,17 @@ export class Route {
     * @returns An array of Routes if possible else null
     */
     static parseMultiple(routes: any[]): Route[] | null {
-        routes.forEach(element => {
-            if (typeof (Route.parse(element)) === "object") return null;
-        });
         let newRouteSet: Route[] = [];
-        routes.forEach(element => {
-            newRouteSet.push(element);
-        });
+
+        if (!Array.isArray(routes)) return null;
+
+        for (let route of routes) {
+            let newRoute = Route.parse(route);
+
+            if (newRoute === null) return null;
+            else newRouteSet.push(newRoute);
+        }
 
         return newRouteSet;
     }
-
 }

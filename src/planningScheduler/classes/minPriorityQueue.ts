@@ -8,7 +8,7 @@
  * A min-priority queue implementation 
  */
 export class MinPriorityQueue<T> {
-    /** An array containing the elemtns of the priority queue  */
+    /** An array containing the elements of the priority queue  */
     array: T[];
 
     /** 
@@ -119,7 +119,4 @@ export class MinPriorityQueue<T> {
             index = this.parent(index);
         }
     }
-};
-
-
-
+}
