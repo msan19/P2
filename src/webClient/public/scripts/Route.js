@@ -156,8 +156,17 @@ class Route {
             mainGraph.revertColorsToOriginal();
     }
 
+    static addRouteToUi(id) {
+        document.querySelectorAll(".select-route").forEach((e) => {
+            let element = document.createElement("option");
+            element.value = id;
+            element.innerHTML = id;
+            e.appendChild(element);
+        });
+    }
+
     addRouteToUi() {
-        document.querySelector('.select-route').innerHTML += `<option value=${this.routeId}>${this.routeId}</option>`;
+        Route.addRouteToUi(this.routeId);
     }
 
     removeRouteFromUi() {

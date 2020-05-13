@@ -54,10 +54,17 @@ class Order {
         delete orders[this.orderId];
     }
 
-    addOrderToUi() {
+    static addOrderToUi(id) {
         document.querySelectorAll(".select-order").forEach((e) => {
-            e.innerHTML += `<option value=${this.orderId}>${this.orderId}</option>`;
+            let element = document.createElement("option");
+            element.value = id;
+            element.innerHTML = id;
+            e.appendChild(element);
         });
+    }
+
+    addOrderToUi() {
+        Order.addOrderToUi(this.orderId);
     }
 
     removeOrderFromUi() {

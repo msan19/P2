@@ -4,24 +4,19 @@ class UiManager {
         $('#sendOrderDateTimePicker').datetimepicker({
             format: 'LLL'
         });
-        // add blank forklift to select forklfit
-        let routeList = document.querySelector("#route-list");
-        routeList.innerHTML = `<option value=${""}>${""}</option>`;
-        routeList.onclick = (e) => UiManager.chooseRoute(e.target.innerHTML);
-        let forkliftList = document.querySelector("#forklift-list");
-        forkliftList.innerHTML = `<option value=${""}>${""}</option>`;
-        forkliftList.onclick = (e) => UiManager.chooseForklift(e.target.innerHTML);
-        let orderList = document.querySelector("#order-list");
-        orderList.innerHTML = `<option value=${""}>${""}</option>`;
-        orderList.onclick = (e) => UiManager.chooseOrder(e.target.innerHTML);
-        document.querySelector("#openAddOrderMenu").onclick = (e) => UiManager.addRandomOrderId(e);
-        document.querySelector("#addOrderSubmit").onclick = () => $(function () {
-            $('#modal-add-order').modal('hide');
-        });
-
+        UiManager.initializeOrder();
+        UiManager.initializeRoute();
+        UiManager.initializeForklift();
     }
 
     // ROUTE
+    static initializeRoute() {
+        document.querySelector("#route-list").onchange = function (e) {
+            UiManager.chooseRoute(e.target.selectedOptions[0].innerHTML)
+        }
+        Route.addRouteToUi("");
+    }
+
     static clearInstrutionsOnUi() {
         document.querySelectorAll(".selectedRouteInstructionList").forEach((e) => {
             e.innerHTML = "";
@@ -132,6 +127,13 @@ class UiManager {
     // END --- ROUTE --- END
 
     // FORKLIFT
+    static initializeForklift() {
+        document.querySelector("#forklift-list").onchange = function (e) {
+            UiManager.chooseForklift(e.target.selectedOptions[0].innerHTML)
+        }
+        Forklifts.addForkliftToUi("");
+    }
+
     static updateSelectedForkliftInformationOnUI() {
         if (nForklifts.checkIfThereIsASelectedForklift()) {
             let forklift = forkliftData[nForklifts.selectedForklift];
@@ -173,6 +175,18 @@ class UiManager {
     }
     // END --- FORKLIFT --- END
     // ORDER
+    static initializeOrder() {
+        document.querySelector("#order-list").onchange = function (e) {
+            UiManager.chooseOrder(e.target.selectedOptions[0].innerHTML)
+        }
+        Order.addOrderToUi("");
+
+        document.querySelector("#openAddOrderMenu").onclick = (e) => UiManager.addRandomOrderId(e);
+        document.querySelector("#addOrderSubmit").onclick = () => $(function () {
+            $('#modal-add-order').modal('hide');
+        });
+    }
+
     // Taken from https://stackoverflow.com/questions/9407892/how-to-generate-random-sha1-hash-to-use-as-id-in-node-js
     // str byteToHex(uint8 byte)
     //   converts a single byte to a hex string 
@@ -209,6 +223,7 @@ class UiManager {
     }
 
     static chooseOrder(orderId) {
+        console.log(orderId)
         if (orderId == "") {
             document.querySelectorAll(".select-order").forEach((e) => {
                 this.resetOrderInformationOnUi();

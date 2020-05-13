@@ -27,12 +27,17 @@ class Forklifts {
         }
     }
 
-    addForkliftToUi(forkliftInfo) {
-        //document.querySelector("#forklift-list").innerHTML += `<a class="dropdown-item" value="${forkliftInfo.id}">${forkliftInfo.id}</a>`;
-
-        document.querySelectorAll('.select-forklift').forEach((item) => {
-            item.innerHTML += `<option value=${forkliftInfo.id}>${forkliftInfo.id}</option>`;
+    static addForkliftToUi(id) {
+        document.querySelectorAll(".select-forklift").forEach((e) => {
+            let element = document.createElement("option");
+            element.value = id;
+            element.innerHTML = id;
+            e.appendChild(element);
         });
+    }
+
+    addForkliftToUi(forkliftInfo) {
+        Forklifts.addForkliftToUi(forkliftInfo.id);
     }
 
     parseForklift(data) {
