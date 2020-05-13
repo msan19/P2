@@ -5,11 +5,10 @@ class UiManager {
             format: 'LLL'
         });
         // add blank forklift to select forklfit
-        let routeList = document.querySelector("#route-list");
-        routeList.innerHTML = `<option value=${""}>${""}</option>`;
-        routeList.onchange = function (e) {
+        document.querySelector("#route-list").onchange = function (e) {
             UiManager.chooseRoute(e.target.selectedOptions[0].innerHTML)
         }
+        Route.addRouteToUi("");
         let forkliftList = document.querySelector("#forklift-list");
         forkliftList.innerHTML = `<option value=${""}>${""}</option>`;
         forkliftList.onchange = function (e) {
@@ -18,7 +17,7 @@ class UiManager {
         document.querySelector("#order-list").onchange = function (e) {
             UiManager.chooseOrder(e.target.selectedOptions[0].innerHTML)
         }
-        Order.addEmptyOrderToUi();
+        Order.addOrderToUi("");
         document.querySelector("#openAddOrderMenu").onclick = (e) => UiManager.addRandomOrderId(e);
         document.querySelector("#addOrderSubmit").onclick = () => $(function () {
             $('#modal-add-order').modal('hide');
