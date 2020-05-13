@@ -9,7 +9,10 @@ import { Handler } from "./handler";
 import { DataContainer } from "./dataContainer";
 
 export class WebServerPlanningScheduler extends WebServer {
+    /** Is a {@link Handler} object used to handle server events */
     handler: Handler;
+
+    /** Is a {@link DataContainer} object used to store information */
     data: DataContainer;
 
     constructor(data: DataContainer, hostname: string, port: number) {
@@ -17,6 +20,7 @@ export class WebServerPlanningScheduler extends WebServer {
         this.handler = new Handler(data);
         this.data = data;
 
+        // Creates a server using the extended WebServer function
         this.createServer(this.handler.controllers, this.handler.socketControllers);
     }
 }
