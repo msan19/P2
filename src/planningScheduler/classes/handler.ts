@@ -1,5 +1,7 @@
 // handler.ts
-/**
+/** A handler for all HTTP requests.
+ * Describes how to handle all request 
+ * as given in docs/API.yml
  * @packageDocumentation
  * @category PlanningScheduler
  */
@@ -30,11 +32,12 @@ interface IController { [key: string]: IHttpMethod; };
 interface ISocketController { (socketServer: ws.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void; }
 
 /**
- * A {@link Handler} handles every API call efter they have been identified
+ * A {@link Handler} handles every API call efter they have been identified.
+ * All API calls can be seen described in docs/API.yml
  */
 export class Handler {
 
-    /** A {@link DataContainer} for the {@link Handler} to acces the shared data on the server */
+    /** A {@link DataContainer} for the {@link Handler} to access the shared data on the server */
     data: DataContainer;
 
     constructor(data: DataContainer) {
@@ -44,7 +47,11 @@ export class Handler {
     /** A dictionary of {@link IController} */
     controllers: { [key: string]: IController; } = {
         warehouse: {
-            // /warehouse
+            /**
+             * HTTP Get requests to /warehouse
+             * Either returns warehouse as JSON if one is set,
+             * otherwise retuns a status 500             
+             */
             GET: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
                 let warehouse = this.data.warehouse;
                 if (warehouse != null) {
@@ -53,7 +60,12 @@ export class Handler {
                     returnStatus(response, 500, "Warehouse info not yet received");
                 }
             },
-            // /warehouse
+            /**
+             * HTTP Post requests to /warehouse
+             * Sets warehouse of {@link DataContainer} to incoming object 
+             * if object is parsed, else gives error status 400, with
+             * either invalid warehouse if no graph, or invalid graph
+             */
             POST: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
                 getJson(request)
                     .then((obj) => {
@@ -76,15 +88,23 @@ export class Handler {
             }
         },
         routes: {
-            // /routes
+            /**
+            * HTTP Get requests to /routes
+            * Returns routes as JSON
+            */
             GET: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
                 returnJson(response, this.data.routes);
             }
         },
 
         orders: {
-            // /orders
-            // /orders/id
+            /**
+             * HTTP Get requests to /orders
+             * Checks if looking for specific order or all orders.
+             * If looking for one, checks if valid order id.
+             * If yes, returns order as JSOn else returns error 404
+             * If looking for all orders, returns all orders as JSON
+             */
             GET: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
                 let id = passId(parsedUrl[2]);
                 if (typeof (id) === "string") {
@@ -98,7 +118,12 @@ export class Handler {
                     returnJson(response, this.data.orders);
                 }
             },
-            // /orders
+            /**
+            * HTTP Post requests to /orders
+            * Checks if order to be posted is valid.
+            * If yes, adds order to {@link DataContainer}
+            * Else returns error code
+            */
             POST: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
                 getJson(request)
                     .then((obj) => {
@@ -115,8 +140,12 @@ export class Handler {
             }
         },
         forklifts: {
-            // /forklifts
-            // /forklifts/id
+            /**
+             * HTTP Get requests to /forklifts and /forklifts/id
+             * Checks if getting all forklifts, then return all forklifts as JSON
+             * Else checks if valid forklift id.
+             * If yes, send forklift as JSON, else return error code
+             */
             GET: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
                 let id = passId(parsedUrl[2]);
                 if (typeof (id) === "string") {
@@ -130,7 +159,12 @@ export class Handler {
                     returnJson(response, this.data.forklifts);
                 }
             },
-            // /forklifts/{guid}
+            /**
+            * HTTP Put requests to /forklifts/id
+            * Updates data on forklift, and returns success if valid data
+            * Else returns invalid data. 
+            * If no forklift with id, return error code
+            */
             PUT: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
                 let id = passId(parsedUrl[2]);
 
@@ -147,7 +181,11 @@ export class Handler {
                     returnNotFound(request, response);
                 }
             },
-            // /forklifts/{guid}/intiate
+            /**
+            * HTTP Put requests to /forklifts/{guid}/intiate
+            * Initiates forklift with data if valid data and valid id
+            * Else returns error codes
+            */
             POST: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
                 let id = passId(parsedUrl[2]);
                 if (id !== null && parsedUrl[3] === "initiate") {
@@ -176,7 +214,12 @@ export class Handler {
 
     /** A dictionary of {@link ISocketController} */
     socketControllers: { [key: string]: ISocketController; } = {
-        // /forklifts/{guid}/intiate
+        /** 
+         * Setting up websockets for /forklifts/id/initiate
+         * Checks if valid id and initiate.
+         * If yes, creates a TCP socket to forklift
+         * Else destroys socket
+         */
         forklifts: (socketServer: ws.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void => {
             let id = passId(parsedUrl[2]) ? parsedUrl[2] : null;
             if (id !== null && parsedUrl[3] === "initiate") {
@@ -191,7 +234,12 @@ export class Handler {
                 socket.destroy();
             }
         },
-        // /subscribe
+        /**
+         * Handles subscribe and opens websockets
+         * Sets up all different information calls
+         * Like sending warehouse (using emit), will send to all 
+         * websockets created from subscribe.
+         */
         subscribe: (socketServer: ws.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void => {
             socketServer.handleUpgrade(request, socket, head, (ws: ws) => {
                 let webSocket = new WebSocket(ws);
