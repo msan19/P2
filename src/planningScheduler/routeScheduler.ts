@@ -41,8 +41,10 @@ export class RouteScheduler {
 
     readonly expectedDurationMultiplier: number = 2.0;
 
+    /** Value returned when appraising an order to moveForklift */
     readonly moveForkliftConstant: number = 2.0;
 
+    /** Value returned when appraising an order to chargeForklift */
     readonly chargeConstant: number = 2.0;
 
     readonly mutationConstant: number = 1.0;
