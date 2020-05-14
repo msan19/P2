@@ -50,7 +50,7 @@ export class Order extends Order_Shared {
     /**
      * Delays the order and increments delayCounter if delay is ok >= delayMax
      * @param baseDelayTime used to calculate the delay time
-     * @returns true if delay was made false otherwise 
+     * @returns true if delay was made, false otherwise 
      */
     delayStartTime(baseDelayTime: number) {
         if (this.delayCounter >= this.delayMax) return false;

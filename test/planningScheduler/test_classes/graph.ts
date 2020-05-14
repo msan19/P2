@@ -321,7 +321,6 @@ function testVertex(): void {
             let newScheduleItem: ScheduleItem = new ScheduleItem("F22", 4000, "F23");
             let time = 4000;
             vertex.insertScheduleItem(newScheduleItem);
-            //console.log(scheduleItemList);
 
             let expected: number = time;
             let result: number = vertex.scheduleItems[0].arrivalTimeCurrentVertex;
