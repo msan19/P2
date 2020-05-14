@@ -1,0 +1,1661 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>RouteScheduler | P2</title>
+	<meta name="description" content="Documentation for P2">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">P2</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="../modules/_planningscheduler_routescheduler_.html">&quot;planningScheduler/routeScheduler&quot;</a>
+				</li>
+				<li>
+					<a href="_planningscheduler_routescheduler_.routescheduler.html">RouteScheduler</a>
+				</li>
+			</ul>
+			<h1>Class RouteScheduler</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Object to handle routes.
+						Used for calculations of routes.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">RouteScheduler</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#bestrouteset" class="tsd-kind-icon">best<wbr>Route<wbr>Set</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#chargeconstant" class="tsd-kind-icon">charge<wbr>Constant</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#data" class="tsd-kind-icon">data</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#expecteddurationmultiplier" class="tsd-kind-icon">expected<wbr>Duration<wbr>Multiplier</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#moveforkliftconstant" class="tsd-kind-icon">move<wbr>Forklift<wbr>Constant</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#mutationconstant" class="tsd-kind-icon">mutation<wbr>Constant</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#mutationcounter" class="tsd-kind-icon">mutation<wbr>Counter</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#mutations" class="tsd-kind-icon">mutations</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#timeintervalminimumsize" class="tsd-kind-icon">time<wbr>Interval<wbr>Minimum<wbr>Size</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#unfinishedorderids" class="tsd-kind-icon">unfinished<wbr>Order<wbr>Ids</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#assignforklift" class="tsd-kind-icon">assign<wbr>Forklift</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#calculateroutes" class="tsd-kind-icon">calculate<wbr>Routes</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#computeearliestarrivaltime" class="tsd-kind-icon">compute<wbr>Earliest<wbr>Arrival<wbr>Time</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#createinstructions" class="tsd-kind-icon">create<wbr>Instructions</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#createmoveinstructions" class="tsd-kind-icon">create<wbr>Move<wbr>Instructions</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#createmovepalletinstructions" class="tsd-kind-icon">create<wbr>Move<wbr>Pallet<wbr>Instructions</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#findduration" class="tsd-kind-icon">find<wbr>Duration</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#findreferencetovertex" class="tsd-kind-icon">find<wbr>Reference<wbr>ToVertex</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#findvertex" class="tsd-kind-icon">find<wbr>Vertex</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#generatechronologicalpriorities" class="tsd-kind-icon">generate<wbr>Chronological<wbr>Priorities</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#generatepriorities" class="tsd-kind-icon">generate<wbr>Priorities</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#getarrivaltime" class="tsd-kind-icon">get<wbr>Arrival<wbr>Time</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#getlastscheduleitemfororder" class="tsd-kind-icon">get<wbr>Last<wbr>Schedule<wbr>Item<wbr>For<wbr>Order</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#getroute" class="tsd-kind-icon">get<wbr>Route</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#getrouteappraisals" class="tsd-kind-icon">get<wbr>Route<wbr>Appraisals</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#getstarttime" class="tsd-kind-icon">get<wbr>Start<wbr>Time</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#handlelockorder" class="tsd-kind-icon">handle<wbr>Lock<wbr>Order</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#heuristic" class="tsd-kind-icon">heuristic</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#insertorderinprioritiesappropriately" class="tsd-kind-icon">insert<wbr>Order<wbr>InPriorities<wbr>Appropriately</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#insertscheduleitemsarray" class="tsd-kind-icon">insert<wbr>Schedule<wbr>Items<wbr>Array</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#iscollisioninevitable" class="tsd-kind-icon">is<wbr>Collision<wbr>Inevitable</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#mutate" class="tsd-kind-icon">mutate</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#planoptimalroute" class="tsd-kind-icon">plan<wbr>Optimal<wbr>Route</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#priotizeonepriorityrandomly" class="tsd-kind-icon">priotize<wbr>One<wbr>Priority<wbr>Randomly</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#removeorderfrombestrouteset" class="tsd-kind-icon">remove<wbr>Order<wbr>From<wbr>Best<wbr>Route<wbr>Set</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#setbestrouteset" class="tsd-kind-icon">set<wbr>Best<wbr>Route<wbr>Set</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#upstacking" class="tsd-kind-icon">up<wbr>Stacking</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_planningscheduler_routescheduler_.routescheduler.html#upstackingtoarray" class="tsd-kind-icon">up<wbr>Stacking<wbr>ToArray</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_planningscheduler_routescheduler_.routescheduler.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="_planningscheduler_routescheduler_.routescheduler.html#evalrouteset" class="tsd-kind-icon">eval<wbr>Route<wbr>Set</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="_planningscheduler_routescheduler_.routescheduler.html#isvalidmutation" class="tsd-kind-icon">is<wbr>Valid<wbr>Mutation</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Route<wbr>Scheduler<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_datacontainer_.datacontainer.html" class="tsd-signature-type">DataContainer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_planningscheduler_routescheduler_.routescheduler.html" class="tsd-signature-type">RouteScheduler</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L48">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:48</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Constructor for the object.
+										Contains description of heuristic function,
+										which can be altered to change the workings
+									of the pathfinding algorithms</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>data: <a href="_planningscheduler_classes_datacontainer_.datacontainer.html" class="tsd-signature-type">DataContainer</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>Data RouteScheduler requires to function</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_planningscheduler_routescheduler_.routescheduler.html" class="tsd-signature-type">RouteScheduler</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="bestrouteset" class="tsd-anchor"></a>
+					<h3>best<wbr>Route<wbr>Set</h3>
+					<div class="tsd-signature tsd-kind-icon">best<wbr>Route<wbr>Set<span class="tsd-signature-symbol">:</span> <a href="_planningscheduler_classes_routeset_.routeset.html" class="tsd-signature-type">RouteSet</a><span class="tsd-signature-symbol"> = null</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L25">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:25</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Object containing best calculated routes</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="chargeconstant" class="tsd-anchor"></a>
+					<h3>charge<wbr>Constant</h3>
+					<div class="tsd-signature tsd-kind-icon">charge<wbr>Constant<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 2</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L46">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:46</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="data" class="tsd-anchor"></a>
+					<h3>data</h3>
+					<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <a href="_planningscheduler_classes_datacontainer_.datacontainer.html" class="tsd-signature-type">DataContainer</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L22">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:22</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Object for data storage</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="expecteddurationmultiplier" class="tsd-anchor"></a>
+					<h3>expected<wbr>Duration<wbr>Multiplier</h3>
+					<div class="tsd-signature tsd-kind-icon">expected<wbr>Duration<wbr>Multiplier<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 2</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L42">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:42</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="moveforkliftconstant" class="tsd-anchor"></a>
+					<h3>move<wbr>Forklift<wbr>Constant</h3>
+					<div class="tsd-signature tsd-kind-icon">move<wbr>Forklift<wbr>Constant<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 2</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L44">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:44</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="mutationconstant" class="tsd-anchor"></a>
+					<h3>mutation<wbr>Constant</h3>
+					<div class="tsd-signature tsd-kind-icon">mutation<wbr>Constant<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 1</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L48">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:48</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="mutationcounter" class="tsd-anchor"></a>
+					<h3>mutation<wbr>Counter</h3>
+					<div class="tsd-signature tsd-kind-icon">mutation<wbr>Counter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L31">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:31</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The index of the mutation in the array of mutations currently being tried</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="mutations" class="tsd-anchor"></a>
+					<h3>mutations</h3>
+					<div class="tsd-signature tsd-kind-icon">mutations<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>newIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L34">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:34</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>An array of mutations or changes to the priority in which orders are planned</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="timeintervalminimumsize" class="tsd-anchor"></a>
+					<h3>time<wbr>Interval<wbr>Minimum<wbr>Size</h3>
+					<div class="tsd-signature tsd-kind-icon">time<wbr>Interval<wbr>Minimum<wbr>Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 3000</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L40">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:40</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The minimum amount of time between two forklifts crossing the same vertex for a third to cross in the meantime</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="unfinishedorderids" class="tsd-anchor"></a>
+					<h3>unfinished<wbr>Order<wbr>Ids</h3>
+					<div class="tsd-signature tsd-kind-icon">unfinished<wbr>Order<wbr>Ids<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L37">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:37</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>An array of order ids of the orders currently being planned</p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="assignforklift" class="tsd-anchor"></a>
+					<h3>assign<wbr>Forklift</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">assign<wbr>Forklift<span class="tsd-signature-symbol">(</span>routeSet<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_routeset_.routeset.html" class="tsd-signature-type">RouteSet</a>, order<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L307">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:307</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Makes an array of idlepositions and estimates for when the forklifts can arrive at the startVertex of the order.
+										Sorts them by when the forklift can be at the startpos
+										Strips the estimates from the array
+									Returns the sorted scheduleitems containing forklifts</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>routeSet: <a href="_planningscheduler_classes_routeset_.routeset.html" class="tsd-signature-type">RouteSet</a></h5>
+								</li>
+								<li>
+									<h5>order: <a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a><span class="tsd-signature-symbol">[]</span></h4>
+							<p>An array of ScheduleItems based on idleForklifts, sorted by the time at which the forklift can arrive at the startVertex of the order</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="calculateroutes" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> calculate<wbr>Routes</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">calculate<wbr>Routes<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_datacontainer_.datacontainer.html" class="tsd-signature-type">DataContainer</a>, routeSet<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_routeset_.routeset.html" class="tsd-signature-type">RouteSet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L237">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:237</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Calculates all routes of the parameter <a href="_planningscheduler_classes_routeset_.routeset.html">RouteSet</a> and creates the associated
+									<a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> on each <a href="_shared_graph_.vertex.html">Vertex</a> on the route</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>data: <a href="_planningscheduler_classes_datacontainer_.datacontainer.html" class="tsd-signature-type">DataContainer</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_planningscheduler_classes_datacontainer_.datacontainer.html">DataContainer</a> givin acces to a dictionary of orders</p>
+									</div>
+								</li>
+								<li>
+									<h5>routeSet: <a href="_planningscheduler_classes_routeset_.routeset.html" class="tsd-signature-type">RouteSet</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_planningscheduler_classes_routeset_.routeset.html">RouteSet</a> on which to calculate routes</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="computeearliestarrivaltime" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> compute<wbr>Earliest<wbr>Arrival<wbr>Time</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">compute<wbr>Earliest<wbr>Arrival<wbr>Time<span class="tsd-signature-symbol">(</span>currentVertex<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a>, destinationVertex<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a>, time<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L629">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:629</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Computes the earliest possible time for when the forklift can arrive at destinationVertex</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>currentVertex: <a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a></h5>
+								</li>
+								<li>
+									<h5>destinationVertex: <a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a></h5>
+								</li>
+								<li>
+									<h5>time: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>The computed time</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="createinstructions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> create<wbr>Instructions</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Instructions<span class="tsd-signature-symbol">(</span>order<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_shared_route_.instruction.html" class="tsd-signature-type">Instruction</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L139">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:139</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates an array of instruction objects</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>order: <a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Is a specific order which is retrieved from the array of orders in the following way: this.data.orders[orderId]</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_shared_route_.instruction.html" class="tsd-signature-type">Instruction</a><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="createmoveinstructions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> create<wbr>Move<wbr>Instructions</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Move<wbr>Instructions<span class="tsd-signature-symbol">(</span>instructions<span class="tsd-signature-symbol">: </span><a href="_shared_route_.instruction.html" class="tsd-signature-type">Instruction</a><span class="tsd-signature-symbol">[]</span>, order<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a>, scheduleItem<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L198">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:198</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates instructions for two different order types:</p>
+									<ul>
+										<li>moveForklift</li>
+										<li>charge</li>
+									</ul>
+								</div>
+								<p>Follows same procedure as <a href="_planningscheduler_routescheduler_.routescheduler.html#createmovepalletinstructions">createMovePalletInstructions</a>: Creates an array of instructions recursively by pushing an instruction-object to
+								the array of instructions passed in as first parameter</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>instructions: <a href="_shared_route_.instruction.html" class="tsd-signature-type">Instruction</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Is outputparameter. Initially an empty array and after termination an array of all instruction objects except the last instruction object</p>
+									</div>
+								</li>
+								<li>
+									<h5>order: <a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Is a specific order which is retrieved from the array of orders in the following way: this.data.orders[orderId]</p>
+									</div>
+								</li>
+								<li>
+									<h5>scheduleItem: <a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Initially the next last scheduleItem in the route, then scheduleItems predecessors are followed recursively until
+										first schedulteItem in route is reached</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="createmovepalletinstructions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> create<wbr>Move<wbr>Pallet<wbr>Instructions</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Move<wbr>Pallet<wbr>Instructions<span class="tsd-signature-symbol">(</span>instructions<span class="tsd-signature-symbol">: </span><a href="_shared_route_.instruction.html" class="tsd-signature-type">Instruction</a><span class="tsd-signature-symbol">[]</span>, order<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a>, scheduleItem<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a>, endVertexTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L171">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:171</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates an array of instructions recursively by pushing an instruction-object to
+									the array of instructions passed in as first parameter</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>instructions: <a href="_shared_route_.instruction.html" class="tsd-signature-type">Instruction</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Is outputparameter. Initially an empty array and after termination an array of instruction objects</p>
+									</div>
+								</li>
+								<li>
+									<h5>order: <a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Is a specific order which is retrieved from the array of orders in the following way: this.data.orders[orderId]</p>
+									</div>
+								</li>
+								<li>
+									<h5>scheduleItem: <a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Initially the last scheduleItem in the route, then scheduleItems predecessors are followed recursively until
+										first schedulteItem in route is reached</p>
+									</div>
+								</li>
+								<li>
+									<h5>endVertexTime: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="findduration" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> find<wbr>Duration</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">find<wbr>Duration<span class="tsd-signature-symbol">(</span>orderId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L222">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:222</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Finds the duration of the parameter order</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>orderId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>An id of an order whose duration is to be found</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>The duration of the given order</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="findreferencetovertex" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> find<wbr>Reference<wbr>ToVertex</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">find<wbr>Reference<wbr>ToVertex<span class="tsd-signature-symbol">(</span>currentVertex<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a>, destinationVertex<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a>, currentTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L589">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:589</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Goes through the each <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> on the parameter currentVertex starting at currentTime backwards in time,
+										until the earliest reference to the parameter destinationVertex occurs. A reference is here the previousScheduleItem
+									and the nextScheduleItem references that form a doubly linked list on a graph</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>currentVertex: <a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_shared_graph_.vertex.html">Vertex</a> whose <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> array is searched</p>
+									</div>
+								</li>
+								<li>
+									<h5>destinationVertex: <a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_shared_graph_.vertex.html">Vertex</a> to find a reference to, and to find the returned index on</p>
+									</div>
+								</li>
+								<li>
+									<h5>currentTime: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A time for when to begin the search on the parameter currentVertex</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>The index of the <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> on the parameter destinationVertex first referenced on the parameter currentVertex</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="findvertex" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> find<wbr>Vertex</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">find<wbr>Vertex<span class="tsd-signature-symbol">(</span>vertexId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L213">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:213</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Finds the <a href="_shared_graph_.vertex.html">Vertex</a> in bestGraph of the parameter id</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>vertexId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>An id of the <a href="_shared_graph_.vertex.html">Vertex</a> to be found</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a></h4>
+							<p>The found <a href="_shared_graph_.vertex.html">Vertex</a></p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="generatechronologicalpriorities" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> generate<wbr>Chronological<wbr>Priorities</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">generate<wbr>Chronological<wbr>Priorities<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L414">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:414</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Generates a new array of order ids in the sequence they are to be executed.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
+							<p>A string array of order ids</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="generatepriorities" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> generate<wbr>Priorities</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">generate<wbr>Priorities<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L429">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:429</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Generates a new array of order ids in the sequence they are to be planned based mostly on
+									bestRouteSet or chronological order, but makes changes based on mutations or randomness</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
+							<p>The new priorities in a string array of order ids</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getarrivaltime" class="tsd-anchor"></a>
+					<h3>get<wbr>Arrival<wbr>Time</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Arrival<wbr>Time<span class="tsd-signature-symbol">(</span>currentVertex<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a>, destinationVertex<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a>, currentTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, isEndVertex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, forkliftId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L542">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:542</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Finds the earliest possible time which the parameter forklift can arrive at the parameter <a href="_shared_graph_.vertex.html">Vertex</a> without colliding
+									with previously planned routes</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>currentVertex: <a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_shared_graph_.vertex.html">Vertex</a> at which the forklift is arriving from</p>
+									</div>
+								</li>
+								<li>
+									<h5>destinationVertex: <a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_shared_graph_.vertex.html">Vertex</a> at which the forklift is arriving</p>
+									</div>
+								</li>
+								<li>
+									<h5>currentTime: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A time where the forklift leaves the current <a href="_shared_graph_.vertex.html">Vertex</a></p>
+									</div>
+								</li>
+								<li>
+									<h5>isEndVertex: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A boolean specifiyng if the parameter destination <a href="_shared_graph_.vertex.html">Vertex</a> is the last <a href="_shared_graph_.vertex.html">Vertex</a> of the route</p>
+									</div>
+								</li>
+								<li>
+									<h5>forkliftId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A string id for the forklift whose arrival time is to be calculated</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>The found time of arrival</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="getlastscheduleitemfororder" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> get<wbr>Last<wbr>Schedule<wbr>Item<wbr>For<wbr>Order</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Last<wbr>Schedule<wbr>Item<wbr>For<wbr>Order<span class="tsd-signature-symbol">(</span>order<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L118">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:118</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Finds the last <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> in the route associated with the parameter <a href="_shared_order_.order.html">Order</a></p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>order: <a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>An orders whose last <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> is to be found</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a></h4>
+							<p>The found <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a></p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="getroute" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> get<wbr>Route</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Route<span class="tsd-signature-symbol">(</span>order<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a>, lastScheduleItem<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a>, forkliftId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_shared_route_.route.html" class="tsd-signature-type">Route</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L95">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:95</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Looks at the best routeSet and finds a route that matches the orderId.
+									Converts scheduleItems to a route</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>note</dt>
+									<dd><p>Each order Id is unique</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>order: <a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a></h5>
+								</li>
+								<li>
+									<h5>lastScheduleItem: <a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a></h5>
+								</li>
+								<li>
+									<h5>forkliftId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_shared_route_.route.html" class="tsd-signature-type">Route</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="getrouteappraisals" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> get<wbr>Route<wbr>Appraisals</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Route<wbr>Appraisals<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L377">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:377</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Appraises each route in the current best route-set.
+									movePallet is appraised by</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
+							<p>An array of estimates for how good each route is</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getstarttime" class="tsd-anchor"></a>
+					<h3>get<wbr>Start<wbr>Time</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Start<wbr>Time<span class="tsd-signature-symbol">(</span>orderId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L728">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:728</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Finds the time when the route associated with the parameter order starts</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>orderId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A string id specifying the order to find the start time for</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>The start time</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="handlelockorder" class="tsd-anchor"></a>
+					<h3>handle<wbr>Lock<wbr>Order</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">handle<wbr>Lock<wbr>Order<span class="tsd-signature-symbol">(</span>orderId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_shared_route_.route.html" class="tsd-signature-type">Route</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L67">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:67</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates the <a href="_shared_route_.route.html">Route</a> associated with the parameter order id, removes the order from
+									the list of orders being planned and locks the route as permanent</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>orderId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A string id for the order to be locked</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_shared_route_.route.html" class="tsd-signature-type">Route</a></h4>
+							<p>The created <a href="_shared_route_.route.html">Route</a></p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="heuristic" class="tsd-anchor"></a>
+					<h3>heuristic</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">heuristic<span class="tsd-signature-symbol">(</span>v1<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a>, v2<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L28">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:28</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Heuristic function for A* implementation</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>v1: <a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a></h5>
+								</li>
+								<li>
+									<h5>v2: <a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="insertorderinprioritiesappropriately" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> insert<wbr>Order<wbr>InPriorities<wbr>Appropriately</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">insert<wbr>Order<wbr>InPriorities<wbr>Appropriately<span class="tsd-signature-symbol">(</span>orderId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L773">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:773</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Inserts a new order the prioritized list of orders on the bestRouteSet in a chronologial manner</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>orderId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A string id for the order to be inserted</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="insertscheduleitemsarray" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> insert<wbr>Schedule<wbr>Items<wbr>Array</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">insert<wbr>Schedule<wbr>Items<wbr>Array<span class="tsd-signature-symbol">(</span>routeSet<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_routeset_.routeset.html" class="tsd-signature-type">RouteSet</a>, scheduleItemsArray<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L716">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:716</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Inserts each <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> in the parameter scheduleItemsArray on each predetermined vertex</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>routeSet: <a href="_planningscheduler_classes_routeset_.routeset.html" class="tsd-signature-type">RouteSet</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_planningscheduler_classes_routeset_.routeset.html">RouteSet</a> for each <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> to be inserted on</p>
+									</div>
+								</li>
+								<li>
+									<h5>scheduleItemsArray: <a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> array to be inserted</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="iscollisioninevitable" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> is<wbr>Collision<wbr>Inevitable</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Collision<wbr>Inevitable<span class="tsd-signature-symbol">(</span>startVertexId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, scheduleItem<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a>, earliestArrivalTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, currentTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, isLast<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, forkliftId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L507">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:507</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Finds out whether the parameter <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> makes it imposible for the parameter foklift to cross an edge
+									of the graph based on the path specified by the parameter <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a></p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>startVertexId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A string id of the <a href="_shared_graph_.vertex.html">Vertex</a> which the forklift is coming from</p>
+									</div>
+								</li>
+								<li>
+									<h5>scheduleItem: <a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> for collisions to be checked against</p>
+									</div>
+								</li>
+								<li>
+									<h5>earliestArrivalTime: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A number specifieing the time when the forklift arrives if it travels at max speed</p>
+									</div>
+								</li>
+								<li>
+									<h5>currentTime: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A number specifieing the time when the forklift leaves startVertex</p>
+									</div>
+								</li>
+								<li>
+									<h5>isLast: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A boolean for whether the parameter <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> is the <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> on its <a href="_shared_graph_.vertex.html">Vertex</a></p>
+									</div>
+								</li>
+								<li>
+									<h5>forkliftId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A string for the forklift who is crossing from the startVertex
+										to the <a href="_shared_graph_.vertex.html">Vertex</a> with the parameter scheduleItem on it</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>True if crossing the edge at this time is not possible, false otherwise</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="mutate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> mutate</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">mutate<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L341">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:341</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets the mutations array to a new array with mutations for bestRouteSet.
+									The new array is sorted by the least efficient routes first</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="planoptimalroute" class="tsd-anchor"></a>
+					<h3>plan<wbr>Optimal<wbr>Route</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">plan<wbr>Optimal<wbr>Route<span class="tsd-signature-symbol">(</span>routeSet<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_routeset_.routeset.html" class="tsd-signature-type">RouteSet</a>, startVertexId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, endVertexId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, orderTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, forkliftId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L643">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:643</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Finds the fastest route between the parameter startVertex and the parameter endVertex for the parameter forklift.
+									The route is stored in temporary variables on the verticies of the parameter <a href="_planningscheduler_classes_routeset_.routeset.html">RouteSet</a></p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>routeSet: <a href="_planningscheduler_classes_routeset_.routeset.html" class="tsd-signature-type">RouteSet</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_planningscheduler_classes_routeset_.routeset.html">RouteSet</a> which the route is stored on</p>
+									</div>
+								</li>
+								<li>
+									<h5>startVertexId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A string id of the start <a href="_shared_graph_.vertex.html">Vertex</a></p>
+									</div>
+								</li>
+								<li>
+									<h5>endVertexId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A string id of the end <a href="_shared_graph_.vertex.html">Vertex</a></p>
+									</div>
+								</li>
+								<li>
+									<h5>orderTime: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A time for when the route begins</p>
+									</div>
+								</li>
+								<li>
+									<h5>forkliftId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A string id specifying the forklift which the route is planned for</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>The amount of time the route takes</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="priotizeonepriorityrandomly" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> priotize<wbr>One<wbr>Priority<wbr>Randomly</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">priotize<wbr>One<wbr>Priority<wbr>Randomly<span class="tsd-signature-symbol">(</span>priorities<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L465">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:465</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Looks through as many random mutations as there are strings in the parameter array,
+									until a valid mutation is found</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>priorities: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A string array with order ids in the order they are to be planned</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="removeorderfrombestrouteset" class="tsd-anchor"></a>
+					<h3>remove<wbr>Order<wbr>From<wbr>Best<wbr>Route<wbr>Set</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Order<wbr>From<wbr>Best<wbr>Route<wbr>Set<span class="tsd-signature-symbol">(</span>order<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L129">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:129</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Removes the parameter order from the arrays in bestRouteSet</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>order: <a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>An order to be removed</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="setbestrouteset" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> set<wbr>Best<wbr>Route<wbr>Set</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Best<wbr>Route<wbr>Set<span class="tsd-signature-symbol">(</span>newRouteSet<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_routeset_.routeset.html" class="tsd-signature-type">RouteSet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L329">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:329</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Changes bestRouteSet if the parameter newRouteSet has a smaller duration</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>newRouteSet: <a href="_planningscheduler_classes_routeset_.routeset.html" class="tsd-signature-type">RouteSet</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_planningscheduler_classes_routeset_.routeset.html">RouteSet</a> to be compared to bestRouteSet</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="upstacking" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> up<wbr>Stacking</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">up<wbr>Stacking<span class="tsd-signature-symbol">(</span>vertex<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a>, startVertexId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, forkliftId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, nextItem<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L687">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:687</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Inserts a new <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> recursivly for each <a href="_shared_graph_.vertex.html">Vertex</a> linked by previousVertex</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>vertex: <a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_shared_graph_.vertex.html">Vertex</a> which the <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> is to be inserted on</p>
+									</div>
+								</li>
+								<li>
+									<h5>startVertexId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A string id for the <a href="_shared_graph_.vertex.html">Vertex</a> where the recursion stops</p>
+									</div>
+								</li>
+								<li>
+									<h5>forkliftId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A string id for the forklift following the route</p>
+									</div>
+								</li>
+								<li>
+									<h5>nextItem: <a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> which the new <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> is to be linked to</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="upstackingtoarray" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> up<wbr>Stacking<wbr>ToArray</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">up<wbr>Stacking<wbr>ToArray<span class="tsd-signature-symbol">(</span>vertex<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a>, startVertexId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, forkliftId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, nextItem<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, outputArray<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L703">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:703</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Inserts a new <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> recursivly for each <a href="_shared_graph_.vertex.html">Vertex</a> linked by previousVertex to the parameter array</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>vertex: <a href="_planningscheduler_classes_graph_.vertex.html" class="tsd-signature-type">Vertex</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_shared_graph_.vertex.html">Vertex</a> denoting the step of the recursing through the chain</p>
+									</div>
+								</li>
+								<li>
+									<h5>startVertexId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A string id for the <a href="_shared_graph_.vertex.html">Vertex</a> where the recursion stops</p>
+									</div>
+								</li>
+								<li>
+									<h5>forkliftId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A string id for the forklift following the route</p>
+									</div>
+								</li>
+								<li>
+									<h5>nextItem: <a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> which the new <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> is to be linked to</p>
+									</div>
+								</li>
+								<li>
+									<h5>outputArray: <a href="_planningscheduler_classes_graph_.scheduleitem.html" class="tsd-signature-type">ScheduleItem</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_planningscheduler_classes_graph_.scheduleitem.html">ScheduleItem</a> array to store the output</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="update" class="tsd-anchor"></a>
+					<h3>update</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L744">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:744</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Updates the routeScheduler by adding new orders and calculating a new <a href="_planningscheduler_classes_routeset_.routeset.html">RouteSet</a> and compares it to bestRouteSet</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="evalrouteset" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> eval<wbr>Route<wbr>Set</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">eval<wbr>Route<wbr>Set<span class="tsd-signature-symbol">(</span>routeSet<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_routeset_.routeset.html" class="tsd-signature-type">RouteSet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L487">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:487</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Finds the sum of the durations of all routes in a <a href="_planningscheduler_classes_routeset_.routeset.html">RouteSet</a></p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>routeSet: <a href="_planningscheduler_classes_routeset_.routeset.html" class="tsd-signature-type">RouteSet</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A <a href="_planningscheduler_classes_routeset_.routeset.html">RouteSet</a> whose durations sum is to be found</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>The sum of the durations</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="isvalidmutation" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> is<wbr>Valid<wbr>Mutation</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Valid<wbr>Mutation<span class="tsd-signature-symbol">(</span>currentOrder<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a>, newOrder<span class="tsd-signature-symbol">: </span><a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/routeScheduler.ts#L402">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/routeScheduler.ts:402</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Checks whether it is valid to plan the parameter currentOrder before the parameter newOrder</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>currentOrder: <a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>An <a href="_shared_order_.order.html">Order</a> to be checked</p>
+									</div>
+								</li>
+								<li>
+									<h5>newOrder: <a href="_planningscheduler_classes_order_.order.html" class="tsd-signature-type">Order</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>An <a href="_shared_order_.order.html">Order</a> to be checked</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>True if currentOrder can be planned before newOrder</p>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="../globals.html"><em>Globals</em></a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/_planningscheduler_routescheduler_.html">&quot;planning<wbr>Scheduler/route<wbr>Scheduler&quot;</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-module">
+						<a href="_planningscheduler_routescheduler_.routescheduler.html" class="tsd-kind-icon">Route<wbr>Scheduler</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#bestrouteset" class="tsd-kind-icon">best<wbr>Route<wbr>Set</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#chargeconstant" class="tsd-kind-icon">charge<wbr>Constant</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#data" class="tsd-kind-icon">data</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#expecteddurationmultiplier" class="tsd-kind-icon">expected<wbr>Duration<wbr>Multiplier</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#moveforkliftconstant" class="tsd-kind-icon">move<wbr>Forklift<wbr>Constant</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#mutationconstant" class="tsd-kind-icon">mutation<wbr>Constant</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#mutationcounter" class="tsd-kind-icon">mutation<wbr>Counter</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#mutations" class="tsd-kind-icon">mutations</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#timeintervalminimumsize" class="tsd-kind-icon">time<wbr>Interval<wbr>Minimum<wbr>Size</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#unfinishedorderids" class="tsd-kind-icon">unfinished<wbr>Order<wbr>Ids</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#assignforklift" class="tsd-kind-icon">assign<wbr>Forklift</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#calculateroutes" class="tsd-kind-icon">calculate<wbr>Routes</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#computeearliestarrivaltime" class="tsd-kind-icon">compute<wbr>Earliest<wbr>Arrival<wbr>Time</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#createinstructions" class="tsd-kind-icon">create<wbr>Instructions</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#createmoveinstructions" class="tsd-kind-icon">create<wbr>Move<wbr>Instructions</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#createmovepalletinstructions" class="tsd-kind-icon">create<wbr>Move<wbr>Pallet<wbr>Instructions</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#findduration" class="tsd-kind-icon">find<wbr>Duration</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#findreferencetovertex" class="tsd-kind-icon">find<wbr>Reference<wbr>ToVertex</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#findvertex" class="tsd-kind-icon">find<wbr>Vertex</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#generatechronologicalpriorities" class="tsd-kind-icon">generate<wbr>Chronological<wbr>Priorities</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#generatepriorities" class="tsd-kind-icon">generate<wbr>Priorities</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#getarrivaltime" class="tsd-kind-icon">get<wbr>Arrival<wbr>Time</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#getlastscheduleitemfororder" class="tsd-kind-icon">get<wbr>Last<wbr>Schedule<wbr>Item<wbr>For<wbr>Order</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#getroute" class="tsd-kind-icon">get<wbr>Route</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#getrouteappraisals" class="tsd-kind-icon">get<wbr>Route<wbr>Appraisals</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#getstarttime" class="tsd-kind-icon">get<wbr>Start<wbr>Time</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#handlelockorder" class="tsd-kind-icon">handle<wbr>Lock<wbr>Order</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#heuristic" class="tsd-kind-icon">heuristic</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#insertorderinprioritiesappropriately" class="tsd-kind-icon">insert<wbr>Order<wbr>InPriorities<wbr>Appropriately</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#insertscheduleitemsarray" class="tsd-kind-icon">insert<wbr>Schedule<wbr>Items<wbr>Array</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#iscollisioninevitable" class="tsd-kind-icon">is<wbr>Collision<wbr>Inevitable</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#mutate" class="tsd-kind-icon">mutate</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#planoptimalroute" class="tsd-kind-icon">plan<wbr>Optimal<wbr>Route</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#priotizeonepriorityrandomly" class="tsd-kind-icon">priotize<wbr>One<wbr>Priority<wbr>Randomly</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#removeorderfrombestrouteset" class="tsd-kind-icon">remove<wbr>Order<wbr>From<wbr>Best<wbr>Route<wbr>Set</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#setbestrouteset" class="tsd-kind-icon">set<wbr>Best<wbr>Route<wbr>Set</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#upstacking" class="tsd-kind-icon">up<wbr>Stacking</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#upstackingtoarray" class="tsd-kind-icon">up<wbr>Stacking<wbr>ToArray</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#update" class="tsd-kind-icon">update</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#evalrouteset" class="tsd-kind-icon">eval<wbr>Route<wbr>Set</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="_planningscheduler_routescheduler_.routescheduler.html#isvalidmutation" class="tsd-kind-icon">is<wbr>Valid<wbr>Mutation</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
