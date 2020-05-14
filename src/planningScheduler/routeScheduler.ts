@@ -27,11 +27,11 @@ export class RouteScheduler {
     /** Heuristic function for A* implementation */
     heuristic(v1: Vertex, v2: Vertex) { return v1.getDistanceDirect(v2) / this.data.warehouse.maxForkliftSpeed * 1000; };
 
-    /** The index of the mutation in the array of mutations currently being tried */
-    mutationCounter: number = 0;
+    /** The index of the permutation in the array of permutations currently being tried */
+    permutationCounter: number = 0;
 
-    /** An array of mutations or changes to the priority in which orders are planned*/
-    mutations: { index: number, newIndex: number, value: number; }[] = [];
+    /** An array of permutations or changes to the priority in which orders are planned*/
+    permutations: { index: number, newIndex: number, value: number; }[] = [];
 
     /** An array of order ids of the orders currently being planned */
     unfinishedOrderIds: string[] = [];
@@ -45,7 +45,7 @@ export class RouteScheduler {
 
     readonly chargeConstant: number = 2.0;
 
-    readonly mutationConstant: number = 1.0;
+    readonly permutationConstant: number = 1.0;
 
     /**
      * Constructor for the object.
@@ -80,8 +80,8 @@ export class RouteScheduler {
         // Splice order from priorities and duration
         this.removeOrderFromBestRouteSet(order);
 
-        // Redo mutations
-        this.mutate();
+        // Redo permutations
+        this.permute();
 
         return route;
     }
@@ -330,43 +330,43 @@ export class RouteScheduler {
         if (this.bestRouteSet === null || RouteScheduler.evalRouteSet(newRouteSet) < RouteScheduler.evalRouteSet(this.bestRouteSet)) {
             this.bestRouteSet = newRouteSet;
             this.unfinishedOrderIds = this.bestRouteSet.priorities;
-            this.mutate();
+            this.permute();
         }
     }
 
     /**
-     * Sets the mutations array to a new array with mutations for bestRouteSet.
+     * Sets the permutations array to a new array with permutations for bestRouteSet.
      * The new array is sorted by the least efficient routes first
      */
-    private mutate(): void {
-        let mutations: { index: number, newIndex: number, value: number; }[] = [];
+    private permute(): void {
+        let permutations: { index: number, newIndex: number, value: number; }[] = [];
 
         // Determine values for all routes in bestRouteSet
         let values = this.getRouteAppraisals();
 
-        // Create an array of mutated entries for problematic values (values < ?)
+        // Create an array of permuted entries for problematic values (values < ?)
         for (let i = 0; i < values.length; i++) {
             let newIndex = i - 1;
             let currentOrder = this.data.orders[this.bestRouteSet.priorities[i]];
 
-            while (newIndex >= 0 && (values[newIndex] + newIndex * this.mutationConstant) > (values[i] + i * this.mutationConstant)
-                && RouteScheduler.isValidMutation(currentOrder, this.data.orders[this.bestRouteSet.priorities[newIndex]])) {
+            while (newIndex >= 0 && (values[newIndex] + newIndex * this.permutationConstant) > (values[i] + i * this.permutationConstant)
+                && RouteScheduler.isValidPermutation(currentOrder, this.data.orders[this.bestRouteSet.priorities[newIndex]])) {
                 newIndex--;
             }
             newIndex++;
-            // Produce a mutation
+            // Produce a permutation
             if (newIndex < i) {
                 // Potential error with newIndex: newIndex
-                mutations.push({ index: i, newIndex: newIndex, value: values[i] });
+                permutations.push({ index: i, newIndex: newIndex, value: values[i] });
             }
         }
 
-        mutations.sort((mut1, mut2) => {
-            return mut1.value - mut2.value;
+        permutations.sort((p1, p2) => {
+            return p1.value - p2.value;
         });
 
-        this.mutations = mutations;
-        this.mutationCounter = 0;
+        this.permutations = permutations;
+        this.permutationCounter = 0;
     }
 
     /**
@@ -399,7 +399,7 @@ export class RouteScheduler {
      * @param newOrder An {@link Order} to be checked
      * @returns True if currentOrder can be planned before newOrder
      */
-    private static isValidMutation(currentOrder: Order, newOrder: Order): boolean {
+    private static isValidPermutation(currentOrder: Order, newOrder: Order): boolean {
         let oneOrderIsMovePallet: boolean = currentOrder.type === Order.types.movePallet || newOrder.type === Order.types.movePallet;
         let differentForklifts: boolean = currentOrder.forkliftId !== newOrder.forkliftId;
         let timeCurrentOrderIsLower: boolean = currentOrder.time < newOrder.time;
@@ -423,7 +423,7 @@ export class RouteScheduler {
 
     /**
      * Generates a new array of order ids in the sequence they are to be planned based mostly on 
-     * bestRouteSet or chronological order, but makes changes based on mutations or randomness
+     * bestRouteSet or chronological order, but makes changes based on permutations or randomness
      * @returns The new priorities in a string array of order ids
      */
     private generatePriorities(): string[] {
@@ -435,44 +435,44 @@ export class RouteScheduler {
             // Clone of bestRouteSet.priorities
             priorities = [...this.bestRouteSet.priorities];
 
-            // Handle mutationCounter greater than number of mutations
-            if (this.mutationCounter >= this.mutations.length && priorities.length > 0) {
+            // Handle permutationCounter greater than number of permutations
+            if (this.permutationCounter >= this.permutations.length && priorities.length > 0) {
                 this.priotizeOnePriorityRandomly(priorities);
 
-            } else if (this.mutations.length > 0) {
+            } else if (this.permutations.length > 0) {
 
-                // Handle the mutations
-                let priority = priorities.splice(this.mutations[this.mutationCounter].index, 1)[0];
-                priorities.splice(this.mutations[this.mutationCounter].newIndex, 0, priority);
+                // Handle the permutations
+                let priority = priorities.splice(this.permutations[this.permutationCounter].index, 1)[0];
+                priorities.splice(this.permutations[this.permutationCounter].newIndex, 0, priority);
             }
         } else {
             priorities = this.generateChronologicalPriorities();
 
-            if (this.mutationCounter > 0) {
+            if (this.permutationCounter > 0) {
                 this.priotizeOnePriorityRandomly(priorities);
             }
         }
 
-        this.mutationCounter++;
+        this.permutationCounter++;
         return priorities;
     }
 
     /**
-     * Looks through as many random mutations as there are strings in the parameter array, 
-     * until a valid mutation is found
+     * Looks through as many random permutations as there are strings in the parameter array, 
+     * until a valid permutation is found
      * @param priorities A string array with order ids in the order they are to be planned
      */
     private priotizeOnePriorityRandomly(priorities: string[]): void {
         let ranIndex: number = randomIntegerInRange(0, priorities.length - 1);
         let ranNewIndex: number = ranIndex - 1;
 
-        // Increases ranNewIndex until the mutation is no longer valid
-        while (ranNewIndex >= 0 && RouteScheduler.isValidMutation(this.data.orders[priorities[ranIndex]], this.data.orders[priorities[ranNewIndex]])) {
+        // Increases ranNewIndex until the permutation is no longer valid
+        while (ranNewIndex >= 0 && RouteScheduler.isValidPermutation(this.data.orders[priorities[ranIndex]], this.data.orders[priorities[ranNewIndex]])) {
             ranNewIndex--;
         }
         ranNewIndex++;
 
-        // Performs the mutation
+        // Performs the permutation
         if (ranNewIndex < ranIndex) {
             let priority = priorities.splice(ranIndex, 1)[0];
             priorities.splice(ranNewIndex, 0, priority);
