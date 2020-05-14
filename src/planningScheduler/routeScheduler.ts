@@ -139,72 +139,11 @@ export class RouteScheduler {
      * @param order Is a specific order which is retrieved from the array of orders in the following way: this.data.orders[orderId]
      */
     private createInstructions(order: Order): Instruction[] {
-        let instructions: Instruction[] = [];
-
         let endVertex = this.findVertex(order.endVertexId);
         let duration = this.findDuration(order.id);
         let lastScheduleItem = endVertex.getScheduleItem(order.time + duration);
 
-        if (order.type === Order.types.movePallet) {
-            this.createMovePalletInstructions(instructions, order, lastScheduleItem, order.time + duration);
-        } else if (order.type === Order.types.moveForklift || order.type === Order.types.charge) {
-            let nextLastScheduleitem = lastScheduleItem.previousScheduleItem;
-            if (nextLastScheduleitem !== null) {
-                this.createMoveInstructions(instructions, order, nextLastScheduleitem);
-            }
-            if (order.type === Order.types.charge) {
-                instructions.push(new Instruction(Instruction.types.charge, endVertex.id, order.time + duration));
-            }
-        }
-
-        instructions.push(new Instruction(Instruction.types.sendFeedback, endVertex.id, order.time + duration));
-
-        return instructions;
-    }
-
-    /**
-     * Creates an array of instructions recursively by pushing an instruction-object to 
-     * the array of instructions passed in as first parameter 
-     * @param instructions Is outputparameter. Initially an empty array and after termination an array of instruction objects
-     * @param order Is a specific order which is retrieved from the array of orders in the following way: this.data.orders[orderId]
-     * @param scheduleItem Initially the last scheduleItem in the route, then scheduleItems predecessors are followed recursively until 
-     *                     first schedulteItem in route is reached 
-     */
-    private createMovePalletInstructions(instructions: Instruction[], order: Order, scheduleItem: ScheduleItem, endVertexTime: number): void {
-        let instructionType = Instruction.types.move;
-        if (scheduleItem.previousScheduleItem !== null) {
-            this.createMovePalletInstructions(instructions, order, scheduleItem.previousScheduleItem, endVertexTime);
-            if (scheduleItem.currentVertexId === order.endVertexId && scheduleItem.arrivalTimeCurrentVertex === endVertexTime) {
-                instructionType = Instruction.types.unloadPallet;
-            }
-        } else if (scheduleItem.currentVertexId === order.startVertexId) {
-            instructionType = Instruction.types.loadPallet;
-        }
-        let newInstruction = new Instruction(instructionType, scheduleItem.currentVertexId, scheduleItem.arrivalTimeCurrentVertex);
-        instructions.push(newInstruction);
-    }
-
-    /**
-     * Creates instructions for two different order types:
-     * - moveForklift
-     * - charge
-     * 
-     * Follows same procedure as {@link createMovePalletInstructions}: Creates an array of instructions recursively by pushing an instruction-object to
-     * the array of instructions passed in as first parameter
-     * 
-     * @param instructions Is outputparameter. Initially an empty array and after termination an array of all instruction objects except the last instruction object  
-     * @param order Is a specific order which is retrieved from the array of orders in the following way: this.data.orders[orderId]
-     * @param scheduleItem Initially the next last scheduleItem in the route, then scheduleItems predecessors are followed recursively until
-     *                     first schedulteItem in route is reached
-     */
-    private createMoveInstructions(instructions: Instruction[], order: Order, scheduleItem: ScheduleItem): void {
-        let instructionType;
-        if (scheduleItem.previousScheduleItem !== null) {
-            this.createMoveInstructions(instructions, order, scheduleItem.previousScheduleItem);
-        }
-        instructionType = Instruction.types.move;
-        let newInstruction = new Instruction(instructionType, scheduleItem.currentVertexId, scheduleItem.arrivalTimeCurrentVertex);
-        instructions.push(newInstruction);
+        return lastScheduleItem.asInstructionArray(order, order.time + duration);;
     }
 
     /**
