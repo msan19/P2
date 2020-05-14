@@ -194,8 +194,7 @@ export class ScheduleItem {
 
         // Create and push an instruction for every scheduleItem from start to end
         let lastScheduleItem;
-        while (scheduleItem.nextScheduleItem) {
-
+        while (scheduleItem) {
             // Get instruction-type
             let instructionType = Instruction.types.move;
             if (order.type === Order.types.movePallet) {
@@ -219,10 +218,10 @@ export class ScheduleItem {
         }
 
         if (order.type === Order.types.charge) {
-            instructions.push(new Instruction(Instruction.types.charge, scheduleItem.currentVertexId, endTime));
+            instructions.push(new Instruction(Instruction.types.charge, lastScheduleItem.currentVertexId, endTime));
         }
 
-        instructions.push(new Instruction(Instruction.types.sendFeedback, scheduleItem.currentVertexId, endTime));
+        instructions.push(new Instruction(Instruction.types.sendFeedback, lastScheduleItem.currentVertexId, endTime));
 
         return instructions;
     }
