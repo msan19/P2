@@ -315,7 +315,7 @@ export class RouteScheduler {
      * movePallet is appraised by 
      * @returns An array of estimates for how good each route is
      */
-    private getRouteAppraisals() {
+    private getRouteAppraisals(): number[] {
         return this.bestRouteSet.priorities.map((priority, index) => {
             let order = this.data.orders[priority];
             let duration = this.bestRouteSet.duration[index];
