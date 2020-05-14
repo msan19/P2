@@ -45,3 +45,48 @@
     (WIP)
 # Del 4 - Konklusion
     (WIP)
+
+
+
+
+
+Rettet: √
+Indhold færdig: X
+Mangler rettelser til indhold: /
+Mangler kode/implementation: \
+
+# Faktisk del 2
+* Intro
+* Opsummering af problem                                √
+* Brugere                                               /
+* Kravspecifikation                                     X
+* Overordnet løsningsforslag                            X
+* Overordnet model
+* Ruteplanlægningssystem
+    * Overordnet MAPF Løsning 
+        * Udvidelse af model                            X
+        * Udregning af RouteSets                        X
+        * Bestemmelse af BestRouteSet                   X
+        * Mutationer af prioritetsrækkefølgen           \
+        * Uddragelse af rute fra bestRouteSet
+    * A*                                                X
+        * Implementation                                X
+        * Loop invariant                                X
+        * Kompleksitet                                  X
+    * Kollisioner                                       \
+* Webinterface                                          X
+    * Overordnet beskrivelse af webinterface            X
+    * Sigma                                             X
+* Kommunikation                                         X
+    * Format                                            X
+    * Ruteplanlægger                                    X
+    * Palleløftere                                      X
+    * Web-panel                                         X
+    * Blackbox                                          X
+    * Typescript implementation                         X
+        * Controllers                                   X
+        * ApiCaller                                     X
+        * Websocket                                     X
+
+
+
