@@ -1,5 +1,6 @@
 // webServer.ts
 /**
+ * The Webserver class for making a webserver
  * @packageDocumentation
  * @category Shared
  */
@@ -10,6 +11,9 @@ import * as net from "net";
 import { getStaticFile } from "./webUtilities";
 import * as mime from "mime-types";
 
+/**
+ * A {@link WebServer} object used to set up a server
+ */
 export class WebServer {
     server: http.Server;
     port: number;
@@ -24,7 +28,7 @@ export class WebServer {
         });
     }
 
-    /**
+   /**
     * Creates a HTTP web server using Node.js methods.
     * Handles client requests by parsing part of an URL into a controller, and checking whether it is valid (typeof request.method).
     * If a controller is invalid, the server will return to index.html, prompting an error if unsuccessful.
@@ -81,7 +85,9 @@ export class WebServer {
         });
     }
 
-    /** run the server and log "hostname:port" */
+    /** 
+     * Runs the server and log "hostname:port" 
+     */
     run(): void {
         this.server.listen(this.port, () => {
             console.log(`Server running at http://${this.hostname}:${this.port}/`);
