@@ -13,7 +13,9 @@ import { EventEmitter } from "events";
 import { JsonTryParse } from "./webUtilities";
 import { stringifyObject } from "./utilities";
 
-/** An enum representing the type of package being sendt and recieved */
+/** 
+ * An enum representing the type of package being sendt and recieved 
+ */
 enum PackageTypes {
     route = "route",
     routes = "routes",
@@ -63,6 +65,11 @@ export class WebSocket extends EventEmitter {
         });
     }
 
+    /**
+     * Logs an error if not listeners are found
+     * @param type An enum PackageType to be emited
+     * @param data To be emited
+     */
     private emitAndExpectListeners(type: PackageTypes, data: any) {
         if (!this.emit(type, data)) {
             // Emit returns true if any listeners were found.
@@ -172,6 +179,10 @@ export class WebSocket extends EventEmitter {
         });
     }
 
+    /**
+     * Adds an eventListener of the specifyed type and removes the listener when listener is called
+     * @param type An enum PackageType specifying the type of the event
+     */
     async whenPackage<T>(type: PackageTypes): Promise<T> {
         return new Promise((resolve: (result: T) => any) => {
             let event = (result: T) => {
