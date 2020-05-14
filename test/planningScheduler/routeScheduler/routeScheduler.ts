@@ -57,7 +57,6 @@ function testRouteScheduler(): void {
 
             // Set idlePositions of routeSet made of a dict of forkliftId : ScheduleItems pairs
             routeSet.graph.idlePositions["F23"] = new ScheduleItem("F23", 1400, "N0-0");
-            //console.log(routeSet.graph.idlePositions);
             let expected = [];
             expected.push(new ScheduleItem("F23", 1400, "N0-0"));
             let result = routeScheduler.assignForklift(routeSet, order);
