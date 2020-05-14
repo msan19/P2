@@ -22,30 +22,30 @@ export class RouteScheduler {
     data: DataContainer;
 
     /** Object containing best calculated routes */
-    bestRouteSet: RouteSet;
+    bestRouteSet: RouteSet = null;
 
     /** Heuristic function for A* implementation */
-    heuristic: (v1: Vertex, v2: Vertex) => number;
+    heuristic(v1: Vertex, v2: Vertex) { return v1.getDistanceDirect(v2) / this.data.warehouse.maxForkliftSpeed * 1000; };
 
     /** The index of the mutation in the array of mutations currently being tried */
-    mutationCounter: number;
+    mutationCounter: number = 0;
 
     /** An array of mutations or changes to the priority in which orders are planned*/
-    mutations: { index: number, newIndex: number, value: number; }[];
+    mutations: { index: number, newIndex: number, value: number; }[] = [];
 
     /** An array of order ids of the orders currently being planned */
-    unfinishedOrderIds: string[];
+    unfinishedOrderIds: string[] = [];
 
     /** The minimum amount of time between two forklifts crossing the same vertex for a third to cross in the meantime */
-    timeIntervalMinimumSize: number;
+    readonly timeIntervalMinimumSize: number = 3000;
 
-    expectedDurationMultiplier: number;
+    readonly expectedDurationMultiplier: number = 2.0;
 
-    moveForkliftConstant: number;
+    readonly moveForkliftConstant: number = 2.0;
 
-    chargeConstant: number;
+    readonly chargeConstant: number = 2.0;
 
-    mutationConstant: number;
+    readonly mutationConstant: number = 1.0;
 
     /**
      * Constructor for the object.
@@ -56,18 +56,6 @@ export class RouteScheduler {
      */
     constructor(data: DataContainer) {
         this.data = data;
-        this.bestRouteSet = null;
-        this.heuristic = (v1: Vertex, v2: Vertex) => { return v1.getDistanceDirect(v2) / this.data.warehouse.maxForkliftSpeed * 1000; };
-        this.mutationCounter = 0;
-        this.mutations = [];
-        this.unfinishedOrderIds = [];
-
-        //Constants
-        this.timeIntervalMinimumSize = 3000;
-        this.expectedDurationMultiplier = 2.0;
-        this.moveForkliftConstant = 2.0;
-        this.chargeConstant = 2.0;
-        this.mutationConstant = 1.0;
     }
 
     /**
