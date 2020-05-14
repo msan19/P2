@@ -191,23 +191,29 @@ function createMovePalletRoute(routeScheduler: RouteScheduler, order: Order, ver
 
     return new Route(routeId, order.palletId, forkliftId, order.id, 1, instructions);
 }
+//    0    10   20   30   40   
+// -> 1 -> 2 -> 3 -> 4 -> 5 ? 5
 
 function createMoveForkliftRoute(routeScheduler: RouteScheduler, order: Order, vertexId: string[], routeId: string, forkliftId: string, visitTimes: number[]): Route {
     let instructions: Instruction[] = [];
 
     let currentVertex = routeScheduler.bestRouteSet.graph.vertices[vertexId[0]];
     let currentScheduleItem = getScheduleItem(currentVertex, visitTimes[0]);
-    for (let i = 0; i < vertexId.length; i++) {
+    for (let i = 0; i < vertexId.length + 1; i++) {
         let instructionType;
-        if (i === vertexId.length - 1) {
+        let newInstruction;
+        if (i === vertexId.length) {
             instructionType = Instruction.types.sendFeedback;
+            newInstruction = new Instruction(instructionType, vertexId[i - 1], currentScheduleItem.arrivalTimeCurrentVertex);
         } else {
             instructionType = Instruction.types.move;
+            newInstruction = new Instruction(instructionType, vertexId[i], currentScheduleItem.arrivalTimeCurrentVertex);
         }
-        let newInstruction = new Instruction(instructionType, vertexId[i], currentScheduleItem.arrivalTimeCurrentVertex);
+
         instructions.push(newInstruction);
-        currentScheduleItem = currentScheduleItem.nextScheduleItem;
+        currentScheduleItem = i === vertexId.length - 1 ? currentScheduleItem : currentScheduleItem.nextScheduleItem;
     }
+
 
     return new Route(routeId, order.palletId, forkliftId, order.id, 1, instructions);
 }

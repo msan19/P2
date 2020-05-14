@@ -1,5 +1,7 @@
 // forklift.ts
 /**
+ * Used to simulate real forklifts in {@link PlanningScheduler}.
+ * Maintains connection through sockets with {@link Forklift} 
  * @packageDocumentation
  * @category PlanningScheduler
  */
