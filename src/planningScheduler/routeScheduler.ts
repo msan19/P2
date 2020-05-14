@@ -481,19 +481,15 @@ export class RouteScheduler {
      * @returns The found time of arrival
      */
     getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number, isEndVertex: boolean, forkliftId: string): number {
-        let time: number;
-        let interval: number;
-        let earliestArrivalTime: number;
-
         if (destinationVertex.scheduleItems.length <= 0) {
             return this.computeEarliestArrivalTime(currentVertex, destinationVertex, currentTime);
         }
 
         // Find earliest possible reference to destinationVertex
         let indexOfDestinationVertex = this.findReferenceToVertex(currentVertex, destinationVertex, currentTime);
-        interval = 0;
-        time = 0;
-        earliestArrivalTime = this.computeEarliestArrivalTime(currentVertex, destinationVertex, currentTime);
+        let interval = 0;
+        let time = 0;
+        let earliestArrivalTime = this.computeEarliestArrivalTime(currentVertex, destinationVertex, currentTime);
         while ((interval < this.timeIntervalMinimumSize || time + this.timeIntervalMinimumSize / 2 <= earliestArrivalTime)
             && indexOfDestinationVertex < destinationVertex.scheduleItems.length) {
             if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[indexOfDestinationVertex], earliestArrivalTime, currentTime,
