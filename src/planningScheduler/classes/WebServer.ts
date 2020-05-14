@@ -1,5 +1,7 @@
 // WebServer.ts
 /**
+ * Used in {@link PlanningScheduler} to create a webserver,
+ * using specific handler from {@link Handler}
  * @packageDocumentation
  * @category PlanningScheduler
  */
