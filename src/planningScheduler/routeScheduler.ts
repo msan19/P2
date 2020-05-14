@@ -496,9 +496,13 @@ export class RouteScheduler {
                 indexOfDestinationVertex === destinationVertex.scheduleItems.length - 1, forkliftId)) {
                 return Infinity;
             }
+
             time = destinationVertex.scheduleItems[indexOfDestinationVertex].arrivalTimeCurrentVertex;
-            interval = indexOfDestinationVertex + 1 >= destinationVertex.scheduleItems.length ? Infinity
-                : destinationVertex.scheduleItems[indexOfDestinationVertex + 1].arrivalTimeCurrentVertex - time;
+            if (indexOfDestinationVertex + 1 >= destinationVertex.scheduleItems.length) {
+                interval = Infinity;
+            } else {
+                interval = destinationVertex.scheduleItems[indexOfDestinationVertex + 1].arrivalTimeCurrentVertex - time;
+            }
             indexOfDestinationVertex++;
         }
 
