@@ -350,7 +350,7 @@ export class RouteScheduler {
             let currentOrder = this.data.orders[this.bestRouteSet.priorities[i]];
 
             while (newIndex >= 0 && (values[newIndex] + newIndex * this.permutationConstant) > (values[i] + i * this.permutationConstant)
-                && RouteScheduler.isValidMutation(currentOrder, this.data.orders[this.bestRouteSet.priorities[newIndex]])) {
+                && RouteScheduler.isValidPermutation(currentOrder, this.data.orders[this.bestRouteSet.priorities[newIndex]])) {
                 newIndex--;
             }
             newIndex++;
