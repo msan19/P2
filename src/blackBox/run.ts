@@ -5,7 +5,6 @@
  */
 
 import { createGraph } from "./warehouse";
-import * as fs from "fs";
 import { Warehouse } from "../shared/warehouse";
 import { ApiCaller } from "../shared/apiCaller";
 import { Response } from "node-fetch";

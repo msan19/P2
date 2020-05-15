@@ -42,12 +42,12 @@ export class RouteScheduler {
     readonly expectedDurationMultiplier: number = 2.0;
 
     /** Value returned when appraising an order to moveForklift */
-    readonly moveForkliftConstant: number = 2.0;
+    readonly moveForkliftConstant: number = 1.0;
 
     /** Value returned when appraising an order to chargeForklift */
-    readonly chargeConstant: number = 2.0;
+    readonly chargeConstant: number = 1.0;
 
-    readonly permutationConstant: number = 1.0;
+    readonly permutationConstant: number = 0.2;
 
     /**
      * Constructor for the object.
@@ -284,23 +284,15 @@ export class RouteScheduler {
         let permutations: { index: number, newIndex: number, value: number; }[] = [];
 
         // Determine values for all routes in bestRouteSet
-        let values = this.getRouteAppraisals();
+        let values: number[] = this.getRouteAppraisals();
 
         // Create an array of permuted entries for problematic values (values < ?)
         for (let i = 0; i < values.length; i++) {
-            let newIndex = i - 1;
-            let currentOrder = this.data.orders[this.bestRouteSet.priorities[i]];
+            let currentOrder: Order = this.data.orders[this.bestRouteSet.priorities[i]];
+            let newIndex: number = this.findPermutationNewIndex(i, values, currentOrder);
 
-            while (newIndex >= 0 && (values[newIndex] + newIndex * this.permutationConstant) > (values[i] + i * this.permutationConstant)
-                && RouteScheduler.isValidPermutation(currentOrder, this.data.orders[this.bestRouteSet.priorities[newIndex]])) {
-                newIndex--;
-            }
-            newIndex++;
             // Produce a permutation
-            if (newIndex < i) {
-                // Potential error with newIndex: newIndex
-                permutations.push({ index: i, newIndex: newIndex, value: values[i] });
-            }
+            if (newIndex < i) permutations.push({ index: i, newIndex: newIndex, value: values[i] });
         }
 
         permutations.sort((p1, p2) => {
@@ -309,6 +301,22 @@ export class RouteScheduler {
 
         this.permutations = permutations;
         this.permutationCounter = 0;
+    }
+
+    /**
+     * Finds the index where the {@link Order} at the parameter index i whould be permuted to
+     * @param i An index number for the original priority of the permutation
+     * @param values A number array of values assigned to routes
+     * @param currentOrder An {@link Order} being permuted
+     * @returns The index found
+     */
+    private findPermutationNewIndex(i: number, values: number[], currentOrder: Order) {
+        let newIndex = i - 1;
+        while (newIndex >= 0 && (values[i] + (i - newIndex) * this.permutationConstant) < values[newIndex]
+            && RouteScheduler.isValidPermutation(currentOrder, this.data.orders[this.bestRouteSet.priorities[newIndex]])) {
+            newIndex--;
+        }
+        return newIndex + 1;
     }
 
     /**
@@ -324,7 +332,7 @@ export class RouteScheduler {
                 case Order.types.movePallet:
                     let startVertex = this.data.warehouse.graph.vertices[order.startVertexId];
                     let endVertex = this.data.warehouse.graph.vertices[order.endVertexId];
-                    return startVertex.getDistanceDirect(endVertex) / duration;
+                    return this.heuristic(startVertex, endVertex) / duration;
                 case Order.types.moveForklift:
                     return this.moveForkliftConstant;
                 case Order.types.charge:
