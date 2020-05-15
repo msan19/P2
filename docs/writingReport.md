@@ -58,7 +58,7 @@ Mangler kode/implementation: \
 # Faktisk del 2
 * Intro
 * Opsummering af problem                                √
-* Brugere                                               /
+* Brugere                                               √   (Mangler opdateret use-case)
 * Kravspecifikation                                     X
 * Overordnet løsningsforslag                            X
 * Overordnet model
