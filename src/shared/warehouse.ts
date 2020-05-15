@@ -1,4 +1,3 @@
-// warehouse.ts
 /**
  * @packageDocumentation
  * @category Shared

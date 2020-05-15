@@ -1,4 +1,3 @@
-// apiCaller.ts
 /**
  * @packageDocumentation
  * @category Shared
