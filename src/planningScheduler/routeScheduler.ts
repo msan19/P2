@@ -174,6 +174,7 @@ export class RouteScheduler {
      * {@link ScheduleItem} on each {@link Vertex} on the route
      * @param data A {@link DataContainer} givin acces to a dictionary of orders
      * @param routeSet A {@link RouteSet} on which to calculate routes
+     * @returns True if all routes in the routeSet can be planned, otherwise false is returned
      */
     private calculateRoutes(data: DataContainer, routeSet: RouteSet): boolean {
         for (let orderId of routeSet.priorities) {
