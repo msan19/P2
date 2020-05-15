@@ -174,6 +174,7 @@ export class RouteScheduler {
      * {@link ScheduleItem} on each {@link Vertex} on the route
      * @param data A {@link DataContainer} givin acces to a dictionary of orders
      * @param routeSet A {@link RouteSet} on which to calculate routes
+     * @returns True if all routes in the routeSet can be planned, otherwise false is returned
      */
     private calculateRoutes(data: DataContainer, routeSet: RouteSet): boolean {
         for (let orderId of routeSet.priorities) {
@@ -265,14 +266,242 @@ export class RouteScheduler {
     }
 
     /**
-     * Changes bestRouteSet if the parameter newRouteSet has a smaller duration
-     * @param newRouteSet A {@link RouteSet} to be compared to bestRouteSet
+     * Finds the fastest route between the parameter startVertex and the parameter endVertex for the parameter forklift.
+     * The route is stored in temporary variables on the verticies of the parameter {@link RouteSet}
+     * @param routeSet A {@link RouteSet} which the route is stored on
+     * @param startVertexId A string id of the start {@link Vertex}
+     * @param endVertexId A string id of the end {@link Vertex}
+     * @param orderTime A time for when the route begins
+     * @param forkliftId A string id specifying the forklift which the route is planned for 
+     * @returns The amount of time the route takes
      */
-    private setBestRouteSet(newRouteSet: RouteSet): void {
-        if (this.bestRouteSet === null || RouteScheduler.evalRouteSet(newRouteSet) < RouteScheduler.evalRouteSet(this.bestRouteSet)) {
-            this.bestRouteSet = newRouteSet;
-            this.unfinishedOrderIds = this.bestRouteSet.priorities;
-            this.permute();
+    planOptimalRoute(routeSet: RouteSet, startVertexId: string, endVertexId: string, orderTime: number, forkliftId: string): number {
+        let endVertex: Vertex = routeSet.graph.vertices[endVertexId];
+        let startVertex: Vertex = routeSet.graph.vertices[startVertexId];
+        let getEstimate = (currentVertex: Vertex): number => {
+            return this.heuristic(currentVertex, endVertex) + routeSet.graph.vertices[currentVertex.id].visitTime;
+        };
+
+        let queue = new MinPriorityQueue(getEstimate);
+        queue.insert(startVertex);
+        routeSet.graph.reset();
+        startVertex.isVisited = true;
+        startVertex.visitTime = orderTime;
+
+        while (queue.array.length > 0) {
+            let currentVertex: Vertex = queue.extractMin();
+            for (let u = 0; u < currentVertex.adjacentVertexIds.length; u++) {
+                let adjacentVertex: Vertex = routeSet.graph.vertices[currentVertex.adjacentVertexIds[u]];
+                if (adjacentVertex.id === endVertex.id) {
+                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime, true, forkliftId);
+                    if (adjacentVertex.visitTime < Infinity) {
+                        adjacentVertex.isVisited = true;
+                        adjacentVertex.previousVertex = currentVertex;
+                        return endVertex.visitTime - orderTime;
+                    }
+                } else if (!adjacentVertex.isVisited) {
+                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime, false, forkliftId);
+                    if (adjacentVertex.visitTime < Infinity) {
+                        queue.insert(adjacentVertex);
+                        adjacentVertex.isVisited = true;
+                        adjacentVertex.previousVertex = currentVertex;
+                    }
+                }
+            }
+        }
+        return Infinity;
+    }
+
+    /**
+     * Finds the earliest possible time which the parameter forklift can arrive at the parameter {@link Vertex} without colliding
+     * with previously planned routes
+     * @param currentVertex A {@link Vertex} at which the forklift is arriving from
+     * @param destinationVertex A {@link Vertex} at which the forklift is arriving
+     * @param currentTime A time where the forklift leaves the current {@link Vertex}
+     * @param isEndVertex A boolean specifiyng if the parameter destination {@link Vertex} is the last {@link Vertex} of the route
+     * @param forkliftId A string id for the forklift whose arrival time is to be calculated
+     * @returns The found time of arrival
+     */
+    getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number, isEndVertex: boolean, forkliftId: string): number {
+        if (destinationVertex.scheduleItems.length <= 0) {
+            return this.computeEarliestArrivalTime(currentVertex, destinationVertex, currentTime);
+        }
+
+        // Find earliest possible reference to destinationVertex
+        let indexOfDestinationVertex = this.findReferenceToVertex(currentVertex, destinationVertex, currentTime);
+        let interval = 0;
+        let time = 0;
+        let earliestArrivalTime = this.computeEarliestArrivalTime(currentVertex, destinationVertex, currentTime);
+        while ((interval < this.timeIntervalMinimumSize || time + this.timeIntervalMinimumSize / 2 <= earliestArrivalTime)
+            && indexOfDestinationVertex < destinationVertex.scheduleItems.length) {
+            if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[indexOfDestinationVertex], earliestArrivalTime, currentTime,
+                indexOfDestinationVertex === destinationVertex.scheduleItems.length - 1, forkliftId)) {
+                return Infinity;
+            }
+
+            time = destinationVertex.scheduleItems[indexOfDestinationVertex].arrivalTimeCurrentVertex;
+            if (indexOfDestinationVertex + 1 >= destinationVertex.scheduleItems.length) {
+                interval = Infinity;
+            } else {
+                interval = destinationVertex.scheduleItems[indexOfDestinationVertex + 1].arrivalTimeCurrentVertex - time;
+            }
+            indexOfDestinationVertex++;
+        }
+
+        if (time + this.timeIntervalMinimumSize / 2 < earliestArrivalTime) {
+            return earliestArrivalTime;
+        }
+
+        // If it blocks another route on its last vertex
+        if (isEndVertex && indexOfDestinationVertex < destinationVertex.scheduleItems.length) {
+            return Infinity;
+        }
+
+        return destinationVertex.scheduleItems[indexOfDestinationVertex - 1].arrivalTimeCurrentVertex + (this.timeIntervalMinimumSize / 2);
+    }
+
+    /**
+     * Computes the earliest possible time for when the forklift can arrive at destinationVertex
+     * @returns The computed time
+     */
+    private computeEarliestArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, time: number): number {
+        return (1000 * currentVertex.getDistanceDirect(destinationVertex) / this.data.warehouse.maxForkliftSpeed) + time;
+    }
+
+    /**
+     * Goes through the each {@link ScheduleItem} on the parameter currentVertex starting at currentTime backwards in time,
+     * until the earliest reference to the parameter destinationVertex occurs. A reference is here the previousScheduleItem
+     * and the nextScheduleItem references that form a doubly linked list on a graph
+     * @param currentVertex A {@link Vertex} whose {@link ScheduleItem} array is searched
+     * @param destinationVertex A {@link Vertex} to find a reference to, and to find the returned index on
+     * @param currentTime A time for when to begin the search on the parameter currentVertex
+     * @returns The index of the {@link ScheduleItem} on the parameter destinationVertex first referenced on the parameter currentVertex
+     */
+    private findReferenceToVertex(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number): number {
+        let previousVertexId: string = "";
+        let nextVertexId: string = "";
+        let i: number;
+        let time: number;
+
+        //Searches linearly through the ScheduleItems for a reference
+        for (i = currentVertex.getScheduleItemIndex(currentTime); i >= 0
+            && previousVertexId !== destinationVertex.id
+            && nextVertexId !== destinationVertex.id
+            && currentVertex.scheduleItems.length > 0; i--) {
+            if (i >= currentVertex.scheduleItems.length) {
+                i = currentVertex.scheduleItems.length - 1;
+            }
+            if (currentVertex.scheduleItems[i].previousScheduleItem !== null) {
+                previousVertexId = currentVertex.scheduleItems[i].previousScheduleItem.currentVertexId;
+            }
+            if (currentVertex.scheduleItems[i].nextScheduleItem !== null) {
+                nextVertexId = currentVertex.scheduleItems[i].nextScheduleItem.currentVertexId;
+            }
+        }
+        if (i === -1) i = 0;
+
+        //Finds the time of the ScheduleItem on the destinationVertex
+        if (previousVertexId === destinationVertex.id && currentVertex.scheduleItems[i].previousScheduleItem !== null) {
+            time = currentVertex.scheduleItems[i].previousScheduleItem.arrivalTimeCurrentVertex;
+        } else if (nextVertexId === destinationVertex.id && currentVertex.scheduleItems[i].nextScheduleItem !== null) {
+            time = currentVertex.scheduleItems[i].nextScheduleItem.arrivalTimeCurrentVertex;
+        } else {
+            time = 0;
+        }
+
+        //Returns the index of the ScheduleItem
+        return destinationVertex.getScheduleItemIndex(time);
+    }
+
+    /**
+     * Finds out whether the parameter {@link ScheduleItem} makes it imposible for the parameter foklift to cross an edge 
+     * of the graph based on the path specified by the parameter {@link ScheduleItem}
+     * @param startVertexId A string id of the {@link Vertex} which the forklift is coming from
+     * @param scheduleItem A {@link ScheduleItem} for collisions to be checked against
+     * @param earliestArrivalTime A number specifieing the time when the forklift arrives if it travels at max speed
+     * @param currentTime A number specifieing the time when the forklift leaves startVertex
+     * @param isLast A boolean for whether the parameter {@link ScheduleItem} is the {@link ScheduleItem} on its {@link Vertex}
+     * @param forkliftId A string for the forklift who is crossing from the startVertex 
+     * to the {@link Vertex} with the parameter scheduleItem on it
+     * @returns True if crossing the edge at this time is not possible, false otherwise
+     */
+    private isCollisionInevitable(startVertexId: string, scheduleItem: ScheduleItem, earliestArrivalTime: number, currentTime: number, isLast: boolean, forkliftId: string): boolean {
+        // Checks if the parameter scheduleItem is part of a route from the other Vertex to the startVertex in the
+        // first case, or from the startVertex to the other Vertex in the second case
+        if (scheduleItem.nextScheduleItem !== null && scheduleItem.nextScheduleItem.currentVertexId === startVertexId) {
+
+            // Checks for a frontal collision
+            if (scheduleItem.arrivalTimeCurrentVertex > earliestArrivalTime || scheduleItem.nextScheduleItem.arrivalTimeCurrentVertex > currentTime) {
+                return true;
+            }
+        } else if (scheduleItem.previousScheduleItem !== null && scheduleItem.previousScheduleItem.currentVertexId === startVertexId) {
+
+            // Checks for a rear-end collision
+            if (scheduleItem.previousScheduleItem.arrivalTimeCurrentVertex > currentTime) {
+                return true;
+            }
+        }
+
+        // Checks whether the ScheduleItem marks an idle forklift other than itself
+        if (scheduleItem.nextScheduleItem === null && isLast && scheduleItem.forkliftId !== forkliftId) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+    * Creates an array of {@link ScheduleItem}s, based on the route of a forklift from startVertexId, to endVertex.
+    * @param endVertex The final {@link Vertex} for the forklift
+    * @param startVertexId A string id for the {@link Vertex} where the forklift begins
+    * @param forkliftId A string id for the forklift following the route
+    * @returns An array of {@link ScheduleItem}s for the forklift
+    */
+    private createScheduleItemsFromVertex(endVertex: Vertex, startVertexId: string, forkliftId: string): ScheduleItem[] {
+        let output: ScheduleItem[] = [];
+        this.createScheduleItemsFromVertexRec(endVertex, startVertexId, forkliftId, null, output);
+        return output;
+    }
+    /**
+    * Inserts a new {@link ScheduleItem} recursivly for each {@link Vertex} linked by previousVertex to the parameter array
+    * @param vertex A {@link Vertex} denoting the step of the recursing through the chain
+    * @param startVertexId A string id for the {@link Vertex} where the recursion stops
+    * @param forkliftId A string id for the forklift following the route
+    * @param nextItem A {@link ScheduleItem} which the new {@link ScheduleItem} is to be linked to
+    * @param outputArray A {@link ScheduleItem} array to store the output
+    */
+    private createScheduleItemsFromVertexRec(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null, outputArray: ScheduleItem[]): void {
+        outputArray.push(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
+        if (nextItem !== null) nextItem.setPrevious(outputArray[outputArray.length - 1]);
+        if (vertex.id !== startVertexId) {
+            this.createScheduleItemsFromVertexRec(vertex.previousVertex, startVertexId, forkliftId, outputArray[outputArray.length - 1], outputArray);
+        }
+    }
+
+    /**
+     * Inserts a new {@link ScheduleItem} recursivly for each {@link Vertex} linked by previousVertex
+     * @param vertex A {@link Vertex} which the {@link ScheduleItem} is to be inserted on
+     * @param startVertexId A string id for the {@link Vertex} where the recursion stops
+     * @param forkliftId A string id for the forklift following the route
+     * @param nextItem A {@link ScheduleItem} which the new {@link ScheduleItem} is to be linked to
+     */
+    private upStacking(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null): void {
+        let i = vertex.insertScheduleItem(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
+        if (nextItem !== null) nextItem.setPrevious(vertex.scheduleItems[i]);
+        if (vertex.id !== startVertexId) {
+            this.upStacking(vertex.previousVertex, startVertexId, forkliftId, vertex.scheduleItems[i]);
+        }
+    }
+
+    /**
+     * Inserts each {@link ScheduleItem} in the parameter scheduleItemsArray on each predetermined vertex
+     * @param routeSet A {@link RouteSet} for each {@link ScheduleItem} to be inserted on
+     * @param scheduleItemsArray A {@link ScheduleItem} array to be inserted
+     */
+    private insertScheduleItemsArray(routeSet: RouteSet, scheduleItemsArray: ScheduleItem[]) {
+        for (let scheduleItem of scheduleItemsArray) {
+            let tempVertex = routeSet.graph.vertices[scheduleItem.currentVertexId];
+            tempVertex.insertScheduleItem(scheduleItem);
         }
     }
 
@@ -304,22 +533,6 @@ export class RouteScheduler {
     }
 
     /**
-     * Finds the index where the {@link Order} at the parameter index i whould be permuted to
-     * @param i An index number for the original priority of the permutation
-     * @param values A number array of values assigned to routes
-     * @param currentOrder An {@link Order} being permuted
-     * @returns The index found
-     */
-    private findPermutationNewIndex(i: number, values: number[], currentOrder: Order) {
-        let newIndex = i - 1;
-        while (newIndex >= 0 && (values[i] + (i - newIndex) * this.permutationConstant) < values[newIndex]
-            && RouteScheduler.isValidPermutation(currentOrder, this.data.orders[this.bestRouteSet.priorities[newIndex]])) {
-            newIndex--;
-        }
-        return newIndex + 1;
-    }
-
-    /**
      * Appraises each route in the current best route-set.
      * movePallet is appraised by 
      * @returns An array of estimates for how good each route is
@@ -344,6 +557,22 @@ export class RouteScheduler {
     }
 
     /**
+     * Finds the index where the {@link Order} at the parameter index i whould be permuted to
+     * @param i An index number for the original priority of the permutation
+     * @param values A number array of values assigned to routes
+     * @param currentOrder An {@link Order} being permuted
+     * @returns The index found
+     */
+    private findPermutationNewIndex(i: number, values: number[], currentOrder: Order) {
+        let newIndex = i - 1;
+        while (newIndex >= 0 && (values[i] + (i - newIndex) * this.permutationConstant) < values[newIndex]
+            && RouteScheduler.isValidPermutation(currentOrder, this.data.orders[this.bestRouteSet.priorities[newIndex]])) {
+            newIndex--;
+        }
+        return newIndex + 1;
+    }
+
+    /**
      * Checks whether it is valid to plan the parameter currentOrder before the parameter newOrder
      * @param currentOrder An {@link Order} to be checked
      * @param newOrder An {@link Order} to be checked
@@ -355,20 +584,6 @@ export class RouteScheduler {
         let timeCurrentOrderIsLower: boolean = currentOrder.time < newOrder.time;
 
         return oneOrderIsMovePallet || differentForklifts || timeCurrentOrderIsLower;
-    }
-
-    /**
-     * Generates a new array of order ids in the sequence they are to be executed.
-     * @returns A string array of order ids
-     */
-    private generateChronologicalPriorities(): string[] {
-        let orders: string[] = [...this.unfinishedOrderIds];
-
-        orders.sort((order1, order2) => {
-            return this.data.orders[order1].time - this.data.orders[order2].time;
-        });
-
-        return orders;
     }
 
     /**
@@ -430,6 +645,32 @@ export class RouteScheduler {
     }
 
     /**
+     * Generates a new array of order ids in the sequence they are to be executed.
+     * @returns A string array of order ids
+     */
+    private generateChronologicalPriorities(): string[] {
+        let orders: string[] = [...this.unfinishedOrderIds];
+
+        orders.sort((order1, order2) => {
+            return this.data.orders[order1].time - this.data.orders[order2].time;
+        });
+
+        return orders;
+    }
+
+    /**
+     * Changes bestRouteSet if the parameter newRouteSet has a smaller duration
+     * @param newRouteSet A {@link RouteSet} to be compared to bestRouteSet
+     */
+    private setBestRouteSet(newRouteSet: RouteSet): void {
+        if (this.bestRouteSet === null || RouteScheduler.evalRouteSet(newRouteSet) < RouteScheduler.evalRouteSet(this.bestRouteSet)) {
+            this.bestRouteSet = newRouteSet;
+            this.unfinishedOrderIds = this.bestRouteSet.priorities;
+            this.permute();
+        }
+    }
+
+    /**
      * Finds the sum of the durations of all routes in a {@link RouteSet}
      * @param routeSet A {@link RouteSet} whose durations sum is to be found
      * @returns The sum of the durations
@@ -440,246 +681,6 @@ export class RouteScheduler {
             sum += routeSet.duration[i];
         }
         return sum;
-    }
-
-    /**
-     * Finds out whether the parameter {@link ScheduleItem} makes it imposible for the parameter foklift to cross an edge 
-     * of the graph based on the path specified by the parameter {@link ScheduleItem}
-     * @param startVertexId A string id of the {@link Vertex} which the forklift is coming from
-     * @param scheduleItem A {@link ScheduleItem} for collisions to be checked against
-     * @param earliestArrivalTime A number specifieing the time when the forklift arrives if it travels at max speed
-     * @param currentTime A number specifieing the time when the forklift leaves startVertex
-     * @param isLast A boolean for whether the parameter {@link ScheduleItem} is the {@link ScheduleItem} on its {@link Vertex}
-     * @param forkliftId A string for the forklift who is crossing from the startVertex 
-     * to the {@link Vertex} with the parameter scheduleItem on it
-     * @returns True if crossing the edge at this time is not possible, false otherwise
-     */
-    private isCollisionInevitable(startVertexId: string, scheduleItem: ScheduleItem, earliestArrivalTime: number, currentTime: number, isLast: boolean, forkliftId: string): boolean {
-        // Checks if the parameter scheduleItem is part of a route from the other Vertex to the startVertex in the
-        // first case, or from the startVertex to the other Vertex in the second case
-        if (scheduleItem.nextScheduleItem !== null && scheduleItem.nextScheduleItem.currentVertexId === startVertexId) {
-
-            // Checks for a frontal collision
-            if (scheduleItem.arrivalTimeCurrentVertex > earliestArrivalTime || scheduleItem.nextScheduleItem.arrivalTimeCurrentVertex > currentTime) {
-                return true;
-            }
-        } else if (scheduleItem.previousScheduleItem !== null && scheduleItem.previousScheduleItem.currentVertexId === startVertexId) {
-
-            // Checks for a rear-end collision
-            if (scheduleItem.previousScheduleItem.arrivalTimeCurrentVertex > currentTime) {
-                return true;
-            }
-        }
-
-        // Checks whether the ScheduleItem marks an idle forklift other than itself
-        if (scheduleItem.nextScheduleItem === null && isLast && scheduleItem.forkliftId !== forkliftId) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Finds the earliest possible time which the parameter forklift can arrive at the parameter {@link Vertex} without colliding
-     * with previously planned routes
-     * @param currentVertex A {@link Vertex} at which the forklift is arriving from
-     * @param destinationVertex A {@link Vertex} at which the forklift is arriving
-     * @param currentTime A time where the forklift leaves the current {@link Vertex}
-     * @param isEndVertex A boolean specifiyng if the parameter destination {@link Vertex} is the last {@link Vertex} of the route
-     * @param forkliftId A string id for the forklift whose arrival time is to be calculated
-     * @returns The found time of arrival
-     */
-    getArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number, isEndVertex: boolean, forkliftId: string): number {
-        if (destinationVertex.scheduleItems.length <= 0) {
-            return this.computeEarliestArrivalTime(currentVertex, destinationVertex, currentTime);
-        }
-
-        // Find earliest possible reference to destinationVertex
-        let indexOfDestinationVertex = this.findReferenceToVertex(currentVertex, destinationVertex, currentTime);
-        let interval = 0;
-        let time = 0;
-        let earliestArrivalTime = this.computeEarliestArrivalTime(currentVertex, destinationVertex, currentTime);
-        while ((interval < this.timeIntervalMinimumSize || time + this.timeIntervalMinimumSize / 2 <= earliestArrivalTime)
-            && indexOfDestinationVertex < destinationVertex.scheduleItems.length) {
-            if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[indexOfDestinationVertex], earliestArrivalTime, currentTime,
-                indexOfDestinationVertex === destinationVertex.scheduleItems.length - 1, forkliftId)) {
-                return Infinity;
-            }
-
-            time = destinationVertex.scheduleItems[indexOfDestinationVertex].arrivalTimeCurrentVertex;
-            if (indexOfDestinationVertex + 1 >= destinationVertex.scheduleItems.length) {
-                interval = Infinity;
-            } else {
-                interval = destinationVertex.scheduleItems[indexOfDestinationVertex + 1].arrivalTimeCurrentVertex - time;
-            }
-            indexOfDestinationVertex++;
-        }
-
-        if (time + this.timeIntervalMinimumSize / 2 < earliestArrivalTime) {
-            return earliestArrivalTime;
-        }
-
-        // If it blocks another route on its last vertex
-        if (isEndVertex && indexOfDestinationVertex < destinationVertex.scheduleItems.length) {
-            return Infinity;
-        }
-
-        return destinationVertex.scheduleItems[indexOfDestinationVertex - 1].arrivalTimeCurrentVertex + (this.timeIntervalMinimumSize / 2);
-    }
-
-    /**
-     * Goes through the each {@link ScheduleItem} on the parameter currentVertex starting at currentTime backwards in time,
-     * until the earliest reference to the parameter destinationVertex occurs. A reference is here the previousScheduleItem
-     * and the nextScheduleItem references that form a doubly linked list on a graph
-     * @param currentVertex A {@link Vertex} whose {@link ScheduleItem} array is searched
-     * @param destinationVertex A {@link Vertex} to find a reference to, and to find the returned index on
-     * @param currentTime A time for when to begin the search on the parameter currentVertex
-     * @returns The index of the {@link ScheduleItem} on the parameter destinationVertex first referenced on the parameter currentVertex
-     */
-    private findReferenceToVertex(currentVertex: Vertex, destinationVertex: Vertex, currentTime: number): number {
-        let previousVertexId: string = "";
-        let nextVertexId: string = "";
-        let i: number;
-        let time: number;
-
-        //Searches linearly through the ScheduleItems for a reference
-        for (i = currentVertex.getScheduleItemIndex(currentTime); i >= 0
-            && previousVertexId !== destinationVertex.id
-            && nextVertexId !== destinationVertex.id
-            && currentVertex.scheduleItems.length > 0; i--) {
-            if (i >= currentVertex.scheduleItems.length) {
-                i = currentVertex.scheduleItems.length - 1;
-            }
-            if (currentVertex.scheduleItems[i].previousScheduleItem !== null) {
-                previousVertexId = currentVertex.scheduleItems[i].previousScheduleItem.currentVertexId;
-            }
-            if (currentVertex.scheduleItems[i].nextScheduleItem !== null) {
-                nextVertexId = currentVertex.scheduleItems[i].nextScheduleItem.currentVertexId;
-            }
-        }
-        if (i === -1) i = 0;
-
-        //Finds the time of the ScheduleItem on the destinationVertex
-        if (previousVertexId === destinationVertex.id && currentVertex.scheduleItems[i].previousScheduleItem !== null) {
-            time = currentVertex.scheduleItems[i].previousScheduleItem.arrivalTimeCurrentVertex;
-        } else if (nextVertexId === destinationVertex.id && currentVertex.scheduleItems[i].nextScheduleItem !== null) {
-            time = currentVertex.scheduleItems[i].nextScheduleItem.arrivalTimeCurrentVertex;
-        } else {
-            time = 0;
-        }
-
-        //Returns the index of the ScheduleItem
-        return destinationVertex.getScheduleItemIndex(time);
-    }
-
-    /**
-     * Computes the earliest possible time for when the forklift can arrive at destinationVertex
-     * @returns The computed time
-     */
-    private computeEarliestArrivalTime(currentVertex: Vertex, destinationVertex: Vertex, time: number): number {
-        return (1000 * currentVertex.getDistanceDirect(destinationVertex) / this.data.warehouse.maxForkliftSpeed) + time;
-    }
-
-    /**
-     * Finds the fastest route between the parameter startVertex and the parameter endVertex for the parameter forklift.
-     * The route is stored in temporary variables on the verticies of the parameter {@link RouteSet}
-     * @param routeSet A {@link RouteSet} which the route is stored on
-     * @param startVertexId A string id of the start {@link Vertex}
-     * @param endVertexId A string id of the end {@link Vertex}
-     * @param orderTime A time for when the route begins
-     * @param forkliftId A string id specifying the forklift which the route is planned for 
-     * @returns The amount of time the route takes
-     */
-    planOptimalRoute(routeSet: RouteSet, startVertexId: string, endVertexId: string, orderTime: number, forkliftId: string): number {
-        let endVertex: Vertex = routeSet.graph.vertices[endVertexId];
-        let startVertex: Vertex = routeSet.graph.vertices[startVertexId];
-        let getEstimate = (currentVertex: Vertex): number => {
-            return this.heuristic(currentVertex, endVertex) + routeSet.graph.vertices[currentVertex.id].visitTime;
-        };
-
-        let queue = new MinPriorityQueue(getEstimate);
-        queue.insert(startVertex);
-        routeSet.graph.reset();
-        startVertex.isVisited = true;
-        startVertex.visitTime = orderTime;
-
-        while (queue.array.length > 0) {
-            let currentVertex: Vertex = queue.extractMin();
-            for (let u = 0; u < currentVertex.adjacentVertexIds.length; u++) {
-                let adjacentVertex: Vertex = routeSet.graph.vertices[currentVertex.adjacentVertexIds[u]];
-                if (adjacentVertex.id === endVertex.id) {
-                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime, true, forkliftId);
-                    if (adjacentVertex.visitTime < Infinity) {
-                        adjacentVertex.isVisited = true;
-                        adjacentVertex.previousVertex = currentVertex;
-                        return endVertex.visitTime - orderTime;
-                    }
-                } else if (!adjacentVertex.isVisited) {
-                    adjacentVertex.visitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime, false, forkliftId);
-                    if (adjacentVertex.visitTime < Infinity) {
-                        queue.insert(adjacentVertex);
-                        adjacentVertex.isVisited = true;
-                        adjacentVertex.previousVertex = currentVertex;
-                    }
-                }
-            }
-        }
-        return Infinity;
-    }
-
-    /**
-     * Inserts a new {@link ScheduleItem} recursivly for each {@link Vertex} linked by previousVertex
-     * @param vertex A {@link Vertex} which the {@link ScheduleItem} is to be inserted on
-     * @param startVertexId A string id for the {@link Vertex} where the recursion stops
-     * @param forkliftId A string id for the forklift following the route
-     * @param nextItem A {@link ScheduleItem} which the new {@link ScheduleItem} is to be linked to
-     */
-    private upStacking(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null): void {
-        let i = vertex.insertScheduleItem(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
-        if (nextItem !== null) nextItem.setPrevious(vertex.scheduleItems[i]);
-        if (vertex.id !== startVertexId) {
-            this.upStacking(vertex.previousVertex, startVertexId, forkliftId, vertex.scheduleItems[i]);
-        }
-    }
-
-    /**
-    * Creates an array of {@link ScheduleItem}s, based on the route of a forklift from startVertexId, to endVertex.
-    * @param endVertex The final {@link Vertex} for the forklift
-    * @param startVertexId A string id for the {@link Vertex} where the forklift begins
-    * @param forkliftId A string id for the forklift following the route
-    * @returns An array of {@link ScheduleItem}s for the forklift
-    */
-    private createScheduleItemsFromVertex(endVertex: Vertex, startVertexId: string, forkliftId: string): ScheduleItem[] {
-        let output: ScheduleItem[] = [];
-        this.createScheduleItemsFromVertexRec(endVertex, startVertexId, forkliftId, null, output);
-        return output;
-    }
-    /**
-    * Inserts a new {@link ScheduleItem} recursivly for each {@link Vertex} linked by previousVertex to the parameter array
-    * @param vertex A {@link Vertex} denoting the step of the recursing through the chain
-    * @param startVertexId A string id for the {@link Vertex} where the recursion stops
-    * @param forkliftId A string id for the forklift following the route
-    * @param nextItem A {@link ScheduleItem} which the new {@link ScheduleItem} is to be linked to
-    * @param outputArray A {@link ScheduleItem} array to store the output
-    */
-    private createScheduleItemsFromVertexRec(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null, outputArray: ScheduleItem[]): void {
-        outputArray.push(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
-        if (nextItem !== null) nextItem.setPrevious(outputArray[outputArray.length - 1]);
-        if (vertex.id !== startVertexId) {
-            this.createScheduleItemsFromVertexRec(vertex.previousVertex, startVertexId, forkliftId, outputArray[outputArray.length - 1], outputArray);
-        }
-    }
-
-    /**
-     * Inserts each {@link ScheduleItem} in the parameter scheduleItemsArray on each predetermined vertex
-     * @param routeSet A {@link RouteSet} for each {@link ScheduleItem} to be inserted on
-     * @param scheduleItemsArray A {@link ScheduleItem} array to be inserted
-     */
-    private insertScheduleItemsArray(routeSet: RouteSet, scheduleItemsArray: ScheduleItem[]) {
-        for (let scheduleItem of scheduleItemsArray) {
-            let tempVertex = routeSet.graph.vertices[scheduleItem.currentVertexId];
-            tempVertex.insertScheduleItem(scheduleItem);
-        }
     }
 
     /**
