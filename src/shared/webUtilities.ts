@@ -1,5 +1,6 @@
 // webUtilities.ts
 /**
+ * A list of functions used by the handler and other webserver related tasks
  * @packageDocumentation
  * @category Shared
  */

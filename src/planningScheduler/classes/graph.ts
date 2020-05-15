@@ -5,6 +5,8 @@
 
 import { Graph as Graph_Shared, Vertex as Vertex_Shared } from "../../shared/graph";
 import { Vector2 } from "../../shared/vector2";
+import { Order } from "./order";
+import { Instruction } from "../../shared/route";
 
 function superCastVertex(vertex: Vertex_Shared): Vertex {
     let output = new Vertex(vertex.id, vertex.position, vertex.label);
@@ -176,6 +178,52 @@ export class ScheduleItem {
     setNext(nextScheduleItem: ScheduleItem) {
         this.nextScheduleItem = nextScheduleItem;
         nextScheduleItem.previousScheduleItem = this;
+    }
+
+    /**
+     * Converts the list of scheduleItems into an array of instructions, including relevant charge and sendFeedback instructions
+     * @param order The order the instructions are related to
+     * @param endTime orderTime + duration, the time the forklift will be done
+     */
+    asInstructionArray(order: Order, endTime: number): Instruction[] {
+        let instructions = [];
+        let scheduleItem: ScheduleItem = this;
+
+        // Set scheduleItem to the first in the list
+        while (scheduleItem.previousScheduleItem) scheduleItem = scheduleItem.previousScheduleItem;
+
+        // Create and push an instruction for every scheduleItem from start to end
+        let lastScheduleItem;
+        while (scheduleItem) {
+            // Get instruction-type
+            let instructionType = Instruction.types.move;
+            if (order.type === Order.types.movePallet) {
+                if (scheduleItem.currentVertexId === order.endVertexId && scheduleItem.arrivalTimeCurrentVertex === endTime) {
+                    // If final vertex, and time (can potentially drive through the vertex, from last idlePos, on the way to the pallet pickup)
+                    instructionType = Instruction.types.unloadPallet;
+                } else if (scheduleItem.currentVertexId === order.startVertexId) {
+                    // If at pallet-vertex
+                    instructionType = Instruction.types.loadPallet;
+                }
+            }
+
+            // Push new instruction
+            instructions.push(
+                new Instruction(instructionType, scheduleItem.currentVertexId, scheduleItem.arrivalTimeCurrentVertex)
+            );
+
+            // Prepare next iteration
+            lastScheduleItem = scheduleItem;
+            scheduleItem = scheduleItem.nextScheduleItem;
+        }
+
+        if (order.type === Order.types.charge) {
+            instructions.push(new Instruction(Instruction.types.charge, lastScheduleItem.currentVertexId, endTime));
+        }
+
+        instructions.push(new Instruction(Instruction.types.sendFeedback, lastScheduleItem.currentVertexId, endTime));
+
+        return instructions;
     }
 
 }
