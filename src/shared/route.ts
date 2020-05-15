@@ -43,7 +43,6 @@ export class Instruction {
     constructor(type: InstructionType, vertexId: string, startTime: number) {
         this.type = type;
         this.vertexId = vertexId;
-
         this.startTime = startTime;
     }
 
