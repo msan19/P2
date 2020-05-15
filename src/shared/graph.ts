@@ -13,8 +13,6 @@ export class Graph {
     /** A dictionary of vertices contained in the {@link Graph} */
     vertices: { [key: string]: Vertex; };
 
-
-
     constructor(vertices: { [key: string]: Vertex; }) {
         this.vertices = vertices || {};
     }
