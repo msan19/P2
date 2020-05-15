@@ -193,8 +193,8 @@ export class RouteScheduler {
                             currentRouteTime = Infinity;
                         }
                         if (currentRouteTime != Infinity) {
-                            this.upStackingToArray(routeSet.graph.vertices[order.startVertexId], assignableForklifts[i].currentVertexId,
-                                forkliftId, null, moveForkliftScheduleItems);
+                            moveForkliftScheduleItems = this.createScheduleItemsFromVertex(routeSet.graph.vertices[order.startVertexId], assignableForklifts[i].currentVertexId,
+                                forkliftId);
                             //routeSet.graph.vertices[order.startVertexId].previousVertex = null;
                             currentRouteTime = this.planOptimalRoute(routeSet, order.startVertexId, order.endVertexId,
                                 order.time, assignableForklifts[i].forkliftId);
@@ -635,18 +635,30 @@ export class RouteScheduler {
     }
 
     /**
-     * Inserts a new {@link ScheduleItem} recursivly for each {@link Vertex} linked by previousVertex to the parameter array
-     * @param vertex A {@link Vertex} denoting the step of the recursing through the chain
-     * @param startVertexId A string id for the {@link Vertex} where the recursion stops
-     * @param forkliftId A string id for the forklift following the route
-     * @param nextItem A {@link ScheduleItem} which the new {@link ScheduleItem} is to be linked to
-     * @param outputArray A {@link ScheduleItem} array to store the output
-     */
-    private upStackingToArray(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null, outputArray: ScheduleItem[]): void {
+    * Creates an array of {@link ScheduleItem}s, based on the route of a forklift from startVertexId, to endVertex.
+    * @param endVertex The final {@link Vertex} for the forklift
+    * @param startVertexId A string id for the {@link Vertex} where the forklift begins
+    * @param forkliftId A string id for the forklift following the route
+    * @returns An array of {@link ScheduleItem}s for the forklift
+    */
+    private createScheduleItemsFromVertex(endVertex: Vertex, startVertexId: string, forkliftId: string): ScheduleItem[] {
+        let output: ScheduleItem[] = [];
+        this.createScheduleItemsFromVertexRec(endVertex, startVertexId, forkliftId, null, output);
+        return output;
+    }
+    /**
+    * Inserts a new {@link ScheduleItem} recursivly for each {@link Vertex} linked by previousVertex to the parameter array
+    * @param vertex A {@link Vertex} denoting the step of the recursing through the chain
+    * @param startVertexId A string id for the {@link Vertex} where the recursion stops
+    * @param forkliftId A string id for the forklift following the route
+    * @param nextItem A {@link ScheduleItem} which the new {@link ScheduleItem} is to be linked to
+    * @param outputArray A {@link ScheduleItem} array to store the output
+    */
+    private createScheduleItemsFromVertexRec(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null, outputArray: ScheduleItem[]): void {
         outputArray.push(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
         if (nextItem !== null) nextItem.setPrevious(outputArray[outputArray.length - 1]);
         if (vertex.id !== startVertexId) {
-            this.upStackingToArray(vertex.previousVertex, startVertexId, forkliftId, outputArray[outputArray.length - 1], outputArray);
+            this.createScheduleItemsFromVertexRec(vertex.previousVertex, startVertexId, forkliftId, outputArray[outputArray.length - 1], outputArray);
         }
     }
 
