@@ -13,11 +13,8 @@ export class Warehouse {
     /** The layout of the warehouse */
     graph: Graph;
 
-    /** The general speed of forklifts in the warehouse in m/s */
+    /** The maximum speed of forklifts in the warehouse in m/s */
     maxForkliftSpeed: number;
-
-
-
 
     constructor(graph: Graph, forkliftSpeed: number) {
         this.graph = graph;
