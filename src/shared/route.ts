@@ -34,7 +34,7 @@ export class Instruction {
     /** The type of the instruction */
     type: InstructionType;
 
-    /** The id of the end Vertex */
+    /** The id of the vertex at which the forklift is at the {@link startTime} */
     vertexId: string;
 
     /** The starting time of the instruction */
