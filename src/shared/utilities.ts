@@ -60,18 +60,13 @@ function jsonReplacer<T>(key: string | number, value: T): T {
         let publicKeys = value["jsonPublicKeys"];
         if (!Array.isArray(publicKeys)) publicKeys = Object.keys(value);
 
-        if (Array.isArray(value)) { // If array
-            let output = [];
-            for (let publicKey of publicKeys) {
-                output[publicKey] = jsonReplacer(publicKey, value[publicKey]);
-            }
-        } else { // If generic object
-            let output = {};
-            for (let publicKey of publicKeys) {
-                output[publicKey] = jsonReplacer(publicKey, value[publicKey]);
-            }
-            return <T>output;
+        let output = Array.isArray(value) ? [] : {};
+
+        for (let publicKey of publicKeys) {
+            output[publicKey] = jsonReplacer(publicKey, value[publicKey]);
         }
+
+        return <T>output;
     }
 
     return value;
