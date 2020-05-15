@@ -89,6 +89,18 @@ export class RouteScheduler {
     }
 
     /**
+     * Finds the last {@link ScheduleItem} in the route associated with the parameter {@link Order}
+     * @param order An orders whose last {@link ScheduleItem} is to be found
+     * @returns The found {@link ScheduleItem}
+     */
+    private getLastScheduleItemForOrder(order: Order): ScheduleItem {
+        let endVertex = this.findVertex(order.endVertexId);
+        let duration = this.findDuration(order.id);
+
+        return endVertex.getScheduleItem(order.time + duration);
+    }
+
+    /**
      * Looks at the best routeSet and finds a route that matches the orderId.
      * Converts scheduleItems to a route
      * @note Each order Id is unique
@@ -110,28 +122,6 @@ export class RouteScheduler {
         }
 
         return new Route(routeId, order.palletId, forkliftId, order.id, routeStatus, instructions);
-    }
-
-    /**
-     * Finds the last {@link ScheduleItem} in the route associated with the parameter {@link Order}
-     * @param order An orders whose last {@link ScheduleItem} is to be found
-     * @returns The found {@link ScheduleItem}
-     */
-    private getLastScheduleItemForOrder(order: Order): ScheduleItem {
-        let endVertex = this.findVertex(order.endVertexId);
-        let duration = this.findDuration(order.id);
-
-        return endVertex.getScheduleItem(order.time + duration);
-    }
-
-    /**
-     * Removes the parameter order from the arrays in bestRouteSet
-     * @param order An order to be removed
-     */
-    removeOrderFromBestRouteSet(order: Order): void {
-        let indexOfOrder = this.bestRouteSet.priorities.indexOf(order.id);
-        this.bestRouteSet.priorities.splice(indexOfOrder, 1);
-        this.bestRouteSet.duration.splice(indexOfOrder, 1);
     }
 
     /**
@@ -167,6 +157,16 @@ export class RouteScheduler {
             }
         }
         return Infinity;
+    }
+
+    /**
+     * Removes the parameter order from the arrays in bestRouteSet
+     * @param order An order to be removed
+     */
+    removeOrderFromBestRouteSet(order: Order): void {
+        let indexOfOrder = this.bestRouteSet.priorities.indexOf(order.id);
+        this.bestRouteSet.priorities.splice(indexOfOrder, 1);
+        this.bestRouteSet.duration.splice(indexOfOrder, 1);
     }
 
     /**
