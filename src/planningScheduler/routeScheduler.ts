@@ -266,185 +266,6 @@ export class RouteScheduler {
     }
 
     /**
-     * Changes bestRouteSet if the parameter newRouteSet has a smaller duration
-     * @param newRouteSet A {@link RouteSet} to be compared to bestRouteSet
-     */
-    private setBestRouteSet(newRouteSet: RouteSet): void {
-        if (this.bestRouteSet === null || RouteScheduler.evalRouteSet(newRouteSet) < RouteScheduler.evalRouteSet(this.bestRouteSet)) {
-            this.bestRouteSet = newRouteSet;
-            this.unfinishedOrderIds = this.bestRouteSet.priorities;
-            this.permute();
-        }
-    }
-
-    /**
-     * Sets the permutations array to a new array with permutations for bestRouteSet.
-     * The new array is sorted by the least efficient routes first
-     */
-    private permute(): void {
-        let permutations: { index: number, newIndex: number, value: number; }[] = [];
-
-        // Determine values for all routes in bestRouteSet
-        let values: number[] = this.getRouteAppraisals();
-
-        // Create an array of permuted entries for problematic values (values < ?)
-        for (let i = 0; i < values.length; i++) {
-            let currentOrder: Order = this.data.orders[this.bestRouteSet.priorities[i]];
-            let newIndex: number = this.findPermutationNewIndex(i, values, currentOrder);
-
-            // Produce a permutation
-            if (newIndex < i) permutations.push({ index: i, newIndex: newIndex, value: values[i] });
-        }
-
-        permutations.sort((p1, p2) => {
-            return p1.value - p2.value;
-        });
-
-        this.permutations = permutations;
-        this.permutationCounter = 0;
-    }
-
-    /**
-     * Appraises each route in the current best route-set.
-     * movePallet is appraised by 
-     * @returns An array of estimates for how good each route is
-     */
-    private getRouteAppraisals(): number[] {
-        return this.bestRouteSet.priorities.map((priority, index) => {
-            let order = this.data.orders[priority];
-            let duration = this.bestRouteSet.duration[index];
-            switch (order.type) {
-                case Order.types.movePallet:
-                    let startVertex = this.data.warehouse.graph.vertices[order.startVertexId];
-                    let endVertex = this.data.warehouse.graph.vertices[order.endVertexId];
-                    return this.heuristic(startVertex, endVertex) / duration;
-                case Order.types.moveForklift:
-                    return this.moveForkliftConstant;
-                case Order.types.charge:
-                    return this.chargeConstant;
-                default:
-                    throw `unhandled order-type ${order.type}`;
-            }
-        });
-    }
-
-    /**
-     * Finds the index where the {@link Order} at the parameter index i whould be permuted to
-     * @param i An index number for the original priority of the permutation
-     * @param values A number array of values assigned to routes
-     * @param currentOrder An {@link Order} being permuted
-     * @returns The index found
-     */
-    private findPermutationNewIndex(i: number, values: number[], currentOrder: Order) {
-        let newIndex = i - 1;
-        while (newIndex >= 0 && (values[i] + (i - newIndex) * this.permutationConstant) < values[newIndex]
-            && RouteScheduler.isValidPermutation(currentOrder, this.data.orders[this.bestRouteSet.priorities[newIndex]])) {
-            newIndex--;
-        }
-        return newIndex + 1;
-    }
-
-    /**
-     * Checks whether it is valid to plan the parameter currentOrder before the parameter newOrder
-     * @param currentOrder An {@link Order} to be checked
-     * @param newOrder An {@link Order} to be checked
-     * @returns True if currentOrder can be planned before newOrder
-     */
-    private static isValidPermutation(currentOrder: Order, newOrder: Order): boolean {
-        let oneOrderIsMovePallet: boolean = currentOrder.type === Order.types.movePallet || newOrder.type === Order.types.movePallet;
-        let differentForklifts: boolean = currentOrder.forkliftId !== newOrder.forkliftId;
-        let timeCurrentOrderIsLower: boolean = currentOrder.time < newOrder.time;
-
-        return oneOrderIsMovePallet || differentForklifts || timeCurrentOrderIsLower;
-    }
-
-    /**
-     * Generates a new array of order ids in the sequence they are to be planned based mostly on 
-     * bestRouteSet or chronological order, but makes changes based on permutations or randomness
-     * @returns The new priorities in a string array of order ids
-     */
-    private generatePriorities(): string[] {
-        let priorities: string[] = [];
-
-        //Checks if the new priorities are to be based on bestRouteSet or on chronological order
-        if (this.bestRouteSet !== null) {
-
-            // Clone of bestRouteSet.priorities
-            priorities = [...this.bestRouteSet.priorities];
-
-            // Handle permutationCounter greater than number of permutations
-            if (this.permutationCounter >= this.permutations.length && priorities.length > 0) {
-                this.priotizeOnePriorityRandomly(priorities);
-
-            } else if (this.permutations.length > 0) {
-
-                // Handle the permutations
-                let priority = priorities.splice(this.permutations[this.permutationCounter].index, 1)[0];
-                priorities.splice(this.permutations[this.permutationCounter].newIndex, 0, priority);
-            }
-        } else {
-            priorities = this.generateChronologicalPriorities();
-
-            if (this.permutationCounter > 0) {
-                this.priotizeOnePriorityRandomly(priorities);
-            }
-        }
-
-        this.permutationCounter++;
-        return priorities;
-    }
-
-    /**
-     * Looks through as many random permutations as there are strings in the parameter array, 
-     * until a valid permutation is found
-     * @param priorities A string array with order ids in the order they are to be planned
-     */
-    private priotizeOnePriorityRandomly(priorities: string[]): void {
-        let ranIndex: number = randomIntegerInRange(0, priorities.length - 1);
-        let ranNewIndex: number = ranIndex - 1;
-
-        // Increases ranNewIndex until the permutation is no longer valid
-        while (ranNewIndex >= 0 && RouteScheduler.isValidPermutation(this.data.orders[priorities[ranIndex]], this.data.orders[priorities[ranNewIndex]])) {
-            ranNewIndex--;
-        }
-        ranNewIndex++;
-
-        // Performs the permutation
-        if (ranNewIndex < ranIndex) {
-            let priority = priorities.splice(ranIndex, 1)[0];
-            priorities.splice(ranNewIndex, 0, priority);
-        }
-    }
-
-    /**
-     * Generates a new array of order ids in the sequence they are to be executed.
-     * @returns A string array of order ids
-     */
-    private generateChronologicalPriorities(): string[] {
-        let orders: string[] = [...this.unfinishedOrderIds];
-
-        orders.sort((order1, order2) => {
-            return this.data.orders[order1].time - this.data.orders[order2].time;
-        });
-
-        return orders;
-    }
-
-    /**
-     * Finds the sum of the durations of all routes in a {@link RouteSet}
-     * @param routeSet A {@link RouteSet} whose durations sum is to be found
-     * @returns The sum of the durations
-     */
-    private static evalRouteSet(routeSet: RouteSet): number {
-        let sum = 0;
-        for (let i = 0; i < routeSet.duration.length; i++) {
-            sum += routeSet.duration[i];
-        }
-        return sum;
-    }
-
-
-    /**
      * Finds the fastest route between the parameter startVertex and the parameter endVertex for the parameter forklift.
      * The route is stored in temporary variables on the verticies of the parameter {@link RouteSet}
      * @param routeSet A {@link RouteSet} which the route is stored on
@@ -630,21 +451,6 @@ export class RouteScheduler {
     }
 
     /**
-     * Inserts a new {@link ScheduleItem} recursivly for each {@link Vertex} linked by previousVertex
-     * @param vertex A {@link Vertex} which the {@link ScheduleItem} is to be inserted on
-     * @param startVertexId A string id for the {@link Vertex} where the recursion stops
-     * @param forkliftId A string id for the forklift following the route
-     * @param nextItem A {@link ScheduleItem} which the new {@link ScheduleItem} is to be linked to
-     */
-    private upStacking(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null): void {
-        let i = vertex.insertScheduleItem(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
-        if (nextItem !== null) nextItem.setPrevious(vertex.scheduleItems[i]);
-        if (vertex.id !== startVertexId) {
-            this.upStacking(vertex.previousVertex, startVertexId, forkliftId, vertex.scheduleItems[i]);
-        }
-    }
-
-    /**
     * Creates an array of {@link ScheduleItem}s, based on the route of a forklift from startVertexId, to endVertex.
     * @param endVertex The final {@link Vertex} for the forklift
     * @param startVertexId A string id for the {@link Vertex} where the forklift begins
@@ -673,6 +479,21 @@ export class RouteScheduler {
     }
 
     /**
+     * Inserts a new {@link ScheduleItem} recursivly for each {@link Vertex} linked by previousVertex
+     * @param vertex A {@link Vertex} which the {@link ScheduleItem} is to be inserted on
+     * @param startVertexId A string id for the {@link Vertex} where the recursion stops
+     * @param forkliftId A string id for the forklift following the route
+     * @param nextItem A {@link ScheduleItem} which the new {@link ScheduleItem} is to be linked to
+     */
+    private upStacking(vertex: Vertex, startVertexId: string, forkliftId: string, nextItem: ScheduleItem | null): void {
+        let i = vertex.insertScheduleItem(new ScheduleItem(forkliftId, vertex.visitTime, vertex.id));
+        if (nextItem !== null) nextItem.setPrevious(vertex.scheduleItems[i]);
+        if (vertex.id !== startVertexId) {
+            this.upStacking(vertex.previousVertex, startVertexId, forkliftId, vertex.scheduleItems[i]);
+        }
+    }
+
+    /**
      * Inserts each {@link ScheduleItem} in the parameter scheduleItemsArray on each predetermined vertex
      * @param routeSet A {@link RouteSet} for each {@link ScheduleItem} to be inserted on
      * @param scheduleItemsArray A {@link ScheduleItem} array to be inserted
@@ -682,6 +503,184 @@ export class RouteScheduler {
             let tempVertex = routeSet.graph.vertices[scheduleItem.currentVertexId];
             tempVertex.insertScheduleItem(scheduleItem);
         }
+    }
+
+    /**
+     * Sets the permutations array to a new array with permutations for bestRouteSet.
+     * The new array is sorted by the least efficient routes first
+     */
+    private permute(): void {
+        let permutations: { index: number, newIndex: number, value: number; }[] = [];
+
+        // Determine values for all routes in bestRouteSet
+        let values: number[] = this.getRouteAppraisals();
+
+        // Create an array of permuted entries for problematic values (values < ?)
+        for (let i = 0; i < values.length; i++) {
+            let currentOrder: Order = this.data.orders[this.bestRouteSet.priorities[i]];
+            let newIndex: number = this.findPermutationNewIndex(i, values, currentOrder);
+
+            // Produce a permutation
+            if (newIndex < i) permutations.push({ index: i, newIndex: newIndex, value: values[i] });
+        }
+
+        permutations.sort((p1, p2) => {
+            return p1.value - p2.value;
+        });
+
+        this.permutations = permutations;
+        this.permutationCounter = 0;
+    }
+
+    /**
+     * Appraises each route in the current best route-set.
+     * movePallet is appraised by 
+     * @returns An array of estimates for how good each route is
+     */
+    private getRouteAppraisals(): number[] {
+        return this.bestRouteSet.priorities.map((priority, index) => {
+            let order = this.data.orders[priority];
+            let duration = this.bestRouteSet.duration[index];
+            switch (order.type) {
+                case Order.types.movePallet:
+                    let startVertex = this.data.warehouse.graph.vertices[order.startVertexId];
+                    let endVertex = this.data.warehouse.graph.vertices[order.endVertexId];
+                    return this.heuristic(startVertex, endVertex) / duration;
+                case Order.types.moveForklift:
+                    return this.moveForkliftConstant;
+                case Order.types.charge:
+                    return this.chargeConstant;
+                default:
+                    throw `unhandled order-type ${order.type}`;
+            }
+        });
+    }
+
+    /**
+     * Finds the index where the {@link Order} at the parameter index i whould be permuted to
+     * @param i An index number for the original priority of the permutation
+     * @param values A number array of values assigned to routes
+     * @param currentOrder An {@link Order} being permuted
+     * @returns The index found
+     */
+    private findPermutationNewIndex(i: number, values: number[], currentOrder: Order) {
+        let newIndex = i - 1;
+        while (newIndex >= 0 && (values[i] + (i - newIndex) * this.permutationConstant) < values[newIndex]
+            && RouteScheduler.isValidPermutation(currentOrder, this.data.orders[this.bestRouteSet.priorities[newIndex]])) {
+            newIndex--;
+        }
+        return newIndex + 1;
+    }
+
+    /**
+     * Checks whether it is valid to plan the parameter currentOrder before the parameter newOrder
+     * @param currentOrder An {@link Order} to be checked
+     * @param newOrder An {@link Order} to be checked
+     * @returns True if currentOrder can be planned before newOrder
+     */
+    private static isValidPermutation(currentOrder: Order, newOrder: Order): boolean {
+        let oneOrderIsMovePallet: boolean = currentOrder.type === Order.types.movePallet || newOrder.type === Order.types.movePallet;
+        let differentForklifts: boolean = currentOrder.forkliftId !== newOrder.forkliftId;
+        let timeCurrentOrderIsLower: boolean = currentOrder.time < newOrder.time;
+
+        return oneOrderIsMovePallet || differentForklifts || timeCurrentOrderIsLower;
+    }
+
+    /**
+     * Generates a new array of order ids in the sequence they are to be planned based mostly on 
+     * bestRouteSet or chronological order, but makes changes based on permutations or randomness
+     * @returns The new priorities in a string array of order ids
+     */
+    private generatePriorities(): string[] {
+        let priorities: string[] = [];
+
+        //Checks if the new priorities are to be based on bestRouteSet or on chronological order
+        if (this.bestRouteSet !== null) {
+
+            // Clone of bestRouteSet.priorities
+            priorities = [...this.bestRouteSet.priorities];
+
+            // Handle permutationCounter greater than number of permutations
+            if (this.permutationCounter >= this.permutations.length && priorities.length > 0) {
+                this.priotizeOnePriorityRandomly(priorities);
+
+            } else if (this.permutations.length > 0) {
+
+                // Handle the permutations
+                let priority = priorities.splice(this.permutations[this.permutationCounter].index, 1)[0];
+                priorities.splice(this.permutations[this.permutationCounter].newIndex, 0, priority);
+            }
+        } else {
+            priorities = this.generateChronologicalPriorities();
+
+            if (this.permutationCounter > 0) {
+                this.priotizeOnePriorityRandomly(priorities);
+            }
+        }
+
+        this.permutationCounter++;
+        return priorities;
+    }
+
+    /**
+     * Looks through as many random permutations as there are strings in the parameter array, 
+     * until a valid permutation is found
+     * @param priorities A string array with order ids in the order they are to be planned
+     */
+    private priotizeOnePriorityRandomly(priorities: string[]): void {
+        let ranIndex: number = randomIntegerInRange(0, priorities.length - 1);
+        let ranNewIndex: number = ranIndex - 1;
+
+        // Increases ranNewIndex until the permutation is no longer valid
+        while (ranNewIndex >= 0 && RouteScheduler.isValidPermutation(this.data.orders[priorities[ranIndex]], this.data.orders[priorities[ranNewIndex]])) {
+            ranNewIndex--;
+        }
+        ranNewIndex++;
+
+        // Performs the permutation
+        if (ranNewIndex < ranIndex) {
+            let priority = priorities.splice(ranIndex, 1)[0];
+            priorities.splice(ranNewIndex, 0, priority);
+        }
+    }
+
+    /**
+     * Generates a new array of order ids in the sequence they are to be executed.
+     * @returns A string array of order ids
+     */
+    private generateChronologicalPriorities(): string[] {
+        let orders: string[] = [...this.unfinishedOrderIds];
+
+        orders.sort((order1, order2) => {
+            return this.data.orders[order1].time - this.data.orders[order2].time;
+        });
+
+        return orders;
+    }
+
+    /**
+     * Changes bestRouteSet if the parameter newRouteSet has a smaller duration
+     * @param newRouteSet A {@link RouteSet} to be compared to bestRouteSet
+     */
+    private setBestRouteSet(newRouteSet: RouteSet): void {
+        if (this.bestRouteSet === null || RouteScheduler.evalRouteSet(newRouteSet) < RouteScheduler.evalRouteSet(this.bestRouteSet)) {
+            this.bestRouteSet = newRouteSet;
+            this.unfinishedOrderIds = this.bestRouteSet.priorities;
+            this.permute();
+        }
+    }
+
+    /**
+     * Finds the sum of the durations of all routes in a {@link RouteSet}
+     * @param routeSet A {@link RouteSet} whose durations sum is to be found
+     * @returns The sum of the durations
+     */
+    private static evalRouteSet(routeSet: RouteSet): number {
+        let sum = 0;
+        for (let i = 0; i < routeSet.duration.length; i++) {
+            sum += routeSet.duration[i];
+        }
+        return sum;
     }
 
     /**
