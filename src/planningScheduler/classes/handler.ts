@@ -10,7 +10,7 @@ import * as ws from "ws";
 import { Socket } from "net";
 import { IncomingMessage, ServerResponse } from "http";
 
-import { getJson, returnJson, returnNotFound, returnStatus, passId, returnInvalidJson, returnSuccess } from "../../shared/webUtilities";
+import { getJson, returnJson, returnNotFound, returnStatus, parseId, returnInvalidJson, returnSuccess } from "../../shared/webUtilities";
 import { WebSocket } from "../../shared/webSocket";
 import { ForkliftInfo } from "../../shared/forkliftInfo";
 import { Route } from "../../shared/route";
@@ -106,7 +106,7 @@ export class Handler {
              * If looking for all orders, returns all orders as JSON
              */
             GET: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
-                let id = passId(parsedUrl[2]);
+                let id = parseId(parsedUrl[2]);
                 if (typeof (id) === "string") {
                     let order = this.data.orders[id];
                     if (order != null) {
@@ -147,7 +147,7 @@ export class Handler {
              * If yes, send forklift as JSON, else return error code
              */
             GET: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
-                let id = passId(parsedUrl[2]);
+                let id = parseId(parsedUrl[2]);
                 if (typeof (id) === "string") {
                     let forklift = this.data.orders[id];
                     if (forklift != null) {
@@ -166,7 +166,7 @@ export class Handler {
             * If no forklift with id, return error code
             */
             PUT: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
-                let id = passId(parsedUrl[2]);
+                let id = parseId(parsedUrl[2]);
 
                 if (id !== null) {
                     getJson(request)
@@ -187,7 +187,7 @@ export class Handler {
             * Else returns error codes
             */
             POST: (request: IncomingMessage, response: ServerResponse, parsedUrl: string[]): void => {
-                let id = passId(parsedUrl[2]);
+                let id = parseId(parsedUrl[2]);
                 if (id !== null && parsedUrl[3] === "initiate") {
                     getJson(request)
                         .then((obj) => {
@@ -221,7 +221,7 @@ export class Handler {
          * Else destroys socket
          */
         forklifts: (socketServer: ws.Server, request: IncomingMessage, socket: Socket, head: Buffer, parsedUrl: string[]): void => {
-            let id = passId(parsedUrl[2]) ? parsedUrl[2] : null;
+            let id = parseId(parsedUrl[2]) ? parsedUrl[2] : null;
             if (id !== null && parsedUrl[3] === "initiate") {
                 socketServer.handleUpgrade(request, socket, head, (ws: ws) => {
                     let webSocket = new WebSocket(ws);

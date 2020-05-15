@@ -63,7 +63,7 @@ export function getJson(incomingMessage: IncomingMessage): Promise<object> {
  * @param str The id 
  * @returns The id if valid else null
  */
-export function passId(str: any): string | null {
+export function parseId(str: any): string | null {
     if (typeof (str) === "string" && str.length > 0) {
         return str;
     } else {
