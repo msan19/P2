@@ -1,4 +1,5 @@
 /**
+ * Contains various utilities
  * @packageDocumentation
  * @category Shared
  */
@@ -47,7 +48,12 @@ export function applyMixins(derivedCtor: any, baseCtors: any[]) {
     });
 }
 
-function jsonReplacer(key, value) {
+/**
+ * Is used in {@link stringifyObject} to alter the behaviour of the 
+ * stringification process. 
+ * publicKeys is a whitelist of properties to be stringified. 
+ */
+function jsonReplacer<T>(key: string | number, value: T): T {
     if (value === null) return value;
     if (typeof (value) === "object") {
 
@@ -64,17 +70,23 @@ function jsonReplacer(key, value) {
             for (let publicKey of publicKeys) {
                 output[publicKey] = jsonReplacer(publicKey, value[publicKey]);
             }
-            return output;
+            return <T>output;
         }
     }
 
     return value;
 }
 
+/**
+ * Converts object to a JSON string making use of {@link jsonReplacer}
+ * to replace values
+ * @param obj The object to be stringified
+ */
 export function stringifyObject(obj: any) {
     return JSON.stringify(obj, jsonReplacer);
 }
 
+/** A class handling references */
 class PreviousReferences {
     original: any;
     copy: any;
@@ -86,10 +98,20 @@ class PreviousReferences {
         this.previous = previous;
     }
 
+    /**
+     * Creates new reference where previous is a reference to itself
+     * @param original The original reference
+     * @param copy A copy of the original reference
+     */
     createNext(original: any, copy: any) {
         return new PreviousReferences(original, copy, this);
     }
 
+    /**
+     * Returns reference to the class that the object is an instantance of, 
+     * i.e. the original reference.
+     * @param original The original object which is not a copy 
+     */
     findByOriginal(original: any) {
         if (this.original === original) return this;
         if (this.previous) return this.previous.findByOriginal(original);
@@ -97,6 +119,12 @@ class PreviousReferences {
     }
 }
 
+
+/**
+ * Copies an object 
+ * @param obj Object to be copied
+ * @param refManager An instance of the PreviousReferences class
+ */
 export function deepCopy<T>(obj: T, refManager: PreviousReferences = new PreviousReferences()): T {
     switch (typeof (obj)) {
         case "bigint":
