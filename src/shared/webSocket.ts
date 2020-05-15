@@ -179,17 +179,4 @@ export class WebSocket extends EventEmitter {
         });
     }
 
-    /**
-     * Adds an eventListener of the specifyed type and removes the listener when listener is called
-     * @param type An enum PackageType specifying the type of the event
-     */
-    async whenPackage<T>(type: PackageTypes): Promise<T> {
-        return new Promise((resolve: (result: T) => any) => {
-            let event = (result: T) => {
-                resolve(result);
-                this.removeListener(type, event);
-            };
-            this.on(type, event);
-        });
-    }
 }
