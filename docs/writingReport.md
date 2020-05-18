@@ -61,19 +61,19 @@ Mangler kode/implementation: \
 * Brugere                                               √   (Mangler opdateret use-case)
 * Kravspecifikation                                     X
 * Overordnet løsningsforslag                            X
-* Overordnet model
+* Overordnet model                                      X
 * Ruteplanlægningssystem
     * Overordnet MAPF Løsning 
         * Udvidelse af model                            X
         * Udregning af RouteSets                        X
         * Bestemmelse af BestRouteSet                   X
-        * Mutationer af prioritetsrækkefølgen           \
-        * Uddragelse af rute fra bestRouteSet
+        * Mutationer af prioritetsrækkefølgen           X
+        * Uddragelse af rute fra bestRouteSet           
     * A*                                                X
         * Implementation                                X
         * Loop invariant                                X
         * Kompleksitet                                  X
-    * Kollisioner                                       \
+    * Kollisioner                                       X
 * Webinterface                                          X
     * Overordnet beskrivelse af webinterface            X
     * Sigma                                             X
