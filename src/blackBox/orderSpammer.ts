@@ -100,13 +100,21 @@ export class OrderSpammer {
             this.apiCaller.sendOrder(this.createAnnoyingOrder());
         }*/
 
-        if (this.warehouse !== null && (this.ordersSentCount) < this.totalNumberOfTestOrders) {
+        /*if (false && this.warehouse !== null && (this.ordersSentCount) < this.totalNumberOfTestOrders) {
             this.sendOrder(this.createTestingOrder());
         } else {
             if (this.warehouse) {
                 let order = this.createRandomOrder();
                 if (order) this.sendOrder(order);
             }
+        }*/
+
+        if (this.warehouse && this.ordersSentCount !== 1) {
+            let orders = this.createKivaOrders(140);
+            for (let order of orders) {
+                this.sendOrder(order);
+            }
+            this.ordersSentCount = 1;
         }
 
         setTimeout(() => { this.iterate(); }, this.interval());
@@ -169,6 +177,7 @@ export class OrderSpammer {
 
         return false;
     }
+
     private getAvailableVertexIds(time: number) {
         let output = [];
         for (let id in this.warehouse.graph.vertices) {
@@ -179,6 +188,48 @@ export class OrderSpammer {
         return output;
     }
     //#endregion
+
+    createKivaOrders(numOfOrders) {
+        let timeNow = (new Date()).getTime();
+        let timeOfOutgoing = timeNow + 60000;
+        let orders = [];
+        let availableVertices: boolean[][] = [];
+        let rows = 22, cols = 10;
+
+        for (let i = 0; i < cols; i++) {
+            let tempArray = [];
+            for (let j = 0; j < rows; j++) {
+                tempArray.push(j % 3 === 0);
+            }
+            availableVertices.push(tempArray);
+        }
+
+        for (let forklift in this.forklifts) {
+            let forkliftNum = parseInt(forklift.substring(1));
+            let destination;
+            let x, y;
+            do {
+                x = forkliftNum >= 70 ? randomIntegerInRange(0, 4) : randomIntegerInRange(5, cols - 1);
+                y = randomIntegerInRange(0, rows - 1);
+            } while (availableVertices[x][y]);
+
+            availableVertices[x][y] = true;
+            destination = `N${x < 5 ? x : x + 53}-${y}`;
+            orders.push(new Order(
+                `O${forklift}`,
+                Order.types.moveForklift,
+                forklift,
+                undefined,
+                undefined,
+                destination,
+                timeOfOutgoing,
+                Order.timeTypes.start,
+                3));
+        }
+
+        return orders;
+    }
+
 
     createRandomOrder() {
         let type = randomValue(Order.types);

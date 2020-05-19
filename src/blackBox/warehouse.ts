@@ -11,7 +11,7 @@ import { Vector2 } from "../shared/vector2";
  * Creates a graph object
  */
 export function createGraph() {
-    return new Graph(createKivaLikeGraph(53, 22));
+    return new Graph(createKivaLikeGraph(63, 22));
 }
 
 /**
@@ -54,16 +54,16 @@ function createVertices(xSize: number, ySize: number): { [key: string]: Vertex; 
 function createKivaLikeGraph(xSize: number, ySize: number): { [key: string]: Vertex; } {
     let vertices = {};
     let distanceOfEdges = 10;
-    let boundaryX = { left: 5, right: xSize - 5 };
+    let boundaryX = { left: 10, right: xSize - 10 };
 
 
     for (let x = 0; x < xSize; x++) {
         for (let y = 0; y < ySize; y++) {
-            if (x >= boundaryX.left && x < boundaryX.right && ((x - 5) % 11 === 10 || y % 3 === 0)) {
+            if (x >= boundaryX.left && x < boundaryX.right && ((x - 10) % 11 === 10 || y % 3 === 0)) {
                 let id = `N${x}-${y}`;
                 vertices[id] = new Vertex(id, new Vector2(x * distanceOfEdges, y * distanceOfEdges), id);
 
-                if (y > 0 && (x - 5) % 11 === 10) {
+                if (y > 0 && (x - 10) % 11 === 10) {
                     let neighborId = `N${x}-${y - 1}`;
                     vertices[id].adjacentVertexIds.push(neighborId);
                     vertices[neighborId].adjacentVertexIds.push(id);

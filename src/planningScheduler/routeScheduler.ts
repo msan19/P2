@@ -37,7 +37,7 @@ export class RouteScheduler {
     unfinishedOrderIds: string[] = [];
 
     /** The minimum amount of time between two forklifts crossing the same vertex for a third to cross in the meantime */
-    readonly timeIntervalMinimumSize: number = 3000;
+    readonly timeIntervalMinimumSize: number = 10000;
 
     readonly expectedDurationMultiplier: number = 2.0;
 
@@ -133,7 +133,7 @@ export class RouteScheduler {
         let duration = this.findDuration(order.id);
         let lastScheduleItem = endVertex.getScheduleItem(order.time + duration);
 
-        return lastScheduleItem.asInstructionArray(order, order.time + duration);;
+        return lastScheduleItem.asInstructionArray(order, order.time + duration);
     }
 
     /**

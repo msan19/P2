@@ -85,9 +85,6 @@ export class Order {
     static parse(obj: any, _?: any): Order | null {
         // Check for types of necessary fields
         if (typeof (obj.id) !== "string") return null;
-        if (typeof (obj.forkliftId) !== "string" && obj.forkliftId !== null) return null;
-        if (typeof (obj.palletId) !== "string") return null;
-        if (typeof (obj.startVertexId) !== "string") return null;
         if (typeof (obj.endVertexId) !== "string") return null;
 
         // Valid id (cannot exist previously)

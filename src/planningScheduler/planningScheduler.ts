@@ -68,7 +68,7 @@ export class PlanningScheduler {
                         if (currentTime + timeOffset > this.routeScheduler.getStartTime(orderId)) {
                             this.data.lockRoute(this.routeScheduler.handleLockOrder(orderId));
                         }
-                    } else if (this.data.orders[orderId].time < currentTime + timeOffset) {
+                    } else if (this.data.orders[orderId].time < currentTime + timeOffset && indexOfOrderId !== -1) {
                         let tempOrder = this.data.orders[orderId];
                         if (!tempOrder.delayStartTime(timeOffset)) {
                             // delayCounter is 0. Order must be deleted

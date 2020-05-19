@@ -26,10 +26,10 @@ class Graph {
                 type: 'canvas'
             },
             settings: {
-                minEdgeSize: 0,
+                /*minEdgeSize: 0,
                 maxEdgeSize: 0,
                 minNodeSize: 0,
-                maxNodeSize: 0,
+                maxNodeSize: 0,*/
                 //hideEdgesOnMove: true,
                 labelThreshold: 16,
                 // how much to zoom on double click

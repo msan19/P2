@@ -14,7 +14,7 @@ import { randomIntegerInRange } from "../shared/utilities";
 const SERVER_HOSTNAME = 'localhost';
 const SERVER_PORT = 3000;
 
-let warehouse = new Warehouse(createGraph(), 4.17);
+let warehouse = new Warehouse(createGraph(), 2 * 4.17);
 
 let api = new ApiCaller(`http://${SERVER_HOSTNAME}:${SERVER_PORT}`);
 
@@ -30,6 +30,6 @@ setTimeout(() => {
     });
 
     setTimeout(() => {
-        new OrderSpammer("http://localhost:3000", "http://localhost:3000/subscribe", () => { return randomIntegerInRange(100, 500); });
+        new OrderSpammer("http://localhost:3000", "http://localhost:3000/subscribe", () => { return randomIntegerInRange(2000, 2000); });
     }, 2000);
 }, 2000);

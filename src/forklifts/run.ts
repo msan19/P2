@@ -39,7 +39,27 @@ function getWarehouse() {
 
 getWarehouse().then((warehouse: Warehouse) => {
     let verticeIds = Object.keys(warehouse.graph.vertices);
-    for (let i = 0; i < 150; i++) {
+    let counter = 0;
+    let x = 5, y = 0;
+
+    while (counter < 140) {
+        if (y >= 22) {
+            y = 0;
+            x++;
+        }
+        if (counter >= 70 && x < 53) {
+            x = 53;
+            y = 0;
+        }
+
+        if (y % 3 !== 0) {
+            forklifts.push(new Forklift("F" + counter, SERVER_HOSTNAME, SERVER_PORT, randomIntegerInRange(5, 100), Forklift.states.idle, new Vector2(x * 10, y * 10)));
+            counter++;
+        }
+        y++;
+    }
+
+    /*for (let i = 0; i < 150; i++) {
         if (Object.keys(verticeIds).length <= 0) break; // empty spaces in array still counts in length, but not in keys
 
         let randomId = randomKey(verticeIds);
@@ -48,7 +68,7 @@ getWarehouse().then((warehouse: Warehouse) => {
 
 
         forklifts.push(new Forklift("F" + i, SERVER_HOSTNAME, SERVER_PORT, randomIntegerInRange(5, 100), Forklift.states.idle, vertex.position));
-    }
+    }*/
     /*
     for (let i = 0; i < 10; i++) {
         forklifts.push(new Forklift("F" + i, SERVER_HOSTNAME, SERVER_PORT, randomIntegerInRange(5, 100), Forklift.states.idle,
