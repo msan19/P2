@@ -58,6 +58,7 @@ export class Order {
     /** Number of times the order can be delayed before being dropped */
     delayMax: number;
 
+    /** Variable that counts how many times an order has been delayed */
     delayCounter: number;
 
     constructor(orderId: string, type: OrderTypes, forkliftId: string, palletId: string,
