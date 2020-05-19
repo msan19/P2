@@ -68,7 +68,7 @@ Mangler kode/implementation: \
         * Udregning af RouteSets                        X
         * Bestemmelse af BestRouteSet                   X
         * Mutationer af prioritetsrækkefølgen           X
-        * Uddragelse af rute fra bestRouteSet           
+        * Uddragelse af rute fra bestRouteSet           X
     * A*                                                X
         * Implementation                                X
         * Loop invariant                                X
