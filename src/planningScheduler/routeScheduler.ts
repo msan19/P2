@@ -306,6 +306,12 @@ export class RouteScheduler {
                         adjacentVertex.isVisited = true;
                         adjacentVertex.previousVertex = currentVertex;
                     }
+                } else {
+                    let tempVisitTime = this.getArrivalTime(currentVertex, adjacentVertex, currentVertex.visitTime, false, forkliftId);
+                    if (tempVisitTime < adjacentVertex.visitTime) {
+                        adjacentVertex.visitTime = tempVisitTime;
+                        adjacentVertex.previousVertex = currentVertex;
+                    }
                 }
             }
         }
