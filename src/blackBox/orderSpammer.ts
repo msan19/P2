@@ -234,27 +234,6 @@ export class OrderSpammer {
         return order;
     }
 
-    // Should be deleted when program works (semi)
-    createAnnoyingOrder() {
-        let time = 40000;
-
-        let list = [
-            new Order(
-                `0`,
-                Order.types.movePallet,
-                `F0`,
-                `pallet-${this.ordersSentCount}`,
-                `N8-8`,
-                `N1-1`,
-                this.firstTimeOrderCreated + time,
-                Order.timeTypes.start,
-                0
-            )
-        ];
-
-        return list[this.ordersSentCount++];
-    }
-
     createTestingOrder(): Order {
         let delayStartTime: number = 40000;
         let timeOffset: number = 40000;
