@@ -8,10 +8,10 @@ import * as fs from 'fs';
 console.log("Benchmarker running");
 
 class Test {
-    planningScheduler = childProcess.fork("src\\planningScheduler\\run.ts", [], { silent: true });
-    blackbox = childProcess.fork("src\\blackbox\\run.ts", [], { silent: true });
-    forklifts = childProcess.fork("src\\forklifts\\run.ts", [], { silent: true });
-    webclient = childProcess.fork("src\\webclient\\run.ts", [], { silent: true });
+    planningScheduler = childProcess.fork("src\\planningScheduler\\run.ts", ["localhost", "3000"], { silent: true });
+    blackbox = childProcess.fork("src\\blackbox\\run.ts", ["localhost", "3000"], { silent: true });
+    forklifts = childProcess.fork("src\\forklifts\\run.ts", ["localhost", "3000"], { silent: true });
+    webclient = childProcess.fork("src\\webclient\\run.ts", ["localhost", "8080", "localhost", "3000"], { silent: true });
 
     subscribedSocket: WebSocket;
     routeCount: number = 0;
