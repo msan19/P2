@@ -11,8 +11,8 @@ import { ApiCaller } from "../shared/apiCaller";
 import { Warehouse } from "../shared/warehouse";
 import { Vector2 } from "../shared/vector2";
 
-const SERVER_HOSTNAME = 'localhost';
-const SERVER_PORT = 3000;
+const SERVER_HOSTNAME = process.argv[2];
+const SERVER_PORT = Number(process.argv[3]);
 
 var forklifts = [];
 

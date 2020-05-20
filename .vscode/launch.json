@@ -25,7 +25,9 @@
             "type": "node",
             "request": "launch",
             "args": [
-                "${workspaceFolder}/src/planningScheduler/run.ts"
+                "${workspaceFolder}/src/planningScheduler/run.ts",
+                "localhost",
+                "3000"
             ],
             "runtimeArgs": [
                 "--nolazy",
@@ -41,7 +43,11 @@
             "type": "node",
             "request": "launch",
             "args": [
-                "${workspaceFolder}/src/webClient/run.ts"
+                "${workspaceFolder}/src/webClient/run.ts",
+                "localhost",
+                "8080",
+                "localhost",
+                "3000"
             ],
             "runtimeArgs": [
                 "--nolazy",
@@ -61,7 +67,9 @@
             "type": "node",
             "request": "launch",
             "args": [
-                "${workspaceFolder}/src/blackBox/run.ts"
+                "${workspaceFolder}/src/blackBox/run.ts",
+                "localhost",
+                "3000"
             ],
             "runtimeArgs": [
                 "--nolazy",
@@ -77,7 +85,9 @@
             "type": "node",
             "request": "launch",
             "args": [
-                "${workspaceFolder}/src/forklifts/run.ts"
+                "${workspaceFolder}/src/forklifts/run.ts",
+                "localhost",
+                "3000"
             ],
             "runtimeArgs": [
                 "--nolazy",
