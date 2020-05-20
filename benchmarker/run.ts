@@ -64,7 +64,7 @@ class Test {
                     setTimeout(() => { resolve(this.routeCount, this.timesteps); }, 5000);
                 }
                 else if (str.substr(0, "Discrete timesteps:".length) === "Discrete timesteps:") {
-                    this.timesteps = Number(str.match(/Discrete timesteps: (\d+)\n/i)[1]);
+                    this.timesteps = Number(str.match(/Discrete timesteps: (\d+|Infinity)\n/i)[1]);
                 }
 
             });
