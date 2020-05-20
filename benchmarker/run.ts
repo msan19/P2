@@ -1,0 +1,105 @@
+import * as childProcess from 'child_process';
+import { EventEmitter } from "events";
+import * as ws from "ws";
+import { WebSocket } from "../src/shared/webSocket";
+import * as fs from 'fs';
+
+
+console.log("Benchmarker running");
+
+class Test {
+    planningScheduler = childProcess.fork("src\\planningScheduler\\run.ts", [], { silent: true });
+    blackbox = childProcess.fork("src\\blackbox\\run.ts", [], { silent: true });
+    forklifts = childProcess.fork("src\\forklifts\\run.ts", [], { silent: true });
+    webclient = childProcess.fork("src\\webclient\\run.ts", [], { silent: true });
+
+    subscribedSocket: WebSocket;
+    routeCount: number = 0;
+    timesteps: number = 0;
+
+    constructor() {
+
+    }
+
+
+    async subscribe() {
+        return new Promise(async resolve => {
+            let socket: ws;
+            try {
+                socket = new ws("ws:localhost:3000/subscribe");
+            }
+            finally {
+                if (socket) {
+                    socket.once("open", () => {
+                        this.subscribedSocket = new WebSocket(socket);
+                        resolve();
+                    });
+                    socket.on("error", async () => {
+                        await this.subscribe();
+                        resolve();
+                    });
+                }
+                else {
+                    await this.subscribe();
+                    resolve();
+                }
+            }
+        });
+    }
+
+    async Run() {
+        await this.subscribe();
+        this.subscribedSocket.on(WebSocket.packageTypes.route, (route: any) => {
+            this.routeCount++;
+        });
+        this.subscribedSocket.on(WebSocket.packageTypes.routes, (routes: any[]) => {
+            this.routeCount += Object.keys(routes).length;
+        });
+
+        return new Promise((resolve: (numberOfFulfilledOrders: number, timesteps: number) => any) => {
+            this.planningScheduler.stdout.on("data", (data) => {
+                let str = String(data);
+                console.log("planningScheduler: ", str);
+                if (str === "No unlocked routes - Suspending\n") {
+                    setTimeout(() => { resolve(this.routeCount, this.timesteps); }, 5000);
+                }
+
+            });
+        });
+    }
+
+    kill() {
+        this.subscribedSocket.close();
+        this.planningScheduler.kill();
+        this.blackbox.kill();
+        this.forklifts.kill();
+        this.webclient.kill();
+    }
+}
+
+
+async function main() {
+
+    for (let i = 0; i < 10; i++) {
+        let test = new Test();
+        fs.appendFileSync("benchmarker/log.txt", `Start: ${(new Date()).toISOString()}\n`);
+        await test.Run();
+
+        console.log("Routes sent: ", test.routeCount);
+        console.log("Timesteps: ", test.timesteps);
+
+        fs.appendFileSync("benchmarker/log.txt", `{time: ${(new Date()).toISOString()}, routesSent: ${test.routeCount}, timesteps: ${test.timesteps}}\n`);
+
+        test.kill();
+    }
+}
+main();
+
+
+
+
+// Prevent automatic shutdown
+let eventEmitter = new EventEmitter();
+eventEmitter.on("compiled", function () {
+    console.log("Compilation successful");
+});

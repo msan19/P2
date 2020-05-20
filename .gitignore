@@ -2,3 +2,4 @@ out/*
 package-lock.json
 node_modules/*
 src/webClient/public/scripts/ts/*
+benchmarker/log.txt

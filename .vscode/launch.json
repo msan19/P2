@@ -5,6 +5,22 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Benchmarker",
+            "type": "node",
+            "request": "launch",
+            "args": [
+                "${workspaceFolder}/benchmarker/run.ts"
+            ],
+            "runtimeArgs": [
+                "--nolazy",
+                "-r",
+                "ts-node/register"
+            ],
+            "sourceMaps": true,
+            "cwd": "${workspaceFolder}",
+            "protocol": "inspector",
+        },
+        {
             "name": "Planning Scheduler",
             "type": "node",
             "request": "launch",
