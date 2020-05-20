@@ -59,12 +59,12 @@ class Test {
         return new Promise((resolve: (numberOfFulfilledOrders: number, timesteps: number) => any) => {
             this.planningScheduler.stdout.on("data", (data) => {
                 let str = String(data);
-                console.log("planningScheduler: ", str);
+                console.log("planningScheduler: ", `"${str}"`);
                 if (str === "No unlocked routes - Suspending\n") {
                     setTimeout(() => { resolve(this.routeCount, this.timesteps); }, 5000);
                 }
-                else if (str.substr("Discrete timesteps:".length) === "Discrete timesteps:") {
-                    this.timesteps = Number("Discrete timesteps: 35737\n".match(/Discrete timesteps: (\d+)\n/i)[1]);
+                else if (str.substr(0, "Discrete timesteps:".length) === "Discrete timesteps:") {
+                    this.timesteps = Number(str.match(/Discrete timesteps: (\d+)\n/i)[1]);
                 }
 
             });
