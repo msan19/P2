@@ -63,6 +63,9 @@ class Test {
                 if (str === "No unlocked routes - Suspending\n") {
                     setTimeout(() => { resolve(this.routeCount, this.timesteps); }, 5000);
                 }
+                else if (str.substr("Discrete timesteps:".length) === "Discrete timesteps:") {
+                    this.timesteps = Number("Discrete timesteps: 35737\n".match(/Discrete timesteps: (\d+)\n/i)[1]);
+                }
 
             });
         });
