@@ -83,15 +83,15 @@ class Test {
 
 async function main() {
 
-    for (let i = 0; i < 10; i++) {
+    while (true) {
         let test = new Test();
-        fs.appendFileSync("benchmarker/log.txt", `Start: ${(new Date()).toISOString()}\n`);
+        fs.appendFileSync("benchmarker/log.txt", `{Start: ${(new Date()).toISOString()}, `);
         await test.Run();
 
         console.log("Routes sent: ", test.routeCount);
         console.log("Timesteps: ", test.timesteps);
 
-        fs.appendFileSync("benchmarker/log.txt", `{time: ${(new Date()).toISOString()}, routesSent: ${test.routeCount}, timesteps: ${test.timesteps}}\n`);
+        fs.appendFileSync("benchmarker/log.txt", `time: ${(new Date()).toISOString()}, routesSent: ${test.routeCount}, timesteps: ${test.timesteps}},\n`);
 
         test.kill();
     }
