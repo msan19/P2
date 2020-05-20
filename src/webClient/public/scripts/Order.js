@@ -25,8 +25,6 @@ class Order {
             newOrder.palletId = order.palletId;
         if (typeof (order.startVertexId) != "undefined")
             newOrder.startNodeId = order.startVertexId;
-        else
-            return false;
         if (typeof (order.endVertexId) != "undefined")
             newOrder.endNodeId = order.endVertexId;
         else
