@@ -15,7 +15,7 @@ class Test {
 
     subscribedSocket: WebSocket;
     routeCount: number = 0;
-    timesteps: number = 0;
+    timesteps: number = NaN;
 
     constructor() {
 
