@@ -87,7 +87,7 @@ export class Instruction {
 export class Route {
     static Statuses = RouteStatus;
 
-    jsonPublicKeys = ["routeId", "palletId", "forkliftId", "orderId", "status", "instructions"];
+    jsonPublicKeys = ["routeId", "forkliftId", "orderId", "status", "instructions"];
 
     /** An id for the route */
     routeId: string;
