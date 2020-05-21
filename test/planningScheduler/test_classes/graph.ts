@@ -276,7 +276,7 @@ function testVertex(): void {
 
 
     describe('Test of insertScheduleItem', () => {
-        describe("Insertion of ScheduleItem", () => {
+        describe("when time is a value in the range", () => {
             let vertex = new Vertex("P23", new Vector2(3, 4));
             let scheduleItemList = [
                 new ScheduleItem("F22", 10000, "F23"),
@@ -303,7 +303,7 @@ function testVertex(): void {
             });
         });
 
-        describe("Insertion of ScheduleItem before current times", () => {
+        describe("when time is less than time of first scheduleItem", () => {
             let vertex = new Vertex("P23", new Vector2(3, 4));
             let scheduleItemList = [
                 new ScheduleItem("F22", 10000, "F23"),
@@ -330,7 +330,7 @@ function testVertex(): void {
             });
         });
 
-        describe("Insertion of ScheduleItem after current times", () => {
+        describe("when time is greater than time of last scheduleItem", () => {
             let vertex = new Vertex("P23", new Vector2(3, 4));
             let scheduleItemList = [
                 new ScheduleItem("F22", 10000, "F23"),
@@ -357,7 +357,7 @@ function testVertex(): void {
             });
         });
 
-        describe("Insertion of ScheduleItem after current times", () => {
+        describe("when time is equal to time of first element", () => {
             let vertex = new Vertex("P23", new Vector2(3, 4));
             let scheduleItemList = [
                 new ScheduleItem("F22", 10000, "F23"),
@@ -391,7 +391,7 @@ function testVertex(): void {
             });
         });
 
-        describe("Insertion of ScheduleItem after current times", () => {
+        describe("when time is equal to time of last element", () => {
             let vertex = new Vertex("P23", new Vector2(3, 4));
             let scheduleItemList = [
                 new ScheduleItem("F22", 10000, "F23"),

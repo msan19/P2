@@ -224,7 +224,7 @@ export class OrderSpammer {
                 destination,
                 timeOfOutgoing,
                 Order.timeTypes.start,
-                3));
+                0));
         }
 
         return orders;
