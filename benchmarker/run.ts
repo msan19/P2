@@ -3,6 +3,7 @@ import { EventEmitter } from "events";
 import * as ws from "ws";
 import { WebSocket } from "../src/shared/webSocket";
 import * as fs from 'fs';
+import { Route } from '../src/shared/route';
 
 
 console.log("Benchmarker running");
@@ -14,6 +15,8 @@ class Test {
     webclient = childProcess.fork("src\\webclient\\run.ts", ["localhost", "8080", "localhost", "3000"], { silent: true });
 
     subscribedSocket: WebSocket;
+    routes: { [key: string]: Route; } = {};
+    parsedRoutes: { [key: string]: Route; } = {};
     routeCount: number = 0;
     timesteps: number = NaN;
 
@@ -49,11 +52,18 @@ class Test {
 
     async Run() {
         await this.subscribe();
-        this.subscribedSocket.on(WebSocket.packageTypes.route, (route: any) => {
+        this.subscribedSocket.on(WebSocket.packageTypes.route, (route: Route) => {
             this.routeCount++;
+            this.routes[route.routeId] = route;
+            this.parsedRoutes[route.routeId] = Route.parse(route);
         });
-        this.subscribedSocket.on(WebSocket.packageTypes.routes, (routes: any[]) => {
+        this.subscribedSocket.on(WebSocket.packageTypes.routes, (routes: Route[]) => {
             this.routeCount += Object.keys(routes).length;
+            for (let k in routes) {
+                let route = routes[k];
+                this.routes[route.routeId] = route;
+                this.parsedRoutes[route.routeId] = Route.parse(route);
+            }
         });
 
         return new Promise((resolve: (numberOfFulfilledOrders: number, timesteps: number) => any) => {
@@ -64,7 +74,8 @@ class Test {
                     setTimeout(() => { resolve(this.routeCount, this.timesteps); }, 5000);
                 }
                 else if (str.substr(0, "Discrete timesteps:".length) === "Discrete timesteps:") {
-                    this.timesteps = Number(str.match(/Discrete timesteps: (\d+|Infinity)\n/i)[1]);
+                    let timesteps = Number(str.match(/Discrete timesteps: (\d+|Infinity)\n/i)[1]);
+                    this.timesteps = timesteps;
                 }
 
             });
