@@ -121,7 +121,7 @@ export class RouteScheduler {
             currentScheduleItem = currentScheduleItem.previousScheduleItem;
         }
 
-        return new Route(routeId, order.palletId, forkliftId, order.id, routeStatus, instructions);
+        return new Route(routeId, forkliftId, order.id, routeStatus, instructions);
     }
 
     /**
