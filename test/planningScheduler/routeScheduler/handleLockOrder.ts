@@ -189,7 +189,7 @@ function createMovePalletRoute(routeScheduler: RouteScheduler, order: Order, ver
     let lastScheduleItem = getScheduleItem(lastVertex, visitTimes[visitTimes.length - 1]);
     instructions.push(new Instruction(Instruction.types.sendFeedback, lastVertexId, lastScheduleItem.arrivalTimeCurrentVertex));
 
-    return new Route(routeId, order.palletId, forkliftId, order.id, 1, instructions);
+    return new Route(routeId, forkliftId, order.id, 1, instructions);
 }
 //    0    10   20   30   40   
 // -> 1 -> 2 -> 3 -> 4 -> 5 ? 5
@@ -215,5 +215,5 @@ function createMoveForkliftRoute(routeScheduler: RouteScheduler, order: Order, v
     }
 
 
-    return new Route(routeId, order.palletId, forkliftId, order.id, 1, instructions);
+    return new Route(routeId, forkliftId, order.id, 1, instructions);
 }

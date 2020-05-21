@@ -105,7 +105,7 @@ export class Route {
     /** An array of instructions */
     instructions: Instruction[];
 
-    constructor(routeId: string, palletId: string, forkliftId: string, orderId: string, status: RouteStatus, instructions: Instruction[]) {
+    constructor(routeId: string, forkliftId: string, orderId: string, status: RouteStatus, instructions: Instruction[]) {
         this.routeId = routeId;
         this.forkliftId = forkliftId;
         this.orderId = orderId;
@@ -120,14 +120,14 @@ export class Route {
      */
     static parse(route: any): Route | null {
         if (typeof (route.routeId) !== "string") return null;
-        if (typeof (route.palletId) !== "string") return null;
         if (typeof (route.forkliftId) !== "string") return null;
         if (typeof (route.orderId) !== "string") return null;
         // Implement checking of valid ids?
         if (typeof (route.status) !== "number") return null;
-        if (Instruction.parseMultiple(route.instructions) === null) return null;
+        let parsedInstructions = Instruction.parseMultiple(route.instructions);
+        if (parsedInstructions === null) return null;
 
-        return new Route(route.routeId, route.palletId, route.forkliftId, route.orderId, route.RouteStatus, route.instructions);
+        return new Route(route.routeId, route.forkliftId, route.orderId, route.RouteStatus, parsedInstructions);
     }
 
     /** 
