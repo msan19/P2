@@ -85,13 +85,13 @@ async function main() {
 
     while (true) {
         let test = new Test();
-        fs.appendFileSync("benchmarker/log.txt", `{Start: ${(new Date()).toISOString()}, `);
+        let startTime = new Date();
         await test.Run();
 
         console.log("Routes sent: ", test.routeCount);
         console.log("Timesteps: ", test.timesteps);
 
-        fs.appendFileSync("benchmarker/log.txt", `time: ${(new Date()).toISOString()}, routesSent: ${test.routeCount}, timesteps: ${test.timesteps}},\n`);
+        fs.appendFileSync("benchmarker/log.txt", `{Start: "${startTime.toISOString()}", time: "${(new Date()).toISOString()}", routesSent: ${test.routeCount}, timesteps: ${test.timesteps}},\n`);
 
         test.kill();
     }
