@@ -15,7 +15,7 @@ import 'mocha';
  * Test of the object DataContainer
  * @returns Mocha handles the appropriate responses
  */
-function testObject(): void {
+function testDataContainer(): void {
     let data: DataContainer = new DataContainer();
 
     it(`${Object.keys(data)[0]} should be empty`, () => {
@@ -151,5 +151,5 @@ function testAddOrder() {
     });
 }
 
-describe("Test of object", testObject);
+describe("Test of dataContainer", testDataContainer);
 describe("Test of addOrder", testAddOrder);
