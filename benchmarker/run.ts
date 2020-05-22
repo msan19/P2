@@ -150,7 +150,7 @@ main();
 async function logData(filename: string, data: any) {
     console.log("Logged Data");
     return new Promise((resolve: () => any) => {
-        fs.appendFile(filename, JSON.stringify(data), resolve);
+        fs.appendFile(filename, JSON.stringify(data) + ",", resolve);
     });
 }
 
