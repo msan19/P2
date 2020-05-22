@@ -141,6 +141,22 @@ export class WebSocket extends EventEmitter {
     }
 
     /**
+    * Signals that order have been discarded
+    * @param orderId is the id of the order that has been discarded
+    */
+    sendOrderFailed(orderId: string): void {
+        this.send(WebSocket.packageTypes.orderFailed, orderId);
+    }
+
+    /**
+    * Signals that orders have been discarded
+    * @param orderIds are the ids of the orders that has been discarded
+    */
+    sendOrdersFailed(orderIds: string[]): void {
+        this.send(WebSocket.packageTypes.ordersFailed, orderIds);
+    }
+
+    /**
     * Sends the parameter {@link Warehouse} through the socket
     * @param obj A {@link Warehouse} to be sendt
     */
