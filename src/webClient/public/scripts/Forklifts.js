@@ -89,27 +89,6 @@ class Forklifts {
             return true;
     }
 
-    intepretInstructions(instructions) {
-        let nodesIds = [];
-        let edgeIds = [];
-        // add nodes
-        for (let key in instructions) {
-            nodesIds.push(instructions[key]["nodeId"]);
-        }
-        for (let key in nodesIds) {
-            if (key > 0) {
-                if (nodesIds[key] < nodesIds[key - 1])
-                    edgeIds.push(nodesIds[key] + "," + nodesIds[key - 1]);
-                else
-                    edgeIds.push(nodesIds[key - 1] + "," + nodesIds[key]);
-            }
-        }
-        return {
-            nodes: nodesIds,
-            edges: edgeIds
-        };
-    }
-
     getDirectionVector(distance, x, y, targetX, targetY) {
         // distance
         let xDiff = targetX - x;
