@@ -58,7 +58,7 @@ class Graph {
     }
 
     onNodeClick(element) {
-        if (element.data.node.id[0] == "F") {
+        if (typeof (element.data.node.isForklift) != "undefined" && element.data.node.isForklift == true) {
             this.unfocusGraph();
             UiManager.chooseForklift(element.data.node.id);
         }
@@ -210,7 +210,8 @@ class Graph {
                 y: forklift.position.y,
                 color: "#ffff00",
                 originalColor: "#ffff00",
-                size: 14
+                size: 14,
+                isForklift: true
             });
         }
     }
