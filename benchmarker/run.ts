@@ -22,7 +22,9 @@ class Test {
     routeCount: number = 0;
     ordersReceived: number = 0;
     failedOrdersCount: number = 0;
-    timesteps: number = NaN;
+    timesteps: number = 0;
+    timesUpdatedSinceLast: number = 0;
+    timestepsSinceLastLog: number = 0;
 
     constructor() {
 
@@ -91,12 +93,16 @@ class Test {
 
                 console.log("planningScheduler: ", `"${str}"`);
 
-                if (str === "No unlocked routes - Suspending\n") {
+                let match;
+                if (str === "No unlocked routes - Suspending") {
                     setTimeout(() => { resolve(this.routeCount, this.timesteps); }, 5000);
                 }
-                else if (str.substr(0, "Discrete timesteps:".length) === "Discrete timesteps:") {
-                    let timesteps = Number(str.match(/Discrete timesteps: (\d+|Infinity)/i)[1]);
-                    this.timesteps = timesteps;
+                else if (match = str.match(/Timesteps: (?<steps>\d+|Infinity)/i)) {
+                    let num = Number(match.groups.steps);
+                    this.timesteps += num;
+                    this.timestepsSinceLastLog += num;
+                } else if (match = str.match(/Updated (?<times>\d+) times within the last 10 seconds/i)) {
+                    this.timesUpdatedSinceLast += Number(match.groups.times);
                 }
 
             });
@@ -126,10 +132,14 @@ async function main() {
             await logData("benchmarker/log.txt", {
                 start: startTime.toISOString(),
                 time: (new Date()).toISOString(),
-                routesSent: test.routeCount,
-                ordersFailed: test.failedOrdersCount,
-                timesteps: test.timesteps
+                routeCount: test.routeCount,
+                failedOrdersCount: test.failedOrdersCount,
+                timesteps: test.timesteps,
+                timestepsSinceLastLog: test.timestepsSinceLastLog,
+                timesUpdatedSinceLast: test.timesUpdatedSinceLast
             });
+            test.timestepsSinceLastLog = 0;
+            test.timesUpdatedSinceLast = 0;
         }
 
         test.kill();
