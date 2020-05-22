@@ -87,7 +87,11 @@ function createRealTransitVertices(): { [key: string]: Vertex; } {
              * which are 10 in length and 2 in width placed with 2 spaces between each on either side. */
             if (x < 26 && ((y % 4 === 0 || y % 4 === 1) || (x % 12 === 0 || x % 12 === 1))) {
                 let id = `N${x}-${y}`;
-                vertices[id] = new Vertex(id, new Vector2(x * distanceOfEdges, y * distanceOfEdges), "shelf");
+                let label;
+                /* Only has label "shelf" if at the point of a shelf, else label is "hallway" */
+                if (x % 12 === 0 || x % 12 === 1) label = "shelf";
+                else label = "hallway";
+                vertices[id] = new Vertex(id, new Vector2(x * distanceOfEdges, y * distanceOfEdges), label);
                 /* Sets vertical lines when not in rack (2 rack spaces per 4 rows) */
                 if (y > 0 && (y % 4 === 1 || (x % 12 === 0 || x % 12 === 1))) {
                     let neighborId = `N${x}-${y - 1}`;
@@ -106,9 +110,11 @@ function createRealTransitVertices(): { [key: string]: Vertex; } {
             else if (x >= 26 && (y % 8 > 0 && y % 8 < 5)) {
                 let id = `N${x}-${y}`;
                 let label;
-                if (y < 8) label = "pickUp";
-                else if (y < 16) label = "dropOff";
-                else label = "charge";
+                /* Hardcoded label name if vertex is an endpoint of areas to the right */
+                if (y === 1 || y === 4) label = "pickUp";
+                else if (y === 9 || y === 12) label = "dropOff";
+                else if (y === 17 || y === 20) label = "charge";
+                else label = "hallway";
                 vertices[id] = new Vertex(id, new Vector2(x * distanceOfEdges, y * distanceOfEdges), label);
                 /* Sets all vertical edges for the vertices in these areas*/
                 if (y % 8 > 1) {
