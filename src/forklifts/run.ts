@@ -40,7 +40,7 @@ function getWarehouse() {
 getWarehouse().then((warehouse: Warehouse) => {
     let counter = 0;
     let verticeIds = Object.keys(warehouse.graph.vertices);
-    let typeOfWarehouse = "real";
+    let typeOfWarehouse = "unreal";
     let x = 5, y = 0;
 
     switch (typeOfWarehouse) {
