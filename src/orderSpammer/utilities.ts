@@ -1,0 +1,153 @@
+import { DataContainer } from "./dataContainer";
+import { NOTIMP } from "dns";
+import { Vector2 } from "../shared/vector2";
+
+export enum VertexTypes {
+    pickup,
+    dropOff,
+    shelf,
+    charge,
+    hallway
+}
+
+export class Vertex {
+    static isAvailable(data: DataContainer, vertexId: string, time: number, ): boolean {
+        for (let i in data.unfinishedOrders) {
+            let order = data.unfinishedOrders[i];
+            if (order.endVertexId && order.endVertexId === vertexId) {
+                return false;
+            }
+        }
+
+        for (let i in data.lockedRoutes) {
+            let route = data.lockedRoutes[i];
+            let lastInstruction = route.instructions[route.instructions.length - 1];
+
+            if ((lastInstruction.vertexId === vertexId) && lastInstruction.startTime > time) {
+                // If same endVertex
+                return false;
+            }
+        }
+
+        for (let i in data.forklifts) {
+            if (data.warehouse.graph.vertices[vertexId].position.getDistanceTo(data.forklifts[i].position) < 1)
+                return false;
+        }
+
+        return true;
+    }
+
+    static getAllAvailable(data: DataContainer, time: number): string[] {
+        let output = [];
+        for (let id in data.warehouse.graph.vertices) {
+            if (Vertex.isAvailable(data, id, time)) {
+                output.push(id);
+            }
+        }
+        return output;
+    }
+
+    static getAllAvailableOfType(data: DataContainer, availableVertexIds: string[], type: VertexTypes) {
+        return availableVertexIds.filter((val, id, arr) => {
+            Vertex.getType(data, val) === type;
+        });
+    }
+
+    static getType(data: DataContainer, vertexId: string): VertexTypes {
+        throw NOTIMP;
+    }
+
+    static estimateVertexId(data: DataContainer, position: Vector2): string {
+        for (let k in data.warehouse.graph.vertices) {
+            let v = data.warehouse.graph.vertices[k];
+            if (v.position.getDistanceTo(position) < 0.2) return v.id;
+        }
+        return;
+    }
+}
+
+export class Forklift {
+    static isAvailble(data: DataContainer, forkliftId: string, time: number): boolean {
+        for (let i in data.unfinishedOrders) {
+            let order = data.unfinishedOrders[i];
+            if (order.forkliftId && order.forkliftId === forkliftId) {
+                return false;
+            }
+        }
+        for (let i in data.lockedRoutes) {
+            let route = data.lockedRoutes[i];
+            if (route.forkliftId && route.forkliftId === forkliftId) { // If same forklift
+                let instructions = route.instructions;
+                if ((instructions[0].startTime < time) && (instructions[instructions.length - 1].startTime > time)) {
+                    // If time is within timespan of route
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    static getAvailableForkliftIds(data: DataContainer, time: number): string[] {
+        let output = [];
+        for (let id in data.forklifts) {
+            if (Forklift.isAvailble(data, id, time)) {
+                output.push(id);
+            }
+        }
+        return output;
+    }
+    static getHomeVertexId(data: DataContainer, forkliftId: string, time: number): string {
+        for (let v of Vertex.getAllAvailable(data, time)) {
+            if (Vertex.getType(data, v) === VertexTypes.charge) return v;
+        }
+        return undefined;
+    }
+}
+
+
+/*
+class Warehouse extends Warehouse_Shared {
+    graph: Graph;
+
+    constructor(graph: Graph, forkliftSpeed: number) {
+        super(graph, forkliftSpeed);
+    }
+
+    static parse(obj: any): Warehouse {
+        // Just assume it to be correct, it comes from planningScheduler
+        return new Warehouse(Graph.parse(obj.graph), obj.forkliftSpeed);
+    }
+}
+
+class Graph extends Graph_Shared {
+    vertices: { [key: string]: Vertex; };
+
+    constructor(vertices: { [key: string]: Vertex; }) {
+        super(vertices);
+    }
+    static parse(obj: any) {
+        return new Graph(Vertex.parseMultipleToDictionary(obj.vertices));
+    }
+}
+
+class Vertex extends Vertex_Shared {
+    isAvailabe() {
+
+    }
+
+    constructor(id: string, position: Vector2, label?: string) {
+        super(id, position, label);
+    }
+
+    static parse(obj: any): Vertex {
+        return new Vertex(obj.id, obj.position, obj.label);
+    }
+    static parseMultipleToDictionary(obj: any): { [key: string]: Vertex; } {
+        let output = {};
+        for (let k in obj) {
+            let v = obj[k];
+            output[v.id] = v;
+        }
+        return output;
+    }
+}
+*/
