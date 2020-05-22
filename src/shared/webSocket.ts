@@ -23,6 +23,8 @@ enum PackageTypes {
     forkliftInfos = "forkliftInfos",
     order = "order",
     orders = "orders",
+    orderFailed = "orderFailed",
+    ordersFailed = "ordersFailed",
     warehouse = "warehouse",
     json = "json",
     other = "other"

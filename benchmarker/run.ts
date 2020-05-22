@@ -13,11 +13,13 @@ class Test {
     blackbox = childProcess.fork("src\\blackbox\\run.ts", ["localhost", "3000"], { silent: true });
     forklifts = childProcess.fork("src\\forklifts\\run.ts", ["localhost", "3000"], { silent: true });
     webclient = childProcess.fork("src\\webclient\\run.ts", ["localhost", "8080", "localhost", "3000"], { silent: true });
+    orderSpammer = childProcess.fork("src\\orderSpammer\\run.ts", ["localhost", "3000"], { silent: true });
 
     subscribedSocket: WebSocket;
     routes: { [key: string]: Route; } = {};
     parsedRoutes: { [key: string]: Route; } = {};
     routeCount: number = 0;
+    failedOrdersCount: number = 0;
     timesteps: number = NaN;
 
     constructor() {
@@ -66,6 +68,14 @@ class Test {
             }
         });
 
+        this.subscribedSocket.on(WebSocket.packageTypes.orderFailed, (orderId: string) => {
+            this.failedOrdersCount++;
+        });
+        this.subscribedSocket.on(WebSocket.packageTypes.ordersFailed, (orders: string[]) => {
+            this.failedOrdersCount += orders.length;
+        });
+
+
         return new Promise((resolve: (numberOfFulfilledOrders: number, timesteps: number) => any) => {
             this.planningScheduler.stdout.on("data", (data) => {
                 let str = String(data);
@@ -88,6 +98,7 @@ class Test {
         this.blackbox.kill();
         this.forklifts.kill();
         this.webclient.kill();
+        this.orderSpammer.kill();
     }
 }
 
@@ -100,9 +111,10 @@ async function main() {
         await test.Run();
 
         console.log("Routes sent: ", test.routeCount);
+        console.log("Orders failed: ", test.failedOrdersCount);
         console.log("Timesteps: ", test.timesteps);
 
-        fs.appendFileSync("benchmarker/log.txt", `{Start: "${startTime.toISOString()}", time: "${(new Date()).toISOString()}", routesSent: ${test.routeCount}, timesteps: ${test.timesteps}},\n`);
+        fs.appendFileSync("benchmarker/log.txt", `{Start: "${startTime.toISOString()}", time: "${(new Date()).toISOString()}", routesSent: ${test.routeCount}, ordersFailed: ${test.failedOrdersCount}, timesteps: ${test.timesteps}},\n`);
 
         test.kill();
     }

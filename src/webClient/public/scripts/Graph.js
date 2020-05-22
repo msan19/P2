@@ -58,7 +58,7 @@ class Graph {
     }
 
     onNodeClick(element) {
-        if (element.data.node.id[0] == "F") {
+        if (typeof (element.data.node.isForklift) != "undefined" && element.data.node.isForklift == true) {
             this.unfocusGraph();
             UiManager.chooseForklift(element.data.node.id);
         }
@@ -69,19 +69,53 @@ class Graph {
         let nodesIds = [];
         let edgeIds = [];
         // add nodes
+        let isWaitSpot = false;
         for (let key in instructions) {
+
             if (nodesIds.length > 0) {
-                if (nodesIds[nodesIds.length - 1] == instructions[key]["nodeId"])
+                if (nodesIds[nodesIds.length - 1].id == instructions[key].nodeId) {
+                    isWaitSpot = true;
                     continue;
+                }
             }
-            nodesIds.push(instructions[key]["nodeId"]);
+            nodesIds.push({
+                "id": instructions[key].nodeId,
+                "isWaitSpot": isWaitSpot
+            });
+            if (isWaitSpot)
+                isWaitSpot = false;
         }
+        let afterWaitSpot = false;
         for (let key in nodesIds) {
             if (key > 0) {
-                if (nodesIds[key] < nodesIds[key - 1])
-                    edgeIds.push(nodesIds[key] + "," + nodesIds[key - 1]);
-                else
-                    edgeIds.push(nodesIds[key - 1] + "," + nodesIds[key]);
+
+                if (nodesIds[key].id < nodesIds[key - 1].id) {
+                    // Check for duplicate edge
+                    let contains = false;
+                    for (let key2 in edgeIds)
+                        if (edgeIds[key2].id == (nodesIds[key].id + "," + nodesIds[key - 1].id))
+                            contains = true;
+                    // If first time encountering edge; add it
+                    if (!contains)
+                        edgeIds.push({
+                            "id": nodesIds[key].id + "," + nodesIds[key - 1].id,
+                            "afterWaitSpot": afterWaitSpot
+                        });
+                } else {
+                    // Check for duplicate edge
+                    let contains = false;
+                    for (let key2 in edgeIds)
+                        if (edgeIds[key2].id == (nodesIds[key - 1].id + "," + nodesIds[key].id))
+                            contains = true;
+                    // If first time encountering edge; add it
+                    if (!contains)
+                        edgeIds.push({
+                            "id": nodesIds[key - 1].id + "," + nodesIds[key].id,
+                            "afterWaitSpot": afterWaitSpot
+                        });
+                }
+                if (nodesIds[key].isWaitSpot == true)
+                    afterWaitSpot = true;
             }
         }
         return {
@@ -176,7 +210,8 @@ class Graph {
                 y: forklift.position.y,
                 color: "#ffff00",
                 originalColor: "#ffff00",
-                size: 14
+                size: 14,
+                isForklift: true
             });
         }
     }
@@ -258,11 +293,21 @@ class Graph {
     hightlightPath(path) {
         let newHighlightColor = (forkliftData[nForklifts.selectedForklift].currentNode.nodeId == forkliftData[nForklifts.selectedForklift].route.instructions[0].nodeId) ? mainGraph.waitingColor : mainGraph.movingColor;
         this.unfocusGraph();
-        for (let node in path.nodes)
-            this.sigmaGraph.graph.nodes(path.nodes[node]).color = newHighlightColor;
+        let coloredNodes = new Set();
+        for (let node in path.nodes) {
+            if (path.nodes[node].isWaitSpot == true)
+                newHighlightColor = mainGraph.waitingColor;
+            if (coloredNodes.has(path.nodes[node].id))
+                continue;
+            coloredNodes.add(path.nodes[node].id);
+            this.sigmaGraph.graph.nodes(path.nodes[node].id).color = newHighlightColor;
+        }
+        newHighlightColor = (forkliftData[nForklifts.selectedForklift].currentNode.nodeId == forkliftData[nForklifts.selectedForklift].route.instructions[0].nodeId) ? mainGraph.waitingColor : mainGraph.movingColor;
 
         for (let edge in path.edges) {
-            this.sigmaGraph.graph.edges(path.edges[edge]).color = newHighlightColor;
+            if (path.edges[edge].afterWaitSpot == true)
+                newHighlightColor = mainGraph.waitingColor;
+            this.sigmaGraph.graph.edges(path.edges[edge].id).color = newHighlightColor;
         }
 
     }
