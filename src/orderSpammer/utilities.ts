@@ -48,7 +48,7 @@ export class Vertex {
 
     static getAllAvailableOfType(data: DataContainer, availableVertexIds: string[], type: VertexTypes) {
         return availableVertexIds.filter((val, id, arr) => {
-            Vertex.getType(data, val) === type;
+            return Vertex.getType(data, val) === type;
         });
     }
 
