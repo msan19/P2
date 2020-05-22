@@ -55,7 +55,7 @@ export class Order extends Order_Shared {
     delayStartTime(baseDelayTime: number) {
         if (this.delayCounter >= this.delayMax) return false;
 
-        this.time += baseDelayTime * 2 ** this.delayCounter;
+        this.time = (new Date()).getTime() + baseDelayTime * 2 ** this.delayCounter;
         this.delayCounter++;
         return true;
     }
