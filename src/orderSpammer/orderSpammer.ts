@@ -40,8 +40,8 @@ export class OrderSpammer {
             this.iterate();
         });
 
-        this.socket.on(PackageTypes.forkliftInfo, forklift => this.onRecievedForklift(forklift));
-        this.socket.on(PackageTypes.forkliftInfos, forklifts => {
+        this.socket.on(WebSocket.packageTypes.forkliftInfo, forklift => this.onRecievedForklift(forklift));
+        this.socket.on(WebSocket.packageTypes.forkliftInfos, forklifts => {
             for (let i in forklifts) this.onRecievedForklift(forklifts[i]);
         });
     }
