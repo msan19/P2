@@ -128,7 +128,7 @@ async function main() {
 
         while (true) {
             // Log every 5 minutes
-            await delay(5 * 60 * 1000);
+            await delay(60 * 1000);
             await logData("benchmarker/log.txt", {
                 start: startTime.toISOString(),
                 time: (new Date()).toISOString(),
@@ -150,7 +150,7 @@ main();
 async function logData(filename: string, data: any) {
     console.log("Logged Data");
     return new Promise((resolve: () => any) => {
-        fs.appendFile(filename, JSON.stringify(data) + ",", resolve);
+        fs.appendFile(filename, JSON.stringify(data) + ",\n", resolve);
     });
 }
 
