@@ -18,7 +18,7 @@ export class OrderSpammer {
     private socket: WebSocket;
     private apiCaller: ApiCaller;
 
-    private dataContainer;
+    private dataContainer: DataContainer;
     private ordersSentCount: number = 0;
 
     interval: () => number;
