@@ -1,29 +1,37 @@
 class Forklifts {
     selectedForklift = "";
 
+    static prepareForkliftId(id) {
+        return "F-" + id;
+    }
+
     onReceiveForklift(forklift) {
-        if (typeof (forklift.id) != "undefined") {
-            if (typeof (forkliftData[forklift.id]) == "undefined")
-                this.addForklift(forklift);
-            else
-                this.updateForklift(forklift);
-        }
+        let parsedForklift = this.parseForklift(forklift);
+
+        if (typeof (parsedForklift) == "undefined")
+            return;
+
+        if (typeof (forkliftData[parsedForklift.id]) == "undefined")
+            this.addForklift(parsedForklift);
+        else
+            this.updateForklift(parsedForklift);
     }
 
     addForklift(forklift) {
         this.addForkliftToUi(forklift);
-        forkliftData[forklift.id] = this.parseForklift(forklift);
+        forkliftData[forklift.id] = forklift;
     }
 
     updateForklift(forklift) {
-        let parsedForklift = this.parseForklift(forklift);
-        if (typeof (parsedForklift.state) != "undefined")
-            forkliftData[forklift.id].state = parsedForklift.state;
-        if (typeof (parsedForklift.position) != "undefined") {
-            if (typeof (parsedForklift.position.x) != "undefined")
-                forkliftData[forklift.id].position.x = parsedForklift.position.x;
-            if (typeof (parsedForklift.position.y) != "undefined")
-                forkliftData[forklift.id].position.y = parsedForklift.position.y;
+        if (typeof (forklift.id) == "undefined")
+            return;
+        if (typeof (forklift.state) != "undefined")
+            forkliftData[forklift.id].state = forklift.state;
+        if (typeof (forklift.position) != "undefined") {
+            if (typeof (forklift.position.x) != "undefined")
+                forkliftData[forklift.id].position.x = forklift.position.x;
+            if (typeof (forklift.position.y) != "undefined")
+                forkliftData[forklift.id].position.y = forklift.position.y;
         }
     }
 
@@ -42,14 +50,18 @@ class Forklifts {
 
     parseForklift(data) {
         let forklift;
+        if (typeof (data.id) == "undefined")
+            return;
+        if (typeof (data.state) == "undefined")
+            return;
         if (!Forklifts.getIfForkliftHasPosition(data)) {
             forklift = {
-                id: data.id,
+                id: Forklifts.prepareForkliftId(data.id),
                 state: data.state
             };
         } else {
             forklift = {
-                id: data.id,
+                id: Forklifts.prepareForkliftId(data.id),
                 position: {
                     x: data.position.x,
                     y: data.position.y

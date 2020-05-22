@@ -8,7 +8,7 @@ import { expect } from 'chai';
 import 'mocha';
 
 import { Graph, ScheduleItem } from '../../../src/planningScheduler/classes/graph';
-import { createGraph } from '../../../src/blackBox/warehouse';
+import { createGraph, GraphTypes } from '../../../src/blackBox/warehouse';
 import { Order } from '../../../src/planningScheduler/classes/order';
 import { RouteScheduler } from '../../../src/planningScheduler/routeScheduler';
 import { DataContainer } from '../../../src/planningScheduler/classes/dataContainer';
@@ -17,12 +17,12 @@ import { Warehouse } from '../../../src/planningScheduler/classes/warehouse';
 
 
 function initRouteSet() {
-    let graph: Graph = Graph.parse(createGraph());
+    let graph: Graph = Graph.parse(createGraph(GraphTypes.simple));
     return new RouteSet([], graph);
 }
 
 function initRouteScheduler() {
-    let graph: Graph = Graph.parse(createGraph());
+    let graph: Graph = Graph.parse(createGraph(GraphTypes.simple));
     let warehouse = new Warehouse(graph, 15);
     let data: DataContainer = new DataContainer();
     data.warehouse = warehouse;

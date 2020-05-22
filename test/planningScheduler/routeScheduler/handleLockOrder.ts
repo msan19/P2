@@ -8,7 +8,7 @@ import 'mocha';
 
 import { DataContainer } from "./../../../src/planningScheduler/classes/dataContainer";
 import { RouteScheduler } from "./../../../src/planningScheduler/routeScheduler";
-import { createGraph } from "./../../../src/blackBox/warehouse";
+import { createGraph, GraphTypes } from "./../../../src/blackBox/warehouse";
 import { Route, Instruction } from "./../../../src/shared/route";
 import { RouteSet } from "./../../../src/planningScheduler/classes/routeSet";
 import { Graph, Vertex, ScheduleItem } from '../../../src/planningScheduler/classes/graph';
@@ -16,14 +16,14 @@ import { Order } from '../../../src/planningScheduler/classes/order';
 import { Warehouse } from '../../../src/planningScheduler/classes/warehouse';
 
 describe("Test getRoute for movePallet order type, i.e. test of createMovePalletInstructions", () => {
-    let bestRouteSetgraph = Graph.parse(createGraph());
+    let bestRouteSetgraph = Graph.parse(createGraph(GraphTypes.simple));
 
     context("when all vertices in route are unique", () => {
         let vertexIds = ["N0-1", "N0-2", "N0-3", "N0-4", "N0-5", "N0-6", "N0-7"];
         let visitTimes = [30000, 31000, 32000, 33000, 34000, 35000, 36000];
 
         let data: DataContainer = new DataContainer();
-        data.warehouse = new Warehouse(Graph.parse(createGraph()), 15);;
+        data.warehouse = new Warehouse(Graph.parse(createGraph(GraphTypes.simple)), 15);;
         let routeScheduler = new RouteScheduler(data);
 
 
@@ -48,7 +48,7 @@ describe("Test getRoute for movePallet order type, i.e. test of createMovePallet
         let visitTimes = [30000, 31000, 32000, 33000, 34000];
 
         let data: DataContainer = new DataContainer();
-        data.warehouse = new Warehouse(Graph.parse(createGraph()), 15);;
+        data.warehouse = new Warehouse(Graph.parse(createGraph(GraphTypes.simple)), 15);;
         let routeScheduler = new RouteScheduler(data);
 
         routeScheduler.bestRouteSet = new RouteSet(["O2"], bestRouteSetgraph);
@@ -73,10 +73,10 @@ describe("Test getRoute for moveForklift order type, i.e. test of createMoveInst
     let visitTimes = [30000, 31000, 32000, 33000, 34000];
 
     let data: DataContainer = new DataContainer();
-    data.warehouse = new Warehouse(Graph.parse(createGraph()), 15);;
+    data.warehouse = new Warehouse(Graph.parse(createGraph(GraphTypes.simple)), 15);;
     let routeScheduler = new RouteScheduler(data);
 
-    let bestRouteSetgraph = Graph.parse(createGraph());
+    let bestRouteSetgraph = Graph.parse(createGraph(GraphTypes.simple));
     routeScheduler.bestRouteSet = new RouteSet(["O3"], bestRouteSetgraph);
     routeScheduler.bestRouteSet.duration = [4000];
 
