@@ -8,6 +8,16 @@ import { Graph, Vertex } from "../shared/graph";
 import { Vector2 } from "../shared/vector2";
 
 /**
+ * Enumeration type used for declaring type of graph to be generated.
+ * Each enum is equivalent to the name as a string
+ */
+export enum GraphTypes {
+    kiva = "kiva",
+    transit = "transit",
+    simple = "simple"
+}
+
+/**
  * Creates a graph object
  */
 export function createGraph() {
