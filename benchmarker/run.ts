@@ -28,7 +28,6 @@ class Test {
 
     }
 
-
     async subscribe() {
         return new Promise(async resolve => {
             let socket: ws;
@@ -87,12 +86,16 @@ class Test {
         return new Promise((resolve: (numberOfFulfilledOrders: number, timesteps: number) => any) => {
             this.planningScheduler.stdout.on("data", (data) => {
                 let str = String(data);
+                // Removed trailing newline
+                str = str.substr(0, str.length - 1);
+
                 console.log("planningScheduler: ", `"${str}"`);
+
                 if (str === "No unlocked routes - Suspending\n") {
                     setTimeout(() => { resolve(this.routeCount, this.timesteps); }, 5000);
                 }
                 else if (str.substr(0, "Discrete timesteps:".length) === "Discrete timesteps:") {
-                    let timesteps = Number(str.match(/Discrete timesteps: (\d+|Infinity)\n/i)[1]);
+                    let timesteps = Number(str.match(/Discrete timesteps: (\d+|Infinity)/i)[1]);
                     this.timesteps = timesteps;
                 }
 
