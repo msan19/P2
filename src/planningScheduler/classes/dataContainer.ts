@@ -29,28 +29,23 @@ export class DataContainer extends events.EventEmitter {
     static events = DataContainerEvents;
 
     /** Is a dictionary containing {@link Forklift} objects */
-    forklifts: { [key: string]: Forklift; };
+    forklifts: { [key: string]: Forklift; } = {};
 
     /** Is a dictionary containing {@link Order} objects */
-    orders: { [key: string]: Order; };
+    orders: { [key: string]: Order; } = {};
 
     /** Is an array of all new {@link Order}s added */
-    newOrders: string[];
+    newOrders: string[] = [];
 
     /** Is a dictionary containing {@link Route} objects */
-    routes: { [key: string]: Route; };
+    routes: { [key: string]: Route; } = {};
 
     /** Is a model of the warehouse */
-    warehouse: Warehouse;
+    warehouse: Warehouse = null;
 
     /** Extends {@link EventEmitter} */
     constructor() {
         super();
-        this.forklifts = {};
-        this.orders = {};
-        this.routes = {};
-        this.warehouse = null;
-        this.newOrders = [];
     }
 
     /**
