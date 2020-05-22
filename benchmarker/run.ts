@@ -124,7 +124,7 @@ async function main() {
     while (true) {
         let test = new Test();
         let startTime = new Date();
-        await test.Run();
+        test.Run();
 
         while (true) {
             // Log every 5 minutes
