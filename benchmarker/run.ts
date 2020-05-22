@@ -132,6 +132,7 @@ async function main() {
             await logData("benchmarker/log.txt", {
                 start: startTime.toISOString(),
                 time: (new Date()).toISOString(),
+                ordersReceived: test.ordersReceived,
                 routeCount: test.routeCount,
                 failedOrdersCount: test.failedOrdersCount,
                 timesteps: test.timesteps,
