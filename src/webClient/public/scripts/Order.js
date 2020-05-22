@@ -19,8 +19,6 @@ class Order {
             return false;
         if (typeof (order.forkliftId) != "undefined")
             newOrder.forkliftId = order.forkliftId;
-        else
-            return false;
         if (typeof (order.palletId) != "undefined")
             newOrder.palletId = order.palletId;
         if (typeof (order.startVertexId) != "undefined")
