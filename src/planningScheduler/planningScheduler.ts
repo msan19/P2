@@ -21,6 +21,7 @@ export class PlanningScheduler {
     /**  */
     routeScheduler: RouteScheduler;
     updater: NodeJS.Immediate;
+    timesUpdatedInTheLast10Seconds: number = 0;
 
     /**
      * Constructor for object.
@@ -49,6 +50,10 @@ export class PlanningScheduler {
         this.server = new WebServerPlanningScheduler(this.data, hostname, port);
         this.server.run();
         this.data.on(DataContainer.events.addOrder, (order) => { this.update(); });
+        setInterval(() => {
+            console.log(`Updated ${this.timesUpdatedInTheLast10Seconds} times within the last 10 seconds`);
+            this.timesUpdatedInTheLast10Seconds = 0;
+        }, 10000);
     }
 
 
@@ -85,6 +90,7 @@ export class PlanningScheduler {
 
             // Update routeScheduler
             this.routeScheduler.update();
+            this.timesUpdatedInTheLast10Seconds++;
         }
 
         // Appends itself to the event loop, but it does not block other events
