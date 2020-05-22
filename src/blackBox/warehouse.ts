@@ -20,8 +20,24 @@ export enum GraphTypes {
 /**
  * Creates a graph object
  */
-export function createGraph() {
-    return new Graph(createKivaLikeGraph(63, 22));
+export function createGraph(graphType: GraphTypes) {
+    let graphFunction: () => { [key: string]: Vertex; };
+
+    switch (graphType) {
+        case GraphTypes.kiva:
+            graphFunction = () => (createKivaLikeVertices(63, 22));
+            break;
+        case GraphTypes.transit:
+            graphFunction = () => (createRealTransitVertices());
+            break;
+        case GraphTypes.simple:
+            graphFunction = () => (createVertices(10, 10));
+            break;
+        default:
+            graphFunction = () => (createVertices(10, 10));
+    }
+
+    return new Graph(graphFunction());
 }
 
 /**
