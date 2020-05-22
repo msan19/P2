@@ -4,6 +4,7 @@ import * as ws from "ws";
 import { WebSocket } from "../src/shared/webSocket";
 import * as fs from 'fs';
 import { Route } from '../src/shared/route';
+import { Order } from '../src/shared/order';
 
 
 console.log("Benchmarker running");
@@ -19,6 +20,7 @@ class Test {
     routes: { [key: string]: Route; } = {};
     parsedRoutes: { [key: string]: Route; } = {};
     routeCount: number = 0;
+    ordersReceived: number = 0;
     failedOrdersCount: number = 0;
     timesteps: number = NaN;
 
@@ -66,6 +68,13 @@ class Test {
                 this.routes[route.routeId] = route;
                 this.parsedRoutes[route.routeId] = Route.parse(route);
             }
+        });
+
+        this.subscribedSocket.on(WebSocket.packageTypes.order, (order: Order) => {
+            this.ordersReceived++;
+        });
+        this.subscribedSocket.on(WebSocket.packageTypes.orders, (orders: Order[]) => {
+            this.ordersReceived += Object.keys(orders).length;
         });
 
         this.subscribedSocket.on(WebSocket.packageTypes.orderFailed, (orderId: string) => {
