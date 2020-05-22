@@ -11,6 +11,7 @@ import { Forklift } from "./forklift";
 import { Warehouse } from "./warehouse";
 import { Order } from "./order";
 import { Route } from "../../shared/route";
+import { RouteScheduler } from "../routeScheduler";
 
 /**
  * Enumeration type used for events regarding DataContainer.
@@ -22,7 +23,9 @@ export enum DataContainerEvents {
     setWarehouse = "setWarehouse",
     lockRoute = "lockRoute",
     forkliftInitiated = "forkliftInitiated",
-    forkliftUpdated = "forkliftUpdated"
+    forkliftUpdated = "forkliftUpdated",
+    failedOrder = "failedOrder",
+    failedOrders = "failedOrders"
 }
 
 export class DataContainer extends events.EventEmitter {
@@ -115,4 +118,17 @@ export class DataContainer extends events.EventEmitter {
     removeOrderFromOrders(order: Order) {
         delete this.orders[order.id];
     }
+
+    failOrder(order: Order, routeScheduler: RouteScheduler) {
+        this.emit(DataContainer.events.failedOrder, order.id);
+        routeScheduler.removeOrderFromBestRouteSet(order);
+        this.removeOrderFromOrders(order);
+    }
+
+    failAllOrders() {
+        this.emit(DataContainer.events.failedOrders, Object.keys(this.orders));
+        this.orders = {};
+    }
+
+
 }

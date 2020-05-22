@@ -59,6 +59,8 @@ export class PlanningScheduler {
             let currentTime = (new Date()).getTime(); // 1588233898230
             let timeOffset = 1000;
             let timeToPush = 10000;
+            let delayedSinceLastSucces = 0;
+            let flushThreshhold = 100;
 
             for (let orderId in this.data.orders) {
                 if (this.routeScheduler.unfinishedOrderIds.indexOf(orderId) !== -1) {
@@ -68,15 +70,20 @@ export class PlanningScheduler {
                     if (indexOfOrderId !== -1 && this.routeScheduler.bestRouteSet.duration[indexOfOrderId] < Infinity) {
                         if (currentTime + timeOffset > this.routeScheduler.getStartTime(orderId)) {
                             this.data.lockRoute(this.routeScheduler.handleLockOrder(orderId));
+                            delayedSinceLastSucces = 0;
                         }
                     } else if (this.data.orders[orderId].time < currentTime + timeOffset && indexOfOrderId !== -1) {
                         let tempOrder = this.data.orders[orderId];
-                        if (!tempOrder.delayStartTime(timeToPush)) {
+                        delayedSinceLastSucces++;
+                        if (delayedSinceLastSucces > flushThreshhold) {
+                            this.data.failAllOrders();
+                            delayedSinceLastSucces = 0;
+                        } else if (!tempOrder.delayStartTime(timeToPush)) {
                             // delayCounter is 0. Order must be deleted
-                            this.routeScheduler.removeOrderFromBestRouteSet(tempOrder);
-                            this.data.removeOrderFromOrders(tempOrder);
+                            this.data.failOrder(tempOrder, this.routeScheduler);
                             // Throw error to client, order dumped
                         }
+
                     }
                 } else {
                     // Handle forklift feedback for orders. If positive, remove
