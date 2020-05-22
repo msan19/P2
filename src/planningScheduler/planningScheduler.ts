@@ -58,6 +58,7 @@ export class PlanningScheduler {
             // Get route(s)
             let currentTime = (new Date()).getTime(); // 1588233898230
             let timeOffset = 1000;
+            let timeToPush = 10000;
 
             for (let orderId in this.data.orders) {
                 if (this.routeScheduler.unfinishedOrderIds.indexOf(orderId) !== -1) {
@@ -70,7 +71,7 @@ export class PlanningScheduler {
                         }
                     } else if (this.data.orders[orderId].time < currentTime + timeOffset && indexOfOrderId !== -1) {
                         let tempOrder = this.data.orders[orderId];
-                        if (!tempOrder.delayStartTime(timeOffset)) {
+                        if (!tempOrder.delayStartTime(timeToPush)) {
                             // delayCounter is 0. Order must be deleted
                             this.routeScheduler.removeOrderFromBestRouteSet(tempOrder);
                             this.data.removeOrderFromOrders(tempOrder);

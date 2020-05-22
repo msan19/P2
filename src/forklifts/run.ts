@@ -11,8 +11,8 @@ import { ApiCaller } from "../shared/apiCaller";
 import { Warehouse } from "../shared/warehouse";
 import { Vector2 } from "../shared/vector2";
 
-const SERVER_HOSTNAME = 'localhost';
-const SERVER_PORT = 3000;
+const SERVER_HOSTNAME = process.argv[2];
+const SERVER_PORT = Number(process.argv[3]);
 
 var forklifts = [];
 
@@ -38,23 +38,19 @@ function getWarehouse() {
 
 
 getWarehouse().then((warehouse: Warehouse) => {
-    let verticeIds = Object.keys(warehouse.graph.vertices);
     let counter = 0;
     let x = 5, y = 0;
 
     while (counter < 140) {
-        if (y >= 22) {
+        if (y > 21) {
             y = 0;
             x++;
         }
-        if (counter >= 70 && x < 53) {
-            x = 53;
-            y = 0;
-        }
 
         if (y % 3 !== 0) {
-            forklifts.push(new Forklift("F" + counter, SERVER_HOSTNAME, SERVER_PORT, randomIntegerInRange(5, 100), Forklift.states.idle, new Vector2(x * 10, y * 10)));
-            counter++;
+            forklifts.push(new Forklift("F" + counter, SERVER_HOSTNAME, SERVER_PORT, randomIntegerInRange(5, 100), Forklift.states.idle, new Vector2((9 - x) * 10, y * 10)));
+            forklifts.push(new Forklift("F" + (counter + 1), SERVER_HOSTNAME, SERVER_PORT, randomIntegerInRange(5, 100), Forklift.states.idle, new Vector2((x + 53) * 10, y * 10)));
+            counter += 2;
         }
         y++;
     }

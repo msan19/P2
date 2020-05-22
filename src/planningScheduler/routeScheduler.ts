@@ -121,7 +121,7 @@ export class RouteScheduler {
             currentScheduleItem = currentScheduleItem.previousScheduleItem;
         }
 
-        return new Route(routeId, order.palletId, forkliftId, order.id, routeStatus, instructions);
+        return new Route(routeId, forkliftId, order.id, routeStatus, instructions);
     }
 
     /**
@@ -685,6 +685,9 @@ export class RouteScheduler {
         let sum = 0;
         for (let i = 0; i < routeSet.duration.length; i++) {
             sum += routeSet.duration[i];
+        }
+        if (routeSet.duration.length === 140) {
+            console.log(`Discrete timesteps: ${Math.floor(sum / ((1000 * 10) / (2 * 4.17)))}`);
         }
         return sum;
     }

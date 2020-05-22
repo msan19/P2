@@ -11,8 +11,8 @@ import { Response } from "node-fetch";
 import { OrderSpammer } from "./orderSpammer";
 import { randomIntegerInRange } from "../shared/utilities";
 
-const SERVER_HOSTNAME = 'localhost';
-const SERVER_PORT = 3000;
+const SERVER_HOSTNAME = process.argv[2];
+const SERVER_PORT = Number(process.argv[3]);
 
 let warehouse = new Warehouse(createGraph(), 2 * 4.17);
 

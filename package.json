@@ -10,13 +10,14 @@
         "@types/chai-as-promised": "^7.1.2",
         "@types/mime-types": "^2.1.0",
         "chai-as-promised": "^7.1.1",
+        "child_process": "^1.0.2",
         "mime-types": "^2.1.27",
         "net": "^1.0.2"
     },
     "devDependencies": {
         "@types/chai": "^4.2.11",
         "@types/mocha": "^7.0.2",
-        "@types/node": "^13.13.6",
+        "@types/node": "^13.13.8",
         "@types/node-fetch": "^2.5.5",
         "@types/ws": "^7.2.4",
         "chai": "^4.2.0",
@@ -26,7 +27,7 @@
         "sigma": "^2.0.0-alpha32",
         "ts-node": "^8.10.1",
         "typedoc": "^0.17.4",
-        "typescript": "^3.9.2",
+        "typescript": "^3.9.3",
         "ws": "^7.3.0"
     },
     "scripts": {
@@ -34,12 +35,12 @@
         "test": "mocha --require ts-node/register",
         "tests": "mocha --require ts-node/register test/planningScheduler/**/*.ts",
         "test-vector": "mocha --require ts-node/register test/shared/utilities.ts/vector2.ts",
-        "test-data": "mocha --require ts-node/register test/planningScheduler/**/testDataContainer.ts",
-        "test-graph": "mocha --require ts-node/register test/planningScheduler/**/testGraph.ts",
+        "test-data": "mocha --require ts-node/register test/planningScheduler/**/dataContainer.ts",
+        "test-graph": "mocha --require ts-node/register test/planningScheduler/**/graph.ts",
         "test-warehouse": "mocha --require ts-node/register test/planningScheduler/**/warehouse.ts",
         "test-order": "mocha --require ts-node/register test/planningScheduler/**/order.ts",
         "test-Astar": "mocha --require ts-node/register test/planningScheduler/**/testAstar.ts",
-        "test-route": "mocha --require ts-node/register test/planningScheduler/**/testGetRoute.ts"
+        "test-handleLockOrder": "mocha --require ts-node/register test/planningScheduler/**/handleLockOrder.ts"
     },
     "repository": {
         "type": "git",

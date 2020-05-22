@@ -191,7 +191,7 @@ export class OrderSpammer {
 
     createKivaOrders(numOfOrders) {
         let timeNow = (new Date()).getTime();
-        let timeOfOutgoing = timeNow + 60000;
+        let timeOfOutgoing = timeNow + 60000 * 5;
         let orders = [];
         let availableVertices: boolean[][] = [];
         let rows = 22, cols = 10;
@@ -209,12 +209,12 @@ export class OrderSpammer {
             let destination;
             let x, y;
             do {
-                x = forkliftNum >= 70 ? randomIntegerInRange(0, 4) : randomIntegerInRange(5, cols - 1);
+                x = forkliftNum % 2 !== 0 ? randomIntegerInRange(0, 4) : randomIntegerInRange(5, cols - 1);
                 y = randomIntegerInRange(0, rows - 1);
             } while (availableVertices[x][y]);
 
             availableVertices[x][y] = true;
-            destination = `N${x < 5 ? x : x + 53}-${y}`;
+            destination = `N${x < 5 ? x + 5 : x + 48}-${y}`;
             orders.push(new Order(
                 `O${forklift}`,
                 Order.types.moveForklift,
@@ -224,7 +224,7 @@ export class OrderSpammer {
                 destination,
                 timeOfOutgoing,
                 Order.timeTypes.start,
-                3));
+                0));
         }
 
         return orders;
