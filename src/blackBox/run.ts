@@ -14,7 +14,7 @@ import { randomIntegerInRange } from "../shared/utilities";
 const SERVER_HOSTNAME = process.argv[2];
 const SERVER_PORT = Number(process.argv[3]);
 
-let warehouse = new Warehouse(createGraph(GraphTypes.simple), 2 * 4.17);
+let warehouse = new Warehouse(createGraph(GraphTypes.transit), 2 * 4.17);
 
 let api = new ApiCaller(`http://${SERVER_HOSTNAME}:${SERVER_PORT}`);
 
