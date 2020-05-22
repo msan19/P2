@@ -3,7 +3,6 @@
  * @category BlackBox
  */
 
-import * as ws from "ws";
 import { WebSocket } from "./../shared/webSocket";
 import { ApiCaller } from "./../shared/apiCaller";
 import { Order, OrderTypes, TimeType } from "../shared/order";
@@ -12,7 +11,6 @@ import { randomValue, randomIntegerInRange } from "../shared/utilities";
 import { Forklift as ForkliftUtilities, Vertex as VertexUtilities, VertexTypes } from "./utilities";
 import { DataContainer } from "./dataContainer";
 import { ForkliftInfo } from "../shared/forkliftInfo";
-
 
 export class OrderSpammer {
     private socket: WebSocket;
@@ -29,9 +27,9 @@ export class OrderSpammer {
      * @param subscribePath Path for websockets to subscribe to changes e.g. "http://localhost:3000/subscribe"
      * @param interval A function that'll be called between each random order, to say how many miliseconds to wait before sending the next
      */
-    constructor(apiPath: string, subscribePath: string, interval: () => number) {
-        this.apiCaller = new ApiCaller(apiPath);
-        this.socket = new WebSocket(new ws(subscribePath));
+    constructor(apiCaller: ApiCaller, subscribedSocket: WebSocket, interval: () => number) {
+        this.apiCaller = apiCaller;
+        this.socket = subscribedSocket;
         this.dataContainer = new DataContainer(this.socket);
         this.interval = interval;
 
