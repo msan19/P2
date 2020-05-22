@@ -6,12 +6,12 @@ import { WebSocket } from "../shared/webSocket";
 
 export class DataContainer {
     warehouse: Warehouse;
-    orders: { [key: string]: Order; };
-    routes: { [key: string]: Route; };
-    forklifts: { [key: string]: ForkliftInfo; };
+    orders: { [key: string]: Order; } = {};
+    routes: { [key: string]: Route; } = {};
+    forklifts: { [key: string]: ForkliftInfo; } = {};
 
-    unfinishedOrders: { [key: string]: Order; };
-    lockedRoutes: { [key: string]: Route; };
+    unfinishedOrders: { [key: string]: Order; } = {};
+    lockedRoutes: { [key: string]: Route; } = {};
 
     socket: WebSocket;
 
