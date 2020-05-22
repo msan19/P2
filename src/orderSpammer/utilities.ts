@@ -1,13 +1,12 @@
 import { DataContainer } from "./dataContainer";
-import { NOTIMP } from "dns";
 import { Vector2 } from "../shared/vector2";
 
 export enum VertexTypes {
-    pickup,
-    dropOff,
-    shelf,
-    charge,
-    hallway
+    pickup = "pickUp",
+    dropOff = "dropOff",
+    shelf = "shelf",
+    charge = "charge",
+    hallway = "hallway"
 }
 
 export class Vertex {
@@ -54,7 +53,7 @@ export class Vertex {
     }
 
     static getType(data: DataContainer, vertexId: string): VertexTypes {
-        throw NOTIMP;
+        return <VertexTypes>data.warehouse.graph.vertices[vertexId].label;
     }
 
     static estimateVertexId(data: DataContainer, position: Vector2): string {
