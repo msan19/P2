@@ -48,7 +48,7 @@ export class DataContainer {
         });
     }
     private onRecievedWarehouse(warehouse: Warehouse) {
-        this.warehouse = warehouse;
+        this.warehouse = Warehouse.parse(warehouse);
     }
     private onRecievedOrder(order: Order) {
         this.orders[order.id] = order;
