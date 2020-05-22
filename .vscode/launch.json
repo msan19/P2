@@ -63,6 +63,24 @@
             ]
         },
         {
+            "name": "Order Spammer",
+            "type": "node",
+            "request": "launch",
+            "args": [
+                "${workspaceFolder}/src/orderspammer/run.ts",
+                "localhost",
+                "3000"
+            ],
+            "runtimeArgs": [
+                "--nolazy",
+                "-r",
+                "ts-node/register"
+            ],
+            "sourceMaps": true,
+            "cwd": "${workspaceFolder}",
+            "protocol": "inspector",
+        },
+        {
             "name": "Blackbox",
             "type": "node",
             "request": "launch",
@@ -169,6 +187,7 @@
             "name": "Launch entire project",
             "configurations": [
                 "Planning Scheduler",
+                "Order Spammer",
                 "Blackbox",
                 "Forklift",
                 "Web Client"
