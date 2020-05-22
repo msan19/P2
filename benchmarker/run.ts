@@ -75,7 +75,6 @@ class Test {
             this.failedOrdersCount += orders.length;
         });
 
-
         return new Promise((resolve: (numberOfFulfilledOrders: number, timesteps: number) => any) => {
             this.planningScheduler.stdout.on("data", (data) => {
                 let str = String(data);
@@ -104,24 +103,40 @@ class Test {
 
 
 async function main() {
-
     while (true) {
         let test = new Test();
         let startTime = new Date();
         await test.Run();
 
-        console.log("Routes sent: ", test.routeCount);
-        console.log("Orders failed: ", test.failedOrdersCount);
-        console.log("Timesteps: ", test.timesteps);
-
-        fs.appendFileSync("benchmarker/log.txt", `{Start: "${startTime.toISOString()}", time: "${(new Date()).toISOString()}", routesSent: ${test.routeCount}, ordersFailed: ${test.failedOrdersCount}, timesteps: ${test.timesteps}},\n`);
+        while (true) {
+            // Log every 5 minutes
+            await delay(5 * 60 * 1000);
+            await logData("benchmarker/log.txt", {
+                start: startTime.toISOString(),
+                time: (new Date()).toISOString(),
+                routesSent: test.routeCount,
+                ordersFailed: test.failedOrdersCount,
+                timesteps: test.timesteps
+            });
+        }
 
         test.kill();
     }
 }
 main();
 
+async function logData(filename: string, data: any) {
+    console.log("Logged Data");
+    return new Promise((resolve: () => any) => {
+        fs.appendFile(filename, JSON.stringify(data), resolve);
+    });
+}
 
+async function delay(ms: number) {
+    return new Promise((resolve: () => any) => {
+        setTimeout(resolve, ms);
+    });
+}
 
 
 // Prevent automatic shutdown
