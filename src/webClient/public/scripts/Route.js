@@ -42,7 +42,7 @@ class Route {
         let instructions = [];
         for (let key in data.instructions) {
             instructions.push({
-                nodeId: Graph.prepareNodeId(data.instructions[key].vertexId),
+                nodeId: data.instructions[key].vertexId,
                 startTime: data.instructions[key].startTime
             });
         }
