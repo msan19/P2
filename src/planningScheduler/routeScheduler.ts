@@ -686,9 +686,10 @@ export class RouteScheduler {
         for (let i = 0; i < routeSet.duration.length; i++) {
             sum += routeSet.duration[i];
         }
+        /* Use only for Kiva test
         if (routeSet.duration.length === 140) {
             console.log(`Discrete timesteps: ${Math.floor(sum / ((1000 * 10) / (2 * 4.17)))}`);
-        }
+        }*/
         return sum;
     }
 

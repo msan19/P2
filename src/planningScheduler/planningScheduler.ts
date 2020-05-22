@@ -74,6 +74,7 @@ export class PlanningScheduler {
                         : -1;
                     if (indexOfOrderId !== -1 && this.routeScheduler.bestRouteSet.duration[indexOfOrderId] < Infinity) {
                         if (currentTime + timeOffset > this.routeScheduler.getStartTime(orderId)) {
+                            console.log(`Timesteps: ${Math.floor(this.routeScheduler.bestRouteSet.duration[indexOfOrderId] / ((1000 * 3) / (this.data.warehouse.maxForkliftSpeed)))}`);
                             this.data.lockRoute(this.routeScheduler.handleLockOrder(orderId));
                             delayedSinceLastSucces = 0;
                         }
