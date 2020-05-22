@@ -65,14 +65,6 @@ class Graph {
     }
 
     // END -- EVENT SECTION -- END
-
-    static prepareNodeId(id) {
-        return "N-" + id;
-    }
-    static prepareEdgeId(id) {
-        return "E-" + id;
-    }
-
     intepretInstructions(instructions) {
         let nodesIds = [];
         let edgeIds = [];
@@ -102,7 +94,7 @@ class Graph {
         let output = [];
         for (let vertexId in graph["vertices"]) {
             output.push({
-                id: Graph.prepareNodeId(graph["vertices"][vertexId]["id"]),
+                id: graph["vertices"][vertexId]["id"],
                 label: graph["vertices"][vertexId]["id"],
                 x: graph["vertices"][vertexId]["position"]["x"],
                 y: graph["vertices"][vertexId]["position"]["y"],
@@ -120,11 +112,11 @@ class Graph {
         for (let key in graph["vertices"]) {
             for (let key2 in graph["vertices"][key]["adjacentVertexIds"]) {
 
-                let vertexId_1 = Graph.prepareNodeId(graph["vertices"][key]["id"]);
-                let vertexId_2 = Graph.prepareNodeId(graph["vertices"][key]["adjacentVertexIds"][key2]);
+                let vertexId_1 = graph["vertices"][key]["id"];
+                let vertexId_2 = graph["vertices"][key]["adjacentVertexIds"][key2];
                 if (vertexId_1 < vertexId_2) {
                     output.push({
-                        id: Graph.prepareNodeId(vertexId_1 + "," + vertexId_2),
+                        id: vertexId_1 + "," + vertexId_2,
                         source: vertexId_1,
                         target: vertexId_2,
                         color: "#000000",

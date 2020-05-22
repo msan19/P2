@@ -170,12 +170,20 @@ export class ScheduleItem {
         return new ScheduleItem(item.forkliftId, item.time, item.nextVertexId);
     }
 
-    setPrevious(previousScheduleItem: ScheduleItem) {
+    /**
+     * Links current scheduleItem with input parameter previousScheduleItem
+     * @param previousScheduleItem ScheduleItem to be linked with current scheduleItem
+     */
+    setPrevious(previousScheduleItem: ScheduleItem): void {
         this.previousScheduleItem = previousScheduleItem;
         previousScheduleItem.nextScheduleItem = this;
     }
 
-    setNext(nextScheduleItem: ScheduleItem) {
+    /**
+    * Links current scheduleItem with input parameter nextScheduleItem
+    * @param previousScheduleItem ScheduleItem to be linked with current scheduleItem
+    */
+    setNext(nextScheduleItem: ScheduleItem): void {
         this.nextScheduleItem = nextScheduleItem;
         nextScheduleItem.previousScheduleItem = this;
     }
