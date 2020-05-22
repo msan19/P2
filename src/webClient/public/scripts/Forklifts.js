@@ -1,10 +1,6 @@
 class Forklifts {
     selectedForklift = "";
 
-    static prepareForkliftId(id) {
-        return "F-" + id;
-    }
-
     onReceiveForklift(forklift) {
         let parsedForklift = this.parseForklift(forklift);
 
@@ -56,12 +52,12 @@ class Forklifts {
             return;
         if (!Forklifts.getIfForkliftHasPosition(data)) {
             forklift = {
-                id: Forklifts.prepareForkliftId(data.id),
+                id: data.id,
                 state: data.state
             };
         } else {
             forklift = {
-                id: Forklifts.prepareForkliftId(data.id),
+                id: data.id,
                 position: {
                     x: data.position.x,
                     y: data.position.y
