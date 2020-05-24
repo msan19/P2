@@ -32,6 +32,13 @@ export class DataContainer {
         socket.on(WebSocket.packageTypes.orders, (orders: Order[]) => {
             for (let orderId in orders) this.onRecievedOrder(orders[orderId]);
         });
+        // Failed Orders
+        socket.on(WebSocket.packageTypes.orderFailed, (orderId: string) => {
+            this.onRecievedOrderFailed(orderId);
+        });
+        socket.on(WebSocket.packageTypes.ordersFailed, (orderIds: string[]) => {
+            for (let i in orderIds) this.onRecievedOrderFailed(orderIds[i]);
+        });
         // Routes
         socket.on(WebSocket.packageTypes.route, (route: Route) => {
             this.onRecievedRoute(route);
@@ -50,8 +57,11 @@ export class DataContainer {
     private onRecievedWarehouse(warehouse: Warehouse) {
         this.warehouse = Warehouse.parse(warehouse);
     }
-    private onRecievedOrder(order: Order) {
+    private onRecievedOrder(order: Order): void {
         this.orders[order.id] = order;
+    }
+    private onRecievedOrderFailed(orderId: string) {
+        delete this.orders[orderId];
     }
     private onRecievedRoute(route: Route) {
         this.routes[route.routeId] = route;
