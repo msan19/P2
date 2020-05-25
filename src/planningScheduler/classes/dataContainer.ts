@@ -117,6 +117,7 @@ export class DataContainer extends events.EventEmitter {
     failOrder(order: Order, routeScheduler: RouteScheduler) {
         this.emit(DataContainer.events.failedOrder, order.id);
         routeScheduler.removeOrderFromBestRouteSet(order);
+        routeScheduler.removeOrderFromUnfinishedOrders(order);
         this.removeOrderFromOrders(order);
     }
 

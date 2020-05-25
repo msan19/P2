@@ -170,6 +170,15 @@ export class RouteScheduler {
     }
 
     /**
+    * Removes the parameter order from array of unfinishedOrders
+    * @param order An order to be removed
+    */
+    removeOrderFromUnfinishedOrders(order: Order): void {
+        let indexOfOrder = this.unfinishedOrderIds.indexOf(order.id);
+        this.unfinishedOrderIds.splice(indexOfOrder, 1);
+    }
+
+    /**
      * Calculates all routes of the parameter {@link RouteSet} and creates the associated
      * {@link ScheduleItem} on each {@link Vertex} on the route
      * @param data A {@link DataContainer} givin acces to a dictionary of orders
@@ -721,7 +730,6 @@ export class RouteScheduler {
     update(): void {
         // Find appropriate place in priorities and insert
         if (this.bestRouteSet !== null) {
-            if (this.bestRouteSet.priorities.length < 1) this.unfinishedOrderIds = [];
             for (let newOrderId of this.data.newOrders) {
                 this.insertOrderInPrioritiesAppropriately(newOrderId);
             }
