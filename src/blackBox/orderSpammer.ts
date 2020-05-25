@@ -214,7 +214,7 @@ export class OrderSpammer {
             } while (availableVertices[x][y]);
 
             availableVertices[x][y] = true;
-            destination = `N${x < 5 ? x + 5 : x + 48}-${y}`;
+            destination = `N${x < 5 ? x : x + 53}-${y}`;
             orders.push(new Order(
                 `O${forklift}`,
                 Order.types.moveForklift,
