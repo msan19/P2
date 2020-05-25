@@ -14,7 +14,7 @@ import { randomIntegerInRange } from "../shared/utilities";
 const SERVER_HOSTNAME = process.argv[2];
 const SERVER_PORT = Number(process.argv[3]);
 
-let warehouse = new Warehouse(createGraph(GraphTypes.transit), 4.17);
+let warehouse = new Warehouse(createGraph(GraphTypes.kiva), 4.17);
 
 let api = new ApiCaller(`http://${SERVER_HOSTNAME}:${SERVER_PORT}`);
 
@@ -29,7 +29,7 @@ setTimeout(() => {
         console.log("Failed to set warehouse");
     });
 
-    // setTimeout(() => {
-    //     new OrderSpammer("http://localhost:3000", "http://localhost:3000/subscribe", () => { return randomIntegerInRange(2000, 2000); });
-    // }, 2000);
+    setTimeout(() => {
+        new OrderSpammer("http://localhost:3000", "http://localhost:3000/subscribe", () => { return randomIntegerInRange(2000, 2000); });
+    }, 2000);
 }, 2000);
