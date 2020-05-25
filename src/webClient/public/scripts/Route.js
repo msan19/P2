@@ -77,9 +77,9 @@ class Route {
     }
 
     onFinishRoute() {
+        orders[this.orderId].onFinishRoute();
         this.removeRouteFromUi();
         forkliftData[this.forkliftId].route = forkliftData[this.forkliftId].route.nextRoute;
-        orders[this.orderId].onFinishRoute();
         if (nForklifts.selectedForklift == this.forkliftId) {
             if (typeof (forkliftData[this.forkliftId].route) != "undefined") {
                 forkliftData[this.forkliftId].route.selectRoute();

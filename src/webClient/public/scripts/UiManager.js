@@ -223,7 +223,6 @@ class UiManager {
     }
 
     static chooseOrder(orderId) {
-        console.log(orderId)
         if (orderId == "") {
             document.querySelectorAll(".select-order").forEach((e) => {
                 this.resetOrderInformationOnUi();
