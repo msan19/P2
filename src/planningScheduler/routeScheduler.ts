@@ -80,7 +80,7 @@ export class RouteScheduler {
         this.data.warehouse.graph.idlePositions[forkliftId] = lastScheduleItem;
 
         // Splice order from priorities and duration
-        this.removeOrderFromBestRouteSet(order);
+        this.removeOrderFromBestRouteSet(orderId);
 
         // Redo permutations
         this.permute();
@@ -161,20 +161,20 @@ export class RouteScheduler {
 
     /**
      * Removes the parameter order from the arrays in bestRouteSet
-     * @param order An order to be removed
+     * @param orderId The id of the order to be removed
      */
-    removeOrderFromBestRouteSet(order: Order): void {
-        let indexOfOrder = this.bestRouteSet.priorities.indexOf(order.id);
+    removeOrderFromBestRouteSet(orderId: string): void {
+        let indexOfOrder = this.bestRouteSet.priorities.indexOf(orderId);
         this.bestRouteSet.priorities.splice(indexOfOrder, 1);
         this.bestRouteSet.duration.splice(indexOfOrder, 1);
     }
 
     /**
     * Removes the parameter order from array of unfinishedOrders
-    * @param order An order to be removed
+    * @param orderId The id of the order to be removed
     */
-    removeOrderFromUnfinishedOrders(order: Order): void {
-        let indexOfOrder = this.unfinishedOrderIds.indexOf(order.id);
+    removeOrderFromUnfinishedOrders(orderId: string): void {
+        let indexOfOrder = this.unfinishedOrderIds.indexOf(orderId);
         this.unfinishedOrderIds.splice(indexOfOrder, 1);
     }
 

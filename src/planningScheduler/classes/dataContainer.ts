@@ -108,17 +108,26 @@ export class DataContainer extends events.EventEmitter {
     /**
      * Removes an {@link Order} from list of orders
      * on {@link DataContainer}
-     * @param order The order being deleted
+     * @param orderId The id of the order being deleted
      */
-    removeOrderFromOrders(order: Order) {
-        delete this.orders[order.id];
+    removeOrderFromOrders(orderId: string) {
+        delete this.orders[orderId];
     }
 
     failOrder(order: Order, routeScheduler: RouteScheduler) {
         this.emit(DataContainer.events.failedOrder, order.id);
-        routeScheduler.removeOrderFromBestRouteSet(order);
-        routeScheduler.removeOrderFromUnfinishedOrders(order);
-        this.removeOrderFromOrders(order);
+        routeScheduler.removeOrderFromBestRouteSet(order.id);
+        routeScheduler.removeOrderFromUnfinishedOrders(order.id);
+        this.removeOrderFromOrders(order.id);
+    }
+
+    failOrders(orderIds: string[], routeScheduler: RouteScheduler) {
+        this.emit(DataContainer.events.failedOrders, orderIds);
+        for (let orderId of orderIds) {
+            routeScheduler.removeOrderFromBestRouteSet(orderId);
+            routeScheduler.removeOrderFromUnfinishedOrders(orderId);
+            this.removeOrderFromOrders(orderId);
+        }
     }
 
     failAllOrders() {
