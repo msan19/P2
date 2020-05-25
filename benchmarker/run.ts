@@ -147,24 +147,24 @@ async function main() {
     while (true) {
         let test = new Test();
         let startTime = new Date();
-        await test.Run();
+        test.Run();
 
-        //while (true) {
-        // Log every 5 minutes
-        //await delay(60 * 1000);
-        await logData("benchmarker/log.txt", {
-            start: startTime.toISOString(),
-            time: (new Date()).toISOString(),
-            ordersReceived: test.ordersReceived,
-            routeCount: test.routeCount,
-            failedOrdersCount: test.failedOrdersCount,
-            timesteps: test.timesteps,
-            timestepsSinceLastLog: test.timestepsSinceLastLog,
-            timesUpdatedSinceLast: test.timesUpdatedSinceLast
-        });
-        test.timestepsSinceLastLog = 0;
-        test.timesUpdatedSinceLast = 0;
-        //}
+        while (true) {
+            // Log every 5 minutes
+            await delay(60 * 1000);
+            await logData("benchmarker/log.txt", {
+                start: startTime.toISOString(),
+                time: (new Date()).toISOString(),
+                ordersReceived: test.ordersReceived,
+                routeCount: test.routeCount,
+                failedOrdersCount: test.failedOrdersCount,
+                timesteps: test.timesteps,
+                timestepsSinceLastLog: test.timestepsSinceLastLog,
+                timesUpdatedSinceLast: test.timesUpdatedSinceLast
+            });
+            test.timestepsSinceLastLog = 0;
+            test.timesUpdatedSinceLast = 0;
+        }
 
         test.kill();
     }

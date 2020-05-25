@@ -77,7 +77,7 @@ export class OrderSpammer {
     createRandomOrderToMovePallet(): Order {
         let type = randomValue([VertexTypes.dropOff, VertexTypes.pickup]);
         let now = (new Date()).getTime();
-        let startTime = now + randomIntegerInRange(20000, 30000);
+        let startTime = now + randomIntegerInRange(120000, 120000);
 
         let allAvailableVertices = VertexUtilities.getAllAvailable(this.dataContainer, startTime);
         let shelf = randomValue(VertexUtilities.getAllAvailableOfType(this.dataContainer, allAvailableVertices, VertexTypes.shelf));
