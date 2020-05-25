@@ -7,6 +7,10 @@ import * as path from 'path';
 import { Route } from '../src/shared/route';
 import { Order } from '../src/shared/order';
 
+const API_HOSTNAME = "localhost";
+const API_PORT = "3000";
+const WEB_HOSTNAME = API_HOSTNAME;
+const WEB_PORT = "8080";
 
 console.log("Benchmarker running");
 
@@ -28,11 +32,11 @@ function createProcessOnCpu(relativePath: string, cpu: number, startupArguments:
 
 class Test {
     //planningScheduler = createProcessOnCpu("src\\planningScheduler\\run.ts", 1, ["localhost", "3000"]);
-    planningScheduler = childProcess.fork("src\\planningScheduler\\run.ts", ["localhost", "3000"], { silent: true });
-    blackbox = childProcess.fork("src\\blackbox\\run.ts", ["localhost", "3000"], { silent: true });
-    forklifts = childProcess.fork("src\\forklifts\\run.ts", ["localhost", "3000"], { silent: true });
-    webclient = childProcess.fork("src\\webclient\\run.ts", ["localhost", "8080", "localhost", "3000"], { silent: true });
-    orderSpammer = childProcess.fork("src\\orderSpammer\\run.ts", ["localhost", "3000"], { silent: true });
+    planningScheduler = childProcess.fork("src\\planningScheduler\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
+    blackbox = childProcess.fork("src\\blackbox\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
+    forklifts = childProcess.fork("src\\forklifts\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
+    webclient = childProcess.fork("src\\webclient\\run.ts", [WEB_HOSTNAME, WEB_PORT, API_HOSTNAME, API_PORT], { silent: true });
+    orderSpammer = childProcess.fork("src\\orderSpammer\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
 
     subscribedSocket: WebSocket;
     routes: { [key: string]: Route; } = {};
