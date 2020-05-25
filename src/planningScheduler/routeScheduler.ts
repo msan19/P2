@@ -721,6 +721,7 @@ export class RouteScheduler {
     update(): void {
         // Find appropriate place in priorities and insert
         if (this.bestRouteSet !== null) {
+            if (this.bestRouteSet.priorities.length < 1) this.unfinishedOrderIds = [];
             for (let newOrderId of this.data.newOrders) {
                 this.insertOrderInPrioritiesAppropriately(newOrderId);
             }
