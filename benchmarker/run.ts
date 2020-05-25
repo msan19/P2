@@ -90,21 +90,22 @@ class Test {
                 let str = String(data);
                 // Removed trailing newline
                 str = str.substr(0, str.length - 1);
-
                 console.log("planningScheduler: ", `"${str}"`);
 
-                let match;
-                if (str === "No unlocked routes - Suspending") {
-                    setTimeout(() => { resolve(this.routeCount, this.timesteps); }, 5000);
+                let lines = str.split("\n");
+                for (let line of lines) {
+                    let match;
+                    if (line === "No unlocked routes - Suspending") {
+                        setTimeout(() => { resolve(this.routeCount, this.timesteps); }, 5000);
+                    }
+                    else if (match = line.match(/Timesteps: (?<steps>\d+|Infinity)/i)) {
+                        let num = Number(match.groups.steps);
+                        this.timesteps += num;
+                        this.timestepsSinceLastLog += num;
+                    } else if (match = line.match(/Updated (?<times>\d+) times within the last 10 seconds/i)) {
+                        this.timesUpdatedSinceLast += Number(match.groups.times);
+                    }
                 }
-                else if (match = str.match(/Timesteps: (?<steps>\d+|Infinity)/i)) {
-                    let num = Number(match.groups.steps);
-                    this.timesteps += num;
-                    this.timestepsSinceLastLog += num;
-                } else if (match = str.match(/Updated (?<times>\d+) times within the last 10 seconds/i)) {
-                    this.timesUpdatedSinceLast += Number(match.groups.times);
-                }
-
             });
         });
     }
