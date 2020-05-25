@@ -336,8 +336,11 @@ export class RouteScheduler {
         // Find earliest possible reference to destinationVertex
         let indexOfDestinationVertex = this.findReferenceToVertex(currentVertex, destinationVertex, currentTime);
         let interval = 0;
-        let time = 0;
+        let time = destinationVertex.scheduleItems[indexOfDestinationVertex].arrivalTimeCurrentVertex;
         let earliestArrivalTime = this.computeEarliestArrivalTime(currentVertex, destinationVertex, currentTime);
+
+        if (indexOfDestinationVertex == 0 && time > earliestArrivalTime) return earliestArrivalTime;
+
         while ((interval < this.timeIntervalMinimumSize || time + this.timeIntervalMinimumSize / 2 <= earliestArrivalTime)
             && indexOfDestinationVertex < destinationVertex.scheduleItems.length) {
             if (this.isCollisionInevitable(currentVertex.id, destinationVertex.scheduleItems[indexOfDestinationVertex], earliestArrivalTime, currentTime,
@@ -389,11 +392,17 @@ export class RouteScheduler {
         let i: number;
         let time: number;
 
+        i = currentVertex.getScheduleItemIndex(currentTime);
+        if (i < currentVertex.scheduleItems.length
+            && currentVertex.scheduleItems[i].arrivalTimeCurrentVertex > currentTime) {
+            i--;
+        }
+
         //Searches linearly through the ScheduleItems for a reference
-        for (i = currentVertex.getScheduleItemIndex(currentTime); i >= 0
+        while (i >= 0
             && previousVertexId !== destinationVertex.id
             && nextVertexId !== destinationVertex.id
-            && currentVertex.scheduleItems.length > 0; i--) {
+            && currentVertex.scheduleItems.length > 0) {
             if (i >= currentVertex.scheduleItems.length) {
                 i = currentVertex.scheduleItems.length - 1;
             }
@@ -403,6 +412,7 @@ export class RouteScheduler {
             if (currentVertex.scheduleItems[i].nextScheduleItem !== null) {
                 nextVertexId = currentVertex.scheduleItems[i].nextScheduleItem.currentVertexId;
             }
+            i--;
         }
         if (i === -1) i = 0;
 
