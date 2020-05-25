@@ -39,7 +39,7 @@ export class RouteScheduler {
     /** The minimum amount of time between two forklifts crossing the same vertex for a third to cross in the meantime */
     readonly timeIntervalMinimumSize: number = 10000;
 
-    readonly expectedDurationMultiplier: number = 2.0;
+    readonly expectedDurationMultiplier: number = 10.0;
 
     /** Value returned when appraising an order to moveForklift */
     readonly moveForkliftConstant: number = 1.0;
