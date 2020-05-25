@@ -170,6 +170,15 @@ export class RouteScheduler {
     }
 
     /**
+    * Removes the parameter order from array of unfinishedOrders
+    * @param order An order to be removed
+    */
+    removeOrderFromUnfinishedOrders(order: Order): void {
+        let indexOfOrder = this.unfinishedOrderIds.indexOf(order.id);
+        this.unfinishedOrderIds.splice(indexOfOrder, 1);
+    }
+
+    /**
      * Calculates all routes of the parameter {@link RouteSet} and creates the associated
      * {@link ScheduleItem} on each {@link Vertex} on the route
      * @param data A {@link DataContainer} givin acces to a dictionary of orders
@@ -187,7 +196,11 @@ export class RouteScheduler {
                 case Order.types.movePallet:
                     let assignableForklifts = this.assignForklift(routeSet, order);
                     for (let i = 0; i < assignableForklifts.length && currentRouteTime === Infinity; i++) {
-                        let expectedStartTimeOfForklift = order.time - this.expectedDurationMultiplier * this.heuristic(routeSet.graph.vertices[assignableForklifts[i].currentVertexId], routeSet.graph.vertices[order.startVertexId]);
+                        let expectedStartTimeOfForklift = Math.max((new Date()).getTime() + this.timeIntervalMinimumSize,
+                            Math.max(assignableForklifts[i].arrivalTimeCurrentVertex,
+                                order.time - this.expectedDurationMultiplier
+                                * this.heuristic(routeSet.graph.vertices[assignableForklifts[i].currentVertexId],
+                                    routeSet.graph.vertices[order.startVertexId])));
                         currentRouteTime = this.planOptimalRoute(routeSet, assignableForklifts[i].currentVertexId, order.startVertexId,
                             expectedStartTimeOfForklift, assignableForklifts[i].forkliftId);
                         if (expectedStartTimeOfForklift + currentRouteTime > order.time) {
