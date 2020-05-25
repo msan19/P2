@@ -72,6 +72,11 @@ class Order {
                 }
             }
         });
+        if (typeof (nForklifts.selectedForklift) != "undefined")
+            if (typeof (forkliftData[nForklifts.selectedForklift].route) != "undefined")
+                if (typeof (forkliftData[nForklifts.selectedForklift].route.orderId) != "undefined")
+                    if (forkliftData[nForklifts.selectedForklift].route.orderId == this.orderId)
+                        UiManager.resetOrderInformationOnUi()
     }
 
     selectOrder() {

@@ -80,7 +80,7 @@ export class RouteScheduler {
         this.data.warehouse.graph.idlePositions[forkliftId] = lastScheduleItem;
 
         // Splice order from priorities and duration
-        this.removeOrderFromBestRouteSet(order);
+        this.removeOrderFromBestRouteSet(orderId);
 
         // Redo permutations
         this.permute();
@@ -161,12 +161,21 @@ export class RouteScheduler {
 
     /**
      * Removes the parameter order from the arrays in bestRouteSet
-     * @param order An order to be removed
+     * @param orderId The id of the order to be removed
      */
-    removeOrderFromBestRouteSet(order: Order): void {
-        let indexOfOrder = this.bestRouteSet.priorities.indexOf(order.id);
+    removeOrderFromBestRouteSet(orderId: string): void {
+        let indexOfOrder = this.bestRouteSet.priorities.indexOf(orderId);
         this.bestRouteSet.priorities.splice(indexOfOrder, 1);
         this.bestRouteSet.duration.splice(indexOfOrder, 1);
+    }
+
+    /**
+    * Removes the parameter order from array of unfinishedOrders
+    * @param orderId The id of the order to be removed
+    */
+    removeOrderFromUnfinishedOrders(orderId: string): void {
+        let indexOfOrder = this.unfinishedOrderIds.indexOf(orderId);
+        this.unfinishedOrderIds.splice(indexOfOrder, 1);
     }
 
     /**
@@ -187,7 +196,11 @@ export class RouteScheduler {
                 case Order.types.movePallet:
                     let assignableForklifts = this.assignForklift(routeSet, order);
                     for (let i = 0; i < assignableForklifts.length && currentRouteTime === Infinity; i++) {
-                        let expectedStartTimeOfForklift = order.time - this.expectedDurationMultiplier * this.heuristic(routeSet.graph.vertices[assignableForklifts[i].currentVertexId], routeSet.graph.vertices[order.startVertexId]);
+                        let expectedStartTimeOfForklift = Math.max((new Date()).getTime() + this.timeIntervalMinimumSize,
+                            Math.max(assignableForklifts[i].arrivalTimeCurrentVertex,
+                                order.time - this.expectedDurationMultiplier
+                                * this.heuristic(routeSet.graph.vertices[assignableForklifts[i].currentVertexId],
+                                    routeSet.graph.vertices[order.startVertexId])));
                         currentRouteTime = this.planOptimalRoute(routeSet, assignableForklifts[i].currentVertexId, order.startVertexId,
                             expectedStartTimeOfForklift, assignableForklifts[i].forkliftId);
                         if (expectedStartTimeOfForklift + currentRouteTime > order.time) {
@@ -696,9 +709,10 @@ export class RouteScheduler {
         for (let i = 0; i < routeSet.duration.length; i++) {
             sum += routeSet.duration[i];
         }
+        /* Use only for Kiva test
         if (routeSet.duration.length === 140) {
             console.log(`Discrete timesteps: ${Math.floor(sum / ((1000 * 10) / (2 * 4.17)))}`);
-        }
+        }*/
         return sum;
     }
 

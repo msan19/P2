@@ -89,7 +89,7 @@ function createRealTransitVertices(): { [key: string]: Vertex; } {
                 let id = `N${x}-${y}`;
                 let label;
                 /* Only has label "shelf" if at the point of a shelf, else label is "hallway" */
-                if (x % 12 === 0 || x % 12 === 1 || y === 0 || y === ySize) label = "hallway";
+                if (x % 12 === 0 || x % 12 === 1 || y === 0 || y === ySize - 1) label = "hallway";
                 else label = "shelf";
                 vertices[id] = new Vertex(id, new Vector2(x * distanceOfEdges, y * distanceOfEdges), label);
                 /* Sets vertical lines when not in rack (2 rack spaces per 4 rows) */

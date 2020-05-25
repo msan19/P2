@@ -262,6 +262,8 @@ export class Handler {
                 webSocket.sendRoutes(this.data.routes);
 
                 subscribeSocketToDataContainer(webSocket, DataContainer.events.addOrder, (item: Order) => webSocket.sendOrder(item));
+                subscribeSocketToDataContainer(webSocket, DataContainer.events.failedOrder, (item: string) => webSocket.sendOrderFailed(item));
+                subscribeSocketToDataContainer(webSocket, DataContainer.events.failedOrders, (items: string[]) => webSocket.sendOrdersFailed(items));
                 webSocket.sendOrders(this.data.orders);
 
             });

@@ -11,6 +11,7 @@ import { Forklift } from "./forklift";
 import { Warehouse } from "./warehouse";
 import { Order } from "./order";
 import { Route } from "../../shared/route";
+import { RouteScheduler } from "../routeScheduler";
 
 /**
  * Enumeration type used for events regarding DataContainer.
@@ -22,35 +23,32 @@ export enum DataContainerEvents {
     setWarehouse = "setWarehouse",
     lockRoute = "lockRoute",
     forkliftInitiated = "forkliftInitiated",
-    forkliftUpdated = "forkliftUpdated"
+    forkliftUpdated = "forkliftUpdated",
+    failedOrder = "failedOrder",
+    failedOrders = "failedOrders"
 }
 
 export class DataContainer extends events.EventEmitter {
     static events = DataContainerEvents;
 
     /** Is a dictionary containing {@link Forklift} objects */
-    forklifts: { [key: string]: Forklift; };
+    forklifts: { [key: string]: Forklift; } = {};
 
     /** Is a dictionary containing {@link Order} objects */
-    orders: { [key: string]: Order; };
+    orders: { [key: string]: Order; } = {};
 
     /** Is an array of all new {@link Order}s added */
-    newOrders: string[];
+    newOrders: string[] = [];
 
     /** Is a dictionary containing {@link Route} objects */
-    routes: { [key: string]: Route; };
+    routes: { [key: string]: Route; } = {};
 
     /** Is a model of the warehouse */
-    warehouse: Warehouse;
+    warehouse: Warehouse = null;
 
     /** Extends {@link EventEmitter} */
     constructor() {
         super();
-        this.forklifts = {};
-        this.orders = {};
-        this.routes = {};
-        this.warehouse = null;
-        this.newOrders = [];
     }
 
     /**
@@ -110,9 +108,32 @@ export class DataContainer extends events.EventEmitter {
     /**
      * Removes an {@link Order} from list of orders
      * on {@link DataContainer}
-     * @param order The order being deleted
+     * @param orderId The id of the order being deleted
      */
-    removeOrderFromOrders(order: Order) {
-        delete this.orders[order.id];
+    removeOrderFromOrders(orderId: string) {
+        delete this.orders[orderId];
     }
+
+    failOrder(order: Order, routeScheduler: RouteScheduler) {
+        this.emit(DataContainer.events.failedOrder, order.id);
+        routeScheduler.removeOrderFromBestRouteSet(order.id);
+        routeScheduler.removeOrderFromUnfinishedOrders(order.id);
+        this.removeOrderFromOrders(order.id);
+    }
+
+    failOrders(orderIds: string[], routeScheduler: RouteScheduler) {
+        this.emit(DataContainer.events.failedOrders, orderIds);
+        for (let orderId of orderIds) {
+            routeScheduler.removeOrderFromBestRouteSet(orderId);
+            routeScheduler.removeOrderFromUnfinishedOrders(orderId);
+            this.removeOrderFromOrders(orderId);
+        }
+    }
+
+    failAllOrders() {
+        this.emit(DataContainer.events.failedOrders, Object.keys(this.orders));
+        this.orders = {};
+    }
+
+
 }

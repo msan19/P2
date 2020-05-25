@@ -40,7 +40,7 @@ function getWarehouse() {
 getWarehouse().then((warehouse: Warehouse) => {
     let counter = 0;
     let verticeIds = Object.keys(warehouse.graph.vertices);
-    let typeOfWarehouse = "real";
+    let typeOfWarehouse = "kiva";
     let x = 5, y = 0;
 
     switch (typeOfWarehouse) {
@@ -61,8 +61,8 @@ getWarehouse().then((warehouse: Warehouse) => {
                 }
 
                 if (y % 3 !== 0) {
-                    forklifts.push(new Forklift("F" + counter, SERVER_HOSTNAME, SERVER_PORT, randomIntegerInRange(5, 100), Forklift.states.idle, new Vector2((9 - x) * 10, y * 10)));
-                    forklifts.push(new Forklift("F" + (counter + 1), SERVER_HOSTNAME, SERVER_PORT, randomIntegerInRange(5, 100), Forklift.states.idle, new Vector2((x + 53) * 10, y * 10)));
+                    forklifts.push(new Forklift("F" + counter, SERVER_HOSTNAME, SERVER_PORT, randomIntegerInRange(5, 100), Forklift.states.idle, new Vector2((14 - x) * 10, y * 10)));
+                    forklifts.push(new Forklift("F" + (counter + 1), SERVER_HOSTNAME, SERVER_PORT, randomIntegerInRange(5, 100), Forklift.states.idle, new Vector2((x + 48) * 10, y * 10)));
                     counter += 2;
                 }
                 y++;

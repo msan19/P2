@@ -132,7 +132,7 @@ export class OrderSpammer {
             endVertex,                  // OrderEndVertexId
             startTime,
             TimeType.start,
-            3                           // DelayMax
+            0                           // DelayMax
         );
         return order;
     }

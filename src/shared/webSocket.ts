@@ -23,6 +23,8 @@ enum PackageTypes {
     forkliftInfos = "forkliftInfos",
     order = "order",
     orders = "orders",
+    orderFailed = "orderFailed",
+    ordersFailed = "ordersFailed",
     warehouse = "warehouse",
     json = "json",
     other = "other"
@@ -136,6 +138,22 @@ export class WebSocket extends EventEmitter {
     */
     sendOrders(orders: { [key: string]: Order; }): void {
         this.send(WebSocket.packageTypes.orders, orders);
+    }
+
+    /**
+    * Signals that order have been discarded
+    * @param orderId is the id of the order that has been discarded
+    */
+    sendOrderFailed(orderId: string): void {
+        this.send(WebSocket.packageTypes.orderFailed, orderId);
+    }
+
+    /**
+    * Signals that orders have been discarded
+    * @param orderIds are the ids of the orders that has been discarded
+    */
+    sendOrdersFailed(orderIds: string[]): void {
+        this.send(WebSocket.packageTypes.ordersFailed, orderIds);
     }
 
     /**
