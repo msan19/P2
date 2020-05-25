@@ -93,11 +93,38 @@ describe(`Test of A* algorithm`, () => {
         results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 30401, false, "F2"));
         results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 62481, true, "F1"));
 
-        expecteds.push(Infinity);
+        expecteds.push(400 + routeScheduler.timeIntervalMinimumSize / 2);
         expecteds.push(30400 + routeScheduler.timeIntervalMinimumSize / 2);
         expecteds.push(30400 + routeScheduler.timeIntervalMinimumSize / 2);
         expecteds.push(70400 + routeScheduler.timeIntervalMinimumSize / 2);
 
         expect(results).to.be.eql(expecteds);
     });
+
+    it(`Bug test arrival time`, () => {
+        let routeScheduler: RouteScheduler = initRouteScheduler();
+
+        // Init scheduleItems
+        let vertex1: Vertex = routeScheduler.data.warehouse.graph.vertices["N0-0"];
+        let vertex2: Vertex = routeScheduler.data.warehouse.graph.vertices["N0-1"];
+
+        vertex1.scheduleItems.push(new ScheduleItem("F0", 400, vertex1.id));
+        vertex2.scheduleItems.push(new ScheduleItem("F1", 70400, vertex2.id));
+
+        // Link shit
+        vertex2.scheduleItems[0].setNext(new ScheduleItem("F1", 80400, "N1-1"));
+        vertex2.scheduleItems[0].setPrevious(new ScheduleItem("F1", 60400, "N0-2"));
+
+        // Test the shit
+        let results: number[] = [];
+        let expecteds: number[] = [];
+
+        results.push(routeScheduler.getArrivalTime(vertex1, vertex2, 10000, false, "F0"));
+
+        expecteds.push(10000 + 1000 * vertex1.getDistanceDirect(vertex2) / routeScheduler.data.warehouse.maxForkliftSpeed);
+
+        expect(results).to.be.eql(expecteds);
+    });
+
+
 });
