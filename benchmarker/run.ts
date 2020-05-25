@@ -14,16 +14,13 @@ const WEB_PORT = "8080";
 
 console.log("Benchmarker running");
 
-function createProcessOnCpu(relativePath: string, cpu: number, startupArguments: string[]): childProcess.ChildProcess {
-    //let executionPath = path.join(process.argv[1], relativePath);
+function setAffinity(proc: childProcess.ChildProcess, cores: number[]): void {
     switch (process.platform) {
         case "win32":
-            return childProcess.exec(
-                `c:\\windows\\system32\\cmd.exe /C start /affinity ${cpu} ts-node "${relativePath}" "${startupArguments.join("\" \"")}" > STDOUT`,
-                (exception: childProcess.ExecException, stdout: string, stderr: string) => {
-                    if (stdout) console.log(stdout);
-                }
-            );
+            // https://stackoverflow.com/questions/19187241/change-affinity-of-process-with-windows-script
+            let cpuMask = 0;
+            for (let coreId of cores) cpuMask += 2 ** coreId;
+            childProcess.exec(`PowerShell "$Process = Get-Process -ID ${proc.pid}"; $Process.ProcessorAffinity=${cpuMask}`);
 
         default:
             throw `OS ${process.platform} not implemented`;
@@ -31,7 +28,6 @@ function createProcessOnCpu(relativePath: string, cpu: number, startupArguments:
 }
 
 class Test {
-    //planningScheduler = createProcessOnCpu("src\\planningScheduler\\run.ts", 1, ["localhost", "3000"]);
     planningScheduler = childProcess.fork("src\\planningScheduler\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
     blackbox = childProcess.fork("src\\blackbox\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
     forklifts = childProcess.fork("src\\forklifts\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
@@ -49,6 +45,7 @@ class Test {
     timestepsSinceLastLog: number = 0;
 
     constructor() {
+        //setAffinity(this.planningScheduler, [2, 3]);
 
     }
 
