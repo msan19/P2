@@ -53,7 +53,7 @@ class Test {
         return new Promise(async resolve => {
             let socket: ws;
             try {
-                socket = new ws("ws:localhost:3000/subscribe");
+                socket = new ws(`ws:${API_HOSTNAME}:${API_PORT}/subscribe`);
             }
             finally {
                 if (socket) {
