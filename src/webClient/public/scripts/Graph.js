@@ -88,7 +88,8 @@ class Graph {
         let afterWaitSpot = false;
         for (let key in nodesIds) {
             if (key > 0) {
-
+                if (nodesIds[key].isWaitSpot == true)
+                    afterWaitSpot = true;
                 if (nodesIds[key].id < nodesIds[key - 1].id) {
                     // Check for duplicate edge
                     let contains = false;
@@ -114,8 +115,7 @@ class Graph {
                             "afterWaitSpot": afterWaitSpot
                         });
                 }
-                if (nodesIds[key].isWaitSpot == true)
-                    afterWaitSpot = true;
+
             }
         }
         return {
