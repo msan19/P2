@@ -348,6 +348,7 @@ export class RouteScheduler {
 
         // Find earliest possible reference to destinationVertex
         let indexOfDestinationVertex = this.findReferenceToVertex(currentVertex, destinationVertex, currentTime);
+        if (indexOfDestinationVertex >= destinationVertex.scheduleItems.length) indexOfDestinationVertex = destinationVertex.scheduleItems.length - 1;
         let interval = 0;
         let time = destinationVertex.scheduleItems[indexOfDestinationVertex].arrivalTimeCurrentVertex;
         let earliestArrivalTime = this.computeEarliestArrivalTime(currentVertex, destinationVertex, currentTime);
