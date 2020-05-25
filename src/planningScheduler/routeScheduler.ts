@@ -187,7 +187,11 @@ export class RouteScheduler {
                 case Order.types.movePallet:
                     let assignableForklifts = this.assignForklift(routeSet, order);
                     for (let i = 0; i < assignableForklifts.length && currentRouteTime === Infinity; i++) {
-                        let expectedStartTimeOfForklift = order.time - this.expectedDurationMultiplier * this.heuristic(routeSet.graph.vertices[assignableForklifts[i].currentVertexId], routeSet.graph.vertices[order.startVertexId]);
+                        let expectedStartTimeOfForklift = Math.max((new Date()).getTime() + this.timeIntervalMinimumSize,
+                            Math.max(assignableForklifts[i].arrivalTimeCurrentVertex,
+                                order.time - this.expectedDurationMultiplier
+                                * this.heuristic(routeSet.graph.vertices[assignableForklifts[i].currentVertexId],
+                                    routeSet.graph.vertices[order.startVertexId])));
                         currentRouteTime = this.planOptimalRoute(routeSet, assignableForklifts[i].currentVertexId, order.startVertexId,
                             expectedStartTimeOfForklift, assignableForklifts[i].forkliftId);
                         if (expectedStartTimeOfForklift + currentRouteTime > order.time) {
