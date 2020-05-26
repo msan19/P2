@@ -7,11 +7,6 @@ import * as path from 'path';
 import { Route } from '../src/shared/route';
 import { Order } from '../src/shared/order';
 
-const API_HOSTNAME = "localhost";
-const API_PORT = "3000";
-const WEB_HOSTNAME = API_HOSTNAME;
-const WEB_PORT = "8080";
-
 console.log("Benchmarker running");
 
 function setAffinity(proc: childProcess.ChildProcess, cores: number[]): void {
@@ -21,18 +16,27 @@ function setAffinity(proc: childProcess.ChildProcess, cores: number[]): void {
             let cpuMask = 0;
             for (let coreId of cores) cpuMask += 2 ** coreId;
             childProcess.exec(`PowerShell "$Process = Get-Process -ID ${proc.pid}"; $Process.ProcessorAffinity=${cpuMask}`);
-
+            break;
         default:
             throw `OS ${process.platform} not implemented`;
     }
 }
 
 class Test {
-    planningScheduler = childProcess.fork("src\\planningScheduler\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
-    blackbox = childProcess.fork("src\\blackbox\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
-    forklifts = childProcess.fork("src\\forklifts\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
-    webclient = childProcess.fork("src\\webclient\\run.ts", [WEB_HOSTNAME, WEB_PORT, API_HOSTNAME, API_PORT], { silent: true });
-    orderSpammer = childProcess.fork("src\\orderSpammer\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
+    //planningScheduler = createProcessOnCpu("src\\planningScheduler\\run.ts", 1, ["localhost", "3000"]);
+    planningScheduler: childProcess.ChildProcess;
+    blackbox: childProcess.ChildProcess;
+    forklifts: childProcess.ChildProcess;
+    webclient: childProcess.ChildProcess;
+    orderSpammer: childProcess.ChildProcess;
+
+    planningCores: number[];
+    utilityCores: number[];
+
+    API_HOSTNAME: string;
+    API_PORT: string;
+    WEB_HOSTNAME: string;
+    WEB_PORT: string;
 
     subscribedSocket: WebSocket;
     routes: { [key: string]: Route; } = {};
@@ -44,16 +48,34 @@ class Test {
     timesUpdatedSinceLast: number = 0;
     timestepsSinceLastLog: number = 0;
 
-    constructor() {
-        //setAffinity(this.planningScheduler, [2, 3]);
+    constructor(planningCores: number[], utilityCores: number[], API_HOSTNAME: string, API_PORT: string, WEB_HOSTNAME: string, WEB_PORT: string) {
 
+        this.planningCores = planningCores;
+        this.utilityCores = utilityCores;
+
+        this.API_HOSTNAME = API_HOSTNAME;
+        this.API_PORT = API_PORT;
+        this.WEB_HOSTNAME = WEB_HOSTNAME;
+        this.WEB_PORT = WEB_PORT;
+
+        this.planningScheduler = childProcess.fork("src\\planningScheduler\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
+        this.blackbox = childProcess.fork("src\\blackbox\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
+        this.forklifts = childProcess.fork("src\\forklifts\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
+        this.webclient = childProcess.fork("src\\webclient\\run.ts", [WEB_HOSTNAME, WEB_PORT, API_HOSTNAME, API_PORT], { silent: true });
+        this.orderSpammer = childProcess.fork("src\\orderSpammer\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
+
+        setAffinity(this.planningScheduler, this.planningCores);
+        setAffinity(this.blackbox, [2]);
+        setAffinity(this.forklifts, [2]);
+        setAffinity(this.webclient, [2]);
+        setAffinity(this.orderSpammer, [2]);
     }
 
     async subscribe() {
         return new Promise(async resolve => {
             let socket: ws;
             try {
-                socket = new ws(`ws:${API_HOSTNAME}:${API_PORT}/subscribe`);
+                socket = new ws(`ws:${this.API_HOSTNAME}:${this.API_PORT}/subscribe`);
             }
             finally {
                 if (socket) {
@@ -139,34 +161,39 @@ class Test {
     }
 }
 
-
-async function main() {
+async function main(planningCores: number[], utilityCores: number[], API_HOSTNAME: string, API_PORT: string, WEB_HOSTNAME: string, WEB_PORT: string) {
     while (true) {
-        let test = new Test();
+        let test = new Test(planningCores, utilityCores, API_HOSTNAME, API_PORT, WEB_HOSTNAME, WEB_PORT);
         let startTime = new Date();
-        test.Run();
 
-        while (true) {
-            // Log every 5 minutes
-            await delay(60 * 1000);
-            await logData("benchmarker/log.txt", {
-                start: startTime.toISOString(),
-                time: (new Date()).toISOString(),
-                ordersReceived: test.ordersReceived,
-                routeCount: test.routeCount,
-                failedOrdersCount: test.failedOrdersCount,
-                timesteps: test.timesteps,
-                timestepsSinceLastLog: test.timestepsSinceLastLog,
-                timesUpdatedSinceLast: test.timesUpdatedSinceLast
-            });
-            test.timestepsSinceLastLog = 0;
-            test.timesUpdatedSinceLast = 0;
-        }
+        await Promise.race([
+            test.Run(),
+            delay(10 * 60 * 1000) // Timeout after 10 minutes
+        ]);
+
+        // while (true) {
+        //     // Log every 5 minutes
+        //     await delay(60 * 1000);
+        await logData("benchmarker/log.txt", {
+            API_PORT: test.API_PORT,
+            start: startTime.toISOString(),
+            time: (new Date()).toISOString(),
+            ordersReceived: test.ordersReceived,
+            routeCount: test.routeCount,
+            failedOrdersCount: test.failedOrdersCount,
+            timesteps: test.timesteps,
+            timestepsSinceLastLog: test.timestepsSinceLastLog,
+            timesUpdatedSinceLast: test.timesUpdatedSinceLast,
+            planningCores: test.planningCores
+        });
+        test.timestepsSinceLastLog = 0;
+        test.timesUpdatedSinceLast = 0;
+        //}
 
         test.kill();
     }
 }
-main();
+main([1], [0], "localhost", "3000", "localhost", "8080");
 
 async function logData(filename: string, data: any) {
     console.log("Logged Data");
