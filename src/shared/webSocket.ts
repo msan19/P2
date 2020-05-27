@@ -1,5 +1,7 @@
 // webSocket.ts
 /**
+ * Contains websocket class which contains methods for managing communication between 
+ * the program modules 
  * @packageDocumentation
  * @category Shared
  */

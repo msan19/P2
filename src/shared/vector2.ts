@@ -1,5 +1,7 @@
 // vector2.ts
 /**
+ * Contains two-dimensional vector class which is used in {@link Vertex} 
+ * to specify position of a vertex  
  * @packageDocumentation
  * @category Shared
  */
