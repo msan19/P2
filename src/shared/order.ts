@@ -1,5 +1,6 @@
 // order.ts
 /**
+ * Contains the order class which encapsulates information related to an order
  * @packageDocumentation
  * @category Shared
  */
