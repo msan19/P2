@@ -9,19 +9,6 @@ import { Order } from '../src/shared/order';
 
 console.log("Benchmarker running");
 
-function setAffinity(proc: childProcess.ChildProcess, cores: number[]): void {
-    switch (process.platform) {
-        case "win32":
-            // https://stackoverflow.com/questions/19187241/change-affinity-of-process-with-windows-script
-            let cpuMask = 0;
-            for (let coreId of cores) cpuMask += 2 ** coreId;
-            childProcess.exec(`PowerShell "$Process = Get-Process -ID ${proc.pid}"; $Process.ProcessorAffinity=${cpuMask}`);
-            break;
-        default:
-            throw `OS ${process.platform} not implemented`;
-    }
-}
-
 class Test {
     //planningScheduler = createProcessOnCpu("src\\planningScheduler\\run.ts", 1, ["localhost", "3000"]);
     planningScheduler: childProcess.ChildProcess;
@@ -208,6 +195,18 @@ async function delay(ms: number) {
     });
 }
 
+function setAffinity(proc: childProcess.ChildProcess, cores: number[]): void {
+    switch (process.platform) {
+        case "win32":
+            // https://stackoverflow.com/questions/19187241/change-affinity-of-process-with-windows-script
+            let cpuMask = 0;
+            for (let coreId of cores) cpuMask += 2 ** coreId;
+            childProcess.exec(`PowerShell "$Process = Get-Process -ID ${proc.pid}"; $Process.ProcessorAffinity=${cpuMask}`);
+            break;
+        default:
+            throw `OS ${process.platform} not implemented`;
+    }
+}
 
 // Prevent automatic shutdown
 let eventEmitter = new EventEmitter();
