@@ -1,5 +1,4 @@
 import * as childProcess from 'child_process';
-import { EventEmitter } from 'events';
 
 const API_HOSTNAME = "localhost";
 const API_PORT = "3000";
@@ -23,5 +22,5 @@ planningScheduler.stdout.on("data", (data) => {
 });
 
 // Prevent automatic shutdown
-let eventEmitter = new EventEmitter();
-eventEmitter.on("preventAutomaticShutdown", function () { });
+function wait() { setTimeout(wait, 10000); }
+wait();
