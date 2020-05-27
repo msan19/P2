@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @category orderSpammer
+ */
+
 import { DataContainer } from "./dataContainer";
 import { Vector2 } from "../shared/vector2";
 

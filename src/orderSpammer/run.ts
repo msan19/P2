@@ -1,7 +1,6 @@
-// run.ts
 /**
  * @packageDocumentation
- * @category OrderSpammer
+ * @category orderSpammer
  */
 
 import * as ws from "ws";

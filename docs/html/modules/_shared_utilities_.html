@@ -68,6 +68,9 @@
 		<div class="col-8 col-content">
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Contains various utilities</p>
+					</div>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -85,7 +88,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_shared_utilities_.html#applymixins" class="tsd-kind-icon">apply<wbr>Mixins</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="_shared_utilities_.html#deepcopy" class="tsd-kind-icon">deep<wbr>Copy</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-not-exported"><a href="_shared_utilities_.html#jsonreplacer" class="tsd-kind-icon">json<wbr>Replacer</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter tsd-is-not-exported"><a href="_shared_utilities_.html#jsonreplacer" class="tsd-kind-icon">json<wbr>Replacer</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_shared_utilities_.html#randomintegerinrange" class="tsd-kind-icon">random<wbr>Integer<wbr>InRange</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_shared_utilities_.html#randomkey" class="tsd-kind-icon">random<wbr>Key</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_shared_utilities_.html#randomvalue" class="tsd-kind-icon">random<wbr>Value</a></li>
@@ -107,7 +110,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/shared/utilities.ts#L42">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/utilities.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/shared/utilities.ts#L43">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/utilities.ts:43</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -145,9 +148,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/shared/utilities.ts#L100">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/utilities.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/shared/utilities.ts#L123">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/utilities.ts:123</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Copies an object</p>
+								</div>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -158,38 +166,57 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>obj: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Object to be copied</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> refManager: <a href="../classes/_shared_utilities_.previousreferences.html" class="tsd-signature-type">PreviousReferences</a><span class="tsd-signature-symbol"> = new PreviousReferences()</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>An instance of the PreviousReferences class</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter tsd-is-not-exported">
 					<a name="jsonreplacer" class="tsd-anchor"></a>
 					<h3>json<wbr>Replacer</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">json<wbr>Replacer<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">json<wbr>Replacer&lt;T&gt;<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/shared/utilities.ts#L50">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/utilities.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/shared/utilities.ts#L56">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/utilities.ts:56</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Is used in <a href="_shared_utilities_.html#stringifyobject">stringifyObject</a> to alter the behaviour of the
+										stringification process.
+									publicKeys is a whitelist of properties to be stringified.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>key: <span class="tsd-signature-type">any</span></h5>
+									<h5>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>value: <span class="tsd-signature-type">any</span></h5>
+									<h5>value: <span class="tsd-signature-type">T</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -203,7 +230,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/shared/utilities.ts#L32">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/utilities.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/shared/utilities.ts#L33">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/utilities.ts:33</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -240,7 +267,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/shared/utilities.ts#L10">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/utilities.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/shared/utilities.ts#L11">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/utilities.ts:11</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -271,7 +298,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/shared/utilities.ts#L20">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/utilities.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/shared/utilities.ts#L21">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/utilities.ts:21</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -302,13 +329,22 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/shared/utilities.ts#L74">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/utilities.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/shared/utilities.ts#L80">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/utilities.ts:80</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Converts object to a JSON string making use of <a href="_shared_utilities_.html#jsonreplacer">jsonReplacer</a>
+									to replace values</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>obj: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The object to be stringified</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -339,7 +375,7 @@
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="_shared_utilities_.html#deepcopy" class="tsd-kind-icon">deep<wbr>Copy</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter tsd-is-not-exported">
 						<a href="_shared_utilities_.html#jsonreplacer" class="tsd-kind-icon">json<wbr>Replacer</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">

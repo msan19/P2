@@ -5,9 +5,9 @@
 
 ### Overview 
 
-- [Overview of modules](./globals.html)
+- Go to [overview of modules](./globals.html)
 
-#### Central files in the program
+<!-- #### Central files in the program
 
 - [planningScheduler](./modules/_src_planningscheduler_planningscheduler_.html)
 
@@ -15,8 +15,4 @@
 
 - [blackBox](./modules/_src_blackbox_run_.html)
 
-- [webClient](./modules/_src_webclient_server_.html)
-
-#### Test
-
-- [Test of planningScheduler](./modules/_test_apitest_testplanningschedulerapi_.html)
+- [webClient](./modules/_src_webclient_server_.html) -->
