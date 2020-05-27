@@ -31,26 +31,30 @@ Derved hentes alle nødvendige moduler, og programmet kan derefter køres
 ## Start programmet
 Programmet kan startes på to forskellige måder; enten gennem en konsol eller gennem Visual Studio Code. 
 
-Programmet er sat op til at køres i VS Code, men kan også køres i en terminal. 
+Programmet er sat op til at køre i VS Code, men kan også køres i en terminal. 
 
 På begge metoder køres programmet, således at websiden kan tilgås på http://localhost:8080/
 
+### I VS Code:
+1. Åben projektmappen i VsCode
+2. Vælg debug-menuen i venstre side
+3. Vælg "Run Entire Project" i dropdown'en i toppen til venstre
+4. Tryk på den grønne pil
+
 ### I konsol: 
-Der kan i en konsol åbnet i roden af projektmappen skrives følgende kommando:
+Opsætning
+```
+git clone https://github.com/msan19/P2.git --branch aflevering
+cd P2
+npm i
+npm run program
+```
+Eksekvering:
 ```
 npm run program
 ```
-Hvorefter programmet startes med grafen for trasnitlageret med ordrer hertil. 
 
-For at slukke programmet kan der i konsolen skrives ctrl + c
-
-### I VS Code:
-I programmet VS Code kan der i debug-menuen under "run" vælges "Launch entire project" og derefter køres.
-
-Første gang programmet køres kan VS Code give en fejl: "The specified task cannot be tracked.".
-
-Hvis dette sker, skal alle debug-moduler, der kan ses under "Call Stack" i debug-menuen, hvorefter "Launch entire project" køres igen.
-
+For at slukke programmet kan der i konsolen trykkes ctrl + c
 
 ## Ændring typen af grafen
 Når programmet hentes vil den være indstillet til at køre for en graf af typen "transit" med ordrer, der passer hertil.
