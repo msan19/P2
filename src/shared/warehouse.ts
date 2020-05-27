@@ -1,4 +1,5 @@
 /**
+ * Contains the Warehouse class
  * @packageDocumentation
  * @category Shared
  */
