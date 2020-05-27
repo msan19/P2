@@ -72,7 +72,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A <a href="_planningscheduler_classes_handler_.handler.html">Handler</a> handles every API call efter they have been identified</p>
+						<p>A <a href="_planningscheduler_classes_handler_.handler.html">Handler</a> handles every API call efter they have been identified.
+						All API calls can be seen described in docs/API.yml</p>
 					</div>
 				</div>
 			</section>
@@ -122,7 +123,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L38">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L41">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:41</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -144,12 +145,12 @@
 					<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <a href="_planningscheduler_classes_datacontainer_.datacontainer.html" class="tsd-signature-type">DataContainer</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L38">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:38</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L41">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:41</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A <a href="_planningscheduler_classes_datacontainer_.datacontainer.html">DataContainer</a> for the <a href="_planningscheduler_classes_handler_.handler.html">Handler</a> to acces the shared data on the server</p>
+							<p>A <a href="_planningscheduler_classes_datacontainer_.datacontainer.html">DataContainer</a> for the <a href="_planningscheduler_classes_handler_.handler.html">Handler</a> to access the shared data on the server</p>
 						</div>
 					</div>
 				</section>
@@ -162,7 +163,7 @@
 					<div class="tsd-signature tsd-kind-icon">controllers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L45">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:45</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L48">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:48</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -176,7 +177,7 @@
 						<div class="tsd-signature tsd-kind-icon">forklifts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L117">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:117</a></li>
+								<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L142">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:142</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal">
@@ -189,9 +190,17 @@
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L120">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:120</a></li>
+											<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L149">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:149</a></li>
 										</ul>
 									</aside>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>HTTP Get requests to /forklifts and /forklifts/id
+												Checks if getting all forklifts, then return all forklifts as JSON
+												Else checks if valid forklift id.
+											If yes, send forklift as JSON, else return error code</p>
+										</div>
+									</div>
 									<h4 class="tsd-parameters-title">Parameters</h4>
 									<ul class="tsd-parameters">
 										<li>
@@ -218,9 +227,16 @@
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L151">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:151</a></li>
+											<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L189">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:189</a></li>
 										</ul>
 									</aside>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>HTTP Put requests to /forklifts/{guid}/intiate
+												Initiates forklift with data if valid data and valid id
+											Else returns error codes</p>
+										</div>
+									</div>
 									<h4 class="tsd-parameters-title">Parameters</h4>
 									<ul class="tsd-parameters">
 										<li>
@@ -247,9 +263,17 @@
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L134">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:134</a></li>
+											<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L168">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:168</a></li>
 										</ul>
 									</aside>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>HTTP Put requests to /forklifts/id
+												Updates data on forklift, and returns success if valid data
+												Else returns invalid data.
+											If no forklift with id, return error code</p>
+										</div>
+									</div>
 									<h4 class="tsd-parameters-title">Parameters</h4>
 									<ul class="tsd-parameters">
 										<li>
@@ -273,7 +297,7 @@
 						<div class="tsd-signature tsd-kind-icon">orders<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L85">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:85</a></li>
+								<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L100">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:100</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal">
@@ -286,9 +310,18 @@
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L88">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:88</a></li>
+											<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L108">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:108</a></li>
 										</ul>
 									</aside>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>HTTP Get requests to /orders
+												Checks if looking for specific order or all orders.
+												If looking for one, checks if valid order id.
+												If yes, returns order as JSOn else returns error 404
+											If looking for all orders, returns all orders as JSON</p>
+										</div>
+									</div>
 									<h4 class="tsd-parameters-title">Parameters</h4>
 									<ul class="tsd-parameters">
 										<li>
@@ -315,9 +348,17 @@
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L102">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:102</a></li>
+											<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L127">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:127</a></li>
 										</ul>
 									</aside>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>HTTP Post requests to /orders
+												Checks if order to be posted is valid.
+												If yes, adds order to <a href="_planningscheduler_classes_datacontainer_.datacontainer.html">DataContainer</a>
+											Else returns error code</p>
+										</div>
+									</div>
 									<h4 class="tsd-parameters-title">Parameters</h4>
 									<ul class="tsd-parameters">
 										<li>
@@ -341,7 +382,7 @@
 						<div class="tsd-signature tsd-kind-icon">routes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L78">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:78</a></li>
+								<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L90">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:90</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal">
@@ -354,9 +395,15 @@
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L80">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:80</a></li>
+											<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L95">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:95</a></li>
 										</ul>
 									</aside>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>HTTP Get requests to /routes
+											Returns routes as JSON</p>
+										</div>
+									</div>
 									<h4 class="tsd-parameters-title">Parameters</h4>
 									<ul class="tsd-parameters">
 										<li>
@@ -380,7 +427,7 @@
 						<div class="tsd-signature tsd-kind-icon">warehouse<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L46">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:46</a></li>
+								<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L49">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:49</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal">
@@ -393,9 +440,16 @@
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L48">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:48</a></li>
+											<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L55">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:55</a></li>
 										</ul>
 									</aside>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>HTTP Get requests to /warehouse
+												Either returns warehouse as JSON if one is set,
+											otherwise retuns a status 500</p>
+										</div>
+									</div>
 									<h4 class="tsd-parameters-title">Parameters</h4>
 									<ul class="tsd-parameters">
 										<li>
@@ -422,9 +476,17 @@
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L57">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:57</a></li>
+											<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L69">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:69</a></li>
 										</ul>
 									</aside>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>HTTP Post requests to /warehouse
+												Sets warehouse of <a href="_planningscheduler_classes_datacontainer_.datacontainer.html">DataContainer</a> to incoming object
+												if object is parsed, else gives error status 400, with
+											either invalid warehouse if no graph, or invalid graph</p>
+										</div>
+									</div>
 									<h4 class="tsd-parameters-title">Parameters</h4>
 									<ul class="tsd-parameters">
 										<li>
@@ -449,7 +511,7 @@
 					<div class="tsd-signature tsd-kind-icon">socket<wbr>Controllers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L178">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:178</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L216">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:216</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -467,9 +529,17 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L180">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:180</a></li>
+										<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L223">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:223</a></li>
 									</ul>
 								</aside>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Setting up websockets for /forklifts/id/initiate
+											Checks if valid id and initiate.
+											If yes, creates a TCP socket to forklift
+										Else destroys socket</p>
+									</div>
+								</div>
 								<h4 class="tsd-parameters-title">Parameters</h4>
 								<ul class="tsd-parameters">
 									<li>
@@ -502,9 +572,17 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/planningScheduler/classes/handler.ts#L195">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:195</a></li>
+										<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/planningScheduler/classes/handler.ts#L243">home/xomnez/aau/2.semester/P2_rob/P2/src/planningScheduler/classes/handler.ts:243</a></li>
 									</ul>
 								</aside>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Handles subscribe and opens websockets
+											Sets up all different information calls
+											Like sending warehouse (using emit), will send to all
+										websockets created from subscribe.</p>
+									</div>
+								</div>
 								<h4 class="tsd-parameters-title">Parameters</h4>
 								<ul class="tsd-parameters">
 									<li>

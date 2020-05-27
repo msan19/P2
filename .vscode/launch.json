@@ -57,7 +57,6 @@
             "sourceMaps": true,
             "cwd": "${workspaceFolder}",
             "protocol": "inspector",
-            "preLaunchTask": "tsc: watch - src/webClient/scripts/tsconfig.json",
             "outFiles": [
                 "${workspaceFolder}"
             ]
@@ -141,24 +140,6 @@
                 "dot",
                 "${workspaceFolder}/test/**/*.ts",
                 "--recursive"
-            ],
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Mocha PlanningScheduler Fancy",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-            "args": [
-                "--timeout",
-                "999999",
-                "--colors",
-                "--require",
-                "ts-node/register",
-                "--reporter",
-                "nyan",
-                "${workspaceFolder}/test/planningScheduler/**/*.ts"
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"

@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @category orderSpammer
+ */
+
 import { ForkliftInfo } from "../shared/forkliftInfo";
 import { Warehouse } from "../shared/warehouse";
 import { Route } from "../shared/route";

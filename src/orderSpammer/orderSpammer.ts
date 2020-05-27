@@ -1,6 +1,6 @@
 /**
  * @packageDocumentation
- * @category BlackBox
+ * @category orderSpammer
  */
 
 import { WebSocket } from "./../shared/webSocket";

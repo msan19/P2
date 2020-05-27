@@ -31,7 +31,7 @@
         "ws": "^7.3.0"
     },
     "scripts": {
-        "install": "npm i node typescript ts-node mocha chai @types/node @types/chai @types/mocha ws @types/ws --save-dev",
+        "program": "ts-node run.ts",
         "test": "mocha --require ts-node/register",
         "tests": "mocha --require ts-node/register test/planningScheduler/**/*.ts",
         "test-vector": "mocha --require ts-node/register test/shared/utilities.ts/vector2.ts",

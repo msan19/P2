@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ForkliftStates | P2</title>
+	<title>VertexTypes | P2</title>
 	<meta name="description" content="Documentation for P2">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,26 +56,19 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_shared_forkliftinfo_.html">&quot;shared/forkliftInfo&quot;</a>
+					<a href="../modules/_orderspammer_utilities_.html">&quot;orderSpammer/utilities&quot;</a>
 				</li>
 				<li>
-					<a href="_shared_forkliftinfo_.forkliftstates.html">ForkliftStates</a>
+					<a href="_orderspammer_utilities_.vertextypes.html">VertexTypes</a>
 				</li>
 			</ul>
-			<h1>Enumeration ForkliftStates</h1>
+			<h1>Enumeration VertexTypes</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Each <a href="_shared_forkliftinfo_.forkliftstates.html">ForkliftStates</a> enumerator is equivalent to an integer representation of a state i.e. what a <a href="../classes/_planningscheduler_classes_forklift_.forklift.html">Forklift</a> is doing.</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
@@ -83,10 +76,11 @@
 						<section class="tsd-index-section ">
 							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_shared_forkliftinfo_.forkliftstates.html#charging" class="tsd-kind-icon">charging</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_shared_forkliftinfo_.forkliftstates.html#hasorder" class="tsd-kind-icon">has<wbr>Order</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_shared_forkliftinfo_.forkliftstates.html#idle" class="tsd-kind-icon">idle</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_shared_forkliftinfo_.forkliftstates.html#initiating" class="tsd-kind-icon">initiating</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_orderspammer_utilities_.vertextypes.html#charge" class="tsd-kind-icon">charge</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_orderspammer_utilities_.vertextypes.html#dropoff" class="tsd-kind-icon">drop<wbr>Off</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_orderspammer_utilities_.vertextypes.html#hallway" class="tsd-kind-icon">hallway</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_orderspammer_utilities_.vertextypes.html#pickup" class="tsd-kind-icon">pickup</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_orderspammer_utilities_.vertextypes.html#shelf" class="tsd-kind-icon">shelf</a></li>
 							</ul>
 						</section>
 					</div>
@@ -95,42 +89,52 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Enumeration members</h2>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="charging" class="tsd-anchor"></a>
-					<h3>charging</h3>
-					<div class="tsd-signature tsd-kind-icon">charging<span class="tsd-signature-symbol">:</span></div>
+					<a name="charge" class="tsd-anchor"></a>
+					<h3>charge</h3>
+					<div class="tsd-signature tsd-kind-icon">charge<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;charge&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/shared/forkliftInfo.ts#L14">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/forkliftInfo.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/orderSpammer/utilities.ts#L13">home/xomnez/aau/2.semester/P2_rob/P2/src/orderSpammer/utilities.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="hasorder" class="tsd-anchor"></a>
-					<h3>has<wbr>Order</h3>
-					<div class="tsd-signature tsd-kind-icon">has<wbr>Order<span class="tsd-signature-symbol">:</span></div>
+					<a name="dropoff" class="tsd-anchor"></a>
+					<h3>drop<wbr>Off</h3>
+					<div class="tsd-signature tsd-kind-icon">drop<wbr>Off<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;dropOff&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/shared/forkliftInfo.ts#L13">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/forkliftInfo.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/orderSpammer/utilities.ts#L11">home/xomnez/aau/2.semester/P2_rob/P2/src/orderSpammer/utilities.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="idle" class="tsd-anchor"></a>
-					<h3>idle</h3>
-					<div class="tsd-signature tsd-kind-icon">idle<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 1</span></div>
+					<a name="hallway" class="tsd-anchor"></a>
+					<h3>hallway</h3>
+					<div class="tsd-signature tsd-kind-icon">hallway<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;hallway&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/shared/forkliftInfo.ts#L12">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/forkliftInfo.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/orderSpammer/utilities.ts#L14">home/xomnez/aau/2.semester/P2_rob/P2/src/orderSpammer/utilities.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="initiating" class="tsd-anchor"></a>
-					<h3>initiating</h3>
-					<div class="tsd-signature tsd-kind-icon">initiating<span class="tsd-signature-symbol">:</span></div>
+					<a name="pickup" class="tsd-anchor"></a>
+					<h3>pickup</h3>
+					<div class="tsd-signature tsd-kind-icon">pickup<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;pickUp&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/shared/forkliftInfo.ts#L15">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/forkliftInfo.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/orderSpammer/utilities.ts#L10">home/xomnez/aau/2.semester/P2_rob/P2/src/orderSpammer/utilities.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="shelf" class="tsd-anchor"></a>
+					<h3>shelf</h3>
+					<div class="tsd-signature tsd-kind-icon">shelf<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;shelf&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/orderSpammer/utilities.ts#L12">home/xomnez/aau/2.semester/P2_rob/P2/src/orderSpammer/utilities.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -143,7 +147,7 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="../modules/_shared_forkliftinfo_.html">&quot;shared/forklift<wbr>Info&quot;</a>
+						<a href="../modules/_orderspammer_utilities_.html">&quot;order<wbr>Spammer/utilities&quot;</a>
 					</li>
 				</ul>
 			</nav>
@@ -152,26 +156,32 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-enum tsd-parent-kind-module">
-						<a href="_shared_forkliftinfo_.forkliftstates.html" class="tsd-kind-icon">Forklift<wbr>States</a>
+						<a href="_orderspammer_utilities_.vertextypes.html" class="tsd-kind-icon">Vertex<wbr>Types</a>
 						<ul>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_shared_forkliftinfo_.forkliftstates.html#charging" class="tsd-kind-icon">charging</a>
+								<a href="_orderspammer_utilities_.vertextypes.html#charge" class="tsd-kind-icon">charge</a>
 							</li>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_shared_forkliftinfo_.forkliftstates.html#hasorder" class="tsd-kind-icon">has<wbr>Order</a>
+								<a href="_orderspammer_utilities_.vertextypes.html#dropoff" class="tsd-kind-icon">drop<wbr>Off</a>
 							</li>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_shared_forkliftinfo_.forkliftstates.html#idle" class="tsd-kind-icon">idle</a>
+								<a href="_orderspammer_utilities_.vertextypes.html#hallway" class="tsd-kind-icon">hallway</a>
 							</li>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_shared_forkliftinfo_.forkliftstates.html#initiating" class="tsd-kind-icon">initiating</a>
+								<a href="_orderspammer_utilities_.vertextypes.html#pickup" class="tsd-kind-icon">pickup</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="_orderspammer_utilities_.vertextypes.html#shelf" class="tsd-kind-icon">shelf</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/_shared_forkliftinfo_.forkliftinfo.html" class="tsd-kind-icon">Forklift<wbr>Info</a>
+						<a href="../classes/_orderspammer_utilities_.forklift.html" class="tsd-kind-icon">Forklift</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="../classes/_orderspammer_utilities_.vertex.html" class="tsd-kind-icon">Vertex</a>
 					</li>
 				</ul>
 			</nav>
