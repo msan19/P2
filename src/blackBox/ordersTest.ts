@@ -1,4 +1,5 @@
 /**
+ * Contains an object for generating preplanned orders.
  * @packageDocumentation
  * @category BlackBox
  */

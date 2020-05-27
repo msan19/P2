@@ -1,5 +1,6 @@
 // graph.ts
 /**
+ * Contains the graph and also vertices and scheduleItems which the graph uses. 
  * @packageDocumentation
  * @category Shared
  */

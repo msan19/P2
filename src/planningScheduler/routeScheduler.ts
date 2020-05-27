@@ -1,5 +1,7 @@
 // routeScheduler.ts
 /**
+ * Contains an object which handles everything to do with planning routes,
+ * and converting routes on a graph to usable {@link Route}
  * @packageDocumentation
  * @category PlanningScheduler
  */

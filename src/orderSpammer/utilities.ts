@@ -1,4 +1,6 @@
 /**
+ * Contains utilities for managing the location of forklifts and vertices.
+ * Used to generate orders more likely to be valid.
  * @packageDocumentation
  * @category orderSpammer
  */

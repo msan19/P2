@@ -1,4 +1,5 @@
 /**
+ * Sets the logic of orderSpammer to JS event-loop
  * @packageDocumentation
  * @category orderSpammer
  */

@@ -1,4 +1,6 @@
 /**
+ * Contains the object graph but with specific attributes and methods only used
+ * in {@link PlanningScheduler}
  * @packageDocumentation
  * @category PlanningScheduler
  */

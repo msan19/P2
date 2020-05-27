@@ -1,5 +1,6 @@
 // run.ts
 /**
+ * Starts the planningScheduler at port and hostname given as arguments
  * @packageDocumentation
  * @category PlanningScheduler
  */

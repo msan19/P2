@@ -1,4 +1,6 @@
 /**
+ * Contains an object for sending pseudo-random orders likely to be valid.
+ * Works primarily for graph "transit", but might work for other graph types. 
  * @packageDocumentation
  * @category orderSpammer
  */
@@ -22,7 +24,6 @@ export class OrderSpammer {
     interval: () => number;
 
     /**
-     * 
      * @param apiPath Base-path for the API e.g. "http://localhost:3000"
      * @param subscribePath Path for websockets to subscribe to changes e.g. "http://localhost:3000/subscribe"
      * @param interval A function that'll be called between each random order, to say how many miliseconds to wait before sending the next

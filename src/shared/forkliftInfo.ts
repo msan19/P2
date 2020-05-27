@@ -1,4 +1,5 @@
 /**
+ * Contains an object for saving information about {@link Forklift}
  * @packageDocumentation
  * @category Shared
  */

@@ -1,5 +1,7 @@
 // route.ts
 /**
+ * Contains object to represent a route, 
+ * as well as object for instructions used in a route object
  * @packageDocumentation
  * @category Shared
  */

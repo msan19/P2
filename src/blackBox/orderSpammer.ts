@@ -1,4 +1,6 @@
 /**
+ * Contains an object to send orders to the planningScheduler.
+ * Can send random or preplanned orders, designed only for simple and kiva graphs
  * @packageDocumentation
  * @category BlackBox
  */
