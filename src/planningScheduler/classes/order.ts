@@ -1,4 +1,6 @@
 /**
+ * Contains the order object but specific to {@link PlanningScheduler}.
+ * Contains additional methods from {@link Order_shared}
  * @packageDocumentation
  * @category PlanningScheduler
  */

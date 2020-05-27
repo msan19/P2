@@ -1,5 +1,6 @@
 // planningScheduler.ts
 /**
+ * Contains the object PlanningScheduler, which handles the logic of planning and sending routes 
  * @packageDocumentation
  * @category PlanningScheduler
  */

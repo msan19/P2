@@ -1,5 +1,7 @@
 // warehouse.ts
 /**
+ * Contains the warehouse object but specific to {@link PlanningScheduler}.
+ * Contains a different type of graph and an additional method.
  * @packageDocumentation
  * @category PlanningScheduler
  */

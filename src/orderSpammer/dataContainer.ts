@@ -1,4 +1,5 @@
 /**
+ * Contains a Datacontainer for managing data and data communication
  * @packageDocumentation
  * @category orderSpammer
  */

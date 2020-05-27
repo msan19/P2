@@ -1,4 +1,5 @@
 /**
+ * Contains the object RouteSet to manage a set of routes on a {@link Graph}
  * @packageDocumentation
  * @category PlanningScheduler
  */

@@ -1,4 +1,6 @@
 /**
+ * Contains utilities for managing the location of forklifts and vertices.
+ * Used to generate orders more likely to be valid.
  * @packageDocumentation
  * @category orderSpammer
  */
@@ -106,52 +108,3 @@ export class Forklift {
         return undefined;
     }
 }
-
-
-/*
-class Warehouse extends Warehouse_Shared {
-    graph: Graph;
-
-    constructor(graph: Graph, forkliftSpeed: number) {
-        super(graph, forkliftSpeed);
-    }
-
-    static parse(obj: any): Warehouse {
-        // Just assume it to be correct, it comes from planningScheduler
-        return new Warehouse(Graph.parse(obj.graph), obj.forkliftSpeed);
-    }
-}
-
-class Graph extends Graph_Shared {
-    vertices: { [key: string]: Vertex; };
-
-    constructor(vertices: { [key: string]: Vertex; }) {
-        super(vertices);
-    }
-    static parse(obj: any) {
-        return new Graph(Vertex.parseMultipleToDictionary(obj.vertices));
-    }
-}
-
-class Vertex extends Vertex_Shared {
-    isAvailabe() {
-
-    }
-
-    constructor(id: string, position: Vector2, label?: string) {
-        super(id, position, label);
-    }
-
-    static parse(obj: any): Vertex {
-        return new Vertex(obj.id, obj.position, obj.label);
-    }
-    static parseMultipleToDictionary(obj: any): { [key: string]: Vertex; } {
-        let output = {};
-        for (let k in obj) {
-            let v = obj[k];
-            output[v.id] = v;
-        }
-        return output;
-    }
-}
-*/

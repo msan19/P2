@@ -1,5 +1,6 @@
 // run.ts
-/**
+/** 
+ * Sets the blackBox as spart of the JS eventloop using setTimeout
  * @packageDocumentation
  * @category BlackBox
  */

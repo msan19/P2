@@ -1,6 +1,7 @@
 // run.ts
 /**
- *  
+ * Contains methods for adding forklifts to proper places on a graph sent to it.
+ * The forklifts then emit their locations to {@link PlanningScheduler}
  * @packageDocumentation
  * @category Forklifts
  */

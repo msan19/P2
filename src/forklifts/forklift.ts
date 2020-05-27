@@ -1,5 +1,6 @@
 /**
- * 
+ * Contains the logic for physical forklifts.
+ * Uses websockets for communication.
  * @packageDocumentation
  * @category Forklifts
  */

@@ -1,5 +1,6 @@
 // warehouse.ts
 /**
+ * Contains methods for generating graphs with edges. 
  * @packageDocumentation
  * @category BlackBox
  */

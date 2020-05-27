@@ -1,5 +1,7 @@
 // minPriorityQueue.ts
 /**
+ * Contains a min priority queue used in the implementation of A*
+ * in {@link PlanningScheduler}
  * @packageDocumentation
  * @category PlanningScheduler
  */
