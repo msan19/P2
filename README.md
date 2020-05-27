@@ -7,6 +7,7 @@ Derudover, findes der to hjælpemapper kaldet **docs** og **test**.
 Hovedmappernes indhold:
 - [blackBox](./src/blackBox/)
 - [forklifts](./src/forklifts/)
+- [orderSpammer](./src/orderSpammer/)
 - [planningScheduler](./src/planningScheduler/)
 - [webClient](./src/webClient/)
 - [shared](./src/shared/)
@@ -78,3 +79,6 @@ I src/forklifts/run linje 43: Ændr strengen fra "real" til "none"
 I src/orderSpammer/run linje 22: Udkommenter denne linje
 ```
 
+## Programmets HTML-dokumentation
+Der er genereret HTML-dokumentation til mapperne [blackBox](./src/blackBox/), [forklifts](./src/forklifts/), [planningScheduler](./src/planningScheduler/), [shared](./src/shared/) og [orderSpammer](./src/orderSpammer/). 
+HTML-dokumentationen kan ses ved åbne mappen [./docs/html](./docs/html), hvorefter [globals.html](./docs/html/globals.html) skal åbnes i en browser.
