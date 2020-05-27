@@ -1,6 +1,6 @@
 /**
  * Contains the order object but specific to {@link PlanningScheduler}.
- * Contains additional methods from {@link Order_shared}
+ * Contains additional methods from Orders in shared
  * @packageDocumentation
  * @category PlanningScheduler
  */
@@ -9,8 +9,8 @@ import { Order as Order_Shared, OrderTypes, TimeType } from "../../shared/order"
 import { DataContainer } from "./dataContainer";
 
 /**
- * Converts an {@link Order_shared} to an Order
- * @param order of type {@link Order_shared} to be converted
+ * Converts an Order from Shared to an Order
+ * @param order of type Order from shared to be converted
  * @returns a new {@link Order} containing content of order
  */
 function superCastOrder(order: Order_Shared): Order {
