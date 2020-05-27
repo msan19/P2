@@ -51,11 +51,11 @@ class Test {
         this.webclient = childProcess.fork("src\\webclient\\run.ts", [WEB_HOSTNAME, WEB_PORT, API_HOSTNAME, API_PORT], { silent: true });
         this.orderSpammer = childProcess.fork("src\\orderSpammer\\run.ts", [API_HOSTNAME, API_PORT], { silent: true });
 
-        setAffinity(this.planningScheduler, this.planningCores);
-        setAffinity(this.blackbox, [2]);
-        setAffinity(this.forklifts, [2]);
-        setAffinity(this.webclient, [2]);
-        setAffinity(this.orderSpammer, [2]);
+        setCpuAffinity(this.planningScheduler, this.planningCores);
+        setCpuAffinity(this.blackbox, [2]);
+        setCpuAffinity(this.forklifts, [2]);
+        setCpuAffinity(this.webclient, [2]);
+        setCpuAffinity(this.orderSpammer, [2]);
     }
 
     async subscribe() {
@@ -195,7 +195,7 @@ async function delay(ms: number) {
     });
 }
 
-function setAffinity(proc: childProcess.ChildProcess, cores: number[]): void {
+function setCpuAffinity(proc: childProcess.ChildProcess, cores: number[]): void {
     switch (process.platform) {
         case "win32":
             // https://stackoverflow.com/questions/19187241/change-affinity-of-process-with-windows-script
