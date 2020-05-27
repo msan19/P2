@@ -75,9 +75,17 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
+							<h3>Enumerations</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-enum tsd-parent-kind-module"><a href="../enums/_blackbox_warehouse_.graphtypes.html" class="tsd-kind-icon">Graph<wbr>Types</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_blackbox_warehouse_.html#creategraph" class="tsd-kind-icon">create<wbr>Graph</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-not-exported"><a href="_blackbox_warehouse_.html#createkivalikevertices" class="tsd-kind-icon">create<wbr>Kiva<wbr>Like<wbr>Vertices</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-not-exported"><a href="_blackbox_warehouse_.html#createrealtransitvertices" class="tsd-kind-icon">create<wbr>Real<wbr>Transit<wbr>Vertices</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-not-exported"><a href="_blackbox_warehouse_.html#createvertices" class="tsd-kind-icon">create<wbr>Vertices</a></li>
 							</ul>
 						</section>
@@ -90,13 +98,13 @@
 					<a name="creategraph" class="tsd-anchor"></a>
 					<h3>create<wbr>Graph</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Graph<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_shared_graph_.graph.html" class="tsd-signature-type">Graph</a></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Graph<span class="tsd-signature-symbol">(</span>graphType<span class="tsd-signature-symbol">: </span><a href="../enums/_blackbox_warehouse_.graphtypes.html" class="tsd-signature-type">GraphTypes</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_shared_graph_.graph.html" class="tsd-signature-type">Graph</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/blackBox/warehouse.ts#L13">home/xomnez/aau/2.semester/P2_rob/P2/src/blackBox/warehouse.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/blackBox/warehouse.ts#L23">home/xomnez/aau/2.semester/P2_rob/P2/src/blackBox/warehouse.ts:23</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -104,7 +112,85 @@
 									<p>Creates a graph object</p>
 								</div>
 							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>graphType: <a href="../enums/_blackbox_warehouse_.graphtypes.html" class="tsd-signature-type">GraphTypes</a></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/_shared_graph_.graph.html" class="tsd-signature-type">Graph</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+					<a name="createkivalikevertices" class="tsd-anchor"></a>
+					<h3>create<wbr>Kiva<wbr>Like<wbr>Vertices</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Kiva<wbr>Like<wbr>Vertices<span class="tsd-signature-symbol">(</span>xSize<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, ySize<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/blackBox/warehouse.ts#L144">home/xomnez/aau/2.semester/P2_rob/P2/src/blackBox/warehouse.ts:144</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a graph emulating a Kiva-like environment. See <a href="http://idm-lab.org/bib/abstracts/papers/socs15b.pdf">http://idm-lab.org/bib/abstracts/papers/socs15b.pdf</a></p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>xSize: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Amount of vertices on the x axis</p>
+									</div>
+								</li>
+								<li>
+									<h5>ySize: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Amount of vertices on the y axis</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{}</span></h4>
+							<p>A dictionary where the values are Vertex objects</p>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-index-signature">
+									<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><a href="../classes/_shared_graph_.vertex.html" class="tsd-signature-type">Vertex</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+					<a name="createrealtransitvertices" class="tsd-anchor"></a>
+					<h3>create<wbr>Real<wbr>Transit<wbr>Vertices</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Real<wbr>Transit<wbr>Vertices<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/blackBox/warehouse.ts#L79">home/xomnez/aau/2.semester/P2_rob/P2/src/blackBox/warehouse.ts:79</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a graph emulating a real transit warehpuse.
+									See: insert_link_here</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{}</span></h4>
+							<p>A dictionary where the values are Vertex objects</p>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-index-signature">
+									<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><a href="../classes/_shared_graph_.vertex.html" class="tsd-signature-type">Vertex</a></h5>
+								</li>
+							</ul>
 						</li>
 					</ul>
 				</section>
@@ -118,7 +204,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/msan19/P2/blob/fba2f6d/src/blackBox/warehouse.ts#L23">home/xomnez/aau/2.semester/P2_rob/P2/src/blackBox/warehouse.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/blackBox/warehouse.ts#L49">home/xomnez/aau/2.semester/P2_rob/P2/src/blackBox/warehouse.ts:49</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -166,8 +252,17 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="../enums/_blackbox_warehouse_.graphtypes.html" class="tsd-kind-icon">Graph<wbr>Types</a>
+					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="_blackbox_warehouse_.html#creategraph" class="tsd-kind-icon">create<wbr>Graph</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<a href="_blackbox_warehouse_.html#createkivalikevertices" class="tsd-kind-icon">create<wbr>Kiva<wbr>Like<wbr>Vertices</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<a href="_blackbox_warehouse_.html#createrealtransitvertices" class="tsd-kind-icon">create<wbr>Real<wbr>Transit<wbr>Vertices</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
 						<a href="_blackbox_warehouse_.html#createvertices" class="tsd-kind-icon">create<wbr>Vertices</a>

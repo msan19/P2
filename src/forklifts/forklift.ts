@@ -1,6 +1,5 @@
-// forklifts.ts
 /**
- * This is the doc comment for forklifts.ts
+ * 
  * @packageDocumentation
  * @category Forklifts
  */

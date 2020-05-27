@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ForkliftStates | P2</title>
+	<title>&quot;orderSpammer/run&quot; | P2</title>
 	<meta name="description" content="Documentation for P2">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_shared_forkliftinfo_.html">&quot;shared/forkliftInfo&quot;</a>
-				</li>
-				<li>
-					<a href="_shared_forkliftinfo_.forkliftstates.html">ForkliftStates</a>
+					<a href="_orderspammer_run_.html">&quot;orderSpammer/run&quot;</a>
 				</li>
 			</ul>
-			<h1>Enumeration ForkliftStates</h1>
+			<h1>Module &quot;orderSpammer/run&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -71,66 +68,63 @@
 		<div class="col-8 col-content">
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Each <a href="_shared_forkliftinfo_.forkliftstates.html">ForkliftStates</a> enumerator is equivalent to an integer representation of a state i.e. what a <a href="../classes/_planningscheduler_classes_forklift_.forklift.html">Forklift</a> is doing.</p>
-					</div>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
-							<h3>Enumeration members</h3>
+						<section class="tsd-index-section tsd-is-not-exported">
+							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_shared_forkliftinfo_.forkliftstates.html#charging" class="tsd-kind-icon">charging</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_shared_forkliftinfo_.forkliftstates.html#hasorder" class="tsd-kind-icon">has<wbr>Order</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_shared_forkliftinfo_.forkliftstates.html#idle" class="tsd-kind-icon">idle</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_shared_forkliftinfo_.forkliftstates.html#initiating" class="tsd-kind-icon">initiating</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported"><a href="_orderspammer_run_.html#server_hostname" class="tsd-kind-icon">SERVER_<wbr>HOSTNAME</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported"><a href="_orderspammer_run_.html#server_port" class="tsd-kind-icon">SERVER_<wbr>PORT</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported"><a href="_orderspammer_run_.html#apicaller" class="tsd-kind-icon">api<wbr>Caller</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported"><a href="_orderspammer_run_.html#socket" class="tsd-kind-icon">socket</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Enumeration members</h2>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="charging" class="tsd-anchor"></a>
-					<h3>charging</h3>
-					<div class="tsd-signature tsd-kind-icon">charging<span class="tsd-signature-symbol">:</span></div>
+			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+				<h2>Variables</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+					<a name="server_hostname" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> SERVER_<wbr>HOSTNAME</h3>
+					<div class="tsd-signature tsd-kind-icon">SERVER_<wbr>HOSTNAME<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = process.argv[2]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/shared/forkliftInfo.ts#L14">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/forkliftInfo.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/orderSpammer/run.ts#L14">home/xomnez/aau/2.semester/P2_rob/P2/src/orderSpammer/run.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="hasorder" class="tsd-anchor"></a>
-					<h3>has<wbr>Order</h3>
-					<div class="tsd-signature tsd-kind-icon">has<wbr>Order<span class="tsd-signature-symbol">:</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+					<a name="server_port" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> SERVER_<wbr>PORT</h3>
+					<div class="tsd-signature tsd-kind-icon">SERVER_<wbr>PORT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = Number(process.argv[3])</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/shared/forkliftInfo.ts#L13">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/forkliftInfo.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/orderSpammer/run.ts#L15">home/xomnez/aau/2.semester/P2_rob/P2/src/orderSpammer/run.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="idle" class="tsd-anchor"></a>
-					<h3>idle</h3>
-					<div class="tsd-signature tsd-kind-icon">idle<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 1</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+					<a name="apicaller" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> api<wbr>Caller</h3>
+					<div class="tsd-signature tsd-kind-icon">api<wbr>Caller<span class="tsd-signature-symbol">:</span> <a href="../classes/_shared_apicaller_.apicaller.html" class="tsd-signature-type">ApiCaller</a><span class="tsd-signature-symbol"> = new ApiCaller(&#x60;http://${SERVER_HOSTNAME}:${SERVER_PORT}&#x60;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/shared/forkliftInfo.ts#L12">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/forkliftInfo.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/orderSpammer/run.ts#L17">home/xomnez/aau/2.semester/P2_rob/P2/src/orderSpammer/run.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="initiating" class="tsd-anchor"></a>
-					<h3>initiating</h3>
-					<div class="tsd-signature tsd-kind-icon">initiating<span class="tsd-signature-symbol">:</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+					<a name="socket" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> socket</h3>
+					<div class="tsd-signature tsd-kind-icon">socket<span class="tsd-signature-symbol">:</span> <a href="../classes/_shared_websocket_.websocket.html" class="tsd-signature-type">WebSocket</a><span class="tsd-signature-symbol"> = new WebSocket(new ws(&#x60;http://${SERVER_HOSTNAME}:${SERVER_PORT}/subscribe&#x60;))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/shared/forkliftInfo.ts#L15">home/xomnez/aau/2.semester/P2_rob/P2/src/shared/forkliftInfo.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/msan19/P2/blob/e4e1cd8/src/orderSpammer/run.ts#L18">home/xomnez/aau/2.semester/P2_rob/P2/src/orderSpammer/run.ts:18</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -143,35 +137,23 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="../modules/_shared_forkliftinfo_.html">&quot;shared/forklift<wbr>Info&quot;</a>
+						<a href="_orderspammer_run_.html">&quot;order<wbr>Spammer/run&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-enum tsd-parent-kind-module">
-						<a href="_shared_forkliftinfo_.forkliftstates.html" class="tsd-kind-icon">Forklift<wbr>States</a>
-						<ul>
-							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_shared_forkliftinfo_.forkliftstates.html#charging" class="tsd-kind-icon">charging</a>
-							</li>
-							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_shared_forkliftinfo_.forkliftstates.html#hasorder" class="tsd-kind-icon">has<wbr>Order</a>
-							</li>
-							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_shared_forkliftinfo_.forkliftstates.html#idle" class="tsd-kind-icon">idle</a>
-							</li>
-							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_shared_forkliftinfo_.forkliftstates.html#initiating" class="tsd-kind-icon">initiating</a>
-							</li>
-						</ul>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+						<a href="_orderspammer_run_.html#server_hostname" class="tsd-kind-icon">SERVER_<wbr>HOSTNAME</a>
 					</li>
-				</ul>
-				<ul class="after-current">
-					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/_shared_forkliftinfo_.forkliftinfo.html" class="tsd-kind-icon">Forklift<wbr>Info</a>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+						<a href="_orderspammer_run_.html#server_port" class="tsd-kind-icon">SERVER_<wbr>PORT</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+						<a href="_orderspammer_run_.html#apicaller" class="tsd-kind-icon">api<wbr>Caller</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+						<a href="_orderspammer_run_.html#socket" class="tsd-kind-icon">socket</a>
 					</li>
 				</ul>
 			</nav>
