@@ -1,4 +1,6 @@
 /**
+ * Contains object which handles calling the API,
+ * with additional utilities.
  * @packageDocumentation
  * @category Shared
  */
