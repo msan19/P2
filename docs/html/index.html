@@ -67,25 +67,83 @@
 				<a href="#p2" id="p2" style="color: inherit; text-decoration: none;">
 					<h1>P2</h1>
 				</a>
-				<a href="#multi-agent-pathfinding-for-autonome-palleløftere-på-transitlagre" id="multi-agent-pathfinding-for-autonome-palleløftere-på-transitlagre" style="color: inherit; text-decoration: none;">
-					<h4>Multi-Agent Pathfinding for Autonome Palleløftere på Transitlagre</h4>
+				<a href="#projektets-struktur" id="projektets-struktur" style="color: inherit; text-decoration: none;">
+					<h2>Projektets struktur</h2>
 				</a>
-				<hr>
-				<a href="#overview" id="overview" style="color: inherit; text-decoration: none;">
-					<h3>Overview</h3>
-				</a>
+				<p>Projektets kildekode er inddelt i fem hovedmapper: <strong>blackBox</strong>, <strong>forklifts</strong>, <strong>planningScheduler</strong>, <strong>webClient</strong> og <strong>shared</strong>.
+				Derudover, findes der to hjælpemapper kaldet <strong>docs</strong> og <strong>test</strong>. </p>
+				<p>Hovedmappernes indhold:</p>
 				<ul>
-					<li>Go to <a href="./globals.html">overview of modules</a></li>
+					<li><a href="./src/blackBox/">blackBox</a></li>
+					<li><a href="./src/forklifts/">forklifts</a></li>
+					<li><a href="./src/orderSpammer/">orderSpammer</a></li>
+					<li><a href="./src/planningScheduler/">planningScheduler</a></li>
+					<li><a href="./src/webClient/">webClient</a></li>
+					<li><a href="./src/shared/">shared</a></li>
 				</ul>
-				<!-- #### Central files in the program
-
-- [planningScheduler](./modules/_src_planningscheduler_planningscheduler_.html)
-
-- [forklifts](./modules/_src_forklifts_forklift_.html)
-
-- [blackBox](./modules/_src_blackbox_run_.html)
-
-- [webClient](./modules/_src_webclient_server_.html) -->
+				<p>Hjælpemappernes indhold:</p>
+				<ul>
+					<li><a href="./test/">test</a></li>
+					<li><a href="./docs/">docs</a></li>
+				</ul>
+				<hr>
+				<a href="#hent-krævede-npm-moduler" id="hent-krævede-npm-moduler" style="color: inherit; text-decoration: none;">
+					<h2>Hent krævede npm-moduler</h2>
+				</a>
+				<p>Programmet kræver visse moduler relateret til Node.js. Disse skal derfor hentes.</p>
+				<p>Først hentes Node.js og npm fra siden <a href="https://www.npmjs.com/get-npm">https://www.npmjs.com/get-npm</a></p>
+				<p>Dernæst åbnes en terminal fra roden af projektmappen. I denne terminal indtastes:</p>
+				<pre><code><span class="hljs-built_in">npm</span> i </code></pre><p>Derved hentes alle nødvendige moduler, og programmet kan derefter køres</p>
+				<a href="#start-programmet" id="start-programmet" style="color: inherit; text-decoration: none;">
+					<h2>Start programmet</h2>
+				</a>
+				<p>Programmet kan startes på to forskellige måder; enten gennem en konsol eller gennem Visual Studio Code. </p>
+				<p>Programmet er sat op til at køre i VS Code, men kan også køres i en terminal. </p>
+				<p>På begge metoder køres programmet, således at websiden kan tilgås på <a href="http://localhost:8080/">http://localhost:8080/</a></p>
+				<a href="#i-vs-code" id="i-vs-code" style="color: inherit; text-decoration: none;">
+					<h3>I VS Code:</h3>
+				</a>
+				<ol>
+					<li>Åben projektmappen i VsCode</li>
+					<li>Vælg debug-menuen i venstre side</li>
+					<li>Vælg &quot;Run Entire Project&quot; i dropdown&#39;en i toppen til venstre</li>
+					<li>Tryk på den grønne pil</li>
+				</ol>
+				<a href="#i-konsol" id="i-konsol" style="color: inherit; text-decoration: none;">
+					<h3>I konsol:</h3>
+				</a>
+				<p>Opsætning</p>
+				<pre><code><span class="hljs-attr">git</span> <span class="hljs-string">clone https://github.com/msan19/P2.git --branch aflevering</span>
+<span class="hljs-attr">cd</span> <span class="hljs-string">P2</span>
+<span class="hljs-attr">npm</span> <span class="hljs-string">i</span>
+<span class="hljs-attr">npm</span> <span class="hljs-string">run program</span></code></pre><p>Eksekvering:</p>
+				<pre><code>npm <span class="hljs-keyword">run</span><span class="bash"> program</span></code></pre><p>For at slukke programmet kan der i konsolen trykkes ctrl + c</p>
+				<a href="#ændring-typen-af-grafen" id="ændring-typen-af-grafen" style="color: inherit; text-decoration: none;">
+					<h2>Ændring typen af grafen</h2>
+				</a>
+				<p>Når programmet hentes vil den være indstillet til at køre for en graf af typen &quot;transit&quot; med ordrer, der passer hertil.</p>
+				<p>For at ændre dette skal der i følgende filer ændres:</p>
+				<a href="#ændring-til-kiva-opsætning" id="ændring-til-kiva-opsætning" style="color: inherit; text-decoration: none;">
+					<h3>Ændring til Kiva-opsætning</h3>
+				</a>
+				<pre><code>I src/blackBox/<span class="hljs-keyword">run</span><span class="bash"> linje 17: Ændr GraphTypes.transit til GraphTypes.kiva</span>
+I src/blackBox/<span class="hljs-keyword">run</span><span class="bash"> linje 32-34: Fjerne kommentarerne rundt om dette <span class="hljs-keyword">for</span> at aktivere det</span>
+I src/forklifts/<span class="hljs-keyword">run</span><span class="bash"> linje 43: Ændr strengen fra <span class="hljs-string">"real"</span> til <span class="hljs-string">"kiva"</span></span>
+I src/orderSpammer/<span class="hljs-keyword">run</span><span class="bash"> linje 22: Udkommenter denne linje</span></code></pre>
+				<a href="#ændring-til-simpel-opsætning-10-x-10" id="ændring-til-simpel-opsætning-10-x-10" style="color: inherit; text-decoration: none;">
+					<h3>Ændring til Simpel-opsætning (10 x 10)</h3>
+				</a>
+				<pre><code>I src/blackBox/run linje <span class="hljs-number">17</span>: Ændr GraphTypes.transit til GraphTypes.simpel
+I src/blackBox/run linje <span class="hljs-number">32</span><span class="hljs-number">-34</span>: Fjerne kommentarerne rundt om dette <span class="hljs-keyword">for</span> at aktivere det
+I src/blackBox/orderSpammer linje <span class="hljs-number">112</span><span class="hljs-number">-118</span>: Udkommenter dette
+I src/blackBox/orderSpammer linje <span class="hljs-number">95</span><span class="hljs-number">-97</span>: Enten fjern kommentering om dette, hvis der ønskes forudbestemte ordrer, eller gør <span class="hljs-built_in">int</span>et, <span class="hljs-keyword">for</span> ikke at modtage nogen ordrer. 
+I src/forklifts/run linje <span class="hljs-number">43</span>: Ændr strengen fra <span class="hljs-string">"real"</span> til <span class="hljs-string">"none"</span>
+I src/orderSpammer/run linje <span class="hljs-number">22</span>: Udkommenter denne linje</code></pre>
+				<a href="#programmets-html-dokumentation" id="programmets-html-dokumentation" style="color: inherit; text-decoration: none;">
+					<h2>Programmets HTML-dokumentation</h2>
+				</a>
+				<p>Der er genereret HTML-dokumentation til mapperne <a href="./src/blackBox/">blackBox</a>, <a href="./src/forklifts/">forklifts</a>, <a href="./src/planningScheduler/">planningScheduler</a>, <a href="./src/shared/">shared</a> og <a href="./src/orderSpammer/">orderSpammer</a>.
+				HTML-dokumentationen kan ses ved åbne mappen <a href="./docs/html">./docs/html</a>, hvorefter <a href="./docs/html/globals.html">globals.html</a> skal åbnes i en browser.</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
