@@ -65,13 +65,13 @@ describe(`Order delayStartTime`, () => {
     context(`when counter is 0 and delayMax is 1`, () => {
         let baseDelayTime = 100;
         let originalOrder = new Order("1", Order.types.movePallet, "F2", "P2", "N1-8", "N1-9", 100, Order.timeTypes.start, 1);
-        let newTime = originalOrder.time + 100;     // 100 from formula, where i is delayCounter: newTime = originalTime + baseDelayTime * 2 ** i
+        let newTime = (new Date()).getTime();     // 100 from formula, where i is delayCounter: newTime = originalTime + baseDelayTime * 2 ** i
         let delayed = originalOrder.delayStartTime(baseDelayTime);
         it(`should be true`, () => {
             expect(delayed).to.be.true;
         });
         it(`the new time should be delayed`, () => {
-            expect(originalOrder.time).to.equal(newTime);
+            expect(originalOrder.time).to.be.greaterThan(newTime);
         });
     });
 
