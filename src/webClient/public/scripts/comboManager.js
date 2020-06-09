@@ -3,6 +3,7 @@ window.mainGraph;
 window.orders = {};
 
 window.frameRate = 60;
+window.running = true;
 
 var forkliftData = [];
 var ForkliftStates;
@@ -12,6 +13,22 @@ window.forkliftSpeed;
 
 new UiManager();
 
+// Start stop program
+function run() {
+    running = true;
+}
+
+function start() {
+    run();
+}
+
+function stop() {
+    running = false;
+}
+
+function pause() {
+    stop();
+}
 
 
 
@@ -70,7 +87,8 @@ window.socketManager.on(PackageTypes.order, (order) => {
 // Event loop
 window.setInterval(function () {
     if (typeof (mainGraph) != "undefined") {
-        nForklifts.handleForkliftMovement();
+        if (running)
+            nForklifts.handleForkliftMovement();
         mainGraph.updateForkliftsOnGraph();
         UiManager.updateSelectedForkliftInformationOnUI();
         mainGraph.sigmaGraph.refresh();
