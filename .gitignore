@@ -3,3 +3,5 @@ package-lock.json
 node_modules/*
 src/webClient/public/scripts/ts/*
 benchmarker/log.txt
+.nyc_output/*
+coverage/*

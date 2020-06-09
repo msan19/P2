@@ -35,6 +35,8 @@
         "install": "npm i node typescript ts-node mocha chai @types/node @types/chai @types/mocha ws @types/ws --save-dev",
         "test": "mocha --require ts-node/register",
         "tests": "mocha --require ts-node/register test/planningScheduler/**/*.ts",
+        "tests-with-coverage-text": "nyc mocha --require ts-node/register test/planningScheduler/**/*.ts",
+        "tests-with-coverage-HTML": "nyc --reporter=html --reporter=text-summary mocha --require ts-node/register test/planningScheduler/**/*.ts",
         "test-vector": "mocha --require ts-node/register test/shared/utilities.ts/vector2.ts",
         "test-data": "mocha --require ts-node/register test/planningScheduler/**/dataContainer.ts",
         "test-graph": "mocha --require ts-node/register test/planningScheduler/**/graph.ts",
