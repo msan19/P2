@@ -12,8 +12,7 @@
         "chai-as-promised": "^7.1.1",
         "child_process": "^1.0.2",
         "mime-types": "^2.1.27",
-        "net": "^1.0.2",
-        "nyc": "^15.1.0"
+        "net": "^1.0.2"
     },
     "devDependencies": {
         "@types/chai": "^4.2.11",
@@ -35,8 +34,6 @@
         "program": "ts-node run.ts",
         "test": "mocha --require ts-node/register",
         "tests": "mocha --require ts-node/register test/planningScheduler/**/*.ts",
-        "tests-with-coverage-text": "nyc mocha --require ts-node/register test/planningScheduler/**/*.ts",
-        "tests-with-coverage-HTML": "nyc --reporter=html --reporter=text-summary mocha --require ts-node/register test/planningScheduler/**/*.ts",
         "test-vector": "mocha --require ts-node/register test/shared/utilities.ts/vector2.ts",
         "test-data": "mocha --require ts-node/register test/planningScheduler/**/dataContainer.ts",
         "test-graph": "mocha --require ts-node/register test/planningScheduler/**/graph.ts",
